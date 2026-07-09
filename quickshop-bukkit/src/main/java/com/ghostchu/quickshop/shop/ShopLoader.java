@@ -19,6 +19,7 @@ import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.google.common.reflect.TypeToken;
 import lombok.Getter;
 import lombok.Setter;
+import net.kyori.adventure.key.Key;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -42,6 +43,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.ghostchu.quickshop.api.CommonUtil.legacyYamlKeyToNamespacedKey;
 import static com.ghostchu.quickshop.api.shop.meta.ShopExtraHolder.EXTRA_VERSION_KEY;
 
 /**
@@ -313,7 +315,7 @@ public class ShopLoader implements SubPasteItem {
     private boolean hologram;
     private QUser taxAccount;
     private Map<UUID, String> permissions;
-    private final Map<String, String> extraMap = new HashMap<>();
+    private final Map<Key, String> extraMap = new HashMap<>();
     private String invWrapper;
     private String invSymbolLink;
     private long createTime;
@@ -389,13 +391,13 @@ public class ShopLoader implements SubPasteItem {
       }
     }
 
-    private @NotNull Map<String, String> deserializeExtraMap(@NotNull final String extraString) {
+    private @NotNull Map<Key, String> deserializeExtraMap(@NotNull final String extraString) {
 
-      final Map<String, String> map = new HashMap<>();
+      final Map<Key, String> map = new HashMap<>();
 
-      if (extraString.contains(EXTRA_VERSION_KEY)) {
+      if (extraString.contains(EXTRA_VERSION_KEY.asString())) {
 
-        final Type type = new TypeToken<Map<String, String>>() {}.getType();
+        final Type type = new TypeToken<Map<Key, String>>() {}.getType();
         map.putAll(JsonUtil.getGson().fromJson(extraString, type));
         return map;
       }
@@ -416,20 +418,10 @@ public class ShopLoader implements SubPasteItem {
         final String convertedKey = legacyYamlKeyToNamespacedKey(key);
         final String stringValue = String.valueOf(value);
 
-        map.put(convertedKey, stringValue);
+        map.put(Key.key(convertedKey), stringValue);
       });
 
       return map;
-    }
-
-    private String legacyYamlKeyToNamespacedKey(@NotNull final String key) {
-      final int index = key.indexOf('.');
-
-      if (index == -1) {
-        return key;
-      }
-
-      return key.substring(0, index) + ":" + key.substring(index + 1);
     }
 
     @Override

@@ -19,6 +19,7 @@ package com.ghostchu.quickshop.api.shop.meta;
  */
 
 import com.ghostchu.quickshop.common.util.JsonUtil;
+import net.kyori.adventure.key.Key;
 import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -36,7 +37,7 @@ import java.util.Objects;
  */
 public interface ShopExtraHolder {
 
-  String EXTRA_VERSION_KEY = "quickshop.json.extra.version";
+  Key EXTRA_VERSION_KEY = Key.key("quickshop:json.extra.version");
   int EXTRA_VERSION = 1;
 
 
@@ -48,7 +49,7 @@ public interface ShopExtraHolder {
    * @since 6.3.0.0
    */
   @NotNull
-  Map<String, String> getExtra();
+  Map<Key, String> getExtra();
 
   /**
    * Retrieves the extra value associated with the specified key.
@@ -58,7 +59,7 @@ public interface ShopExtraHolder {
    * @since 6.3.0.0
    */
   default @Nullable String getExtra(@NotNull final NamespacedKey key) {
-    return getExtra().get(key.asString());
+    return getExtra().get(key);
   }
 
   /**
@@ -74,7 +75,7 @@ public interface ShopExtraHolder {
    * @since 6.3.0.0
    */
   default @Nullable String getExtra(@NotNull final NamespacedKey key, @Nullable final String defaultValue) {
-    return getExtra().getOrDefault(key.asString(), defaultValue);
+    return getExtra().getOrDefault(key, defaultValue);
   }
 
   /**
@@ -417,7 +418,7 @@ public interface ShopExtraHolder {
    */
   default String serializeExtra() {
 
-    final Map<String, String> json = new LinkedHashMap<>(getExtra());
+    final Map<Key, String> json = new LinkedHashMap<>(getExtra());
     json.putIfAbsent(EXTRA_VERSION_KEY, EXTRA_VERSION + "");
 
     return JsonUtil.getGson().toJson(json);

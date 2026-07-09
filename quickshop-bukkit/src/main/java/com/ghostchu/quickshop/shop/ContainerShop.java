@@ -53,6 +53,7 @@ import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
 import lombok.EqualsAndHashCode;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
@@ -113,7 +114,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   private static final NamespacedKey LEGACY_SHOP_NAMESPACED_KEY = new NamespacedKey("quickshop", "shopsign");
   private static final String LEGACY_SHOP_SIGN_RECOGNIZE_PATTERN = "§d§o ";
 
-  private final Map<String, String> extraMap = new ConcurrentHashMap<>();
+  private final Map<Key, String> extraMap = new ConcurrentHashMap<>();
 
   @NotNull
   private final Location location;
@@ -188,7 +189,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
           final boolean unlimited,
           @NotNull final IShopType type,
           @NotNull final ShopState state,
-          @Nullable final Map<String, String> extra,
+          @Nullable final Map<Key, String> extra,
           @Nullable final String currency,
           final boolean disableDisplay,
           @Nullable final QUser taxAccount,
@@ -453,8 +454,8 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     final String prefix = plugin.getName().toLowerCase(Locale.ROOT) + ":";
 
     this.extraMap.forEach((key, value) -> {
-      if (key.startsWith(prefix)) {
-        yaml.set(key.substring(prefix.length()), value);
+      if (key.asString().startsWith(prefix)) {
+        yaml.set(key.asString().substring(prefix.length()), value);
       }
     });
 
@@ -934,9 +935,9 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
    * data associated with the shop, where both keys and values are strings.
    */
   @Override
-  public @NotNull Map<String, String> getExtra() {
+  public @NotNull Map<Key, String> getExtra() {
 
-    return this.extraMap;
+    return Collections.unmodifiableMap(this.extraMap);
   }
 
   @Override
@@ -947,20 +948,20 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
 
     data.forEach((k, v) -> {
 
-      getExtra().put(new NamespacedKey(plugin, k).asString(), v);
+      getExtra().put(new NamespacedKey(plugin, k), v);
     });
     setDirty();
   }
 
   @Override
   public void setExtra(@NotNull final NamespacedKey key, @NotNull final String data) {
-    getExtra().put(key.asString(), data);
+    getExtra().put(key, data);
     setDirty();
   }
 
   @Override
   public void removeExtra(@NotNull final NamespacedKey key) {
-    getExtra().remove(key.asString());
+    getExtra().remove(key);
     setDirty();
   }
 
@@ -968,7 +969,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   public void removeAll(@NotNull final Plugin plugin) {
     final String prefix = plugin.getName().toLowerCase(Locale.ROOT) + ":";
 
-    getExtra().keySet().removeIf(key -> key.startsWith(prefix));
+    getExtra().keySet().removeIf(key -> key.asString().startsWith(prefix));
     setDirty();
   }
 

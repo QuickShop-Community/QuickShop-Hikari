@@ -12,6 +12,7 @@ import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
 import com.ghostchu.quickshop.util.ProgressMonitor;
 import com.ghostchu.quickshop.util.performance.BatchBukkitExecutor;
 import com.google.common.io.Files;
+import net.kyori.adventure.key.Key;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -33,6 +34,8 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static com.ghostchu.quickshop.api.CommonUtil.legacyYamlKeyToNamespacedKey;
 
 public class ShopMigrate extends AbstractMigrateComponent {
 
@@ -126,9 +129,9 @@ public class ShopMigrate extends AbstractMigrateComponent {
     }
   }
 
-  private @NotNull Map<String, String> getReremakeShopExtra(final Shop reremakeShop) {
+  private @NotNull Map<Key, String> getReremakeShopExtra(final Shop reremakeShop) {
 
-    final Map<String, String> extra = new HashMap<>();
+    final Map<Key, String> extra = new HashMap<>();
 
     final YamlConfiguration configuration = new YamlConfiguration();
     try {
@@ -138,9 +141,14 @@ public class ShopMigrate extends AbstractMigrateComponent {
     }
 
     configuration.getValues(true).forEach((key, value) -> {
-      if (value != null) {
-        extra.put(key, String.valueOf(value));
+      if (value == null || value instanceof ConfigurationSection) {
+        return;
       }
+
+      final String convertedKey = legacyYamlKeyToNamespacedKey(key);
+      final String stringValue = String.valueOf(value);
+
+      extra.put(Key.key(convertedKey), stringValue);
     });
 
     return extra;
