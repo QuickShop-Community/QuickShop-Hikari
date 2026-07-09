@@ -50,7 +50,7 @@ import static com.ghostchu.quickshop.menu.shared.QuickShopPage.getShop;
 import static com.ghostchu.quickshop.menu.shared.QuickShopPage.guiMessage;
 
 /**
- * PlayerSelectionMenu
+ * PlayerSelectionPage
  *
  * @author creatorfromhell
  * @since 6.2.0.8

@@ -23,7 +23,7 @@ import com.ghostchu.quickshop.hook.fworldedit.FWorldEditAdapter;
 import org.bukkit.Bukkit;
 
 /**
- * WorldEditHook
+ * FWorldEditHook
  *
  * @author creatorfromhell
  * @since 6.2.0.11
