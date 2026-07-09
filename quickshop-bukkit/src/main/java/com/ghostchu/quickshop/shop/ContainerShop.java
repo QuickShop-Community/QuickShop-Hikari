@@ -74,6 +74,7 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -85,6 +86,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -93,6 +95,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -109,6 +112,9 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   // We use deprecated method to create a fake quickshop-reremake namespace to trick bukkit to access legacy data.
   private static final NamespacedKey LEGACY_SHOP_NAMESPACED_KEY = new NamespacedKey("quickshop", "shopsign");
   private static final String LEGACY_SHOP_SIGN_RECOGNIZE_PATTERN = "§d§o ";
+
+  private Map<String, String> extraMap = new ConcurrentHashMap<>();
+
   @NotNull
   private final Location location;
   @EqualsAndHashCode.Exclude
@@ -119,7 +125,6 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   private final Map<UUID, String> playerGroup;
   @EqualsAndHashCode.Exclude
   private final boolean isDeleted = false;
-  private YamlConfiguration extra;
   private long shopId;
   private QUser owner;
   private double price;
@@ -183,7 +188,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
           final boolean unlimited,
           @NotNull final IShopType type,
           @NotNull final ShopState state,
-          @Nullable final YamlConfiguration extra,
+          @Nullable final Map<String, String> extra,
           @Nullable final String currency,
           final boolean disableDisplay,
           @Nullable final QUser taxAccount,
@@ -227,7 +232,15 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     this.shopType = type;
     this.shopState = state;
     this.unlimited = unlimited;
-    this.extra = extra;
+
+    if (extra != null) {
+
+      this.extraMap.forEach((key, value) -> {
+        System.out.println(key + " " + value);
+      });
+      this.extraMap.putAll(extra);
+    }
+
     this.currency = currency;
     this.disableDisplay = disableDisplay;
     this.taxAccount = taxAccount;
@@ -247,18 +260,13 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
 
   private void updateShopData() {
 
-    if(this.extra == null) {
-      return;
-    }
+    if (this.extraMap.containsKey("currency")) {
 
-    final ConfigurationSection section = getExtra(plugin.getJavaPlugin());
-    if(section.getString("currency") != null) {
-      this.currency = section.getString("currency");
-      section.set("currency", null);
+      this.currency = this.extraMap.get("currency");
+      this.extraMap.remove("currency");
       Log.debug("Shop " + this + " currency data upgrade successful.");
       setDirty();
     }
-
   }
 
   /**
@@ -434,17 +442,26 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
    *
    * @return The data table
    */
+  @Deprecated(forRemoval = true)
+  @ApiStatus.ScheduledForRemoval(inVersion = "6.4.0.0")
   @Override
   public @NotNull ConfigurationSection getExtra(@NotNull final Plugin plugin) {
 
-    if(this.extra == null) {
-      return new YamlConfiguration();
+    final YamlConfiguration yaml = new YamlConfiguration();
+
+    if (this.extraMap.isEmpty()) {
+      return yaml;
     }
-    final ConfigurationSection section = extra.getConfigurationSection(plugin.getName());
-    if(section == null) {
-      return new YamlConfiguration();
-    }
-    return section;
+
+    final String prefix = plugin.getName().toLowerCase(Locale.ROOT) + ":";
+
+    this.extraMap.forEach((key, value) -> {
+      if (key.startsWith(prefix)) {
+        yaml.set(key.substring(prefix.length()), value);
+      }
+    });
+
+    return yaml;
   }
 
   /**
@@ -911,6 +928,18 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     }
     this.shopId = newId;
     setDirty();
+  }
+
+  /**
+   * Retrieves additional data associated with the shop in the form of key-value pairs.
+   *
+   * @return A non-null map containing extra shop data. The map keys and values represent custom
+   * data associated with the shop, where both keys and values are strings.
+   */
+  @Override
+  public @NotNull Map<String, String> getExtra() {
+
+    return this.extraMap;
   }
 
   /**
@@ -1739,19 +1768,13 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   }
 
   @Override
-  public @NotNull String saveExtraToYaml() {
-
-    return extra == null? "" : extra.saveToString();
-  }
-
-  @Override
   public ShopInfoStorage saveToInfoStorage() {
 
     return new ShopInfoStorage(this.bukkitLocation().getWorld().getName(),
                                new BlockPos(this.bukkitLocation()), this.owner, this.price,
-                               QuickShop.getInstance().platform().encodeStack(this.originalItem), isUnlimited()? 1 : 0
-            , shopType().id(),
-                               saveExtraToYaml(), this.currency, this.disableDisplay,
+                               QuickShop.getInstance().platform().encodeStack(this.originalItem),
+                               (isUnlimited())? 1 : 0, shopType().id(),
+                               serializeExtra(), this.currency, this.disableDisplay,
                                this.taxAccount, inventoryWrapperProvider,
                                saveToSymbolLink(), this.playerGroup);
   }
@@ -1783,43 +1806,6 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   public void setDirty() {
 
     this.dirty = true;
-  }
-
-  /**
-   * Save the extra data to the shop.
-   *
-   * @param plugin Plugin instace
-   * @param data   The data table
-   */
-  @Override
-  public void setExtra(@NotNull final Plugin plugin, @Nullable final ConfigurationSection data) {
-
-    if(data == null && this.extra == null) {
-      return;
-    }
-
-    if(this.extra == null) {
-      this.extra = new YamlConfiguration();
-    }
-    extra.set(plugin.getName(), data);
-    // compress extra to null if possible
-    boolean anyValid = false;
-    for(final String key : extra.getKeys(false)) {
-      if(!extra.isConfigurationSection(key)) {
-        anyValid = true;
-        break;
-      }
-      final ConfigurationSection section = extra.getConfigurationSection(key);
-      if(section == null) continue;
-      if(!section.getKeys(false).isEmpty()) {
-        anyValid = true;
-        break;
-      }
-    }
-    if(!anyValid) {
-      this.extra = null;
-    }
-    setDirty();
   }
 
   @Override
@@ -2055,7 +2041,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
             isDisableDisplay(),
             getTaxAccount(),
             JsonUtil.getGson().toJson(getPermissionAudiences()),
-            saveExtraToYaml(),
+            serializeExtra(),
             getInventoryWrapperProvider(),
             saveToSymbolLink(),
             new Date(),
@@ -2135,7 +2121,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
            ", runtimeRandomUniqueId=" + runtimeRandomUniqueId +
            ", playerGroup=" + playerGroup +
            ", isDeleted=" + isDeleted +
-           ", extra=" + extra +
+           ", extra=" + serializeExtra() +
            ", shopId=" + shopId +
            ", owner=" + owner +
            ", price=" + price +

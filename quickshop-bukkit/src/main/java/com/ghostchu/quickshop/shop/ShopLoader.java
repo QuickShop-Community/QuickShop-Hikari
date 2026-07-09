@@ -41,6 +41,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.ghostchu.quickshop.api.shop.meta.ShopMeta.EXTRA_VERSION_KEY;
+
 /**
  * A class allow plugin load shops fast and simply.
  */
@@ -183,7 +185,7 @@ public class ShopLoader implements SubPasteItem {
                                rawInfo.isUnlimited(),
                                rawInfo.getType(),
                                rawInfo.getState(),
-                               rawInfo.getExtra(),
+                               rawInfo.getExtraMap(),
                                rawInfo.getCurrency(),
                                rawInfo.isHologram(),
                                rawInfo.getTaxAccount(),
@@ -311,6 +313,7 @@ public class ShopLoader implements SubPasteItem {
     private QUser taxAccount;
     private Map<UUID, String> permissions;
     private YamlConfiguration extra;
+    private Map<String, String> extraMap;
     private String invWrapper;
     private String invSymbolLink;
     private long createTime;
@@ -372,7 +375,7 @@ public class ShopLoader implements SubPasteItem {
         needUpdate = true;
       }
 
-      this.extra = deserializeExtra(extraStr);
+      this.extraMap = deserializeExtraMap(extraStr);
     }
 
     private @Nullable ItemStack deserializeItem(@NotNull final String itemConfig) {
@@ -386,21 +389,28 @@ public class ShopLoader implements SubPasteItem {
       }
     }
 
-    private @Nullable YamlConfiguration deserializeExtra(@NotNull final String extraString) {
+    private @NotNull Map<String, String> deserializeExtraMap(@NotNull final String extraString) {
 
-      if(CommonUtil.isEmptyString(extraString)) {
-        return null;
+      final Map<String, String> map = new HashMap<>();
+
+      if (extraString.contains(EXTRA_VERSION_KEY)) {
+
+        final Type type = new TypeToken<Map<String, String>>() {}.getType();
+        map.putAll(JsonUtil.getGson().fromJson(extraString, type));
+        return map;
       }
-      YamlConfiguration yamlConfiguration = new YamlConfiguration();
+
+      final YamlConfiguration yaml = new YamlConfiguration();
       try {
-        yamlConfiguration.loadFromString(extraString);
-      } catch(final InvalidConfigurationException e) {
-        yamlConfiguration = new YamlConfiguration();
-        needUpdate = true;
+        yaml.loadFromString(extraString);
+      } catch(final InvalidConfigurationException ignore) {
+        Log.debug("Failed to load extra data during conversion from YamlConfiguration: " + extraString);
       }
-      return yamlConfiguration;
-    }
 
+      yaml.getValues(true).forEach((key, value) ->map.put(key, String.valueOf(value)));
+
+      return map;
+    }
 
     @Override
     public String toString() {
@@ -408,47 +418,4 @@ public class ShopLoader implements SubPasteItem {
       return JsonUtil.getGson().toJson(this);
     }
   }
-
-  @Getter
-  @Setter
-  public static class ShopDatabaseInfo {
-
-    private int shopId;
-    private int dataId;
-
-    ShopDatabaseInfo(final ResultSet origin) {
-
-      try {
-        this.shopId = origin.getInt("id");
-        this.dataId = origin.getInt("data");
-      } catch(final Exception ex) {
-        ex.printStackTrace();
-      }
-    }
-  }
-
-  @Getter
-  @Setter
-  public static class ShopMappingInfo {
-
-    private int shopId;
-    private String world;
-    private int x;
-    private int y;
-    private int z;
-
-    ShopMappingInfo(final ResultSet origin) {
-
-      try {
-        this.shopId = origin.getInt("shop");
-        this.x = origin.getInt("x");
-        this.y = origin.getInt("y");
-        this.z = origin.getInt("z");
-        this.world = origin.getString("world");
-      } catch(final Exception ex) {
-        ex.printStackTrace();
-      }
-    }
-  }
-
 }

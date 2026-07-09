@@ -6,7 +6,7 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.event.CalendarEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
-import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -41,42 +41,38 @@ public class SubCommand_Limit implements CommandHandler<Player> {
       quickshop.text().of(sender, "not-managed-shop").send();
       return;
     }
-    final ConfigurationSection manager = shop.getExtra(Main.instance);
+
     switch(parser.getArgs().getFirst()) {
       case "set" -> {
         try {
           final int limitAmount = Integer.parseInt(parser.getArgs().get(1));
           if(limitAmount > 0) {
-            manager.set("limit", limitAmount);
+            shop.setExtra(new NamespacedKey(Main.instance, "limit"), limitAmount);
             quickshop.text().of(sender, "addon.limited.success-setup").send();
           } else {
-            manager.set("limit", null);
-            manager.set("data", null);
+            shop.removeExtra(new NamespacedKey(Main.instance, "limit"));
+            shop.removeExtra(new NamespacedKey(Main.instance, "data"));
             quickshop.text().of(sender, "addon.limited.success-remove").send();
           }
-          shop.setExtra(Main.instance, manager);
-        } catch(NumberFormatException e) {
+        } catch(final NumberFormatException e) {
           quickshop.text().of(sender, "not-a-integer", parser.getArgs().get(1)).send();
         }
       }
       case "unset" -> {
-        manager.set("limit", null);
-        manager.set("data", null);
+        shop.removeExtra(new NamespacedKey(Main.instance, "limit"));
+        shop.removeExtra(new NamespacedKey(Main.instance, "data"));
         quickshop.text().of(sender, "addon.limited.success-remove").send();
-        shop.setExtra(Main.instance, manager);
       }
       case "reset" -> {
-        manager.set("data", null);
-        shop.setExtra(Main.instance, manager);
+        shop.removeExtra(new NamespacedKey(Main.instance, "data"));
         quickshop.text().of(sender, "addon.limited.success-reset").send();
       }
       case "period" -> {
         try {
           final CalendarEvent.CalendarTriggerType type = CalendarEvent.CalendarTriggerType.valueOf(parser.getArgs().get(1).toUpperCase(Locale.ROOT));
-          manager.set("period", type.name());
+          shop.setExtra(new NamespacedKey(Main.instance, "limit"), type.name());
           quickshop.text().of(sender, "addon.limited.success-setup").send();
-          shop.setExtra(Main.instance, manager);
-        } catch(IllegalArgumentException ignored) {
+        } catch(final IllegalArgumentException ignored) {
           quickshop.text().of(sender, "command.wrong-args", parser.getArgs().get(1)).send();
         }
       }
