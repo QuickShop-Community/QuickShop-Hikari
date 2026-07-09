@@ -828,7 +828,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
       final InventoryWrapper inv = this.getInventory();
       if(inv == null) {
         Log.debug("Failed to calc RemainingSpace for shop " + this + ": Inventory null.");
-        return Math.max(inventoryCountCache.getSpace(), 0);
+        return 0;
       }
 
       final int space = Util.countSpace(inv, this);
@@ -886,8 +886,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
 
     final InventoryWrapper inventoryWrapper = getInventory();
     if(inventoryWrapper == null) {
-      Log.debug("Failed to calc RemainingStock for shop " + this + ": Inventory null.");
-      return Math.max(inventoryCountCache.getStock(), 0);
+      return 0;
     }
 
     final int stock = Util.countItems(inventoryWrapper, this);
