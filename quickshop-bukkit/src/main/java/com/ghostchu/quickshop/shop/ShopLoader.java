@@ -22,6 +22,7 @@ import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -312,8 +313,7 @@ public class ShopLoader implements SubPasteItem {
     private boolean hologram;
     private QUser taxAccount;
     private Map<UUID, String> permissions;
-    private YamlConfiguration extra;
-    private Map<String, String> extraMap;
+    private final Map<String, String> extraMap = new HashMap<>();
     private String invWrapper;
     private String invSymbolLink;
     private long createTime;
@@ -375,7 +375,7 @@ public class ShopLoader implements SubPasteItem {
         needUpdate = true;
       }
 
-      this.extraMap = deserializeExtraMap(extraStr);
+      this.extraMap.putAll(deserializeExtraMap(extraStr));
     }
 
     private @Nullable ItemStack deserializeItem(@NotNull final String itemConfig) {
@@ -403,13 +403,33 @@ public class ShopLoader implements SubPasteItem {
       final YamlConfiguration yaml = new YamlConfiguration();
       try {
         yaml.loadFromString(extraString);
-      } catch(final InvalidConfigurationException ignore) {
+      } catch (final InvalidConfigurationException ignore) {
         Log.debug("Failed to load extra data during conversion from YamlConfiguration: " + extraString);
+        return map;
       }
 
-      yaml.getValues(true).forEach((key, value) ->map.put(key, String.valueOf(value)));
+      yaml.getValues(true).forEach((key, value) -> {
+        if (value == null || value instanceof ConfigurationSection) {
+          return;
+        }
+
+        final String convertedKey = legacyYamlKeyToNamespacedKey(key);
+        final String stringValue = String.valueOf(value);
+
+        map.put(convertedKey, stringValue);
+      });
 
       return map;
+    }
+
+    private String legacyYamlKeyToNamespacedKey(@NotNull final String key) {
+      final int index = key.indexOf('.');
+
+      if (index == -1) {
+        return key;
+      }
+
+      return key.substring(0, index) + ":" + key.substring(index + 1);
     }
 
     @Override

@@ -113,7 +113,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   private static final NamespacedKey LEGACY_SHOP_NAMESPACED_KEY = new NamespacedKey("quickshop", "shopsign");
   private static final String LEGACY_SHOP_SIGN_RECOGNIZE_PATTERN = "§d§o ";
 
-  private Map<String, String> extraMap = new ConcurrentHashMap<>();
+  private final Map<String, String> extraMap = new ConcurrentHashMap<>();
 
   @NotNull
   private final Location location;
@@ -235,9 +235,6 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
 
     if (extra != null) {
 
-      this.extraMap.forEach((key, value) -> {
-        System.out.println(key + " " + value);
-      });
       this.extraMap.putAll(extra);
     }
 
@@ -940,6 +937,39 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   public @NotNull Map<String, String> getExtra() {
 
     return this.extraMap;
+  }
+
+  @Override
+  public void setExtra(@NotNull final Plugin plugin, @Nullable final Map<String, String> data) {
+    if (data == null) {
+      return;
+    }
+
+    data.forEach((k, v) -> {
+
+      getExtra().put(new NamespacedKey(plugin, k).asString(), v);
+    });
+    setDirty();
+  }
+
+  @Override
+  public void setExtra(@NotNull final NamespacedKey key, @NotNull final String data) {
+    getExtra().put(key.asString(), data);
+    setDirty();
+  }
+
+  @Override
+  public void removeExtra(@NotNull final NamespacedKey key) {
+    getExtra().remove(key.asString());
+    setDirty();
+  }
+
+  @Override
+  public void removeAll(@NotNull final Plugin plugin) {
+    final String prefix = plugin.getName().toLowerCase(Locale.ROOT) + ":";
+
+    getExtra().keySet().removeIf(key -> key.startsWith(prefix));
+    setDirty();
   }
 
   /**

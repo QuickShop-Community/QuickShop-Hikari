@@ -65,7 +65,7 @@ public class TownyShopUtil {
   public static void setShopNation(@NotNull final Shop shop, @Nullable final Nation nation) {
 
     if(nation == null) {
-      shop.setExtra(new NamespacedKey(Main.getInstance(), "towny-nation-uuid"), null);
+      shop.removeExtra(new NamespacedKey(Main.getInstance(), "towny-nation-uuid"));
     } else {
       shop.setExtra(new NamespacedKey(Main.getInstance(), "towny-nation-uuid"), nation.getUUID().toString());
     }
@@ -74,7 +74,7 @@ public class TownyShopUtil {
   public static void setShopOriginalOwner(@NotNull final Shop shop, @Nullable final UUID owner) {
 
     if(owner == null) {
-      shop.setExtra(new NamespacedKey(Main.getInstance(), "towny-original-owner"), null);
+      shop.removeExtra(new NamespacedKey(Main.getInstance(), "towny-original-owner"));
     } else {
       shop.setExtra(new NamespacedKey(Main.getInstance(), "towny-original-owner"), owner.toString());
     }
@@ -83,7 +83,7 @@ public class TownyShopUtil {
   public static void setShopTown(@NotNull final Shop shop, @Nullable final Town town) {
 
     if(town == null) {
-      shop.setExtra(new NamespacedKey(Main.getInstance(), "towny-town-uuid"), null);
+      shop.removeExtra(new NamespacedKey(Main.getInstance(), "towny-town-uuid"));
     } else {
       shop.setExtra(new NamespacedKey(Main.getInstance(), "towny-town-uuid"), town.getUUID().toString());
     }

@@ -332,17 +332,7 @@ public interface ShopMeta<U> extends ShopPrice<U> {
    *               specific to the provided plugin.
    * @since 6.3.0.0
    */
-  default void setExtra(@NotNull final Plugin plugin, @Nullable final Map<String, String> data) {
-
-    if(data == null) {
-      return;
-    }
-
-    data.forEach((k, v) -> {
-
-      getExtra().put(new NamespacedKey(plugin, k).asString(), v);
-    });
-  }
+  void setExtra(@NotNull final Plugin plugin, @Nullable final Map<String, String> data);
 
   /**
    * Associates additional data with the shop using a specified key and data value.
@@ -352,9 +342,7 @@ public interface ShopMeta<U> extends ShopPrice<U> {
    * @param data A non-null string representing the additional data to be stored.
    * @since 6.3.0.0
    */
-  default void setExtra(@NotNull final NamespacedKey key, @NotNull final String data) {
-    getExtra().put(key.asString(), data);
-  }
+  void setExtra(@NotNull final NamespacedKey key, @NotNull final String data);
 
   /**
    * Associates a specified extra piece of data identified by a unique key.
@@ -440,9 +428,7 @@ public interface ShopMeta<U> extends ShopPrice<U> {
    * @param key the identifier for the extra entry to be removed; must not be null
    * @since 6.3.0.0
    */
-  default void removeExtra(@NotNull final NamespacedKey key) {
-    getExtra().remove(key.asString());
-  }
+  void removeExtra(@NotNull final NamespacedKey key);
 
   /**
    * Removes all entries from the collection whose keys start with the specified prefix
@@ -452,11 +438,7 @@ public interface ShopMeta<U> extends ShopPrice<U> {
    *               must not be null
    * @since 6.3.0.0
    */
-  default void removeAll(@NotNull final Plugin plugin) {
-    final String prefix = plugin.getName().toLowerCase(Locale.ROOT) + ":";
-
-    getExtra().keySet().removeIf(key -> key.startsWith(prefix));
-  }
+  void removeAll(@NotNull final Plugin plugin);
 
   /**
    * Serializes the additional shop data into a JSON string representation.
