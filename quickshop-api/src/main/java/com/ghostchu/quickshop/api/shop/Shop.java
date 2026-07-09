@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.api.shop;
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.shop.inventory.ShopInventory;
 import com.ghostchu.quickshop.api.shop.meta.ShopDisplay;
+import com.ghostchu.quickshop.api.shop.meta.ShopExtraHolder;
 import com.ghostchu.quickshop.api.shop.meta.ShopMeta;
 import com.ghostchu.quickshop.api.shop.permission.ShopPermission;
 import com.ghostchu.quickshop.api.shop.trading.ShopTrading;
@@ -22,7 +23,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * A shop
  */
-public interface Shop<U, L> extends Locatable<L>, ShopInventory, ShopMeta<U>, ShopTrading, ShopDisplay, ShopPermission {
+public interface Shop<U, L> extends Locatable<L>, ShopInventory, ShopMeta<U>, ShopTrading, ShopDisplay, ShopPermission, ShopExtraHolder {
 
   NamespacedKey SHOP_NAMESPACED_KEY = new NamespacedKey(QuickShopAPI.getPluginInstance(), "shopsign");
 

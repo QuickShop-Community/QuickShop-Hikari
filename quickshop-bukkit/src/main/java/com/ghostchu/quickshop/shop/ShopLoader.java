@@ -42,7 +42,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.ghostchu.quickshop.api.shop.meta.ShopMeta.EXTRA_VERSION_KEY;
+import static com.ghostchu.quickshop.api.shop.meta.ShopExtraHolder.EXTRA_VERSION_KEY;
 
 /**
  * A class allow plugin load shops fast and simply.
