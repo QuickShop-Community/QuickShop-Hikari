@@ -84,9 +84,7 @@ public class EntityUtil {
                                                   final int viewRange,
                                                   final int despawn) {
 
-    final Location blockLoc = location.getBlock().getLocation();
-
-    final BlockDisplay display = blockLoc.getWorld().spawn(blockLoc.clone().add(-0.01, -0.01, -0.01), BlockDisplay.class);
+    final BlockDisplay display = location.getWorld().spawn(location.clone().add(-0.01, -0.01, -0.01), BlockDisplay.class);
 
     display.setBlock(material.createBlockData());
     display.setTransformation(new Transformation(new Vector3f(), new AxisAngle4f(), scale, new AxisAngle4f()));

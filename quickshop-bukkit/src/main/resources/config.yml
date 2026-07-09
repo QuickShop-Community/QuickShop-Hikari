@@ -522,10 +522,10 @@ shop:
     x: 0.0
 
     # Y-component of the rotation axis.
-    y: 0.0
+    y: 1.0
 
     # Z-component of the rotation axis.
-    z: 1.0
+    z: 0.0
 
   # The scale of the display item. This is only used for display-type 3.
   display-scale:
