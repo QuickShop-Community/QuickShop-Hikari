@@ -1410,20 +1410,8 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     final Block shopBlock = shop.getShopBlock();
     if (shopBlock.getState(false) instanceof final TileState state) {
 
-      boolean updated = false;
-      if (state.getPersistentDataContainer().has(CHEST_SHOP)) {
-        state.getPersistentDataContainer().remove(CHEST_SHOP);
-        updated = true;
-      }
-
-      if (state.getPersistentDataContainer().has(CHEST_SHOP_OWNER)) {
-        state.getPersistentDataContainer().remove(CHEST_SHOP_OWNER);
-        updated = true;
-      }
-
-      if (updated) {
-        state.update(true);
-      }
+      state.getPersistentDataContainer().remove(CHEST_SHOP);
+      state.getPersistentDataContainer().remove(CHEST_SHOP_OWNER);
     }
     refundShop(shop);
     unloadShop(shop);
