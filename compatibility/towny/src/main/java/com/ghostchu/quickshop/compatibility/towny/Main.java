@@ -80,6 +80,8 @@ public final class Main extends CompatibilityModule implements Listener {
   @Getter
   private UuidConversion uuidConversion;
 
+  private static Main instance;
+
   private boolean isWorldIgnored(final World world) {
 
     if(getConfig().getBoolean("ignore-disabled-worlds", false)) {
@@ -129,6 +131,8 @@ public final class Main extends CompatibilityModule implements Listener {
 
   @Override
   public void init() {
+
+    instance = this;
 
     performConfigurationUpgrade();
     api = QuickShopAPI.getInstance();
@@ -553,5 +557,9 @@ public final class Main extends CompatibilityModule implements Listener {
     }
 
     return false;
+  }
+
+  public static Main getInstance() {
+    return instance;
   }
 }

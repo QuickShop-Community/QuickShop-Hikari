@@ -6,8 +6,7 @@ import com.ghostchu.quickshop.util.logger.Log;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Town;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,8 +21,7 @@ public class TownyShopUtil {
   @Nullable
   public static Nation getShopNation(@NotNull final Shop shop) {
 
-    final ConfigurationSection section = shop.getExtra(JavaPlugin.getPlugin(Main.class));
-    final String uuid = section.getString("towny-nation-uuid");
+    final String uuid = shop.getExtra(new NamespacedKey(Main.getInstance(), "towny-nation-uuid"));
     if(uuid == null) {
       return null;
     }
@@ -35,9 +33,14 @@ public class TownyShopUtil {
   @NotNull
   public static UUID getShopOriginalOwner(@NotNull final Shop shop) {
 
-    final ConfigurationSection section = shop.getExtra(JavaPlugin.getPlugin(Main.class));
-    if(section.isSet("towny-original-owner")) {
-      return UUID.fromString(section.getString("towny-original-owner", CommonUtil.getNilUniqueId().toString()));
+    final String owner = shop.getExtra(new NamespacedKey(Main.getInstance(), "towny-original-owner"));
+    if(owner != null) {
+      try {
+        return UUID.fromString(owner);
+      } catch (final IllegalArgumentException ignore) {
+        Log.debug("Invalid UUID found in shop extra: " + owner);
+        return CommonUtil.getNilUniqueId();
+      }
     } else {
       final UUID uuid = shop.getOwner().getUniqueIdIfRealPlayer().orElse(null);
       if(uuid == null) {
@@ -50,8 +53,7 @@ public class TownyShopUtil {
   @Nullable
   public static Town getShopTown(@NotNull final Shop shop) {
 
-    final ConfigurationSection section = shop.getExtra(JavaPlugin.getPlugin(Main.class));
-    final String uuid = section.getString("towny-town-uuid");
+    final String uuid = shop.getExtra(new NamespacedKey(Main.getInstance(), "towny-town-uuid"));
     if(uuid == null) {
       return null;
     }
@@ -62,35 +64,29 @@ public class TownyShopUtil {
 
   public static void setShopNation(@NotNull final Shop shop, @Nullable final Nation nation) {
 
-    final ConfigurationSection section = shop.getExtra(JavaPlugin.getPlugin(Main.class));
     if(nation == null) {
-      section.set("towny-nation-uuid", null);
+      shop.removeExtra(new NamespacedKey(Main.getInstance(), "towny-nation-uuid"));
     } else {
-      section.set("towny-nation-uuid", nation.getUUID().toString());
+      shop.setExtra(new NamespacedKey(Main.getInstance(), "towny-nation-uuid"), nation.getUUID().toString());
     }
-    shop.setExtra(JavaPlugin.getPlugin(Main.class), section);
   }
 
   public static void setShopOriginalOwner(@NotNull final Shop shop, @Nullable final UUID owner) {
 
-    final ConfigurationSection section = shop.getExtra(JavaPlugin.getPlugin(Main.class));
     if(owner == null) {
-      section.set("towny-original-owner", null);
+      shop.removeExtra(new NamespacedKey(Main.getInstance(), "towny-original-owner"));
     } else {
-      section.set("towny-original-owner", owner.toString());
+      shop.setExtra(new NamespacedKey(Main.getInstance(), "towny-original-owner"), owner.toString());
     }
-    shop.setExtra(JavaPlugin.getPlugin(Main.class), section);
   }
 
   public static void setShopTown(@NotNull final Shop shop, @Nullable final Town town) {
 
-    final ConfigurationSection section = shop.getExtra(JavaPlugin.getPlugin(Main.class));
     if(town == null) {
-      section.set("towny-town-uuid", null);
+      shop.removeExtra(new NamespacedKey(Main.getInstance(), "towny-town-uuid"));
     } else {
-      section.set("towny-town-uuid", town.getUUID().toString());
+      shop.setExtra(new NamespacedKey(Main.getInstance(), "towny-town-uuid"), town.getUUID().toString());
     }
-    shop.setExtra(JavaPlugin.getPlugin(Main.class), section);
   }
 }
 

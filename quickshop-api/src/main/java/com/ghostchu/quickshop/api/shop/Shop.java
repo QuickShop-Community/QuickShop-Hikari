@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.api.shop;
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.shop.inventory.ShopInventory;
 import com.ghostchu.quickshop.api.shop.meta.ShopDisplay;
+import com.ghostchu.quickshop.api.shop.meta.ShopExtraHolder;
 import com.ghostchu.quickshop.api.shop.meta.ShopMeta;
 import com.ghostchu.quickshop.api.shop.permission.ShopPermission;
 import com.ghostchu.quickshop.api.shop.trading.ShopTrading;
@@ -15,12 +16,14 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 /**
  * A shop
  */
-public interface Shop<U, L> extends Locatable<L>, ShopInventory, ShopMeta<U>, ShopTrading, ShopDisplay, ShopPermission {
+public interface Shop<U, L> extends Locatable<L>, ShopInventory, ShopMeta<U>, ShopTrading, ShopDisplay, ShopPermission, ShopExtraHolder {
 
   NamespacedKey SHOP_NAMESPACED_KEY = new NamespacedKey(QuickShopAPI.getPluginInstance(), "shopsign");
 
@@ -39,6 +42,8 @@ public interface Shop<U, L> extends Locatable<L>, ShopInventory, ShopMeta<U>, Sh
    * @return ExtraSection, save it through Shop#setExtra. If you don't save it, it may randomly lose
    * or save
    */
+  @Deprecated(forRemoval = true)
+  @ApiStatus.ScheduledForRemoval(inVersion = "6.4.0.0")
   @NotNull
   ConfigurationSection getExtra(@NotNull Plugin plugin);
 
@@ -101,14 +106,6 @@ public interface Shop<U, L> extends Locatable<L>, ShopInventory, ShopMeta<U>, Sh
   void openPreview(@NotNull Player player);
 
   /**
-   * Save the plugin extra data to Json format
-   *
-   * @return The json string
-   */
-  @NotNull
-  String saveExtraToYaml();
-
-  /**
    * Getting ShopInfoStorage that you can use for storage the shop data
    *
    * @return ShopInfoStorage
@@ -134,7 +131,18 @@ public interface Shop<U, L> extends Locatable<L>, ShopInventory, ShopMeta<U>, Sh
    * @param plugin Plugin instance
    * @param data   The data table, or null to remove it
    */
-  void setExtra(@NotNull Plugin plugin, @Nullable ConfigurationSection data);
+  @Deprecated(forRemoval = true)
+  @ApiStatus.ScheduledForRemoval(inVersion = "6.4.0.0")
+  default void setExtra(@NotNull final Plugin plugin, @Nullable final ConfigurationSection data) {
+    if (data == null) {
+      return;
+    }
+
+    final Map<String, String> extra = new HashMap<>();
+    data.getValues(true).forEach((k, v) -> extra.put(k, String.valueOf(v)));
+
+    setExtra(plugin, extra);
+  }
 
   /**
    * Update shop data to database

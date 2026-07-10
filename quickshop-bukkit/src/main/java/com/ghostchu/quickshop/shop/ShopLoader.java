@@ -20,9 +20,12 @@ import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.google.common.reflect.TypeToken;
 import lombok.Getter;
 import lombok.Setter;
+import net.kyori.adventure.key.Key;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -41,6 +44,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static com.ghostchu.quickshop.api.CommonUtil.legacyYamlKeyToNamespacedKey;
+import static com.ghostchu.quickshop.api.shop.meta.ShopExtraHolder.EXTRA_VERSION_KEY;
 
 /**
  * A class allow plugin load shops fast and simply.
@@ -191,7 +197,7 @@ public class ShopLoader implements SubPasteItem {
                                rawInfo.isUnlimited(),
                                rawInfo.getType(),
                                rawInfo.getState(),
-                               rawInfo.getExtra(),
+                               rawInfo.getExtraMap(),
                                rawInfo.getCurrency(),
                                rawInfo.isHologram(),
                                rawInfo.getTaxAccount(),
@@ -320,7 +326,7 @@ public class ShopLoader implements SubPasteItem {
     private boolean hologram;
     private QUser taxAccount;
     private Map<UUID, String> permissions;
-    private YamlConfiguration extra;
+    private final Map<Key, String> extraMap = new HashMap<>();
     private String invWrapper;
     private String invSymbolLink;
     private long createTime;
@@ -383,7 +389,7 @@ public class ShopLoader implements SubPasteItem {
         needUpdate = true;
       }
 
-      this.extra = deserializeExtra(extraStr);
+      this.extraMap.putAll(deserializeExtraMap(extraStr));
     }
 
     private @Nullable ItemStack deserializeItem(@NotNull final String itemConfig) {
@@ -397,21 +403,44 @@ public class ShopLoader implements SubPasteItem {
       }
     }
 
-    private @Nullable YamlConfiguration deserializeExtra(@NotNull final String extraString) {
+    private @NotNull Map<Key, String> deserializeExtraMap(@NotNull final String extraString) {
 
-      if(CommonUtil.isEmptyString(extraString)) {
-        return null;
+      final Map<Key, String> map = new HashMap<>();
+      if (extraString.contains(EXTRA_VERSION_KEY.asString())) {
+
+        final Type type = new TypeToken<Map<String, String>>() {}.getType();
+
+        final Map<String, String> extraMap = new HashMap<>();
+        extraMap.putAll(JsonUtil.getGson().fromJson(extraString, type));
+
+        for (final Map.Entry<String, String> entry : extraMap.entrySet()) {
+
+          map.put(Key.key(entry.getKey()), entry.getValue());
+        }
+        return map;
       }
-      YamlConfiguration yamlConfiguration = new YamlConfiguration();
+
+      final YamlConfiguration yaml = new YamlConfiguration();
       try {
-        yamlConfiguration.loadFromString(extraString);
-      } catch(final InvalidConfigurationException e) {
-        yamlConfiguration = new YamlConfiguration();
-        needUpdate = true;
+        yaml.loadFromString(extraString);
+      } catch (final InvalidConfigurationException ignore) {
+        Log.debug("Failed to load extra data during conversion from YamlConfiguration: " + extraString);
+        return map;
       }
-      return yamlConfiguration;
-    }
 
+      yaml.getValues(true).forEach((key, value) -> {
+        if (value == null || value instanceof ConfigurationSection) {
+          return;
+        }
+
+        final String convertedKey = legacyYamlKeyToNamespacedKey(key);
+        final String stringValue = String.valueOf(value);
+
+        map.put(Key.key(convertedKey), stringValue);
+      });
+
+      return map;
+    }
 
     @Override
     public String toString() {
@@ -419,47 +448,4 @@ public class ShopLoader implements SubPasteItem {
       return JsonUtil.getGson().toJson(this);
     }
   }
-
-  @Getter
-  @Setter
-  public static class ShopDatabaseInfo {
-
-    private int shopId;
-    private int dataId;
-
-    ShopDatabaseInfo(final ResultSet origin) {
-
-      try {
-        this.shopId = origin.getInt("id");
-        this.dataId = origin.getInt("data");
-      } catch(final Exception ex) {
-        ex.printStackTrace();
-      }
-    }
-  }
-
-  @Getter
-  @Setter
-  public static class ShopMappingInfo {
-
-    private int shopId;
-    private String world;
-    private int x;
-    private int y;
-    private int z;
-
-    ShopMappingInfo(final ResultSet origin) {
-
-      try {
-        this.shopId = origin.getInt("shop");
-        this.x = origin.getInt("x");
-        this.y = origin.getInt("y");
-        this.z = origin.getInt("z");
-        this.world = origin.getString("world");
-      } catch(final Exception ex) {
-        ex.printStackTrace();
-      }
-    }
-  }
-
 }
