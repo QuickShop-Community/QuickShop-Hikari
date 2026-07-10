@@ -13,9 +13,11 @@ import com.ghostchu.quickshop.util.logger.Log;
 import com.vdurmont.semver4j.Semver;
 import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -75,6 +77,29 @@ public final class EnvironmentChecker {
     }
     if(plugin.getGameVersion() == GameVersion.UNKNOWN) {
       return new ResultContainer(CheckResult.WARNING, "QuickShop may not fully support version " + ReflectFactory.getNMSVersion() + "/" + plugin.platform().getMinecraftVersion() + ", Some features may not work.");
+    }
+    return new ResultContainer(CheckResult.PASSED, CHECK_PASSED_RETURNS);
+  }
+
+  @EnvCheckEntry(name = "Disable Item Move", priority = Integer.MAX_VALUE, stage = EnvCheckEntry.Stage.ON_ENABLE)
+  public ResultContainer disableItemMoveTest() {
+
+    final File configFile = new File(Bukkit.getWorldContainer(), "config/paper-world-defaults.yml");
+
+    if (configFile.exists()) {
+
+      final YamlConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+      if (config.getBoolean("hopper.disable-move-event", false)) {
+
+        plugin.logger().warn("============================================================");
+        plugin.logger().warn("WARNING: Unsafe Paper configuration detected!");
+        plugin.logger().warn("'hopper.disable-move-event' is ENABLED.");
+        plugin.logger().warn("Chest shops CANNOT prevent hopper theft with this setting.");
+        plugin.logger().warn("Set 'hopper.disable-move-event: false' in");
+        plugin.logger().warn("config/paper-world-defaults.yml to restore protection.");
+        plugin.logger().warn("============================================================");
+        return new ResultContainer(CheckResult.WARNING, "You've disabled item move, your chest shops may be at risk of theft.");
+      }
     }
     return new ResultContainer(CheckResult.PASSED, CHECK_PASSED_RETURNS);
   }
