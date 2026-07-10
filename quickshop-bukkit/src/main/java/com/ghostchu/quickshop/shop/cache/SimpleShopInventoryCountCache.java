@@ -8,6 +8,11 @@ public class SimpleShopInventoryCountCache implements ShopInventoryCountCache {
   private int space;
   private boolean initialized = false;
 
+  public SimpleShopInventoryCountCache() {
+
+    this(-2, -2, false);
+  }
+
   public SimpleShopInventoryCountCache(final int stock, final int space, final boolean initialized) {
 
     this.stock = stock;

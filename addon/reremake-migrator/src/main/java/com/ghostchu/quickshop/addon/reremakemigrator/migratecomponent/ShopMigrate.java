@@ -8,6 +8,7 @@ import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.economy.QSBenefitProvider;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.ContainerShop;
+import com.ghostchu.quickshop.shop.cache.SimpleShopInventoryCountCache;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
 import com.ghostchu.quickshop.util.ProgressMonitor;
 import com.ghostchu.quickshop.util.performance.BatchBukkitExecutor;
@@ -88,7 +89,8 @@ public class ShopMigrate extends AbstractMigrateComponent {
                 ((BukkitInventoryWrapperManager)getHikari().getInventoryWrapperManager()).mklink(reremakeShop.getLocation()),
                 null,
                 Collections.emptyMap(),
-                new QSBenefitProvider()
+                new QSBenefitProvider(),
+                new SimpleShopInventoryCountCache()
         );
         migrateReremakeBanAddonData(reremakeShop, hikariRawShop);
         hikariRawShop.setDirty();

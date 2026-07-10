@@ -41,6 +41,7 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
 import com.ghostchu.quickshop.obj.QUserImpl;
+import com.ghostchu.quickshop.shop.cache.SimpleShopInventoryCountCache;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.shop.display.display.DisplayEntityItemManager;
@@ -74,6 +75,7 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -155,6 +157,10 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   @NotNull
   private BenefitProvider benefit;
 
+  @NotNull
+  @EqualsAndHashCode.Exclude
+  private final SimpleShopInventoryCountCache inventoryCountCache;
+
   //updating objects
   private final AtomicBoolean updatingAtomic = new AtomicBoolean(false);
   private volatile CompletableFuture<Void> inFlightUpdate;
@@ -191,7 +197,8 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
           @NotNull final String symbolLink,
           @Nullable final String shopName,
           @NotNull final Map<UUID, String> playerGroup,
-          @NotNull final BenefitProvider shopBenefit) {
+          @NotNull final BenefitProvider shopBenefit,
+          @NotNull final SimpleShopInventoryCountCache inventoryCountCache) {
 
     this.shopId = shopId;
     this.shopName = shopName;
@@ -240,6 +247,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     }
     this.symbolLink = symbolLink;
     this.inventoryWrapperProvider = inventoryWrapperProvider;
+    this.inventoryCountCache = inventoryCountCache;
     updateShopData();
     // ContainerShop constructor is not allowed to write any persistent data to disk
     // ContainerShop constructor may run on both ServerThread and AsyncThread
@@ -815,20 +823,21 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
       return -1;
     }
 
-    if(Bukkit.isPrimaryThread()) {
+    if(plugin.getJavaPlugin().getServer().isOwnedByCurrentRegion(location) ) {
 
-      if(this.getInventory() == null) {
+      final InventoryWrapper inv = this.getInventory();
+      if(inv == null) {
         Log.debug("Failed to calc RemainingSpace for shop " + this + ": Inventory null.");
         return 0;
       }
 
-      final int space = Util.countSpace(this.getInventory(), this);
+      final int space = Util.countSpace(inv, this);
       new ShopInventoryCalculateEvent(this, space, -1).callEvent();
       Log.debug("Space count is: " + space);
       return space;
     } else {
 
-      return plugin.getShopManager().queryShopInventoryCacheInDatabase(this).join().getSpace();
+      return Math.max(inventoryCountCache.getSpace(), 0);
     }
   }
 
@@ -2083,6 +2092,12 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
       return Objects.requireNonNull(this.item.getItemMeta()).getEnchants();
     }
     return Collections.emptyMap();
+  }
+
+  @ApiStatus.Internal
+  public @NotNull SimpleShopInventoryCountCache getInventoryCountCache() {
+
+    return inventoryCountCache;
   }
 
   /**
