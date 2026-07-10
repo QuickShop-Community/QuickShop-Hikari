@@ -416,8 +416,12 @@ public interface ShopExtraHolder {
    */
   default String serializeExtra() {
 
-    final Map<Key, String> json = new LinkedHashMap<>(getExtra());
-    json.putIfAbsent(EXTRA_VERSION_KEY, EXTRA_VERSION + "");
+    final Map<String, String> json = new LinkedHashMap<>();
+    json.putIfAbsent(EXTRA_VERSION_KEY.asString(), String.valueOf(EXTRA_VERSION));
+
+    for (final Map.Entry<Key, String> entry : getExtra().entrySet()) {
+      json.put(entry.getKey().asString(), entry.getValue());
+    }
 
     return JsonUtil.getGson().toJson(json);
   }

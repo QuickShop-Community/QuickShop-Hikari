@@ -965,6 +965,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
 
   @Override
   public void setExtra(@NotNull final NamespacedKey key, @NotNull final String data) {
+
     this.extraMap.put(key, data);
     setDirty();
   }

@@ -23,6 +23,7 @@ import net.kyori.adventure.key.Key;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -394,13 +395,17 @@ public class ShopLoader implements SubPasteItem {
     private @NotNull Map<Key, String> deserializeExtraMap(@NotNull final String extraString) {
 
       final Map<Key, String> map = new HashMap<>();
-
-      System.out.println("Extra string: " + extraString);
-      System.out.println("Extra version: " + extraString.contains(EXTRA_VERSION_KEY.asString()));
       if (extraString.contains(EXTRA_VERSION_KEY.asString())) {
 
-        final Type type = new TypeToken<Map<Key, String>>() {}.getType();
-        map.putAll(JsonUtil.getGson().fromJson(extraString, type));
+        final Type type = new TypeToken<Map<String, String>>() {}.getType();
+
+        final Map<String, String> extraMap = new HashMap<>();
+        extraMap.putAll(JsonUtil.getGson().fromJson(extraString, type));
+
+        for (final Map.Entry<String, String> entry : extraMap.entrySet()) {
+
+          map.put(Key.key(entry.getKey()), entry.getValue());
+        }
         return map;
       }
 

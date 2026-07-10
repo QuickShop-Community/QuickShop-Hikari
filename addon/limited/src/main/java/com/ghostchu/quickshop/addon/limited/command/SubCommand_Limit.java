@@ -70,7 +70,7 @@ public class SubCommand_Limit implements CommandHandler<Player> {
       case "period" -> {
         try {
           final CalendarEvent.CalendarTriggerType type = CalendarEvent.CalendarTriggerType.valueOf(parser.getArgs().get(1).toUpperCase(Locale.ROOT));
-          shop.setExtra(new NamespacedKey(Main.instance, "limit"), type.name());
+          shop.setExtra(new NamespacedKey(Main.instance, "period"), type.name());
           quickshop.text().of(sender, "addon.limited.success-setup").send();
         } catch(final IllegalArgumentException ignored) {
           quickshop.text().of(sender, "command.wrong-args", parser.getArgs().get(1)).send();
