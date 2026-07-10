@@ -941,6 +941,16 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   }
 
   @Override
+  public String getExtra(@NotNull final NamespacedKey key) {
+    return this.extraMap.get(key);
+  }
+
+  @Override
+  public String getExtra(@NotNull final NamespacedKey key, @Nullable final String defaultValue) {
+    return this.extraMap.getOrDefault(key, defaultValue);
+  }
+
+  @Override
   public void setExtra(@NotNull final Plugin plugin, @Nullable final Map<String, String> data) {
     if (data == null) {
       return;
@@ -948,20 +958,20 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
 
     data.forEach((k, v) -> {
 
-      getExtra().put(new NamespacedKey(plugin, k), v);
+      this.extraMap.put(new NamespacedKey(plugin, k), v);
     });
     setDirty();
   }
 
   @Override
   public void setExtra(@NotNull final NamespacedKey key, @NotNull final String data) {
-    getExtra().put(key, data);
+    this.extraMap.put(key, data);
     setDirty();
   }
 
   @Override
   public void removeExtra(@NotNull final NamespacedKey key) {
-    getExtra().remove(key);
+    this.extraMap.remove(key);
     setDirty();
   }
 
@@ -969,7 +979,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   public void removeAll(@NotNull final Plugin plugin) {
     final String prefix = plugin.getName().toLowerCase(Locale.ROOT) + ":";
 
-    getExtra().keySet().removeIf(key -> key.asString().startsWith(prefix));
+    this.extraMap.keySet().removeIf(key -> key.asString().startsWith(prefix));
     setDirty();
   }
 

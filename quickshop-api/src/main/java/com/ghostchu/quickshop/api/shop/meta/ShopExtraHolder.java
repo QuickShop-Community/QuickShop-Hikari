@@ -58,9 +58,8 @@ public interface ShopExtraHolder {
    * @return the associated extra value as a String, or null if no value is found
    * @since 6.3.0.0
    */
-  default @Nullable String getExtra(@NotNull final NamespacedKey key) {
-    return getExtra().get(key);
-  }
+  @Nullable
+  String getExtra(@NotNull final NamespacedKey key);
 
   /**
    * Retrieves the value associated with the specified {@link NamespacedKey} from the additional shop data.
@@ -74,9 +73,8 @@ public interface ShopExtraHolder {
    *         Can return null if the default value is null.
    * @since 6.3.0.0
    */
-  default @Nullable String getExtra(@NotNull final NamespacedKey key, @Nullable final String defaultValue) {
-    return getExtra().getOrDefault(key, defaultValue);
-  }
+  @Nullable
+  String getExtra(@NotNull final NamespacedKey key, @Nullable final String defaultValue);
 
   /**
    * Retrieves an extra value associated with the given {@code key} and attempts

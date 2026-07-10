@@ -395,6 +395,8 @@ public class ShopLoader implements SubPasteItem {
 
       final Map<Key, String> map = new HashMap<>();
 
+      System.out.println("Extra string: " + extraString);
+      System.out.println("Extra version: " + extraString.contains(EXTRA_VERSION_KEY.asString()));
       if (extraString.contains(EXTRA_VERSION_KEY.asString())) {
 
         final Type type = new TypeToken<Map<Key, String>>() {}.getType();
