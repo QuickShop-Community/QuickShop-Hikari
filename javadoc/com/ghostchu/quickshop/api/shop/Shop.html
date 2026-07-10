@@ -89,11 +89,11 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Superinterfaces:</dt>
-<dd><code><a href="Locatable.html" title="interface in com.ghostchu.quickshop.api.shop">Locatable</a>&lt;L&gt;</code>, <code><a href="meta/ShopDisplay.html" title="interface in com.ghostchu.quickshop.api.shop.meta">ShopDisplay</a></code>, <code><a href="inventory/ShopInventory.html" title="interface in com.ghostchu.quickshop.api.shop.inventory">ShopInventory</a></code>, <code><a href="meta/ShopMeta.html" title="interface in com.ghostchu.quickshop.api.shop.meta">ShopMeta</a>&lt;U&gt;</code>, <code><a href="permission/ShopPermission.html" title="interface in com.ghostchu.quickshop.api.shop.permission">ShopPermission</a></code>, <code><a href="meta/ShopPrice.html" title="interface in com.ghostchu.quickshop.api.shop.meta">ShopPrice</a>&lt;U&gt;</code>, <code><a href="trading/ShopTrading.html" title="interface in com.ghostchu.quickshop.api.shop.trading">ShopTrading</a></code></dd>
+<dd><code><a href="Locatable.html" title="interface in com.ghostchu.quickshop.api.shop">Locatable</a>&lt;L&gt;</code>, <code><a href="meta/ShopDisplay.html" title="interface in com.ghostchu.quickshop.api.shop.meta">ShopDisplay</a></code>, <code><a href="meta/ShopExtraHolder.html" title="interface in com.ghostchu.quickshop.api.shop.meta">ShopExtraHolder</a></code>, <code><a href="inventory/ShopInventory.html" title="interface in com.ghostchu.quickshop.api.shop.inventory">ShopInventory</a></code>, <code><a href="meta/ShopMeta.html" title="interface in com.ghostchu.quickshop.api.shop.meta">ShopMeta</a>&lt;U&gt;</code>, <code><a href="permission/ShopPermission.html" title="interface in com.ghostchu.quickshop.api.shop.permission">ShopPermission</a></code>, <code><a href="meta/ShopPrice.html" title="interface in com.ghostchu.quickshop.api.shop.meta">ShopPrice</a>&lt;U&gt;</code>, <code><a href="trading/ShopTrading.html" title="interface in com.ghostchu.quickshop.api.shop.trading">ShopTrading</a></code></dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-23">Shop</a>&lt;U,<wbr>L&gt;</span><span class="extends-implements">
-extends <a href="Locatable.html" title="interface in com.ghostchu.quickshop.api.shop">Locatable</a>&lt;L&gt;, <a href="inventory/ShopInventory.html" title="interface in com.ghostchu.quickshop.api.shop.inventory">ShopInventory</a>, <a href="meta/ShopMeta.html" title="interface in com.ghostchu.quickshop.api.shop.meta">ShopMeta</a>&lt;U&gt;, <a href="trading/ShopTrading.html" title="interface in com.ghostchu.quickshop.api.shop.trading">ShopTrading</a>, <a href="meta/ShopDisplay.html" title="interface in com.ghostchu.quickshop.api.shop.meta">ShopDisplay</a>, <a href="permission/ShopPermission.html" title="interface in com.ghostchu.quickshop.api.shop.permission">ShopPermission</a></span></div>
+<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-26">Shop</a>&lt;U,<wbr>L&gt;</span><span class="extends-implements">
+extends <a href="Locatable.html" title="interface in com.ghostchu.quickshop.api.shop">Locatable</a>&lt;L&gt;, <a href="inventory/ShopInventory.html" title="interface in com.ghostchu.quickshop.api.shop.inventory">ShopInventory</a>, <a href="meta/ShopMeta.html" title="interface in com.ghostchu.quickshop.api.shop.meta">ShopMeta</a>&lt;U&gt;, <a href="trading/ShopTrading.html" title="interface in com.ghostchu.quickshop.api.shop.trading">ShopTrading</a>, <a href="meta/ShopDisplay.html" title="interface in com.ghostchu.quickshop.api.shop.meta">ShopDisplay</a>, <a href="permission/ShopPermission.html" title="interface in com.ghostchu.quickshop.api.shop.permission">ShopPermission</a>, <a href="meta/ShopExtraHolder.html" title="interface in com.ghostchu.quickshop.api.shop.meta">ShopExtraHolder</a></span></div>
 <div class="block">A shop</div>
 </section>
 <section class="summary">
@@ -111,6 +111,9 @@ extends <a href="Locatable.html" title="interface in com.ghostchu.quickshop.api.
 <div class="col-second even-row-color"><code><a href="#SHOP_NAMESPACED_KEY" class="member-name-link">SHOP_NAMESPACED_KEY</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
+<div class="inherited-list">
+<h3 id="fields-inherited-from-class-com.ghostchu.quickshop.api.shop.meta.ShopExtraHolder">Fields inherited from interface&nbsp;com.ghostchu.quickshop.api.shop.meta.<a href="meta/ShopExtraHolder.html" title="interface in com.ghostchu.quickshop.api.shop.meta">ShopExtraHolder</a></h3>
+<code><a href="meta/ShopExtraHolder.html#EXTRA_VERSION">EXTRA_VERSION</a>, <a href="meta/ShopExtraHolder.html#EXTRA_VERSION_KEY">EXTRA_VERSION_KEY</a></code></div>
 </section>
 </li>
 <!-- ========== METHOD SUMMARY =========== -->
@@ -118,7 +121,7 @@ extends <a href="Locatable.html" title="interface in com.ghostchu.quickshop.api.
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab3" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab3', 3)" class="table-tab">Abstract Methods</button><button id="method-summary-table-tab6" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab6', 3)" class="table-tab">Deprecated Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab3" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab3', 3)" class="table-tab">Abstract Methods</button><button id="method-summary-table-tab5" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab5', 3)" class="table-tab">Default Methods</button><button id="method-summary-table-tab6" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab6', 3)" class="table-tab">Deprecated Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
@@ -129,10 +132,10 @@ extends <a href="Locatable.html" title="interface in com.ghostchu.quickshop.api.
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Get shop's item durability, if have.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>@NotNull org.bukkit.configuration.ConfigurationSection</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getExtra(org.bukkit.plugin.Plugin)" class="member-name-link">getExtra</a><wbr>(@NotNull org.bukkit.plugin.Plugin&nbsp;plugin)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Getting ConfigurationSection (extra data) instance of your plugin namespace)</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code>@NotNull org.bukkit.configuration.ConfigurationSection</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code><a href="#getExtra(org.bukkit.plugin.Plugin)" class="member-name-link">getExtra</a><wbr>(@NotNull org.bukkit.plugin.Plugin&nbsp;plugin)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6">
+<div class="block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span></div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code><a href="#handleLoading()" class="member-name-link">handleLoading</a>()</code></div>
@@ -174,45 +177,40 @@ extends <a href="Locatable.html" title="interface in com.ghostchu.quickshop.api.
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">open a preview for shop item</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#saveExtraToYaml()" class="member-name-link">saveExtraToYaml</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="ShopInfoStorage.html" title="class in com.ghostchu.quickshop.api.shop">ShopInfoStorage</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#saveToInfoStorage()" class="member-name-link">saveToInfoStorage</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Save the plugin extra data to Json format</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="ShopInfoStorage.html" title="class in com.ghostchu.quickshop.api.shop">ShopInfoStorage</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#saveToInfoStorage()" class="member-name-link">saveToInfoStorage</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Getting ShopInfoStorage that you can use for storage the shop data</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#saveToSymbolLink()" class="member-name-link">saveToSymbolLink</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#saveToSymbolLink()" class="member-name-link">saveToSymbolLink</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Gets the symbol link that created by InventoryWrapperManager</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setDirty()" class="member-name-link">setDirty</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setDirty()" class="member-name-link">setDirty</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Sets shop is dirty</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setDirty(boolean)" class="member-name-link">setDirty</a><wbr>(boolean&nbsp;isDirty)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setDirty(boolean)" class="member-name-link">setDirty</a><wbr>(boolean&nbsp;isDirty)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Sets dirty status</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setExtra(org.bukkit.plugin.Plugin,org.bukkit.configuration.ConfigurationSection)" class="member-name-link">setExtra</a><wbr>(@NotNull org.bukkit.plugin.Plugin&nbsp;plugin,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5 method-summary-table-tab6"><code>default void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5 method-summary-table-tab6"><code><a href="#setExtra(org.bukkit.plugin.Plugin,org.bukkit.configuration.ConfigurationSection)" class="member-name-link">setExtra</a><wbr>(@NotNull org.bukkit.plugin.Plugin&nbsp;plugin,
  @Nullable org.bukkit.configuration.ConfigurationSection&nbsp;data)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Save the extra data to the shop.</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5 method-summary-table-tab6">
+<div class="block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span></div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Void.html" title="class or interface in java.lang" class="external-link">Void</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#update()" class="member-name-link">update</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Void.html" title="class or interface in java.lang" class="external-link">Void</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#update()" class="member-name-link">update</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Update shop data to database</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateSync()" class="member-name-link">updateSync</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateSync()" class="member-name-link">updateSync</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Update shop data to database synchronously.</div>
 </div>
 </div>
@@ -224,6 +222,9 @@ extends <a href="Locatable.html" title="interface in com.ghostchu.quickshop.api.
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-com.ghostchu.quickshop.api.shop.meta.ShopDisplay">Methods inherited from interface&nbsp;com.ghostchu.quickshop.api.shop.meta.<a href="meta/ShopDisplay.html" title="interface in com.ghostchu.quickshop.api.shop.meta">ShopDisplay</a></h3>
 <code><a href="meta/ShopDisplay.html#checkDisplay()">checkDisplay</a>, <a href="meta/ShopDisplay.html#claimShopSign(org.bukkit.block.Sign)">claimShopSign</a>, <a href="meta/ShopDisplay.html#customItemName()">customItemName</a>, <a href="meta/ShopDisplay.html#getSigns()">getSigns</a>, <a href="meta/ShopDisplay.html#getSignText(com.ghostchu.quickshop.api.localization.text.ProxiedLocale)">getSignText</a>, <a href="meta/ShopDisplay.html#getSignTextAsync(com.ghostchu.quickshop.api.localization.text.ProxiedLocale)">getSignTextAsync</a>, <a href="meta/ShopDisplay.html#isDisableDisplay()">isDisableDisplay</a>, <a href="meta/ShopDisplay.html#isShopSign(org.bukkit.block.Sign)">isShopSign</a>, <a href="meta/ShopDisplay.html#setDisableDisplay(boolean)">setDisableDisplay</a>, <a href="meta/ShopDisplay.html#setSignText()">setSignText</a>, <a href="meta/ShopDisplay.html#setSignText(com.ghostchu.quickshop.api.localization.text.ProxiedLocale)">setSignText</a>, <a href="meta/ShopDisplay.html#setSignText(java.util.List)">setSignText</a>, <a href="meta/ShopDisplay.html#useCustomItemName()">useCustomItemName</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-com.ghostchu.quickshop.api.shop.meta.ShopExtraHolder">Methods inherited from interface&nbsp;com.ghostchu.quickshop.api.shop.meta.<a href="meta/ShopExtraHolder.html" title="interface in com.ghostchu.quickshop.api.shop.meta">ShopExtraHolder</a></h3>
+<code><a href="meta/ShopExtraHolder.html#getExtra()">getExtra</a>, <a href="meta/ShopExtraHolder.html#getExtra(org.bukkit.NamespacedKey)">getExtra</a>, <a href="meta/ShopExtraHolder.html#getExtra(org.bukkit.NamespacedKey,boolean)">getExtra</a>, <a href="meta/ShopExtraHolder.html#getExtra(org.bukkit.NamespacedKey,double)">getExtra</a>, <a href="meta/ShopExtraHolder.html#getExtra(org.bukkit.NamespacedKey,int)">getExtra</a>, <a href="meta/ShopExtraHolder.html#getExtra(org.bukkit.NamespacedKey,long)">getExtra</a>, <a href="meta/ShopExtraHolder.html#getExtra(org.bukkit.NamespacedKey,java.lang.Boolean)">getExtra</a>, <a href="meta/ShopExtraHolder.html#getExtra(org.bukkit.NamespacedKey,java.lang.Byte)">getExtra</a>, <a href="meta/ShopExtraHolder.html#getExtra(org.bukkit.NamespacedKey,java.lang.Double)">getExtra</a>, <a href="meta/ShopExtraHolder.html#getExtra(org.bukkit.NamespacedKey,java.lang.Float)">getExtra</a>, <a href="meta/ShopExtraHolder.html#getExtra(org.bukkit.NamespacedKey,java.lang.Integer)">getExtra</a>, <a href="meta/ShopExtraHolder.html#getExtra(org.bukkit.NamespacedKey,java.lang.Long)">getExtra</a>, <a href="meta/ShopExtraHolder.html#getExtra(org.bukkit.NamespacedKey,java.lang.Short)">getExtra</a>, <a href="meta/ShopExtraHolder.html#getExtra(org.bukkit.NamespacedKey,java.lang.String)">getExtra</a>, <a href="meta/ShopExtraHolder.html#removeAll(org.bukkit.plugin.Plugin)">removeAll</a>, <a href="meta/ShopExtraHolder.html#removeExtra(org.bukkit.NamespacedKey)">removeExtra</a>, <a href="meta/ShopExtraHolder.html#serializeExtra()">serializeExtra</a>, <a href="meta/ShopExtraHolder.html#setExtra(org.bukkit.NamespacedKey,boolean)">setExtra</a>, <a href="meta/ShopExtraHolder.html#setExtra(org.bukkit.NamespacedKey,byte)">setExtra</a>, <a href="meta/ShopExtraHolder.html#setExtra(org.bukkit.NamespacedKey,double)">setExtra</a>, <a href="meta/ShopExtraHolder.html#setExtra(org.bukkit.NamespacedKey,float)">setExtra</a>, <a href="meta/ShopExtraHolder.html#setExtra(org.bukkit.NamespacedKey,int)">setExtra</a>, <a href="meta/ShopExtraHolder.html#setExtra(org.bukkit.NamespacedKey,long)">setExtra</a>, <a href="meta/ShopExtraHolder.html#setExtra(org.bukkit.NamespacedKey,short)">setExtra</a>, <a href="meta/ShopExtraHolder.html#setExtra(org.bukkit.NamespacedKey,java.lang.String)">setExtra</a>, <a href="meta/ShopExtraHolder.html#setExtra(org.bukkit.plugin.Plugin,java.util.Map)">setExtra</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-com.ghostchu.quickshop.api.shop.inventory.ShopInventory">Methods inherited from interface&nbsp;com.ghostchu.quickshop.api.shop.inventory.<a href="inventory/ShopInventory.html" title="interface in com.ghostchu.quickshop.api.shop.inventory">ShopInventory</a></h3>
 <code><a href="inventory/ShopInventory.html#add(org.bukkit.inventory.ItemStack,int)">add</a>, <a href="inventory/ShopInventory.html#getInventory()">getInventory</a>, <a href="inventory/ShopInventory.html#getInventoryWrapperProvider()">getInventoryWrapperProvider</a>, <a href="inventory/ShopInventory.html#getRemainingSpace()">getRemainingSpace</a>, <a href="inventory/ShopInventory.html#getRemainingStock()">getRemainingStock</a>, <a href="inventory/ShopInventory.html#getRemainingStockAsync()">getRemainingStockAsync</a>, <a href="inventory/ShopInventory.html#getShopStackingAmount()">getShopStackingAmount</a>, <a href="inventory/ShopInventory.html#inventoryAvailable()">inventoryAvailable</a>, <a href="inventory/ShopInventory.html#inventoryAvailableAsync()">inventoryAvailableAsync</a>, <a href="inventory/ShopInventory.html#matches(org.bukkit.inventory.ItemStack)">matches</a>, <a href="inventory/ShopInventory.html#remove(org.bukkit.inventory.ItemStack,int)">remove</a>, <a href="inventory/ShopInventory.html#setInventory(com.ghostchu.quickshop.api.inventory.InventoryWrapper,com.ghostchu.quickshop.api.inventory.InventoryWrapperManager)">setInventory</a></code></div>
@@ -253,7 +254,7 @@ extends <a href="Locatable.html" title="interface in com.ghostchu.quickshop.api.
 <li>
 <section class="detail" id="SHOP_NAMESPACED_KEY">
 <h3>SHOP_NAMESPACED_KEY</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">org.bukkit.NamespacedKey</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-25">SHOP_NAMESPACED_KEY</a></span></div>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">org.bukkit.NamespacedKey</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-28">SHOP_NAMESPACED_KEY</a></span></div>
 </section>
 </li>
 </ul>
@@ -267,7 +268,7 @@ extends <a href="Locatable.html" title="interface in com.ghostchu.quickshop.api.
 <li>
 <section class="detail" id="getDurability()">
 <h3>getDurability</h3>
-<div class="member-signature"><span class="return-type">short</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-32">getDurability</a></span>()</div>
+<div class="member-signature"><span class="return-type">short</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-35">getDurability</a></span>()</div>
 <div class="block">Get shop's item durability, if have.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -278,9 +279,12 @@ extends <a href="Locatable.html" title="interface in com.ghostchu.quickshop.api.
 <li>
 <section class="detail" id="getExtra(org.bukkit.plugin.Plugin)">
 <h3>getExtra</h3>
-<div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull org.bukkit.configuration.ConfigurationSection</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-42">getExtra</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Deprecated.html#forRemoval()" title="class or interface in java.lang" class="external-link">forRemoval</a>=true)
+@ScheduledForRemoval(inVersion="6.4.0.0")
+@NotNull
+</span><span class="return-type">@NotNull org.bukkit.configuration.ConfigurationSection</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-45">getExtra</a></span><wbr><span class="parameters">(@NotNull
  @NotNull org.bukkit.plugin.Plugin&nbsp;plugin)</span></div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span></div>
 <div class="block">Getting ConfigurationSection (extra data) instance of your plugin namespace)</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -294,7 +298,7 @@ extends <a href="Locatable.html" title="interface in com.ghostchu.quickshop.api.
 <li>
 <section class="detail" id="isAttached(org.bukkit.block.Block)">
 <h3>isAttached</h3>
-<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-52">isAttached</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-57">isAttached</a></span><wbr><span class="parameters">(@NotNull
  @NotNull org.bukkit.block.Block&nbsp;paramBlock)</span></div>
 <div class="block">Check shop is or not attached the target block</div>
 <dl class="notes">
@@ -308,7 +312,7 @@ extends <a href="Locatable.html" title="interface in com.ghostchu.quickshop.api.
 <li>
 <section class="detail" id="isDirty()">
 <h3>isDirty</h3>
-<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-59">isDirty</a></span>()</div>
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-64">isDirty</a></span>()</div>
 <div class="block">Gets if shop is dirty (so shop will be save)</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -319,7 +323,7 @@ extends <a href="Locatable.html" title="interface in com.ghostchu.quickshop.api.
 <li>
 <section class="detail" id="setDirty(boolean)">
 <h3>setDirty</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-66">setDirty</a></span><wbr><span class="parameters">(boolean&nbsp;isDirty)</span></div>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-71">setDirty</a></span><wbr><span class="parameters">(boolean&nbsp;isDirty)</span></div>
 <div class="block">Sets dirty status</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -330,7 +334,7 @@ extends <a href="Locatable.html" title="interface in com.ghostchu.quickshop.api.
 <li>
 <section class="detail" id="isLoaded()">
 <h3>isLoaded</h3>
-<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-73">isLoaded</a></span>()</div>
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-78">isLoaded</a></span>()</div>
 <div class="block">Get this container shop is loaded or unloaded.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -341,7 +345,7 @@ extends <a href="Locatable.html" title="interface in com.ghostchu.quickshop.api.
 <li>
 <section class="detail" id="isValid()">
 <h3>isValid</h3>
-<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-80">isValid</a></span>()</div>
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-85">isValid</a></span>()</div>
 <div class="block">Whether Shop is valid</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -352,7 +356,7 @@ extends <a href="Locatable.html" title="interface in com.ghostchu.quickshop.api.
 <li>
 <section class="detail" id="onClick(org.bukkit.entity.Player)">
 <h3>onClick</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-85">onClick</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-90">onClick</a></span><wbr><span class="parameters">(@NotNull
  @NotNull org.bukkit.entity.Player&nbsp;clicker)</span></div>
 <div class="block">Execute codes when player click the shop will did things</div>
 </section>
@@ -362,7 +366,7 @@ extends <a href="Locatable.html" title="interface in com.ghostchu.quickshop.api.
 <h3>handleLoading</h3>
 <div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
 @Internal
-</span><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-88">handleLoading</a></span>()</div>
+</span><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-93">handleLoading</a></span>()</div>
 <div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 </section>
 </li>
@@ -371,14 +375,14 @@ extends <a href="Locatable.html" title="interface in com.ghostchu.quickshop.api.
 <h3>handleUnloading</h3>
 <div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
 @Internal
-</span><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-92">handleUnloading</a></span><wbr><span class="parameters">(boolean&nbsp;dontTouchWorld)</span></div>
+</span><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-97">handleUnloading</a></span><wbr><span class="parameters">(boolean&nbsp;dontTouchWorld)</span></div>
 <div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="openPreview(org.bukkit.entity.Player)">
 <h3>openPreview</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-101">openPreview</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-106">openPreview</a></span><wbr><span class="parameters">(@NotNull
  @NotNull org.bukkit.entity.Player&nbsp;player)</span></div>
 <div class="block">open a preview for shop item</div>
 <dl class="notes">
@@ -388,21 +392,9 @@ extends <a href="Locatable.html" title="interface in com.ghostchu.quickshop.api.
 </section>
 </li>
 <li>
-<section class="detail" id="saveExtraToYaml()">
-<h3>saveExtraToYaml</h3>
-<div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-108">saveExtraToYaml</a></span>()</div>
-<div class="block">Save the plugin extra data to Json format</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>The json string</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="saveToInfoStorage()">
 <h3>saveToInfoStorage</h3>
-<div class="member-signature"><span class="return-type"><a href="ShopInfoStorage.html" title="class in com.ghostchu.quickshop.api.shop">ShopInfoStorage</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-116">saveToInfoStorage</a></span>()</div>
+<div class="member-signature"><span class="return-type"><a href="ShopInfoStorage.html" title="class in com.ghostchu.quickshop.api.shop">ShopInfoStorage</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-113">saveToInfoStorage</a></span>()</div>
 <div class="block">Getting ShopInfoStorage that you can use for storage the shop data</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -414,7 +406,7 @@ extends <a href="Locatable.html" title="interface in com.ghostchu.quickshop.api.
 <section class="detail" id="saveToSymbolLink()">
 <h3>saveToSymbolLink</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-123">saveToSymbolLink</a></span>()</div>
+</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-120">saveToSymbolLink</a></span>()</div>
 <div class="block">Gets the symbol link that created by InventoryWrapperManager</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -425,17 +417,20 @@ extends <a href="Locatable.html" title="interface in com.ghostchu.quickshop.api.
 <li>
 <section class="detail" id="setDirty()">
 <h3>setDirty</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-129">setDirty</a></span>()</div>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-126">setDirty</a></span>()</div>
 <div class="block">Sets shop is dirty</div>
 </section>
 </li>
 <li>
 <section class="detail" id="setExtra(org.bukkit.plugin.Plugin,org.bukkit.configuration.ConfigurationSection)">
 <h3>setExtra</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-137">setExtra</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Deprecated.html#forRemoval()" title="class or interface in java.lang" class="external-link">forRemoval</a>=true)
+@ScheduledForRemoval(inVersion="6.4.0.0")
+</span><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-134">setExtra</a></span><wbr><span class="parameters">(@NotNull
  @NotNull org.bukkit.plugin.Plugin&nbsp;plugin,
  @Nullable
  @Nullable org.bukkit.configuration.ConfigurationSection&nbsp;data)</span></div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span></div>
 <div class="block">Save the extra data to the shop.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -448,14 +443,14 @@ extends <a href="Locatable.html" title="interface in com.ghostchu.quickshop.api.
 <section class="detail" id="update()">
 <h3>update</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Void.html" title="class or interface in java.lang" class="external-link">Void</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-142">update</a></span>()</div>
+</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Void.html" title="class or interface in java.lang" class="external-link">Void</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-150">update</a></span>()</div>
 <div class="block">Update shop data to database</div>
 </section>
 </li>
 <li>
 <section class="detail" id="updateSync()">
 <h3>updateSync</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-151">updateSync</a></span>()
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/Shop.html#line-159">updateSync</a></span>()
          throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/RuntimeException.html" title="class or interface in java.lang" class="external-link">RuntimeException</a></span></div>
 <div class="block">Update shop data to database synchronously. This will create the completeable future for the save
  function, and wait for it to complete. DON'T USE IF YOU DON'T KNOW WHAT YOU'RE DOING!</div>

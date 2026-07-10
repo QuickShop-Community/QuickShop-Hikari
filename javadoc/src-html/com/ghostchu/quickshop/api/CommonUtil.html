@@ -14,26 +14,36 @@
 <pre><span class="source-line-no">001</span><span id="line-1">package com.ghostchu.quickshop.api;</span>
 <span class="source-line-no">002</span><span id="line-2"></span>
 <span class="source-line-no">003</span><span id="line-3">import net.kyori.adventure.text.Component;</span>
-<span class="source-line-no">004</span><span id="line-4">import org.jetbrains.annotations.Nullable;</span>
-<span class="source-line-no">005</span><span id="line-5"></span>
-<span class="source-line-no">006</span><span id="line-6">public class CommonUtil {</span>
-<span class="source-line-no">007</span><span id="line-7"></span>
-<span class="source-line-no">008</span><span id="line-8">  private CommonUtil() {</span>
-<span class="source-line-no">009</span><span id="line-9"></span>
-<span class="source-line-no">010</span><span id="line-10">  }</span>
-<span class="source-line-no">011</span><span id="line-11"></span>
-<span class="source-line-no">012</span><span id="line-12">  public static boolean isEmptyComponent(@Nullable final Component component) {</span>
-<span class="source-line-no">013</span><span id="line-13"></span>
-<span class="source-line-no">014</span><span id="line-14">    if(component == null) {</span>
-<span class="source-line-no">015</span><span id="line-15">      return true;</span>
-<span class="source-line-no">016</span><span id="line-16">    }</span>
-<span class="source-line-no">017</span><span id="line-17">    if(component.equals(Component.empty())) {</span>
-<span class="source-line-no">018</span><span id="line-18">      return true;</span>
-<span class="source-line-no">019</span><span id="line-19">    }</span>
-<span class="source-line-no">020</span><span id="line-20">    return component.equals(Component.text(""));</span>
-<span class="source-line-no">021</span><span id="line-21">  }</span>
-<span class="source-line-no">022</span><span id="line-22"></span>
-<span class="source-line-no">023</span><span id="line-23">}</span>
+<span class="source-line-no">004</span><span id="line-4">import org.jetbrains.annotations.NotNull;</span>
+<span class="source-line-no">005</span><span id="line-5">import org.jetbrains.annotations.Nullable;</span>
+<span class="source-line-no">006</span><span id="line-6"></span>
+<span class="source-line-no">007</span><span id="line-7">public class CommonUtil {</span>
+<span class="source-line-no">008</span><span id="line-8"></span>
+<span class="source-line-no">009</span><span id="line-9">  private CommonUtil() {</span>
+<span class="source-line-no">010</span><span id="line-10"></span>
+<span class="source-line-no">011</span><span id="line-11">  }</span>
+<span class="source-line-no">012</span><span id="line-12"></span>
+<span class="source-line-no">013</span><span id="line-13">  public static boolean isEmptyComponent(@Nullable final Component component) {</span>
+<span class="source-line-no">014</span><span id="line-14"></span>
+<span class="source-line-no">015</span><span id="line-15">    if(component == null) {</span>
+<span class="source-line-no">016</span><span id="line-16">      return true;</span>
+<span class="source-line-no">017</span><span id="line-17">    }</span>
+<span class="source-line-no">018</span><span id="line-18">    if(component.equals(Component.empty())) {</span>
+<span class="source-line-no">019</span><span id="line-19">      return true;</span>
+<span class="source-line-no">020</span><span id="line-20">    }</span>
+<span class="source-line-no">021</span><span id="line-21">    return component.equals(Component.text(""));</span>
+<span class="source-line-no">022</span><span id="line-22">  }</span>
+<span class="source-line-no">023</span><span id="line-23"></span>
+<span class="source-line-no">024</span><span id="line-24">  public static String legacyYamlKeyToNamespacedKey(@NotNull final String key) {</span>
+<span class="source-line-no">025</span><span id="line-25">    final int index = key.indexOf('.');</span>
+<span class="source-line-no">026</span><span id="line-26"></span>
+<span class="source-line-no">027</span><span id="line-27">    if (index == -1) {</span>
+<span class="source-line-no">028</span><span id="line-28">      return key;</span>
+<span class="source-line-no">029</span><span id="line-29">    }</span>
+<span class="source-line-no">030</span><span id="line-30"></span>
+<span class="source-line-no">031</span><span id="line-31">    return key.substring(0, index) + ":" + key.substring(index + 1);</span>
+<span class="source-line-no">032</span><span id="line-32">  }</span>
+<span class="source-line-no">033</span><span id="line-33">}</span>
 
 
 
