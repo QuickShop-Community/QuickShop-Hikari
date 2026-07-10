@@ -1077,7 +1077,9 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     event = event.clone(Phase.POST);
     event.callEvent();
 
-    this.setSignText();
+    this.displayItem = null;
+    checkDisplay();
+    setSignText();
     setDirty();
   }
 
@@ -1138,7 +1140,9 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     event = event.clone(Phase.POST);
     event.callEvent();
 
-    this.setSignText();
+    this.displayItem = null;
+    checkDisplay();
+    setSignText();
     setDirty();
   }
 
