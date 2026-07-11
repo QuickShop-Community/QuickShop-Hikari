@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.shop.query.filters;
+package com.ghostchu.quickshop.api.shop.query.filters;
 
 /*
  * QuickShop-Hikari
@@ -18,18 +18,19 @@ package com.ghostchu.quickshop.shop.query.filters;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.query.Filter;
-import org.bukkit.Material;
+import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 
 /**
- * MaterialFilter
+ * QUserOwnerFilter
  *
  * @author creatorfromhell
  * @since 6.3.0.0
  */
-public class MaterialFilter implements Filter<Material> {
+public class QUserOwnerFilter implements Filter<QUser> {
 
   /**
    * Determines whether the specified object satisfies the criteria defined by the implementation in
@@ -42,8 +43,8 @@ public class MaterialFilter implements Filter<Material> {
    * otherwise.
    */
   @Override
-  public boolean applies(final @NonNull Shop shop, final @NonNull Material object) {
+  public boolean applies(final @NotNull Shop shop, @NonNull final QUser object) {
 
-    return shop.getItem().getType() == object;
+    return shop.getOwner().equals(object);
   }
 }

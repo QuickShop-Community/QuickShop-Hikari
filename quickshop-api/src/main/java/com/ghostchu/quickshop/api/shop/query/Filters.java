@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.shop.query;
+package com.ghostchu.quickshop.api.shop.query;
 
 /*
  * QuickShop-Hikari
@@ -20,13 +20,12 @@ package com.ghostchu.quickshop.shop.query;
 
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.IShopType;
-import com.ghostchu.quickshop.api.shop.query.Filter;
 import com.ghostchu.quickshop.api.shop.state.ShopState;
-import com.ghostchu.quickshop.shop.query.filters.MaterialFilter;
-import com.ghostchu.quickshop.shop.query.filters.OwnerUUIDFilter;
-import com.ghostchu.quickshop.shop.query.filters.QUserOwnerFilter;
-import com.ghostchu.quickshop.shop.query.filters.StateFilter;
-import com.ghostchu.quickshop.shop.query.filters.TypeFilter;
+import com.ghostchu.quickshop.api.shop.query.filters.MaterialFilter;
+import com.ghostchu.quickshop.api.shop.query.filters.OwnerUUIDFilter;
+import com.ghostchu.quickshop.api.shop.query.filters.QUserOwnerFilter;
+import com.ghostchu.quickshop.api.shop.query.filters.StateFilter;
+import com.ghostchu.quickshop.api.shop.query.filters.TypeFilter;
 import org.bukkit.Material;
 
 import java.util.UUID;

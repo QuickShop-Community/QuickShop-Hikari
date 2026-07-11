@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.shop.query.filters;
+package com.ghostchu.quickshop.api.shop.query.filters;
 
 /*
  * QuickShop-Hikari

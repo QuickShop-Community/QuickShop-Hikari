@@ -18,32 +18,61 @@ package com.ghostchu.quickshop.api.shop.query;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.query.ShopQuery;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
- * ShopQuery
+ * SimpleShopQuery
  *
  * @author creatorfromhell
  * @since 6.3.0.0
  */
-public interface ShopQuery {
+public class ShopQuery {
+
+  private final List<Predicate<Shop>> filters = new ArrayList<>();
 
   /**
    * Adds a filter to the current query based on the specified criteria.
    *
-   * @param <T>    The type of the object the filter operates on.
    * @param filter The filter defining the criteria to apply to the query.
    * @param object The object to evaluate against the filter criteria.
+   *
    * @return The current query object with the applied filter, enabling method chaining.
    */
-  <T> ShopQuery filterBy(final Filter<T> filter, T object);
+  public <T> ShopQuery filterBy(final Filter<T> filter, final T object) {
+
+    filters.add(shop -> filter.applies(shop, object));
+    return this;
+  }
 
   /**
    * Execute the query
    *
    * @return The result of the query
    */
-  List<Shop> execute();
+  public List<Shop> execute() {
+
+    final List<Shop> shops = new ArrayList<>(15);
+    for (final Shop shop : QuickShop.getInstance().getShopManager().getAllShops()) {
+
+      boolean pass = true;
+      for (final Predicate<Shop> filter : filters) {
+        if (!filter.test(shop)) {
+
+          pass = false;
+          break;
+        }
+      }
+
+      if (pass) {
+        shops.add(shop);
+      }
+    }
+    return shops;
+  }
 }
