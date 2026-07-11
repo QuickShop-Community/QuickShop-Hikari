@@ -20,8 +20,7 @@ package com.ghostchu.quickshop.api.shop.query.filters;
 
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.query.Filter;
-import org.bukkit.Material;
-import org.jspecify.annotations.NonNull;
+import org.bukkit.Material;import org.jetbrains.annotations.NotNull;
 
 /**
  * MaterialFilter
@@ -42,7 +41,7 @@ public class MaterialFilter implements Filter<Material> {
    * otherwise.
    */
   @Override
-  public boolean applies(final @NonNull Shop shop, final @NonNull Material object) {
+  public boolean applies(final @NotNull Shop shop, final @NotNull Material object) {
 
     return shop.getItem().getType() == object;
   }

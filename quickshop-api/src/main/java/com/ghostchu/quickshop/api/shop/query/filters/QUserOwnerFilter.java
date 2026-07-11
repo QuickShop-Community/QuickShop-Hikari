@@ -22,7 +22,6 @@ import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.query.Filter;
 import org.jetbrains.annotations.NotNull;
-import org.jspecify.annotations.NonNull;
 
 /**
  * QUserOwnerFilter
@@ -43,7 +42,7 @@ public class QUserOwnerFilter implements Filter<QUser> {
    * otherwise.
    */
   @Override
-  public boolean applies(final @NotNull Shop shop, @NonNull final QUser object) {
+  public boolean applies(final @NotNull Shop shop, @NotNull final QUser object) {
 
     return shop.getOwner().equals(object);
   }

@@ -20,7 +20,7 @@ package com.ghostchu.quickshop.api.shop.query.filters;
 
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.query.Filter;
-import org.jspecify.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
@@ -43,7 +43,7 @@ public class OwnerUUIDFilter implements Filter<UUID> {
    * otherwise.
    */
   @Override
-  public boolean applies(final @NonNull Shop shop, final @NonNull UUID object) {
+  public boolean applies(final @NotNull Shop shop, final @NotNull UUID object) {
 
     final UUID ownerUUID = shop.getOwner().getUniqueId();
     return object.equals(ownerUUID);

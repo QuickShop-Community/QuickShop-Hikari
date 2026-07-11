@@ -22,7 +22,6 @@ import com.ghostchu.quickshop.api.shop.IShopType;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.query.Filter;
 import org.jetbrains.annotations.NotNull;
-import org.jspecify.annotations.NonNull;
 
 /**
  * TypeFilter
@@ -43,7 +42,7 @@ public class TypeFilter implements Filter<IShopType> {
    * otherwise.
    */
   @Override
-  public boolean applies(final @NotNull Shop shop, @NonNull final IShopType object) {
+  public boolean applies(final @NotNull Shop shop, @NotNull final IShopType object) {
 
     return shop.shopType().identifier().equalsIgnoreCase(object.identifier());
   }

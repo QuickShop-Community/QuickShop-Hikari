@@ -18,9 +18,8 @@ package com.ghostchu.quickshop.api.shop.query;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.api.shop.query.ShopQuery;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +57,7 @@ public class ShopQuery {
   public List<Shop> execute() {
 
     final List<Shop> shops = new ArrayList<>(15);
-    for (final Shop shop : QuickShop.getInstance().getShopManager().getAllShops()) {
+    for (final Shop shop : QuickShopAPI.getInstance().getShopManager().getAllShops()) {
 
       boolean pass = true;
       for (final Predicate<Shop> filter : filters) {
