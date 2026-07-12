@@ -1660,7 +1660,7 @@ gui:
         - "<gray>Current: <white>{0}</white></gray>"
         - "<gray>Click to change to: <white>{1}</white></gray>"
     inventory:
-      display: "<bold><green>View Inventory</green></bold>"
+      display: "<bold><green>Envanteri Görüntüle</green></bold>"
       lore:
         - "<gray>Click to view your</gray>"
         - "<gray>shop's chest inventory.</gray>"
