@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop.addon.pl3xmap;
 
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.menu.browse.MarketUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.pl3x.map.core.markers.Point;
@@ -96,7 +97,8 @@ public class ShopMarkerManager {
     s = s.replace("%owner%", plain(shop.ownerName()));
     s = s.replace("%item%", shop.getItem().getType().name());
     s = s.replace("%price%", String.valueOf(shop.getPrice()));
-    s = s.replace("%stock%", String.valueOf(shop.getRemainingStock()));
+    final int stock = shop.shopType().isBuying() ? MarketUtils.getSpaceFromCache(shop) : MarketUtils.getStockFromCache(shop);
+    s = s.replace("%stock%", String.valueOf(stock == -1 ? "Unlimited" : stock));
     s = s.replace("%type%", shop.shopType().identifier());
     s = s.replace("%location%", x + "," + y + "," + z);
     return s;

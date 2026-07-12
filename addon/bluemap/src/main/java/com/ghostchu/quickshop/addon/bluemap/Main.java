@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.addon.bluemap;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.menu.browse.MarketUtils;
 import de.bluecolored.bluemap.api.BlueMapAPI;
 import de.bluecolored.bluemap.api.BlueMapMap;
 import de.bluecolored.bluemap.api.BlueMapWorld;
@@ -157,7 +158,8 @@ public final class Main extends JavaPlugin implements Listener {
     s = s.replace("%owner%", plain(shop.ownerName()));
     s = s.replace("%item%", shop.getItem().getType().name());
     s = s.replace("%price%", String.valueOf(shop.getPrice()));
-    s = s.replace("%stock%", String.valueOf(shop.getRemainingStock()));
+    final int stock = shop.shopType().isBuying() ? MarketUtils.getSpaceFromCache(shop) : MarketUtils.getStockFromCache(shop);
+    s = s.replace("%stock%", String.valueOf(stock == -1 ? "Unlimited" : stock));
     s = s.replace("%type%", shop.shopType().identifier());
     s = s.replace("%location%", x + "," + y + "," + z);
     return s;
