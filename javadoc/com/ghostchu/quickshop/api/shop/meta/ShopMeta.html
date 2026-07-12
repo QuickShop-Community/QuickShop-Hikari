@@ -96,7 +96,7 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="../Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&lt;U,<wbr>L&gt;</code></dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-48">ShopMeta</a>&lt;U&gt;</span><span class="extends-implements">
+<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-41">ShopMeta</a>&lt;U&gt;</span><span class="extends-implements">
 extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.shop.meta">ShopPrice</a>&lt;U&gt;</span></div>
 <div class="block">ShopMeta</div>
 <dl class="notes">
@@ -301,7 +301,7 @@ extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.
 <section class="detail" id="getRuntimeRandomUniqueId()">
 <h3>getRuntimeRandomUniqueId</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-56">getRuntimeRandomUniqueId</a></span>()</div>
+</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-49">getRuntimeRandomUniqueId</a></span>()</div>
 <div class="block">WARNING: This UUID will changed after plugin reload, shop reload or server restart DO NOT USE
  IT TO STORE DATA!</div>
 <dl class="notes">
@@ -313,7 +313,7 @@ extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.
 <li>
 <section class="detail" id="getShopId()">
 <h3>getShopId</h3>
-<div class="member-signature"><span class="return-type">long</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-64">getShopId</a></span>()</div>
+<div class="member-signature"><span class="return-type">long</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-57">getShopId</a></span>()</div>
 <div class="block">Gets the Shop ID to identify the shop.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -325,7 +325,7 @@ extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.
 <section class="detail" id="setShopId(long)">
 <h3>setShopId</h3>
 <div class="member-signature"><span class="annotations">@Internal
-</span><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-71">setShopId</a></span><wbr><span class="parameters">(long&nbsp;newId)</span></div>
+</span><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-64">setShopId</a></span><wbr><span class="parameters">(long&nbsp;newId)</span></div>
 <div class="block">Internal Only: Give shop that under id_waiting state an ShopId.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -337,7 +337,7 @@ extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.
 <section class="detail" id="getShopName()">
 <h3>getShopName</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="return-type">@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-79">getShopName</a></span>()</div>
+</span><span class="return-type">@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-72">getShopName</a></span>()</div>
 <div class="block">Gets this shop name that set by player</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -348,7 +348,7 @@ extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.
 <li>
 <section class="detail" id="setShopName(java.lang.String)">
 <h3>setShopName</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-87">setShopName</a></span><wbr><span class="parameters">(@Nullable
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-80">setShopName</a></span><wbr><span class="parameters">(@Nullable
  @Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;shopName)</span></div>
 <div class="block">Sets shop name</div>
 <dl class="notes">
@@ -361,7 +361,7 @@ extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.
 <section class="detail" id="getItem()">
 <h3>getItem</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull org.bukkit.inventory.ItemStack</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-94">getItem</a></span>()</div>
+</span><span class="return-type">@NotNull org.bukkit.inventory.ItemStack</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-87">getItem</a></span>()</div>
 <div class="block">Get shop item's ItemStack</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -372,7 +372,7 @@ extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.
 <li>
 <section class="detail" id="setItem(org.bukkit.inventory.ItemStack)">
 <h3>setItem</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-102">setItem</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-95">setItem</a></span><wbr><span class="parameters">(@NotNull
  @NotNull org.bukkit.inventory.ItemStack&nbsp;item)</span></div>
 <div class="block">Set shop item's ItemStack</div>
 <dl class="notes">
@@ -385,7 +385,7 @@ extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.
 <section class="detail" id="getShopBlock()">
 <h3>getShopBlock</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull org.bukkit.block.Block</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-109">getShopBlock</a></span>()</div>
+</span><span class="return-type">@NotNull org.bukkit.block.Block</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-102">getShopBlock</a></span>()</div>
 <div class="block">Get shop block</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -397,7 +397,7 @@ extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.
 <section class="detail" id="getCurrency()">
 <h3>getCurrency</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="return-type">@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-117">getCurrency</a></span>()</div>
+</span><span class="return-type">@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-110">getCurrency</a></span>()</div>
 <div class="block">Gets the currency that shop use</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -408,7 +408,7 @@ extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.
 <li>
 <section class="detail" id="setCurrency(java.lang.String)">
 <h3>setCurrency</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-125">setCurrency</a></span><wbr><span class="parameters">(@Nullable
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-118">setCurrency</a></span><wbr><span class="parameters">(@Nullable
  @Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currency)</span></div>
 <div class="block">Sets the currency that shop use</div>
 <dl class="notes">
@@ -422,7 +422,7 @@ extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.
 <h3>getPrice</h3>
 <div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Deprecated.html#forRemoval()" title="class or interface in java.lang" class="external-link">forRemoval</a>=true,
             <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Deprecated.html#since()" title="class or interface in java.lang" class="external-link">since</a>="6.3.0.0")
-</span><span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-133">getPrice</a></span>()</div>
+</span><span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-126">getPrice</a></span>()</div>
 <div class="deprecation-block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
 <div class="deprecation-comment">Use <a href="ShopPrice.html#price()"><code>ShopPrice.price()</code></a> instead</div>
 </div>
@@ -438,7 +438,7 @@ extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.
 <h3>setPrice</h3>
 <div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Deprecated.html#forRemoval()" title="class or interface in java.lang" class="external-link">forRemoval</a>=true,
             <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Deprecated.html#since()" title="class or interface in java.lang" class="external-link">since</a>="6.3.0.0")
-</span><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-142">setPrice</a></span><wbr><span class="parameters">(double&nbsp;paramDouble)</span></div>
+</span><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-135">setPrice</a></span><wbr><span class="parameters">(double&nbsp;paramDouble)</span></div>
 <div class="deprecation-block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
 <div class="deprecation-comment">Use <a href="ShopPrice.html#price(U)"><code>ShopPrice.price(Object)</code></a> instead.</div>
 </div>
@@ -452,7 +452,7 @@ extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.
 <li>
 <section class="detail" id="shopState()">
 <h3>shopState</h3>
-<div class="member-signature"><span class="return-type"><a href="../state/ShopState.html" title="interface in com.ghostchu.quickshop.api.shop.state">ShopState</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-150">shopState</a></span>()</div>
+<div class="member-signature"><span class="return-type"><a href="../state/ShopState.html" title="interface in com.ghostchu.quickshop.api.shop.state">ShopState</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-143">shopState</a></span>()</div>
 <div class="block">Retrieves the current state of the shop.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -463,7 +463,7 @@ extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.
 <li>
 <section class="detail" id="shopState(com.ghostchu.quickshop.api.shop.state.ShopState)">
 <h3>shopState</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-157">shopState</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-150">shopState</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="../state/ShopState.html" title="interface in com.ghostchu.quickshop.api.shop.state">ShopState</a>&nbsp;state)</span></div>
 <div class="block">Updates the current state of the shop based on the provided <code>ShopState</code>.</div>
 <dl class="notes">
@@ -475,7 +475,7 @@ extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.
 <li>
 <section class="detail" id="shopState(java.lang.String)">
 <h3>shopState</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-165">shopState</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-158">shopState</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;shopStateIdentifier)</span></div>
 <div class="block">Updates or processes the state of a shop based on the provided identifier.</div>
 <dl class="notes">
@@ -488,7 +488,7 @@ extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.
 <li>
 <section class="detail" id="shopType()">
 <h3>shopType</h3>
-<div class="member-signature"><span class="return-type"><a href="../IShopType.html" title="interface in com.ghostchu.quickshop.api.shop">IShopType</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-172">shopType</a></span>()</div>
+<div class="member-signature"><span class="return-type"><a href="../IShopType.html" title="interface in com.ghostchu.quickshop.api.shop">IShopType</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-165">shopType</a></span>()</div>
 <div class="block">Retrieves the type of shop associated with this entity.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -499,7 +499,7 @@ extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.
 <li>
 <section class="detail" id="shopType(com.ghostchu.quickshop.api.shop.IShopType)">
 <h3>shopType</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-179">shopType</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-172">shopType</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="../IShopType.html" title="interface in com.ghostchu.quickshop.api.shop">IShopType</a>&nbsp;newShopType)</span></div>
 <div class="block">Sets the type of shop using the provided shop type parameter.</div>
 <dl class="notes">
@@ -511,7 +511,7 @@ extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.
 <li>
 <section class="detail" id="shopType(java.lang.String)">
 <h3>shopType</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-186">shopType</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-179">shopType</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;shopTypeIdentifier)</span></div>
 <div class="block">Specifies the type of shop based on the given identifier.</div>
 <dl class="notes">
@@ -524,7 +524,7 @@ extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.
 <section class="detail" id="ownerName(boolean,com.ghostchu.quickshop.api.localization.text.ProxiedLocale)">
 <h3>ownerName</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull net.kyori.adventure.text.Component</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-196">ownerName</a></span><wbr><span class="parameters">(boolean&nbsp;forceUsername,
+</span><span class="return-type">@NotNull net.kyori.adventure.text.Component</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-189">ownerName</a></span><wbr><span class="parameters">(boolean&nbsp;forceUsername,
  @NotNull
  @NotNull <a href="../../localization/text/ProxiedLocale.html" title="class in com.ghostchu.quickshop.api.localization.text">ProxiedLocale</a>&nbsp;locale)</span></div>
 <div class="block">Get shop's owner name, it will return owner name or Admin Shop(i18n) when it is unlimited</div>
@@ -541,7 +541,7 @@ extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.
 <section class="detail" id="ownerName(com.ghostchu.quickshop.api.localization.text.ProxiedLocale)">
 <h3>ownerName</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull net.kyori.adventure.text.Component</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-206">ownerName</a></span><wbr><span class="parameters">(@NotNull
+</span><span class="return-type">@NotNull net.kyori.adventure.text.Component</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-199">ownerName</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="../../localization/text/ProxiedLocale.html" title="class in com.ghostchu.quickshop.api.localization.text">ProxiedLocale</a>&nbsp;locale)</span></div>
 <div class="block">Get shop's owner name, it will return owner name or Admin Shop(i18n) when it is unlimited</div>
 <dl class="notes">
@@ -556,7 +556,7 @@ extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.
 <section class="detail" id="ownerName()">
 <h3>ownerName</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull net.kyori.adventure.text.Component</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-214">ownerName</a></span>()</div>
+</span><span class="return-type">@NotNull net.kyori.adventure.text.Component</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-207">ownerName</a></span>()</div>
 <div class="block">Get shop's owner name, it will return owner name or Admin Shop(i18n) when it is unlimited</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -568,7 +568,7 @@ extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.
 <section class="detail" id="getOwner()">
 <h3>getOwner</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="../../obj/QUser.html" title="interface in com.ghostchu.quickshop.api.obj">QUser</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-224">getOwner</a></span>()</div>
+</span><span class="return-type">@NotNull <a href="../../obj/QUser.html" title="interface in com.ghostchu.quickshop.api.obj">QUser</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-217">getOwner</a></span>()</div>
 <div class="block">Get shop's owner QUser</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -580,7 +580,7 @@ extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.
 <li>
 <section class="detail" id="setOwner(com.ghostchu.quickshop.api.obj.QUser)">
 <h3>setOwner</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-232">setOwner</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-225">setOwner</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="../../obj/QUser.html" title="interface in com.ghostchu.quickshop.api.obj">QUser</a>&nbsp;qUser)</span></div>
 <div class="block">Set new owner to the shop's owner</div>
 <dl class="notes">
@@ -593,7 +593,7 @@ extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.
 <section class="detail" id="getTaxAccount()">
 <h3>getTaxAccount</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="return-type">@Nullable <a href="../../obj/QUser.html" title="interface in com.ghostchu.quickshop.api.obj">QUser</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-239">getTaxAccount</a></span>()</div>
+</span><span class="return-type">@Nullable <a href="../../obj/QUser.html" title="interface in com.ghostchu.quickshop.api.obj">QUser</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-232">getTaxAccount</a></span>()</div>
 <div class="block">Getting the shop tax account for using, it can be specific uuid or general tax account</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -604,7 +604,7 @@ extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.
 <li>
 <section class="detail" id="setTaxAccount(com.ghostchu.quickshop.api.obj.QUser)">
 <h3>setTaxAccount</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-247">setTaxAccount</a></span><wbr><span class="parameters">(@Nullable
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-240">setTaxAccount</a></span><wbr><span class="parameters">(@Nullable
  @Nullable <a href="../../obj/QUser.html" title="interface in com.ghostchu.quickshop.api.obj">QUser</a>&nbsp;taxAccount)</span></div>
 <div class="block">Sets shop taxAccount</div>
 <dl class="notes">
@@ -617,7 +617,7 @@ extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.
 <section class="detail" id="getTaxAccountActual()">
 <h3>getTaxAccountActual</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="return-type">@Nullable <a href="../../obj/QUser.html" title="interface in com.ghostchu.quickshop.api.obj">QUser</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-255">getTaxAccountActual</a></span>()</div>
+</span><span class="return-type">@Nullable <a href="../../obj/QUser.html" title="interface in com.ghostchu.quickshop.api.obj">QUser</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-248">getTaxAccountActual</a></span>()</div>
 <div class="block">Getting the shop tax account, it can be specific uuid or general tax account</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -628,7 +628,7 @@ extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.
 <li>
 <section class="detail" id="isStackingShop()">
 <h3>isStackingShop</h3>
-<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-263">isStackingShop</a></span>()</div>
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-256">isStackingShop</a></span>()</div>
 <div class="block">Gets shop status is stacking shop</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -639,7 +639,7 @@ extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.
 <li>
 <section class="detail" id="isUnlimited()">
 <h3>isUnlimited</h3>
-<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-270">isUnlimited</a></span>()</div>
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-263">isUnlimited</a></span>()</div>
 <div class="block">Get shop is or not in Unlimited Mode (Admin Shop)</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -650,7 +650,7 @@ extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.
 <li>
 <section class="detail" id="setUnlimited(boolean)">
 <h3>setUnlimited</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-277">setUnlimited</a></span><wbr><span class="parameters">(boolean&nbsp;paramBoolean)</span></div>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-270">setUnlimited</a></span><wbr><span class="parameters">(boolean&nbsp;paramBoolean)</span></div>
 <div class="block">Set shop is or not Unlimited Mode (Admin Shop)</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -662,14 +662,14 @@ extends <a href="ShopPrice.html" title="interface in com.ghostchu.quickshop.api.
 <section class="detail" id="getShopBenefit()">
 <h3>getShopBenefit</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="../../economy/benefit/BenefitProvider.html" title="interface in com.ghostchu.quickshop.api.economy.benefit">BenefitProvider</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-282">getShopBenefit</a></span>()</div>
+</span><span class="return-type">@NotNull <a href="../../economy/benefit/BenefitProvider.html" title="interface in com.ghostchu.quickshop.api.economy.benefit">BenefitProvider</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-275">getShopBenefit</a></span>()</div>
 <div class="block">Gets the benefit in this shop</div>
 </section>
 </li>
 <li>
 <section class="detail" id="setShopBenefit(com.ghostchu.quickshop.api.economy.benefit.BenefitProvider)">
 <h3>setShopBenefit</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-288">setShopBenefit</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/meta/ShopMeta.html#line-281">setShopBenefit</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="../../economy/benefit/BenefitProvider.html" title="interface in com.ghostchu.quickshop.api.economy.benefit">BenefitProvider</a>&nbsp;benefit)</span></div>
 <div class="block">Sets the benefit in this shop</div>
 </section>
