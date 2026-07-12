@@ -41,6 +41,8 @@ com.ghostchu.quickshop.api.shop.inventory
 com.ghostchu.quickshop.api.shop.layout
 com.ghostchu.quickshop.api.shop.meta
 com.ghostchu.quickshop.api.shop.permission
+com.ghostchu.quickshop.api.shop.query
+com.ghostchu.quickshop.api.shop.query.filters
 com.ghostchu.quickshop.api.shop.state
 com.ghostchu.quickshop.api.shop.state.impl
 com.ghostchu.quickshop.api.shop.tag

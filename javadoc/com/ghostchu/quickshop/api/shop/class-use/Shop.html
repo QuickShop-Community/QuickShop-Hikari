@@ -89,6 +89,10 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><a href="#com.ghostchu.quickshop.api.shop.layout">com.ghostchu.quickshop.api.shop.layout</a></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><a href="#com.ghostchu.quickshop.api.shop.query">com.ghostchu.quickshop.api.shop.query</a></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><a href="#com.ghostchu.quickshop.api.shop.query.filters">com.ghostchu.quickshop.api.shop.query.filters</a></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><a href="#com.ghostchu.quickshop.api.shop.tax">com.ghostchu.quickshop.api.shop.tax</a></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><a href="#com.ghostchu.quickshop.api.shop.trading">com.ghostchu.quickshop.api.shop.trading</a></div>
@@ -1792,6 +1796,81 @@ loadScripts(document, 'script');</script>
  <a href="../../localization/text/ProxiedLocale.html" title="class in com.ghostchu.quickshop.api.localization.text">ProxiedLocale</a>&nbsp;locale)</code></div>
 <div class="col-last odd-row-color">
 <div class="block">Renders a component based on the provided shop and item data.</div>
+</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="com.ghostchu.quickshop.api.shop.query">
+<h2>Uses of <a href="../Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a> in <a href="../query/package-summary.html">com.ghostchu.quickshop.api.shop.query</a></h2>
+<div class="caption"><span>Methods in <a href="../query/package-summary.html">com.ghostchu.quickshop.api.shop.query</a> that return types with arguments of type <a href="../Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a></span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Method</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&gt;</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">ShopQuery.</span><code><a href="../query/ShopQuery.html#execute()" class="member-name-link">execute</a>()</code></div>
+<div class="col-last even-row-color">
+<div class="block">Execute the query</div>
+</div>
+</div>
+<div class="caption"><span>Methods in <a href="../query/package-summary.html">com.ghostchu.quickshop.api.shop.query</a> with parameters of type <a href="../Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a></span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Method</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>boolean</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">Filter.</span><code><a href="../query/Filter.html#applies(com.ghostchu.quickshop.api.shop.Shop,T)" class="member-name-link">applies</a><wbr>(@NotNull <a href="../Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&nbsp;shop,
+ <a href="../query/Filter.html" title="type parameter in Filter">T</a>&nbsp;object)</code></div>
+<div class="col-last even-row-color">
+<div class="block">Determines whether the specified object satisfies the criteria defined by
+ the implementation in the context of the given shop.</div>
+</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="com.ghostchu.quickshop.api.shop.query.filters">
+<h2>Uses of <a href="../Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a> in <a href="../query/filters/package-summary.html">com.ghostchu.quickshop.api.shop.query.filters</a></h2>
+<div class="caption"><span>Methods in <a href="../query/filters/package-summary.html">com.ghostchu.quickshop.api.shop.query.filters</a> with parameters of type <a href="../Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a></span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Method</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>boolean</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">MaterialFilter.</span><code><a href="../query/filters/MaterialFilter.html#applies(com.ghostchu.quickshop.api.shop.Shop,org.bukkit.Material)" class="member-name-link">applies</a><wbr>(@NotNull <a href="../Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&nbsp;shop,
+ @NotNull org.bukkit.Material&nbsp;object)</code></div>
+<div class="col-last even-row-color">
+<div class="block">Determines whether the specified object satisfies the criteria defined by the implementation in
+ the context of the given shop.</div>
+</div>
+<div class="col-first odd-row-color"><code>boolean</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">OwnerUUIDFilter.</span><code><a href="../query/filters/OwnerUUIDFilter.html#applies(com.ghostchu.quickshop.api.shop.Shop,java.util.UUID)" class="member-name-link">applies</a><wbr>(@NotNull <a href="../Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&nbsp;shop,
+ @NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&nbsp;object)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Determines whether the specified object satisfies the criteria defined by the implementation in
+ the context of the given shop.</div>
+</div>
+<div class="col-first even-row-color"><code>boolean</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">QUserOwnerFilter.</span><code><a href="../query/filters/QUserOwnerFilter.html#applies(com.ghostchu.quickshop.api.shop.Shop,com.ghostchu.quickshop.api.obj.QUser)" class="member-name-link">applies</a><wbr>(@NotNull <a href="../Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&nbsp;shop,
+ @NotNull <a href="../../obj/QUser.html" title="interface in com.ghostchu.quickshop.api.obj">QUser</a>&nbsp;object)</code></div>
+<div class="col-last even-row-color">
+<div class="block">Determines whether the specified object satisfies the criteria defined by the implementation in
+ the context of the given shop.</div>
+</div>
+<div class="col-first odd-row-color"><code>boolean</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">StateFilter.</span><code><a href="../query/filters/StateFilter.html#applies(com.ghostchu.quickshop.api.shop.Shop,com.ghostchu.quickshop.api.shop.state.ShopState)" class="member-name-link">applies</a><wbr>(@NotNull <a href="../Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&nbsp;shop,
+ @NotNull <a href="../state/ShopState.html" title="interface in com.ghostchu.quickshop.api.shop.state">ShopState</a>&nbsp;object)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Determines whether the specified object satisfies the criteria defined by the implementation in
+ the context of the given shop.</div>
+</div>
+<div class="col-first even-row-color"><code>boolean</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">TypeFilter.</span><code><a href="../query/filters/TypeFilter.html#applies(com.ghostchu.quickshop.api.shop.Shop,com.ghostchu.quickshop.api.shop.IShopType)" class="member-name-link">applies</a><wbr>(@NotNull <a href="../Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&nbsp;shop,
+ @NotNull <a href="../IShopType.html" title="interface in com.ghostchu.quickshop.api.shop">IShopType</a>&nbsp;object)</code></div>
+<div class="col-last even-row-color">
+<div class="block">Determines whether the specified object satisfies the criteria defined by the implementation in
+ the context of the given shop.</div>
 </div>
 </div>
 </section>
