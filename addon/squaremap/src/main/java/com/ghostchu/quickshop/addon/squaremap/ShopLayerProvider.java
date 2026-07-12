@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.addon.squaremap;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.menu.browse.MarketUtils;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -122,10 +123,12 @@ public class ShopLayerProvider {
     final String y = String.valueOf(loc.getBlockY());
     final String z = String.valueOf(loc.getBlockZ());
 
+    final int stock = shop.shopType().isBuying() ? MarketUtils.getSpaceFromCache(shop) : MarketUtils.getStockFromCache(shop);
+
     return text.replace("%owner%", plain(shop.ownerName()))
         .replace("%item%", shop.getItem().getType().name())
         .replace("%price%", String.valueOf(shop.getPrice()))
-        .replace("%stock%", String.valueOf(shop.getRemainingStock()))
+        .replace("%stock%", String.valueOf(stock == -1 ? "Unlimited" : stock))
         .replace("%type%", shop.shopType().identifier())
         .replace("%location%", x + "," + y + "," + z)
         .replace("%x%", x)
