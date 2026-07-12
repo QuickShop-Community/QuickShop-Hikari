@@ -21,7 +21,6 @@ package com.ghostchu.quickshop.api.shop.layout;
 import net.kyori.adventure.text.Component;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * ItemComponent

@@ -32,22 +32,16 @@ import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.util.Util;
 import net.kyori.adventure.text.Component;
 import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.providers.SkullProfile;
 import net.tnemc.menu.core.builder.IconBuilder;
 import net.tnemc.menu.core.callbacks.page.PageOpenCallback;
 import net.tnemc.menu.core.icon.action.impl.RunnableAction;
 import net.tnemc.menu.core.viewer.MenuViewer;
 import org.bukkit.Bukkit;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -178,21 +172,24 @@ public class MainPage extends QuickShopPage {
                                                return true;
                                              }
 
-                                             if(!shop.get().isUnlimited() && quantity > remainingStock && remainingStock > -1) {
-                                               player.sendMessage(guiMessage("trade.invalid-stock"));
-                                               return true;
-                                             }
-
                                              if((quantity % amount) > 0) {
                                                player.sendMessage(guiMessage("trade.invalid-multiple", amount));
                                                return true;
                                              }
+
+                                             final int normalizedQuantity = quantity / amount;
+
+                                             if(!shop.get().isUnlimited() && normalizedQuantity > remainingStock && remainingStock > -1) {
+                                               player.sendMessage(guiMessage("trade.invalid-stock"));
+                                               return true;
+                                             }
+
                                              if(shop.get().isBuying()) {
                                                final Info info = new SimpleInfo(shop.get().bukkitLocation(), ShopAction.PURCHASE_SELL, null, null, shop.get(), false);
-                                               Util.regionThread(shop.get().bukkitLocation(), ()->QuickShop.getInstance().getShopManager().actionBuying(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity));
+                                               Util.regionThread(shop.get().bukkitLocation(), ()->QuickShop.getInstance().getShopManager().actionBuying(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), normalizedQuantity));
                                              } else {
                                                final Info info = new SimpleInfo(shop.get().bukkitLocation(), ShopAction.PURCHASE_BUY, null, null, shop.get(), false);
-                                               Util.regionThread(shop.get().bukkitLocation(), ()->QuickShop.getInstance().getShopManager().actionSelling(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity));
+                                               Util.regionThread(shop.get().bukkitLocation(), ()->QuickShop.getInstance().getShopManager().actionSelling(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), normalizedQuantity));
                                              }
                                              return true;
                                            } catch(final NumberFormatException ignore) { }

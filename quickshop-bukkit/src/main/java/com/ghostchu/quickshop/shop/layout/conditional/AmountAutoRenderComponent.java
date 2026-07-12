@@ -23,7 +23,6 @@ import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.SignRenderSnapshot;
 import com.ghostchu.quickshop.api.shop.layout.ConditionalRenderComponent;
-import com.ghostchu.quickshop.api.shop.layout.RenderComponent;
 import com.ghostchu.quickshop.shop.layout.inline.AmountRenderComponent;
 import net.kyori.adventure.text.Component;
 import org.bukkit.inventory.ItemStack;
