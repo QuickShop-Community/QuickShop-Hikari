@@ -114,7 +114,7 @@ pagination:
 tags:
   commands:
     tag: "<yellow>Manage your shop tags."
-    favorite: "<yellow>Toggle favorite on looked-at shop."
+    favorite: "<yellow>Activer/désactiver Les favoris sur la boutique regardée."
     watch: "<yellow>Toggle watch on looked-at shop."
     avoid: "<yellow>Toggle avoid on looked-at shop."
   general:
