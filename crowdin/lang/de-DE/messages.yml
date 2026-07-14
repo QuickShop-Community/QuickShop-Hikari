@@ -20,7 +20,7 @@ tabcomplete:
   price: '[Preis]'
   name: '[Name]'
   range: '[Reichweite]'
-  list: 'list'
+  list: 'liste'
   page: '[seite #]'
   shop-id: '[shop id]'
   currency: '[Währungsname]'
@@ -122,7 +122,7 @@ tags:
     list-entry: "<green>{0}.</green> <aqua>{1}</aqua> <light_purple>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>Zeige alle Shops mit diesem Tag\">Zeige Shops</hover></click>]</light_purple> <red>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Entferne diesen Tag von diesem Shop\">Entfernen</hover></click>]</red>"
     invalid: "<red>Ungültiger Tag. Nur Buchstaben, Bindestriche (-) und Unterstriche (_) sind erlaubt. Maximale Länge: <yellow>{0}</yellow>"
   avoid:
-    added: "<green>Added this shop to your avoid list."
+    added: "<green>Diesen Shop zu deiner Vermeidung-liste hinzugefügt."
     removed: "<green>Removed this shop from your avoid list."
     unable: "<red>Unable to toggle avoid on this shop."
     none: "<red>You have no avoided shops."
