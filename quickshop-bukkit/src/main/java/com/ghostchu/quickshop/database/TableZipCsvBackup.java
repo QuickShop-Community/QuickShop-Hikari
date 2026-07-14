@@ -215,10 +215,10 @@ public final class TableZipCsvBackup {
   public static void importFromCSV(@NotNull final File zipFile, @NotNull final DataTables table)
           throws SQLException, ClassNotFoundException, IOException {
 
-    final TableSchema schema = readSchemaFromZip(zipFile, table.logicalName());
+    final TableSchema schema = readSchemaFromZip(zipFile, table.getName());
     if(schema == null) {
-      throw new IllegalStateException("Missing schema sidecar for table " + table.logicalName()
-                                      + " (expected " + table.logicalName() + ".schema.json in zip)");
+      throw new IllegalStateException("Missing schema sidecar for table " + table.getName()
+                                      + " (expected " + table.getName() + ".schema.json in zip)");
     }
 
     Log.debug("Loading CsvDriver...");
