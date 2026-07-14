@@ -782,6 +782,11 @@ shop:
     show-effects: true
     show-enchantments: true
     show-durability: true
+    # Minimum interval (in milliseconds) between repeated shop info-panel sends to the same
+    # player for the SAME shop. Spam-clicking one shop skips re-sending the info panel,
+    # while trading and the "how many to buy/sell" prompt still work normally.
+    # Set to 0 to disable.
+    click-cooldown: 1000
 
 # Item Blacklist
 # Items that cannot be sold in shops.
