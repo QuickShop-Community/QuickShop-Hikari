@@ -179,7 +179,7 @@ menu:
   price-per-stack: <green>Prijs per <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Opgeslagen Betoveringen
   item-holochat-error: <red>[Error]
-  this-shop-is-selling: <green>Deze winkel i<aqua>VERKOOPT</aqua> items.
+  this-shop-is-selling: <green>Deze winkel <aqua>VERKOOPT</aqua> items.
   this-shop-is-buying: <green>Deze winkel <light_purple>koopt<green> items.
   this-shop-is-frozen: <blue>FROZEN</blue>
   this-shop-is-active: <aqua>ACTIVE</aqua>

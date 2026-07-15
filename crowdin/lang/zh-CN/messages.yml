@@ -1705,29 +1705,29 @@ gui:
   browse:
     title: "<dark_aqua>商店浏览</dark_aqua>"
     shop-list:
-      buying-label: "<#FFA500>Buying</#FFA500>"
-      selling-label: "<green>Selling</green>"
+      buying-label: "<#FFA500>收购</#FFA500>"
+      selling-label: "<green>出售</green>"
       price-indicator:
-        average: "● Average"
+        average: "● 平均值"
         selling:
-          great: "▼▼ Great Deal!"
-          good: "▼ Below Avg"
-          bad: "▲▲ Expensive"
-          worst: "▲ Above Avg"
+          great: "▼▼ 超值优惠！"
+          good: "▼ 低于平均值"
+          bad: "▲▲ 售价偏高"
+          worst: "▲ 售价过高"
         buying:
-          great: "▲▲ Great Price!"
-          good: "▲ Above Avg"
-          bad: "▼▼ Low Offer"
-          worst: "▼▼ Below Avg"
+          great: "▲▲ 极佳收购价！"
+          good: "▲▲ 售价偏高"
+          bad: "▼▼ 收购价偏低"
+          worst: "▼▼ 低于平均值"
       display: "<yellow>{0}</yellow>"
       lore:
-        - "<gray>Owner: <white>{0}</white></gray>"
-        - "<gray>Type: {1}</gray>"
-        - "<gray>Price: {2}</gray>"
+        - "<gray>所有者: <white>{0}</white></gray>"
+        - "<gray>类型: {1}</gray>"
+        - "<gray>价格： {2}</gray>"
         - "<gray><aqua>{3}</aqua></gray>"
-        - "<gray>Location: <white>{4}</white></gray>"
+        - "<gray>位置： <white>{4}</white></gray>"
         - "<dark_gray>{5}</dark_gray>"
-      teleport: "<newline><yellow>Click to teleport</yellow>"
+      teleport: "<newline><yellow>点击传送</yellow>"
     shop-item:
       lore:
         - "<green>所有者: </green>{0}<yellow></yellow>"
@@ -1760,9 +1760,9 @@ gui:
     search-item:
       display: "<yellow>{0}</yellow>"
       lore:
-        - "<gray>Showing: {0}</gray>"
-        - "<gray>Shops: <white>{1}</white></gray>"
-        - "<gray>Average price: <gold>{2}</gold></gray>"
+        - "<gray>正在显示： {0}</gray>"
+        - "<gray>商店: <white>{1}</white></gray>"
+        - "<gray>平均价格： <gold>{2}</gold></gray>"
     sort:
       display: "<green>排序： {0}</green>"
       lore:
@@ -1778,9 +1778,9 @@ gui:
       all: "全部"
       selling: "出售"
       buying: "收购"
-      all-indicator: "<white>All Shops</white>"
-      selling-indicator: "<green>Selling Shops</green>"
-      buying-indicator: "<#FFA500>Buying Shops</#FFA500>"
+      all-indicator: "<white>所有商店</white>"
+      selling-indicator: "<green>出售商店</green>"
+      buying-indicator: "<#FFA500>▲ 收购商店</#FFA500>"
     stock-filter:
       display: "<gold>仅显示有货: {0}</gold>"
       lore:
