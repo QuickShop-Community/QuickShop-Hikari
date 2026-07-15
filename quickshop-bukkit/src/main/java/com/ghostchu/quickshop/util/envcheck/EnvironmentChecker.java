@@ -442,4 +442,20 @@ public final class EnvironmentChecker {
     }
     return new ResultContainer(CheckResult.PASSED, stringClassLoader);
   }
+
+  @EnvCheckEntry(name = "Deprecated Item Matcher Check", priority = 8, stage = EnvCheckEntry.Stage.AFTER_ON_ENABLE)
+  public ResultContainer matchTypeCheck() {
+
+    if(plugin.getConfig().getInt("matcher.work-type", 1) == 0) {
+      plugin.logger().warn("================================================================================");
+      plugin.logger().warn("DEPRECATION WARNING");
+      plugin.logger().warn("The configured Matcher Type is deprecated and is no longer supported.");
+      plugin.logger().warn("It is not expected to work correctly and may cause incorrect item matching.");
+      plugin.logger().warn("Please update your configuration to use the replacement matcher(requires 1.21.4+):");
+      plugin.logger().warn("  config.work-type: 3");
+      plugin.logger().warn("================================================================================");
+      return new ResultContainer(CheckResult.WARNING, "Deprecated work-type: 0");
+    }
+    return new ResultContainer(CheckResult.PASSED, "Work type is valid.");
+  }
 }

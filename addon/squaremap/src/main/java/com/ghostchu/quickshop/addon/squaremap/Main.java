@@ -12,6 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import xyz.jpenilla.squaremap.api.BukkitAdapter;
 import xyz.jpenilla.squaremap.api.Key;
+import xyz.jpenilla.squaremap.api.SimpleLayerProvider;
 import xyz.jpenilla.squaremap.api.Squaremap;
 import xyz.jpenilla.squaremap.api.SquaremapProvider;
 
@@ -145,8 +146,9 @@ public final class Main extends JavaPlugin implements Listener {
           .ifPresent(mapWorld -> {
             final Key key = Key.of(SQUAREMAP_KEY);
             if(!mapWorld.layerRegistry().hasEntry(key)) {
-              mapWorld.layerRegistry().register(key, layerProvider.getProvider());
-              layerProvider.addWorld(world.getName());
+              final SimpleLayerProvider provider = layerProvider.createWorldProvider(world);
+
+              mapWorld.layerRegistry().register(key, provider);
               getLogger().info("Registered QuickShop layer for world: " + world.getName());
             }
           });
@@ -162,7 +164,7 @@ public final class Main extends JavaPlugin implements Listener {
             final Key key = Key.of(SQUAREMAP_KEY);
             if(mapWorld.layerRegistry().hasEntry(key)) {
               mapWorld.layerRegistry().unregister(key);
-              layerProvider.clearWorld(world.getName());
+              layerProvider.clearWorld(world);
               getLogger().info("Unregistered QuickShop layer for world: " + world.getName());
             }
           });

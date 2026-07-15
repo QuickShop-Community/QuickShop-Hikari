@@ -946,6 +946,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   private void loadItemMatcher() {
 
     final ItemMatcher defItemMatcher = switch(getConfig().getInt("matcher.work-type")) {
+      case 0 -> new QuickShopItemMatcherImpl(this);
       case 3 -> new ModernCustomMatcher(this);
       case 1 -> new BukkitItemMatcherImpl(this);
       default ->
