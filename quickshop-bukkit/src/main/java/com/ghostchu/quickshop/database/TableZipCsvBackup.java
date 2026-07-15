@@ -224,7 +224,7 @@ public final class TableZipCsvBackup {
     Log.debug("Loading CsvDriver...");
     Class.forName("org.relique.jdbc.csv.CsvDriver");
 
-    final String csvTableName = table.logicalName();
+    final String csvTableName = table.getName();
 
     try(final Connection conn = DriverManager.getConnection("jdbc:relique:csv:zip:" + zipFile);
         final Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);

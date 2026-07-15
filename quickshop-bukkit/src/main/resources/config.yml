@@ -833,7 +833,6 @@ effect:
 matcher:
 
   # Matcher type:
-  # 0 = QuickShop matcher (configurable below)
   # 1 = Bukkit matcher
   # 2 = Strict Bukkit matcher (equals method)
   # 3 = Modern matcher
