@@ -32,7 +32,7 @@ public class DisplayItemPersistentDataType
 
     try {
       return JsonUtil.getGson().toJson(complex);
-    } catch(Exception th) {
+    } catch(final Exception th) {
       new RuntimeException("Cannot to toPrimitive the shop protection flag.").printStackTrace();
       return "";
     }
@@ -45,9 +45,9 @@ public class DisplayItemPersistentDataType
 
     try {
       return JsonUtil.getGson().fromJson(primitive, ShopProtectionFlag.class);
-    } catch(Exception th) {
+    } catch(final Exception th) {
       new RuntimeException("Cannot to fromPrimitive the shop protection flag.").printStackTrace();
-      return new ShopProtectionFlag("", Util.serialize(new ItemStack(Material.STONE)));
+      return new ShopProtectionFlag("", "Stone");
     }
   }
 

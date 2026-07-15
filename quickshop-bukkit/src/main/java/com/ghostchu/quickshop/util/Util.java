@@ -963,7 +963,7 @@ public class Util {
         result = plugin.platform().getTranslation(itemStack);
       } catch(final Throwable th) {
         result = MsgUtil.setHandleFailedHover(null, Component.text(itemStack.getType().getKey().toString()));
-        plugin.logger().warn("Failed to handle translation for ItemStack {}", Util.serialize(itemStack), th);
+        plugin.logger().warn("Failed to handle translation for ItemStack {}", itemStack.getType().getKey().asString(), th);
       }
     }
     return result;
