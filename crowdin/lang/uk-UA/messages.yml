@@ -5,7 +5,7 @@ disabled-in-this-world: <red>Quickshop відключений у цьому св
 how-much-to-trade-for: <green>Введіть у чат ціну, за якою бажаєте продавати <yellow>{1}x {0}</yellow>.
 client-language-changed: <green>QuickShop виявив зміну мови вашого клієнта. Тепер для вас використовується {0}.
 shops-backingup: Створення резервної копії магазину з бази даних...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/qs-hikari instead.
+_comment: 'Привіт, перекладачу! Якщо ти редагуєш цей файл на GitHub або безпосередньо у вихідному коді, будь ласка, натомість перекладай його в проєкті Crowdin: https://crowdin.com/project/qs-hikari.'
 unlimited-shop-owner-changed: <yellow>Власника безлімітного магазину було змінено на {0}.
 bad-command-usage-detailed: '<red>Неправильні аргументи команди! Приймаються наступні параметри: <gray>{0}'
 thats-not-a-number: <red>Неправильне число
@@ -20,19 +20,19 @@ tabcomplete:
   price: '[ціна]'
   name: '[назва]'
   range: '[діапазон]'
-  list: 'list'
-  page: '[page #]'
-  shop-id: '[shop id]'
+  list: 'список'
+  page: '[сторінка #]'
+  shop-id: '[id магазину]'
   currency: '[назва валюти]'
   percentage: '[відсоток%]'
-  add: 'add'
-  remove: 'remove'
-  clear: 'clear'
-  clearall: 'clearall'
-  shops: 'shops'
-  tagged: 'tagged'
-  purge: 'purge'
-  tag: '[tag]'
+  add: 'додати'
+  remove: 'вилучити'
+  clear: 'очистити'
+  clearall: 'очиститивсе'
+  shops: 'магазини'
+  tagged: 'позначено'
+  purge: 'очистити'
+  tag: '[тег]'
 taxaccount-unset: <green>Податковий рахунок цього магазину тепер використовує глобальні налаштування сервера.
 blacklisted-item: <red>Цей предмет неможливо продати, оскільки він знаходиться у чорному списку
 command-type-mismatch: <red>Цю команду може виконати лише <aqua>{0}</aqua>.
@@ -111,51 +111,51 @@ virtual-player-component-hover: "<gray>Це віртуальний плеєр.\n
 real-player-component-hover: "<gray>Це реально існуючий гравець.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Ім'я користувача: <yellow>{1}</yellow></green>\n<green>Відображати як: <yellow>{2}</yellow></green>\n<gray>Якщо ви хочете використовувати обліковий запис віртуальної системи з таким же ім'ям, додайте <dark_gray>\"[]\"</dark_gray> з обох боків імені користувача: <dark_gray>[{1}]</dark_gray>."
 pagination:
   header: "<green>{0}</green>:"
-  footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Previous page\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Next page\"><white>></white></hover></click>]</light_purple>"
+  footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Попередня сторінка\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Наступна сторінка\"><white>></white></hover></click>]</light_purple>"
 tags:
   commands:
-    tag: "<yellow>Manage your shop tags."
-    favorite: "<yellow>Toggle favorite on looked-at shop."
-    watch: "<yellow>Toggle watch on looked-at shop."
-    avoid: "<yellow>Toggle avoid on looked-at shop."
+    tag: "<yellow>Керуйте тегами свого магазину."
+    favorite: "<yellow>Перемкнути статус обраного для магазину, на який ви дивитеся."
+    watch: "<yellow>Увімкнути або вимкнути стеження за магазином, на який ви дивитеся."
+    avoid: "<yellow>Перемкнути статус блокування магазину, на який ви дивитеся."
   general:
-    database-error: "<red>An error occurred while executing a tag operation."
-    list-entry: "<green>{0}.</green> <aqua>{1}</aqua> <light_purple>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>View all shops with this tag\">View Shops</hover></click>]</light_purple> <red>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove</hover></click>]</red>"
-    invalid: "<red>Invalid tag. Only letters, dash (-), and underscore (_) are allowed. Max length: <yellow>{0}</yellow>"
+    database-error: "<red>Сталася помилка під час виконання операції з тегом."
+    list-entry: "<green>{0}.</green> <aqua>{1}</aqua> <light_purple>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>Переглянути всі магазини з цим тегом\">Переглянути магазини</hover></click>]</light_purple> <red>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Видалити цей тег із цього магазину\">Видалити</hover></click>]</red>"
+    invalid: "<red>Недійсний тег. Дозволені лише літери, дефіс (-) та підкреслення (_). Максимальна довжина: <yellow>{0}</yellow>"
   avoid:
-    added: "<green>Added this shop to your avoid list."
-    removed: "<green>Removed this shop from your avoid list."
-    unable: "<red>Unable to toggle avoid on this shop."
-    none: "<red>You have no avoided shops."
-    label: "<yellow>Avoid"
+    added: "<green>Цей магазин додано до вашого списку заблокованих."
+    removed: "<green>Цей магазин видалено з вашого списку заблокованих."
+    unable: "<red>Не вдалося змінити статус блокування цього магазину."
+    none: "<red>У вас немає заблокованих магазинів."
+    label: "<yellow>Заблокувати"
   favorite:
-    added: "<green>Added this shop to your favorite list."
-    removed: "<green>Removed this shop from your favorite list."
-    unable: "<red>Unable to toggle favorite on this shop."
-    none: "<red>You have no favorite shops."
-    label: "<yellow>Favorite"
+    added: "<green>Цей магазин додано до вашого списку обраного."
+    removed: "<green>Цей магазин видалено з вашого списку обраного."
+    unable: "<red>Не вдалося змінити статус обраного для цього магазину."
+    none: "<red>У вас немає обраних магазинів."
+    label: "<yellow>Обране"
   watch:
-    added: "<green>You are now watching this shop."
-    removed: "<green>You are no longer watching this shop."
-    unable: "<red>Unable to toggle watch on this shop."
-    none: "<red>You are not watching any shops."
-    label: "<yellow>Watching"
+    added: "<green>Ви почали стежити за цим магазином."
+    removed: "<green>Ви більше не стежите за цим магазином."
+    unable: "<red>Не вдалося змінити статус стеження за цим магазином."
+    none: "<red>Ви не стежите за жодним магазином."
+    label: "<yellow>Стеження"
   tag:
-    title-avoided-shops: "<green>Avoided shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
-    title-favorited-shops: "<green>Favorited shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
-    title-watched-shops: "<green>Watched shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
-    list-player-shops-title: "<green>Your tagged shops</green> <gray>(<yellow>{0}</yellow> shops, <yellow>{1}</yellow> tags)</gray>"
-    list-player-shop-title: "<green>Shop tags</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
-    list-tag-title: "<green>Tag <aqua>{0}</aqua> usage</green> <gray>(<yellow>{1}</yellow> shops)</gray>"
-    shops-entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <light_purple>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>View all tags on this shop\">View {10} tags</hover></click>]</light_purple>"
-    entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <red>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove Tag</hover></click>]</red>"
-    list-tag-shop-entry-tp: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Teleport to this shop\">Teleport</hover></click>]</light_purple>"
-    added: "<green>Added tag <aqua>{0}</aqua> to this shop."
-    duplicate: "<red>This shop already has tag <aqua>{0}</aqua>."
-    failed-add: "<red>An error occurred while adding tag <aqua>{0}</aqua> to this shop."
-    failed-remove: "<red>An error occurred while removing tag <aqua>{0}</aqua> from this shop."
-    removed: "<green>Removed tag <aqua>{0}</aqua> from this shop."
-    does-not-exist: "<red>This shop does not have tag <aqua>{0}</aqua>."
+    title-avoided-shops: "<green>Заблоковані магазини</green> <gray>(Всього <yellow>{0}</yellow>)</gray>"
+    title-favorited-shops: "<green>Обрані магазини</green> <gray>(Всього <yellow>{0}</yellow>)</gray>"
+    title-watched-shops: "<green>Відстежувані магазини</green> <gray>(Всього <yellow>{0}</yellow>)</gray>"
+    list-player-shops-title: "<green>Ваші магазини з тегами</green> <gray>(<yellow>{0}</yellow> магазинів, <yellow>{1}</yellow> тегів)</gray>"
+    list-player-shop-title: "<green>Теги магазинів</green> <gray>(Всього <yellow>{0}</yellow>)</gray>"
+    list-tag-title: "<green>Використання тега <aqua>{0}</aqua></green> <gray>(<yellow>{1}</yellow> магазинів)</gray>"
+    shops-entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Ціна <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <light_purple>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>Переглянути всі теги цього магазину\">Переглянути {10} тегів</hover></click>]</light_purple>"
+    entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Ціна <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <red>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>Видалити цей тег із цього магазину\">Видалити тег</hover></click>]</red>"
+    list-tag-shop-entry-tp: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Телепортуватися до цього магазину\">Телепорт</hover></click>]</light_purple>"
+    added: "<green>Тег <aqua>{0}</aqua> додано до цього магазину."
+    duplicate: "<red>Цей магазин уже має тег <aqua>{0}</aqua>."
+    failed-add: "<red>Сталася помилка під час додавання тега <aqua>{0}</aqua> до цього магазину."
+    failed-remove: "<red>Сталася помилка під час видалення тега <aqua>{0}</aqua> із цього магазину."
+    removed: "<green>Тег <aqua>{0}</aqua> видалено із цього магазину."
+    does-not-exist: "<red>Цей магазин не має тега <aqua>{0}</aqua>."
     cleared: "<green>Cleared all tags from this shop."
     cleared-all: "<green>Cleared all tags from all shops."
     cleared-tag: "<green>Cleared tag <aqua>{0}</aqua> from all your tagged shops."
