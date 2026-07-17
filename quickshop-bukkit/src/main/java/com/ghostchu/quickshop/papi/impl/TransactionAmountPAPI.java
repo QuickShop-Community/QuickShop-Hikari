@@ -62,7 +62,7 @@ public class TransactionAmountPAPI implements PAPISubHandler {
     }
     final String type = passThroughArgs[0];
     final String days = passThroughArgs[1];
-    if(!CommonUtil.isNumeric(days)) {
+    if(!CommonUtil.isInteger(days)) {
       return null;
     }
     final IShopType shopType = QuickShop.getInstance().getShopManager().shopTypeOrDefault(type.toUpperCase(Locale.ROOT));
@@ -93,7 +93,7 @@ public class TransactionAmountPAPI implements PAPISubHandler {
     }
     final String type = passThroughArgs[0];
     final String days = passThroughArgs[1];
-    if(!CommonUtil.isNumeric(days)) {
+    if(!CommonUtil.isInteger(days)) {
       return null;
     }
     final IShopType shopType = QuickShop.getInstance().getShopManager().shopTypeOrDefault(type.toUpperCase(Locale.ROOT));

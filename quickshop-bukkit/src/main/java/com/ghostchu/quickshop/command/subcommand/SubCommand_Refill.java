@@ -33,7 +33,7 @@ public class SubCommand_Refill implements CommandHandler<Player> {
       plugin.text().of(sender, "not-looking-at-shop").send();
       return;
     }
-    if(CommonUtil.isNumeric(parser.getArgs().getFirst())) {
+    if(CommonUtil.isInteger(parser.getArgs().getFirst())) {
       add = Integer.parseInt(parser.getArgs().getFirst());
     } else {
       if(parser.getArgs().getFirst().equals(plugin.getConfig().getString("shop.word-for-trade-all-items"))) {
