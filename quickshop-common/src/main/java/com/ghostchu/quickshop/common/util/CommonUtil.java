@@ -163,11 +163,12 @@ public class CommonUtil {
   }
 
   /**
-   * {@return whether the provided sequence is a valid integer}
+   * {@return whether the provided sequence is a valid non-negative integer}
    * @param sequence The sequence to check
    */
   public static boolean isInteger(final CharSequence sequence) {
 
+    // isNumeric currently returns false for the '-' character, which ensures that this only returns true for non-negative ints.
     if(!isNumeric(sequence)) {
       return false;
     }
