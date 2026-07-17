@@ -1449,7 +1449,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       return;
     }
     if(shop.isBuying()) {
-      if(CommonUtil.isNumeric(message)) {
+      if(CommonUtil.isInteger(message)) {
         amount = Integer.parseInt(message);
       } else {
         if(message.equalsIgnoreCase(tradeAllKeyword)) {
@@ -1464,7 +1464,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       }
       actionBuying(p, new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
     } else if(shop.isSelling()) {
-      if(CommonUtil.isNumeric(message)) {
+      if(CommonUtil.isInteger(message)) {
         amount = Integer.parseInt(message);
       } else {
         if(message.equalsIgnoreCase(tradeAllKeyword)) {

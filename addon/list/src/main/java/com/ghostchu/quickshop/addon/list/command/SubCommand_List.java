@@ -36,9 +36,9 @@ public class SubCommand_List implements CommandHandler<Player> {
       lookupSelf(sender, page);
       return;
     }
-    if(!CommonUtil.isNumeric(parser.getArgs().getFirst())) {
+    if(!CommonUtil.isInteger(parser.getArgs().getFirst())) {
       if(parser.getArgs().size() >= 2) {
-        if(!CommonUtil.isNumeric(parser.getArgs().get(1))) {
+        if(!CommonUtil.isInteger(parser.getArgs().get(1))) {
           quickshop.text().of(sender, "not-a-number", parser.getArgs().get(1)).send();
           return;
         }
