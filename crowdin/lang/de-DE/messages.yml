@@ -181,7 +181,7 @@ menu:
   this-shop-is-selling: <green>Dieser Shop <aqua>VERKAUFT<green> Gegenstände.
   this-shop-is-buying: <green>Dieser Shop <light_purple>KAUFT<green> Gegenstände an.
   this-shop-is-frozen: <blue>FROZEN</blue>
-  this-shop-is-active: <aqua>ACTIVE</aqua>
+  this-shop-is-active: <aqua>AKTIVE</aqua>
   this-shop-is-state: <green>This shop's current state is {0}<green>.
   shop-stack: '<green>Menge: <yellow>{0}'
   space: '<green>Kapazität: <yellow>{0}'
@@ -254,8 +254,8 @@ shop-state:
   freeze: Freeze
   unfreeze: Unfreeze
 shop-display:
-  enabled: Enabled
-  disabled: Disabled
+  enabled: aktiviert
+  disabled: deaktiviert
 language:
   qa-issues: '<yellow>Qualitätssicherungs-Probleme: <aqua>{0}%'
   code: '<yellow>Code: <gold>{0}'
