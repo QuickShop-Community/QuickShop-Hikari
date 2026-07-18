@@ -10,11 +10,9 @@ import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.ReflectFactory;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
-import com.vdurmont.semver4j.Semver;
 import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
