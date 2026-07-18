@@ -168,7 +168,7 @@ public final class TableZipCsvBackup {
       for(final DataTables table : DataTables.values()) {
         Log.debug("Exporting table " + table.name());
 
-        final File tableCsv = new File(Util.getCacheFolder(), table.getName() + ".csv");
+        final File tableCsv = new File(Util.getCacheFolder(), table.logicalName() + ".csv");
         tableCsv.getParentFile().mkdirs();
         if(tableCsv.exists()) tableCsv.delete();
         tableCsv.deleteOnExit();
@@ -179,18 +179,18 @@ public final class TableZipCsvBackup {
 
           writeToCSV(rs, tableCsv);
 
-          schema = TableSchema.from(table.getName(), rs.getMetaData());
+          schema = TableSchema.from(table.logicalName(), rs.getMetaData());
 
           Log.debug("Exported table " + table.name() + " to " + tableCsv.getAbsolutePath());
         }
 
         Log.debug("Adding CSV for " + table.name() + " to zip file");
-        out.putNextEntry(new ZipEntry(table.getName() + ".csv"));
+        out.putNextEntry(new ZipEntry(table.logicalName() + ".csv"));
         Files.copy(tableCsv.toPath(), out);
         out.closeEntry();
 
         Log.debug("Adding schema for " + table.name() + " to zip file");
-        out.putNextEntry(new ZipEntry(table.getName() + ".schema.json"));
+        out.putNextEntry(new ZipEntry(table.logicalName() + ".schema.json"));
         final byte[] schemaBytes = GSON.toJson(schema).getBytes(StandardCharsets.UTF_8);
         out.write(schemaBytes);
         out.closeEntry();
@@ -215,7 +215,14 @@ public final class TableZipCsvBackup {
   public static void importFromCSV(@NotNull final File zipFile, @NotNull final DataTables table)
           throws SQLException, ClassNotFoundException, IOException {
 
-    final TableSchema schema = readSchemaFromZip(zipFile, table.getName());
+
+    String csvTableName = table.logicalName();
+    TableSchema schema = readSchemaFromZip(zipFile, table.logicalName());
+    if(schema == null) {
+      csvTableName = table.getName();
+      schema = readSchemaFromZip(zipFile, table.getName());
+    }
+
     if(schema == null) {
       throw new IllegalStateException("Missing schema sidecar for table " + table.getName()
                                       + " (expected " + table.getName() + ".schema.json in zip)");
@@ -223,8 +230,6 @@ public final class TableZipCsvBackup {
 
     Log.debug("Loading CsvDriver...");
     Class.forName("org.relique.jdbc.csv.CsvDriver");
-
-    final String csvTableName = table.getName();
 
     try(final Connection conn = DriverManager.getConnection("jdbc:relique:csv:zip:" + zipFile);
         final Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);

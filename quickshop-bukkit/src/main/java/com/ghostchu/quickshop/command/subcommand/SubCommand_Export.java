@@ -29,7 +29,6 @@ public class SubCommand_Export implements CommandHandler<ConsoleCommandSender> {
     plugin.text().of(sender, "exporting-database").send();
     final File file = new File(QuickShop.getInstance().getDataFolder(), "export-" + System.currentTimeMillis() + ".zip");
 
-    final DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil((SimpleDatabaseHelperV2)plugin.getDatabaseHelper());
     Util.asyncThreadRun(()->{
       try {
         TableZipCsvBackup.exportTables(file);

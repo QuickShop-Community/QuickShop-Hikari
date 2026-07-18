@@ -60,6 +60,8 @@ public class MainConfig extends QSConfig {
                   .addIgnoredRoute("1046", "limits.ranks", '.')
                   .addIgnoredRoute("1047", "limits.ranks", '.')
                   .addIgnoredRoute("1048", "limits.ranks", '.')
+                  .addIgnoredRoute("1049", "limits.ranks", '.')
+                  .addIgnoredRoute("1050", "limits.ranks", '.')
                   .addIgnoredRoute("1035", "shop-tax.progressive.brackets", '.')
                   .addIgnoredRoute("1036", "shop-tax.progressive.brackets", '.')
                   .addIgnoredRoute("1037", "shop-tax.progressive.brackets", '.')
@@ -74,6 +76,8 @@ public class MainConfig extends QSConfig {
                   .addIgnoredRoute("1046", "shop-tax.progressive.brackets", '.')
                   .addIgnoredRoute("1047", "shop-tax.progressive.brackets", '.')
                   .addIgnoredRoute("1048", "shop-tax.progressive.brackets", '.')
+                  .addIgnoredRoute("1049", "shop-tax.progressive.brackets", '.')
+                  .addIgnoredRoute("1050", "shop-tax.progressive.brackets", '.')
                   .build());
 
     instance = this;
