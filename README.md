@@ -121,9 +121,10 @@ It has the goal to modernize the core content of QuickShop and adapt it to the l
 
 ## Community & Support
 
-[Discussions](https://github.com/Quickshop-Community/QuickShop-Hikari/discussions)  
-[Bug Tracker](https://github.com/Quickshop-Community/QuickShop-Hikari/issues)  
-[Discord](https://discord.gg/Bu3dVtmsD3)
+- [Discussions](https://github.com/Quickshop-Community/QuickShop-Hikari/discussions)
+- [Bug Tracker](https://github.com/Quickshop-Community/QuickShop-Hikari/issues)
+- [Discord](https://discord.gg/Bu3dVtmsD3)
+- [QQ Group:`966701484`](https://qm.qq.com/q/iDp63bZBSg)
 
 ## Features
 
