@@ -14,7 +14,9 @@
 
 [fossaStatusLarge]: https://app.fossa.com/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Hikari?ref=badge_large
 
-[quickshop-hikari]: https://github.com/Quickshop-Community/QuickShop-Hikari
+[quickshop-hikari]: https://github.com/QuickShop-Community/QuickShop-Hikari
+
+[qsh-doc]: https://github.com/QuickShop-Community/QuickShop-Hikari-Documents/deployments/github-pages
 
 [quickshop-potato]: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/
 
@@ -70,7 +72,7 @@
 
 [bStatsImage]: https://bstats.org/signatures/bukkit/QuickShop-Hikari.svg
 
-[Ver]: https://img.shields.io/spiget/version/100125?label=version
+[Ver]: https://img.shields.io/modrinth/v/ijC5dDkD?label=version
 
 <!-- Unused? -->
 <!-- [//]: # (![Downloads]&#40;https://img.shields.io/spiget/downloads/62575?label=downloads&#41;) -->
@@ -165,26 +167,7 @@ without explicit written permission.
 ## Compatibility Modules
 
 You can download optional modules [here][modrinth] for compatibility with other plugins.
-
-### [ClearLagg][clearlagg]
-
-- Stops clearlagg from deleting the Display Item on any Shop.
-
-### [NoCheatPlus][nocheatplus]
-
-- Prevents NCP's anti-cheat checks from triggering when creating a shop.
-
-### [OpenInv][openinv]
-
-- Allow the usage of a Player's Ender Chest as Shop inventory by using `/quickshop echest`.
-
-### [WorldEdit][worldedit]
-
-- Removes Shops that got deleted during a WorldEdit operation, to reduce "Ghost Shops".
-
-### [WorldGuard][worldguard]
-
-- Flag-based shop control.
+Feel Free to check more Compatibility Modules in our [wiki][qsh-doc]
 
 ## Contributing
 
