@@ -16,7 +16,7 @@
 
 [quickshop-hikari]: https://github.com/QuickShop-Community/QuickShop-Hikari
 
-[qsh-doc]: https://github.com/QuickShop-Community/QuickShop-Hikari-Documents/deployments/github-pages
+[qsh-doc]: https://quickshop-community.github.io/QuickShop-Hikari-Documents/
 
 [quickshop-potato]: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/
 
@@ -167,7 +167,8 @@ without explicit written permission.
 ## Compatibility Modules
 
 You can download optional modules [here][modrinth] for compatibility with other plugins.
-Feel Free to check more Compatibility Modules in our [wiki][qsh-doc]
+
+Feel free to explore additional compatibility modules in our [Wiki][qsh-doc].
 
 ## Contributing
 
