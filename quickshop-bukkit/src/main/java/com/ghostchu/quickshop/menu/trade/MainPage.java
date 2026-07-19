@@ -19,6 +19,7 @@ package com.ghostchu.quickshop.menu.trade;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.EconomyProvider;
+import com.ghostchu.quickshop.api.event.display.ItemPreviewComponentPrePopulateEvent;
 import com.ghostchu.quickshop.api.shop.Info;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopAction;
@@ -120,7 +121,9 @@ public class MainPage extends QuickShopPage {
         // Shop item display slot from config (centered in row 2)
         final int shopItemSlot = (shopItemConfig != null)? shopItemConfig.getSlot() : 13;
 
-        final AbstractItemStack<ItemStack> shopItemStack = QuickShop.getInstance().stack(shopItem);
+        final ItemPreviewComponentPrePopulateEvent previewComponentPrePopulateEvent = new ItemPreviewComponentPrePopulateEvent(shopItem, player);
+        previewComponentPrePopulateEvent.callEvent();
+        final AbstractItemStack<ItemStack> shopItemStack = QuickShop.getInstance().stack(previewComponentPrePopulateEvent.getItemStack());
 
         open.getPage().addIcon(new IconBuilder(shopItemStack).withSlot(shopItemSlot).build());
 
