@@ -16,7 +16,7 @@ not-looking-at-valid-shop-block: ไม่พบบล็อกสำหรั�
 shop-removed-cause-ongoing-fee: <red>ร้านของคุณที่ {0} โดนปิดเพราะคุณมีเงินไม่พอที่จะเปิดต่อได้
 tabcomplete:
   amount: 'จำนวน'
-  item: '[item]'
+  item: ''
   price: '[price]'
   name: '[name]'
   range: '[range]'
@@ -56,7 +56,7 @@ quick-fill:
   hover-arg-filled:
     - '<yellow>ชื่อ: <aqua>{name}'
     - '<yellow>Owner: <aqua>{owner}'
-    - '<yellow>Type: <aqua>{type}'
+    - '<yellow>ประเภท:<aqua>{type}'
     - '<yellow>Price: <aqua>{price}'
     - '<yellow>ของ: <aqua>{item}'
     - '<yellow>Location: <aqua>{location}'
