@@ -136,6 +136,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   private ItemStack item;
   @NotNull
   private ItemStack originalItem;
+  private String itemSerialize;
   @Nullable
   @EqualsAndHashCode.Exclude
   private AbstractDisplayItem displayItem = null;
@@ -220,6 +221,8 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
 
     this.item = item.clone();
     this.originalItem = item.clone();
+    updateSerializeItem();
+
     this.plugin = plugin;
     this.playerGroup = new HashMap<>(playerGroup);
     if(!plugin.isAllowStack()) {
@@ -527,7 +530,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     Util.ensureThread(false);
 
     //Create our shop event with Pre Phase and call
-    ShopItemEvent event = new ShopItemEvent(Phase.PRE, this, this.item, item);
+    ShopItemEvent event = new ShopItemEvent(Phase.PRE, this, this.item.clone(), item);
     event.callEvent();
 
     //Call our Main Phase
@@ -541,6 +544,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
 
     this.item = event.updated();
     this.originalItem = item;
+    updateSerializeItem();
 
     //call our Post Phase
     event.clone(Phase.POST).callEvent();
@@ -553,6 +557,33 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     checkDisplay();
     setSignText();
     setDirty();
+  }
+
+  /**
+   * Serializes the shop item into a string representation.
+   *
+   * @return A string representing the serialized shop item.
+   *
+   * @since 6.3.0.0
+   */
+  @Override
+  public String itemSerializeString() {
+
+    return itemSerialize;
+  }
+
+  /**
+   * Updates the serialized representation of the shop item. This method recalculates and refreshes
+   * the serialized string associated with the shop's item, ensuring it reflects the most up-to-date
+   * state of the shop item. This is typically used to sync internal representations with the
+   * current state of the shop item.
+   */
+  @Override
+  public void updateSerializeItem() {
+
+    final YamlConfiguration cfg = new YamlConfiguration();
+    cfg.set("item", item);
+    this.itemSerialize = cfg.saveToString();
   }
 
   @Override
@@ -2195,7 +2226,6 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
            ", shopType=" + shopType +
            ", unlimited=" + unlimited +
            ", item=" + item +
-           ", originalItem=" + originalItem +
            ", displayItem=" + displayItem +
            ", isLoaded=" + isLoaded +
            ", createBackup=" + createBackup +
