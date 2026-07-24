@@ -108,191 +108,211 @@
 <span class="source-line-no">095</span><span id="line-95">  void setItem(@NotNull ItemStack item);</span>
 <span class="source-line-no">096</span><span id="line-96"></span>
 <span class="source-line-no">097</span><span id="line-97">  /**</span>
-<span class="source-line-no">098</span><span id="line-98">   * Get shop block</span>
+<span class="source-line-no">098</span><span id="line-98">   * Serializes the shop item into a string representation.</span>
 <span class="source-line-no">099</span><span id="line-99">   *</span>
-<span class="source-line-no">100</span><span id="line-100">   * @return The shop's block</span>
-<span class="source-line-no">101</span><span id="line-101">   */</span>
-<span class="source-line-no">102</span><span id="line-102">  @NotNull</span>
-<span class="source-line-no">103</span><span id="line-103">  Block getShopBlock();</span>
-<span class="source-line-no">104</span><span id="line-104"></span>
-<span class="source-line-no">105</span><span id="line-105">  /**</span>
-<span class="source-line-no">106</span><span id="line-106">   * Gets the currency that shop use</span>
-<span class="source-line-no">107</span><span id="line-107">   *</span>
-<span class="source-line-no">108</span><span id="line-108">   * @return The currency name</span>
-<span class="source-line-no">109</span><span id="line-109">   */</span>
-<span class="source-line-no">110</span><span id="line-110">  @Nullable</span>
-<span class="source-line-no">111</span><span id="line-111">  String getCurrency();</span>
-<span class="source-line-no">112</span><span id="line-112"></span>
-<span class="source-line-no">113</span><span id="line-113">  /**</span>
-<span class="source-line-no">114</span><span id="line-114">   * Sets the currency that shop use</span>
-<span class="source-line-no">115</span><span id="line-115">   *</span>
-<span class="source-line-no">116</span><span id="line-116">   * @param currency The currency name; null to use default currency</span>
-<span class="source-line-no">117</span><span id="line-117">   */</span>
-<span class="source-line-no">118</span><span id="line-118">  void setCurrency(@Nullable String currency);</span>
-<span class="source-line-no">119</span><span id="line-119"></span>
-<span class="source-line-no">120</span><span id="line-120">  /**</span>
-<span class="source-line-no">121</span><span id="line-121">   * Get shop's price</span>
-<span class="source-line-no">122</span><span id="line-122">   *</span>
-<span class="source-line-no">123</span><span id="line-123">   * @return Price</span>
-<span class="source-line-no">124</span><span id="line-124">   * @deprecated Use {@link ShopPrice#price()} instead</span>
-<span class="source-line-no">125</span><span id="line-125">   */</span>
-<span class="source-line-no">126</span><span id="line-126">  @Deprecated(forRemoval = true, since = "6.3.0.0")</span>
-<span class="source-line-no">127</span><span id="line-127">  double getPrice();</span>
-<span class="source-line-no">128</span><span id="line-128"></span>
-<span class="source-line-no">129</span><span id="line-129">  /**</span>
-<span class="source-line-no">130</span><span id="line-130">   * Set shop's new price</span>
-<span class="source-line-no">131</span><span id="line-131">   *</span>
-<span class="source-line-no">132</span><span id="line-132">   * @param paramDouble New price</span>
-<span class="source-line-no">133</span><span id="line-133">   * @deprecated Use {@link ShopPrice#price(Object)} instead.</span>
-<span class="source-line-no">134</span><span id="line-134">   */</span>
-<span class="source-line-no">135</span><span id="line-135">  @Deprecated(forRemoval = true, since = "6.3.0.0")</span>
-<span class="source-line-no">136</span><span id="line-136">  void setPrice(double paramDouble);</span>
-<span class="source-line-no">137</span><span id="line-137"></span>
-<span class="source-line-no">138</span><span id="line-138">  /**</span>
-<span class="source-line-no">139</span><span id="line-139">   * Retrieves the current state of the shop.</span>
-<span class="source-line-no">140</span><span id="line-140">   *</span>
-<span class="source-line-no">141</span><span id="line-141">   * @return the current state of the shop as a ShopState object</span>
-<span class="source-line-no">142</span><span id="line-142">   */</span>
-<span class="source-line-no">143</span><span id="line-143">  ShopState shopState();</span>
-<span class="source-line-no">144</span><span id="line-144"></span>
-<span class="source-line-no">145</span><span id="line-145">  /**</span>
-<span class="source-line-no">146</span><span id="line-146">   * Updates the current state of the shop based on the provided {@code ShopState}.</span>
-<span class="source-line-no">147</span><span id="line-147">   *</span>
-<span class="source-line-no">148</span><span id="line-148">   * @param state the new state to set for the shop; must not be null</span>
-<span class="source-line-no">149</span><span id="line-149">   */</span>
-<span class="source-line-no">150</span><span id="line-150">  void shopState(@NotNull ShopState state);</span>
-<span class="source-line-no">151</span><span id="line-151"></span>
-<span class="source-line-no">152</span><span id="line-152">  /**</span>
-<span class="source-line-no">153</span><span id="line-153">   * Updates or processes the state of a shop based on the provided identifier.</span>
-<span class="source-line-no">154</span><span id="line-154">   *</span>
-<span class="source-line-no">155</span><span id="line-155">   * @param shopStateIdentifier a non-null string representing the unique identifier</span>
-<span class="source-line-no">156</span><span id="line-156">   *                             for the shop state to be updated or processed.</span>
-<span class="source-line-no">157</span><span id="line-157">   */</span>
-<span class="source-line-no">158</span><span id="line-158">  void shopState(@NotNull String shopStateIdentifier);</span>
-<span class="source-line-no">159</span><span id="line-159"></span>
-<span class="source-line-no">160</span><span id="line-160">  /**</span>
-<span class="source-line-no">161</span><span id="line-161">   * Retrieves the type of shop associated with this entity.</span>
-<span class="source-line-no">162</span><span id="line-162">   *</span>
-<span class="source-line-no">163</span><span id="line-163">   * @return an instance of IShopType representing the shop type</span>
-<span class="source-line-no">164</span><span id="line-164">   */</span>
-<span class="source-line-no">165</span><span id="line-165">  IShopType shopType();</span>
-<span class="source-line-no">166</span><span id="line-166"></span>
-<span class="source-line-no">167</span><span id="line-167">  /**</span>
-<span class="source-line-no">168</span><span id="line-168">   * Sets the type of shop using the provided shop type parameter.</span>
-<span class="source-line-no">169</span><span id="line-169">   *</span>
-<span class="source-line-no">170</span><span id="line-170">   * @param newShopType the shop type to set, must not be null</span>
-<span class="source-line-no">171</span><span id="line-171">   */</span>
-<span class="source-line-no">172</span><span id="line-172">  void shopType(@NotNull IShopType newShopType);</span>
-<span class="source-line-no">173</span><span id="line-173"></span>
-<span class="source-line-no">174</span><span id="line-174">  /**</span>
-<span class="source-line-no">175</span><span id="line-175">   * Specifies the type of shop based on the given identifier.</span>
-<span class="source-line-no">176</span><span id="line-176">   *</span>
-<span class="source-line-no">177</span><span id="line-177">   * @param shopTypeIdentifier the identifier representing the type of shop. Must not be null.</span>
-<span class="source-line-no">178</span><span id="line-178">   */</span>
-<span class="source-line-no">179</span><span id="line-179">  void shopType(@NotNull String shopTypeIdentifier);</span>
-<span class="source-line-no">180</span><span id="line-180"></span>
-<span class="source-line-no">181</span><span id="line-181">  /**</span>
-<span class="source-line-no">182</span><span id="line-182">   * Get shop's owner name, it will return owner name or Admin Shop(i18n) when it is unlimited</span>
-<span class="source-line-no">183</span><span id="line-183">   *</span>
-<span class="source-line-no">184</span><span id="line-184">   * @param forceUsername Force returns username of shop</span>
-<span class="source-line-no">185</span><span id="line-185">   * @param locale        The locale to parse the message</span>
-<span class="source-line-no">186</span><span id="line-186">   *</span>
-<span class="source-line-no">187</span><span id="line-187">   * @return owner name</span>
-<span class="source-line-no">188</span><span id="line-188">   */</span>
-<span class="source-line-no">189</span><span id="line-189">  @NotNull</span>
-<span class="source-line-no">190</span><span id="line-190">  Component ownerName(boolean forceUsername, @NotNull ProxiedLocale locale);</span>
-<span class="source-line-no">191</span><span id="line-191"></span>
-<span class="source-line-no">192</span><span id="line-192">  /**</span>
-<span class="source-line-no">193</span><span id="line-193">   * Get shop's owner name, it will return owner name or Admin Shop(i18n) when it is unlimited</span>
-<span class="source-line-no">194</span><span id="line-194">   *</span>
-<span class="source-line-no">195</span><span id="line-195">   * @param locale The locale to parse the message</span>
+<span class="source-line-no">100</span><span id="line-100">   * @return A string representing the serialized shop item.</span>
+<span class="source-line-no">101</span><span id="line-101">   *</span>
+<span class="source-line-no">102</span><span id="line-102">   * @since 6.3.0.0</span>
+<span class="source-line-no">103</span><span id="line-103">   */</span>
+<span class="source-line-no">104</span><span id="line-104">  String itemSerializeString();</span>
+<span class="source-line-no">105</span><span id="line-105"></span>
+<span class="source-line-no">106</span><span id="line-106">  /**</span>
+<span class="source-line-no">107</span><span id="line-107">   * Updates the serialized representation of the shop item.</span>
+<span class="source-line-no">108</span><span id="line-108">   * This method recalculates and refreshes the serialized string associated</span>
+<span class="source-line-no">109</span><span id="line-109">   * with the shop's item, ensuring it reflects the most up-to-date state</span>
+<span class="source-line-no">110</span><span id="line-110">   * of the shop item. This is typically used to sync internal representations</span>
+<span class="source-line-no">111</span><span id="line-111">   * with the current state of the shop item.</span>
+<span class="source-line-no">112</span><span id="line-112">   *</span>
+<span class="source-line-no">113</span><span id="line-113">   * @since 6.3.0.0</span>
+<span class="source-line-no">114</span><span id="line-114">   */</span>
+<span class="source-line-no">115</span><span id="line-115">  void updateSerializeItem();</span>
+<span class="source-line-no">116</span><span id="line-116"></span>
+<span class="source-line-no">117</span><span id="line-117">  /**</span>
+<span class="source-line-no">118</span><span id="line-118">   * Get shop block</span>
+<span class="source-line-no">119</span><span id="line-119">   *</span>
+<span class="source-line-no">120</span><span id="line-120">   * @return The shop's block</span>
+<span class="source-line-no">121</span><span id="line-121">   */</span>
+<span class="source-line-no">122</span><span id="line-122">  @NotNull</span>
+<span class="source-line-no">123</span><span id="line-123">  Block getShopBlock();</span>
+<span class="source-line-no">124</span><span id="line-124"></span>
+<span class="source-line-no">125</span><span id="line-125">  /**</span>
+<span class="source-line-no">126</span><span id="line-126">   * Gets the currency that shop use</span>
+<span class="source-line-no">127</span><span id="line-127">   *</span>
+<span class="source-line-no">128</span><span id="line-128">   * @return The currency name</span>
+<span class="source-line-no">129</span><span id="line-129">   */</span>
+<span class="source-line-no">130</span><span id="line-130">  @Nullable</span>
+<span class="source-line-no">131</span><span id="line-131">  String getCurrency();</span>
+<span class="source-line-no">132</span><span id="line-132"></span>
+<span class="source-line-no">133</span><span id="line-133">  /**</span>
+<span class="source-line-no">134</span><span id="line-134">   * Sets the currency that shop use</span>
+<span class="source-line-no">135</span><span id="line-135">   *</span>
+<span class="source-line-no">136</span><span id="line-136">   * @param currency The currency name; null to use default currency</span>
+<span class="source-line-no">137</span><span id="line-137">   */</span>
+<span class="source-line-no">138</span><span id="line-138">  void setCurrency(@Nullable String currency);</span>
+<span class="source-line-no">139</span><span id="line-139"></span>
+<span class="source-line-no">140</span><span id="line-140">  /**</span>
+<span class="source-line-no">141</span><span id="line-141">   * Get shop's price</span>
+<span class="source-line-no">142</span><span id="line-142">   *</span>
+<span class="source-line-no">143</span><span id="line-143">   * @return Price</span>
+<span class="source-line-no">144</span><span id="line-144">   * @deprecated Use {@link ShopPrice#price()} instead</span>
+<span class="source-line-no">145</span><span id="line-145">   */</span>
+<span class="source-line-no">146</span><span id="line-146">  @Deprecated(forRemoval = true, since = "6.3.0.0")</span>
+<span class="source-line-no">147</span><span id="line-147">  double getPrice();</span>
+<span class="source-line-no">148</span><span id="line-148"></span>
+<span class="source-line-no">149</span><span id="line-149">  /**</span>
+<span class="source-line-no">150</span><span id="line-150">   * Set shop's new price</span>
+<span class="source-line-no">151</span><span id="line-151">   *</span>
+<span class="source-line-no">152</span><span id="line-152">   * @param paramDouble New price</span>
+<span class="source-line-no">153</span><span id="line-153">   * @deprecated Use {@link ShopPrice#price(Object)} instead.</span>
+<span class="source-line-no">154</span><span id="line-154">   */</span>
+<span class="source-line-no">155</span><span id="line-155">  @Deprecated(forRemoval = true, since = "6.3.0.0")</span>
+<span class="source-line-no">156</span><span id="line-156">  void setPrice(double paramDouble);</span>
+<span class="source-line-no">157</span><span id="line-157"></span>
+<span class="source-line-no">158</span><span id="line-158">  /**</span>
+<span class="source-line-no">159</span><span id="line-159">   * Retrieves the current state of the shop.</span>
+<span class="source-line-no">160</span><span id="line-160">   *</span>
+<span class="source-line-no">161</span><span id="line-161">   * @return the current state of the shop as a ShopState object</span>
+<span class="source-line-no">162</span><span id="line-162">   */</span>
+<span class="source-line-no">163</span><span id="line-163">  ShopState shopState();</span>
+<span class="source-line-no">164</span><span id="line-164"></span>
+<span class="source-line-no">165</span><span id="line-165">  /**</span>
+<span class="source-line-no">166</span><span id="line-166">   * Updates the current state of the shop based on the provided {@code ShopState}.</span>
+<span class="source-line-no">167</span><span id="line-167">   *</span>
+<span class="source-line-no">168</span><span id="line-168">   * @param state the new state to set for the shop; must not be null</span>
+<span class="source-line-no">169</span><span id="line-169">   */</span>
+<span class="source-line-no">170</span><span id="line-170">  void shopState(@NotNull ShopState state);</span>
+<span class="source-line-no">171</span><span id="line-171"></span>
+<span class="source-line-no">172</span><span id="line-172">  /**</span>
+<span class="source-line-no">173</span><span id="line-173">   * Updates or processes the state of a shop based on the provided identifier.</span>
+<span class="source-line-no">174</span><span id="line-174">   *</span>
+<span class="source-line-no">175</span><span id="line-175">   * @param shopStateIdentifier a non-null string representing the unique identifier</span>
+<span class="source-line-no">176</span><span id="line-176">   *                             for the shop state to be updated or processed.</span>
+<span class="source-line-no">177</span><span id="line-177">   */</span>
+<span class="source-line-no">178</span><span id="line-178">  void shopState(@NotNull String shopStateIdentifier);</span>
+<span class="source-line-no">179</span><span id="line-179"></span>
+<span class="source-line-no">180</span><span id="line-180">  /**</span>
+<span class="source-line-no">181</span><span id="line-181">   * Retrieves the type of shop associated with this entity.</span>
+<span class="source-line-no">182</span><span id="line-182">   *</span>
+<span class="source-line-no">183</span><span id="line-183">   * @return an instance of IShopType representing the shop type</span>
+<span class="source-line-no">184</span><span id="line-184">   */</span>
+<span class="source-line-no">185</span><span id="line-185">  IShopType shopType();</span>
+<span class="source-line-no">186</span><span id="line-186"></span>
+<span class="source-line-no">187</span><span id="line-187">  /**</span>
+<span class="source-line-no">188</span><span id="line-188">   * Sets the type of shop using the provided shop type parameter.</span>
+<span class="source-line-no">189</span><span id="line-189">   *</span>
+<span class="source-line-no">190</span><span id="line-190">   * @param newShopType the shop type to set, must not be null</span>
+<span class="source-line-no">191</span><span id="line-191">   */</span>
+<span class="source-line-no">192</span><span id="line-192">  void shopType(@NotNull IShopType newShopType);</span>
+<span class="source-line-no">193</span><span id="line-193"></span>
+<span class="source-line-no">194</span><span id="line-194">  /**</span>
+<span class="source-line-no">195</span><span id="line-195">   * Specifies the type of shop based on the given identifier.</span>
 <span class="source-line-no">196</span><span id="line-196">   *</span>
-<span class="source-line-no">197</span><span id="line-197">   * @return owner name</span>
+<span class="source-line-no">197</span><span id="line-197">   * @param shopTypeIdentifier the identifier representing the type of shop. Must not be null.</span>
 <span class="source-line-no">198</span><span id="line-198">   */</span>
-<span class="source-line-no">199</span><span id="line-199">  @NotNull</span>
-<span class="source-line-no">200</span><span id="line-200">  Component ownerName(@NotNull ProxiedLocale locale);</span>
-<span class="source-line-no">201</span><span id="line-201"></span>
-<span class="source-line-no">202</span><span id="line-202">  /**</span>
-<span class="source-line-no">203</span><span id="line-203">   * Get shop's owner name, it will return owner name or Admin Shop(i18n) when it is unlimited</span>
-<span class="source-line-no">204</span><span id="line-204">   *</span>
-<span class="source-line-no">205</span><span id="line-205">   * @return owner name</span>
-<span class="source-line-no">206</span><span id="line-206">   */</span>
-<span class="source-line-no">207</span><span id="line-207">  @NotNull</span>
-<span class="source-line-no">208</span><span id="line-208">  Component ownerName();</span>
-<span class="source-line-no">209</span><span id="line-209"></span>
-<span class="source-line-no">210</span><span id="line-210"></span>
-<span class="source-line-no">211</span><span id="line-211">  /**</span>
-<span class="source-line-no">212</span><span id="line-212">   * Get shop's owner QUser</span>
-<span class="source-line-no">213</span><span id="line-213">   *</span>
-<span class="source-line-no">214</span><span id="line-214">   * @return Shop's owner QUser object, can use Bukkit.getOfflinePlayer to convert to the</span>
-<span class="source-line-no">215</span><span id="line-215">   * OfflinePlayer.</span>
-<span class="source-line-no">216</span><span id="line-216">   */</span>
-<span class="source-line-no">217</span><span id="line-217">  @NotNull</span>
-<span class="source-line-no">218</span><span id="line-218">  QUser getOwner();</span>
-<span class="source-line-no">219</span><span id="line-219"></span>
-<span class="source-line-no">220</span><span id="line-220">  /**</span>
-<span class="source-line-no">221</span><span id="line-221">   * Set new owner to the shop's owner</span>
-<span class="source-line-no">222</span><span id="line-222">   *</span>
-<span class="source-line-no">223</span><span id="line-223">   * @param qUser New owner user</span>
-<span class="source-line-no">224</span><span id="line-224">   */</span>
-<span class="source-line-no">225</span><span id="line-225">  void setOwner(@NotNull QUser qUser);</span>
-<span class="source-line-no">226</span><span id="line-226"></span>
-<span class="source-line-no">227</span><span id="line-227">  /**</span>
-<span class="source-line-no">228</span><span id="line-228">   * Getting the shop tax account for using, it can be specific uuid or general tax account</span>
-<span class="source-line-no">229</span><span id="line-229">   *</span>
-<span class="source-line-no">230</span><span id="line-230">   * @return Shop Tax Account or fallback to general tax account</span>
-<span class="source-line-no">231</span><span id="line-231">   */</span>
-<span class="source-line-no">232</span><span id="line-232">  @Nullable</span>
-<span class="source-line-no">233</span><span id="line-233">  QUser getTaxAccount();</span>
-<span class="source-line-no">234</span><span id="line-234"></span>
-<span class="source-line-no">235</span><span id="line-235">  /**</span>
-<span class="source-line-no">236</span><span id="line-236">   * Sets shop taxAccount</span>
-<span class="source-line-no">237</span><span id="line-237">   *</span>
-<span class="source-line-no">238</span><span id="line-238">   * @param taxAccount tax account, null to use general tax account</span>
-<span class="source-line-no">239</span><span id="line-239">   */</span>
-<span class="source-line-no">240</span><span id="line-240">  void setTaxAccount(@Nullable QUser taxAccount);</span>
-<span class="source-line-no">241</span><span id="line-241"></span>
-<span class="source-line-no">242</span><span id="line-242">  /**</span>
-<span class="source-line-no">243</span><span id="line-243">   * Getting the shop tax account, it can be specific uuid or general tax account</span>
-<span class="source-line-no">244</span><span id="line-244">   *</span>
-<span class="source-line-no">245</span><span id="line-245">   * @return Shop Tax Account, null if use general tax account</span>
-<span class="source-line-no">246</span><span id="line-246">   */</span>
-<span class="source-line-no">247</span><span id="line-247"></span>
-<span class="source-line-no">248</span><span id="line-248">  @Nullable</span>
-<span class="source-line-no">249</span><span id="line-249">  QUser getTaxAccountActual();</span>
-<span class="source-line-no">250</span><span id="line-250"></span>
-<span class="source-line-no">251</span><span id="line-251">  /**</span>
-<span class="source-line-no">252</span><span id="line-252">   * Gets shop status is stacking shop</span>
-<span class="source-line-no">253</span><span id="line-253">   *</span>
-<span class="source-line-no">254</span><span id="line-254">   * @return The shop stacking status</span>
-<span class="source-line-no">255</span><span id="line-255">   */</span>
-<span class="source-line-no">256</span><span id="line-256">  boolean isStackingShop();</span>
-<span class="source-line-no">257</span><span id="line-257"></span>
-<span class="source-line-no">258</span><span id="line-258">  /**</span>
-<span class="source-line-no">259</span><span id="line-259">   * Get shop is or not in Unlimited Mode (Admin Shop)</span>
-<span class="source-line-no">260</span><span id="line-260">   *</span>
-<span class="source-line-no">261</span><span id="line-261">   * @return yes or not</span>
-<span class="source-line-no">262</span><span id="line-262">   */</span>
-<span class="source-line-no">263</span><span id="line-263">  boolean isUnlimited();</span>
-<span class="source-line-no">264</span><span id="line-264"></span>
-<span class="source-line-no">265</span><span id="line-265">  /**</span>
-<span class="source-line-no">266</span><span id="line-266">   * Set shop is or not Unlimited Mode (Admin Shop)</span>
-<span class="source-line-no">267</span><span id="line-267">   *</span>
-<span class="source-line-no">268</span><span id="line-268">   * @param paramBoolean status</span>
-<span class="source-line-no">269</span><span id="line-269">   */</span>
-<span class="source-line-no">270</span><span id="line-270">  void setUnlimited(boolean paramBoolean);</span>
-<span class="source-line-no">271</span><span id="line-271"></span>
-<span class="source-line-no">272</span><span id="line-272">  /**</span>
-<span class="source-line-no">273</span><span id="line-273">   * Gets the benefit in this shop</span>
-<span class="source-line-no">274</span><span id="line-274">   */</span>
-<span class="source-line-no">275</span><span id="line-275">  @NotNull</span>
-<span class="source-line-no">276</span><span id="line-276">  BenefitProvider getShopBenefit();</span>
+<span class="source-line-no">199</span><span id="line-199">  void shopType(@NotNull String shopTypeIdentifier);</span>
+<span class="source-line-no">200</span><span id="line-200"></span>
+<span class="source-line-no">201</span><span id="line-201">  /**</span>
+<span class="source-line-no">202</span><span id="line-202">   * Get shop's owner name, it will return owner name or Admin Shop(i18n) when it is unlimited</span>
+<span class="source-line-no">203</span><span id="line-203">   *</span>
+<span class="source-line-no">204</span><span id="line-204">   * @param forceUsername Force returns username of shop</span>
+<span class="source-line-no">205</span><span id="line-205">   * @param locale        The locale to parse the message</span>
+<span class="source-line-no">206</span><span id="line-206">   *</span>
+<span class="source-line-no">207</span><span id="line-207">   * @return owner name</span>
+<span class="source-line-no">208</span><span id="line-208">   */</span>
+<span class="source-line-no">209</span><span id="line-209">  @NotNull</span>
+<span class="source-line-no">210</span><span id="line-210">  Component ownerName(boolean forceUsername, @NotNull ProxiedLocale locale);</span>
+<span class="source-line-no">211</span><span id="line-211"></span>
+<span class="source-line-no">212</span><span id="line-212">  /**</span>
+<span class="source-line-no">213</span><span id="line-213">   * Get shop's owner name, it will return owner name or Admin Shop(i18n) when it is unlimited</span>
+<span class="source-line-no">214</span><span id="line-214">   *</span>
+<span class="source-line-no">215</span><span id="line-215">   * @param locale The locale to parse the message</span>
+<span class="source-line-no">216</span><span id="line-216">   *</span>
+<span class="source-line-no">217</span><span id="line-217">   * @return owner name</span>
+<span class="source-line-no">218</span><span id="line-218">   */</span>
+<span class="source-line-no">219</span><span id="line-219">  @NotNull</span>
+<span class="source-line-no">220</span><span id="line-220">  Component ownerName(@NotNull ProxiedLocale locale);</span>
+<span class="source-line-no">221</span><span id="line-221"></span>
+<span class="source-line-no">222</span><span id="line-222">  /**</span>
+<span class="source-line-no">223</span><span id="line-223">   * Get shop's owner name, it will return owner name or Admin Shop(i18n) when it is unlimited</span>
+<span class="source-line-no">224</span><span id="line-224">   *</span>
+<span class="source-line-no">225</span><span id="line-225">   * @return owner name</span>
+<span class="source-line-no">226</span><span id="line-226">   */</span>
+<span class="source-line-no">227</span><span id="line-227">  @NotNull</span>
+<span class="source-line-no">228</span><span id="line-228">  Component ownerName();</span>
+<span class="source-line-no">229</span><span id="line-229"></span>
+<span class="source-line-no">230</span><span id="line-230"></span>
+<span class="source-line-no">231</span><span id="line-231">  /**</span>
+<span class="source-line-no">232</span><span id="line-232">   * Get shop's owner QUser</span>
+<span class="source-line-no">233</span><span id="line-233">   *</span>
+<span class="source-line-no">234</span><span id="line-234">   * @return Shop's owner QUser object, can use Bukkit.getOfflinePlayer to convert to the</span>
+<span class="source-line-no">235</span><span id="line-235">   * OfflinePlayer.</span>
+<span class="source-line-no">236</span><span id="line-236">   */</span>
+<span class="source-line-no">237</span><span id="line-237">  @NotNull</span>
+<span class="source-line-no">238</span><span id="line-238">  QUser getOwner();</span>
+<span class="source-line-no">239</span><span id="line-239"></span>
+<span class="source-line-no">240</span><span id="line-240">  /**</span>
+<span class="source-line-no">241</span><span id="line-241">   * Set new owner to the shop's owner</span>
+<span class="source-line-no">242</span><span id="line-242">   *</span>
+<span class="source-line-no">243</span><span id="line-243">   * @param qUser New owner user</span>
+<span class="source-line-no">244</span><span id="line-244">   */</span>
+<span class="source-line-no">245</span><span id="line-245">  void setOwner(@NotNull QUser qUser);</span>
+<span class="source-line-no">246</span><span id="line-246"></span>
+<span class="source-line-no">247</span><span id="line-247">  /**</span>
+<span class="source-line-no">248</span><span id="line-248">   * Getting the shop tax account for using, it can be specific uuid or general tax account</span>
+<span class="source-line-no">249</span><span id="line-249">   *</span>
+<span class="source-line-no">250</span><span id="line-250">   * @return Shop Tax Account or fallback to general tax account</span>
+<span class="source-line-no">251</span><span id="line-251">   */</span>
+<span class="source-line-no">252</span><span id="line-252">  @Nullable</span>
+<span class="source-line-no">253</span><span id="line-253">  QUser getTaxAccount();</span>
+<span class="source-line-no">254</span><span id="line-254"></span>
+<span class="source-line-no">255</span><span id="line-255">  /**</span>
+<span class="source-line-no">256</span><span id="line-256">   * Sets shop taxAccount</span>
+<span class="source-line-no">257</span><span id="line-257">   *</span>
+<span class="source-line-no">258</span><span id="line-258">   * @param taxAccount tax account, null to use general tax account</span>
+<span class="source-line-no">259</span><span id="line-259">   */</span>
+<span class="source-line-no">260</span><span id="line-260">  void setTaxAccount(@Nullable QUser taxAccount);</span>
+<span class="source-line-no">261</span><span id="line-261"></span>
+<span class="source-line-no">262</span><span id="line-262">  /**</span>
+<span class="source-line-no">263</span><span id="line-263">   * Getting the shop tax account, it can be specific uuid or general tax account</span>
+<span class="source-line-no">264</span><span id="line-264">   *</span>
+<span class="source-line-no">265</span><span id="line-265">   * @return Shop Tax Account, null if use general tax account</span>
+<span class="source-line-no">266</span><span id="line-266">   */</span>
+<span class="source-line-no">267</span><span id="line-267"></span>
+<span class="source-line-no">268</span><span id="line-268">  @Nullable</span>
+<span class="source-line-no">269</span><span id="line-269">  QUser getTaxAccountActual();</span>
+<span class="source-line-no">270</span><span id="line-270"></span>
+<span class="source-line-no">271</span><span id="line-271">  /**</span>
+<span class="source-line-no">272</span><span id="line-272">   * Gets shop status is stacking shop</span>
+<span class="source-line-no">273</span><span id="line-273">   *</span>
+<span class="source-line-no">274</span><span id="line-274">   * @return The shop stacking status</span>
+<span class="source-line-no">275</span><span id="line-275">   */</span>
+<span class="source-line-no">276</span><span id="line-276">  boolean isStackingShop();</span>
 <span class="source-line-no">277</span><span id="line-277"></span>
 <span class="source-line-no">278</span><span id="line-278">  /**</span>
-<span class="source-line-no">279</span><span id="line-279">   * Sets the benefit in this shop</span>
-<span class="source-line-no">280</span><span id="line-280">   */</span>
-<span class="source-line-no">281</span><span id="line-281">  void setShopBenefit(@NotNull BenefitProvider benefit);</span>
-<span class="source-line-no">282</span><span id="line-282">}</span>
+<span class="source-line-no">279</span><span id="line-279">   * Get shop is or not in Unlimited Mode (Admin Shop)</span>
+<span class="source-line-no">280</span><span id="line-280">   *</span>
+<span class="source-line-no">281</span><span id="line-281">   * @return yes or not</span>
+<span class="source-line-no">282</span><span id="line-282">   */</span>
+<span class="source-line-no">283</span><span id="line-283">  boolean isUnlimited();</span>
+<span class="source-line-no">284</span><span id="line-284"></span>
+<span class="source-line-no">285</span><span id="line-285">  /**</span>
+<span class="source-line-no">286</span><span id="line-286">   * Set shop is or not Unlimited Mode (Admin Shop)</span>
+<span class="source-line-no">287</span><span id="line-287">   *</span>
+<span class="source-line-no">288</span><span id="line-288">   * @param paramBoolean status</span>
+<span class="source-line-no">289</span><span id="line-289">   */</span>
+<span class="source-line-no">290</span><span id="line-290">  void setUnlimited(boolean paramBoolean);</span>
+<span class="source-line-no">291</span><span id="line-291"></span>
+<span class="source-line-no">292</span><span id="line-292">  /**</span>
+<span class="source-line-no">293</span><span id="line-293">   * Gets the benefit in this shop</span>
+<span class="source-line-no">294</span><span id="line-294">   */</span>
+<span class="source-line-no">295</span><span id="line-295">  @NotNull</span>
+<span class="source-line-no">296</span><span id="line-296">  BenefitProvider getShopBenefit();</span>
+<span class="source-line-no">297</span><span id="line-297"></span>
+<span class="source-line-no">298</span><span id="line-298">  /**</span>
+<span class="source-line-no">299</span><span id="line-299">   * Sets the benefit in this shop</span>
+<span class="source-line-no">300</span><span id="line-300">   */</span>
+<span class="source-line-no">301</span><span id="line-301">  void setShopBenefit(@NotNull BenefitProvider benefit);</span>
+<span class="source-line-no">302</span><span id="line-302">}</span>
 
 
 
