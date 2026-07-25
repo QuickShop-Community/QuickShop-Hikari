@@ -110,7 +110,7 @@ virtual-player-component-hover: "<gray>Ceci est un joueur virtuel.\n<gray>Il s�
 real-player-component-hover: "<gray>Ce joueur existe réellement.\n<green>UUID : <yellow>{0}</yellow></green>\n<green>Nom d’utilisateur : <yellow>{1}</yellow></green>\n<green>Affiché comme : <yellow>{2}</yellow></green>\n<gray>Si vous souhaitez utiliser un compte système virtuel avec le même nom, ajoutez <dark_gray>\"[]\"</dark_gray> de chaque côté du nom d’utilisateur : <dark_gray>[{1}]</dark_gray>."
 pagination:
   header: "<green>{0}</green>:"
-  footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Previous page\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Next page\"><white>></white></hover></click>]</light_purple>"
+  footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>page précédente\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>page suivante\"><white>></white></hover></click>]</light_purple>"
 tags:
   commands:
     tag: "<yellow>Manage your shop tags."
@@ -149,7 +149,7 @@ tags:
     shops-entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <light_purple>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>View all tags on this shop\">View {10} tags</hover></click>]</light_purple>"
     entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <red>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove Tag</hover></click>]</red>"
     list-tag-shop-entry-tp: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Teleport to this shop\">Teleport</hover></click>]</light_purple>"
-    added: "<green>Added tag <aqua>{0}</aqua> to this shop."
+    added: "<green>Étiquette <aqua>{0}</aqua> ajoutée à ce magasin."
     duplicate: "<red>This shop already has tag <aqua>{0}</aqua>."
     failed-add: "<red>An error occurred while adding tag <aqua>{0}</aqua> to this shop."
     failed-remove: "<red>An error occurred while removing tag <aqua>{0}</aqua> from this shop."
