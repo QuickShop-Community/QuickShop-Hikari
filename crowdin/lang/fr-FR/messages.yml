@@ -20,16 +20,16 @@ tabcomplete:
   price: '[prix]'
   name: '[name]'
   range: '[distance]'
-  list: 'list'
+  list: 'liste'
   page: '[page #]'
-  shop-id: '[shop id]'
+  shop-id: '[magasin id]'
   currency: '[Type de monnaie]'
   percentage: ''
-  add: 'add'
-  remove: 'remove'
+  add: 'ajouter'
+  remove: 'supprimer'
   clear: 'clear'
   clearall: 'clearall'
-  shops: 'shops'
+  shops: 'magasins'
   tagged: 'tagged'
   purge: 'purge'
   tag: '[tag]'
@@ -137,7 +137,7 @@ tags:
     added: "<green>You are now watching this shop."
     removed: "<green>You are no longer watching this shop."
     unable: "<red>Unable to toggle watch on this shop."
-    none: "<red>You are not watching any shops."
+    none: "<red>Vous n'êtes pas en train de regarder de boutique."
     label: "<yellow>Watching"
   tag:
     title-avoided-shops: "<green>Avoided shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
@@ -153,8 +153,8 @@ tags:
     duplicate: "<red>This shop already has tag <aqua>{0}</aqua>."
     failed-add: "<red>An error occurred while adding tag <aqua>{0}</aqua> to this shop."
     failed-remove: "<red>An error occurred while removing tag <aqua>{0}</aqua> from this shop."
-    removed: "<green>Removed tag <aqua>{0}</aqua> from this shop."
-    does-not-exist: "<red>This shop does not have tag <aqua>{0}</aqua>."
+    removed: "<green>Étiquette <aqua>{0}</aqua> supprimée de ce magasin."
+    does-not-exist: "<red>Ce magasin n'a pas l'étiquette <aqua>{0}</aqua>."
     cleared: "<green>Cleared all tags from this shop."
     cleared-all: "<green>Cleared all tags from all shops."
     cleared-tag: "<green>Cleared tag <aqua>{0}</aqua> from all your tagged shops."
