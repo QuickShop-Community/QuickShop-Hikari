@@ -151,7 +151,7 @@ public class PaperPlatform implements Platform {
   @Override
   public @NotNull Component getTranslation(@NotNull final Enchantment enchantment) {
 
-    System.out.println("Enchant Key: " + enchantment.key().asString());
+    //System.out.println("Enchant Key: " + enchantment.key().asString());
 
     if(!enchantment.key().namespace().equalsIgnoreCase("minecraft")) {
       return Component.text(enchantment.getName());
