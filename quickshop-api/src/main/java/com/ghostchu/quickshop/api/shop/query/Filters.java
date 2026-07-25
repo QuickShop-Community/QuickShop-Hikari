@@ -20,6 +20,7 @@ package com.ghostchu.quickshop.api.shop.query;
 
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.IShopType;
+import com.ghostchu.quickshop.api.shop.query.filters.WorldUUIDFilter;
 import com.ghostchu.quickshop.api.shop.state.ShopState;
 import com.ghostchu.quickshop.api.shop.query.filters.MaterialFilter;
 import com.ghostchu.quickshop.api.shop.query.filters.OwnerUUIDFilter;
@@ -43,4 +44,5 @@ public class Filters {
   public static final Filter<QUser> OWNER_QUSER = new QUserOwnerFilter();
   public static final Filter<ShopState> STATE = new StateFilter();
   public static final Filter<IShopType> TYPE = new TypeFilter();
+  public static final Filter<UUID> WORLD_UUID = new WorldUUIDFilter();
 }

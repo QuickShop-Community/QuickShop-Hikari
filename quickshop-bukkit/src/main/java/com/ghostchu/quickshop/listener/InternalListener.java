@@ -154,7 +154,7 @@ public class InternalListener extends AbstractQSListener {
                                           event.getShop().shopType(),
                                           event.getPurchaser(),
                                           LegacyComponentSerializer.legacySection().serialize(Util.getItemStackName(event.getShop().getItem())),
-                                          Util.serialize(event.getShop().getItem()),
+                                          event.getShop().itemSerializeString(),
                                           event.getAmount(),
                                           event.getBalance(),
                                           event.getTax()));

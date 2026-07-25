@@ -11,7 +11,7 @@
 
 # Internal configuration version.
 # Do not change this unless QuickShop support instructs you to.
-config-version: 1046
+config-version: 1047
 
 # Default language used by the plugin.
 # Set to "default" to use the player's Minecraft client language automatically.
@@ -782,6 +782,11 @@ shop:
     show-effects: true
     show-enchantments: true
     show-durability: true
+    # Minimum interval (in milliseconds) between repeated shop info-panel sends to the same
+    # player for the SAME shop. Spam-clicking one shop skips re-sending the info panel,
+    # while trading and the "how many to buy/sell" prompt still work normally.
+    # Set to 0 to disable.
+    click-cooldown: 100
 
 # Item Blacklist
 # Items that cannot be sold in shops.
@@ -833,7 +838,6 @@ effect:
 matcher:
 
   # Matcher type:
-  # 0 = QuickShop matcher (configurable below)
   # 1 = Bukkit matcher
   # 2 = Strict Bukkit matcher (equals method)
   # 3 = Modern matcher
@@ -938,6 +942,47 @@ matcher:
 
     # Compare bundle contents.
     BUNDLE: true
+  #For Item (Only works under QuickShop ItemMatcher)
+  item:
+    #Should the Plugin check the item damage?
+    damage: true
+    #Should the Plugin check the item repair cost?
+    repaircost: false
+    #Should the Plugin check the item display name?
+    displayname: true
+    #Should the Plugin check the item lores?
+    lores: true
+    #Should the Plugin check the item enchs?
+    enchs: true
+    #Should the Plugin check the item potions?
+    potions: true
+    #Should the Plugin check the item attributes?
+    attributes: true
+    #Should the Plugin check the item itemflags?
+    itemflags: true
+    #Should the Plugin check the item custommodeldata?
+    custommodeldata: true
+    #Should the Plugin check the item bookmetas?
+    books: true
+    #Should the Plugin check the banner meta?
+    banner: true
+    #Should the Plugin check the skull meta?
+    skull: true
+    #Should the Plugin check the firework meta?
+    firework: true
+    #Should the Plugin check the map meta?
+    map: true
+    #Should the Plugin check the leather armor meta?
+    leatherArmor: true
+    #Should the Plugin check the fishBucket meta?
+    fishBucket: true
+    #Should the Plugin check the suspiciousStew meta?
+    suspiciousStew: true
+    #Should the Plugin check the shulkerBox contents?
+    shulkerBox: true
+    #Should the Plugin check the bundle contents?
+    bundle: true
+
 
 # Shop Protection Toggles
 protect:

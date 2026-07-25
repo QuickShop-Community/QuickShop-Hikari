@@ -95,6 +95,26 @@ public interface ShopMeta<U> extends ShopPrice<U> {
   void setItem(@NotNull ItemStack item);
 
   /**
+   * Serializes the shop item into a string representation.
+   *
+   * @return A string representing the serialized shop item.
+   *
+   * @since 6.3.0.0
+   */
+  String itemSerializeString();
+
+  /**
+   * Updates the serialized representation of the shop item.
+   * This method recalculates and refreshes the serialized string associated
+   * with the shop's item, ensuring it reflects the most up-to-date state
+   * of the shop item. This is typically used to sync internal representations
+   * with the current state of the shop item.
+   *
+   * @since 6.3.0.0
+   */
+  void updateSerializeItem();
+
+  /**
    * Get shop block
    *
    * @return The shop's block

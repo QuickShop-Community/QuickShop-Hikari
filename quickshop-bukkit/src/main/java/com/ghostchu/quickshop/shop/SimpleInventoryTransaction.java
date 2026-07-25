@@ -31,6 +31,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
   private InventoryWrapper from;
   private InventoryWrapper to;
   private ItemStack item;
+  private final String itemSerializeString;
   private int amount;
   private String lastError;
 
@@ -43,6 +44,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
     this.from = from;
     this.to = to;
     this.item = item.clone();
+    this.itemSerializeString = Util.serialize(item);
     this.amount = amount;
     new InventoryTransactionEvent(this).callEvent();
   }
@@ -71,7 +73,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
   @Override
   public boolean commit(@NotNull final TransactionCallback callback) {
 
-    Log.transaction("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Item: " + Util.serialize(item));
+    Log.transaction("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Item: " + itemSerializeString);
     if(!callback.onCommit(this)) {
       this.lastError = "Plugin cancelled this transaction.";
       return false;
@@ -83,7 +85,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
       removeResult = this.executeOperation(new RemoveItemOperation(item, amount, from));
       if(!removeResult.success()) {
 
-        this.lastError = "Failed to remove " + amount + "x " + Util.serialize(item) + " from " + from;
+        this.lastError = "Failed to remove " + amount + "x " + itemSerializeString + " from " + from;
         callback.onFailed(this);
         return false;
       }
@@ -102,7 +104,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
 
     if(!addResult.success()) {
 
-      this.lastError = "Failed to add " + amount + "x " + Util.serialize(item) + " to " + to;
+      this.lastError = "Failed to add " + amount + "x " + itemSerializeString + " to " + to;
       callback.onFailed(this);
       return false;
     }
@@ -176,7 +178,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
   @Override
   public boolean failSafeCommit() {
 
-    Log.transaction("Transaction begin: FailSafe Commit --> " + from + " => " + to + "; Amount: " + amount + " Item: " + Util.serialize(item));
+    Log.transaction("Transaction begin: FailSafe Commit --> " + from + " => " + to + "; Amount: " + amount + " Item: " + itemSerializeString);
     final boolean result = commit();
     if(!result) {
       Log.transaction(Level.WARNING, "Fail-safe commit failed, starting rollback: " + lastError);

@@ -946,9 +946,9 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   private void loadItemMatcher() {
 
     final ItemMatcher defItemMatcher = switch(getConfig().getInt("matcher.work-type")) {
+      case 0 -> new QuickShopItemMatcherImpl(this);
       case 3 -> new ModernCustomMatcher(this);
       case 1 -> new BukkitItemMatcherImpl(this);
-      case 0 -> new QuickShopItemMatcherImpl(this);
       default ->
               throw new IllegalStateException("Unexpected value: " + getConfig().getInt("matcher.work-type"));
     };
@@ -1351,7 +1351,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
           player.closeInventory();
         }
       }
-    } catch(Exception e) {
+    } catch(final Exception e) {
       javaPlugin.getSLF4JLogger().warn("An exception occurred while attempting to close open preview inventories for players", e);
     }
 

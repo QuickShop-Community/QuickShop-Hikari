@@ -153,7 +153,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
   public static ShopProtectionFlag createShopProtectionFlag(
           @NotNull final ItemStack itemStack, @NotNull final Shop shop) {
 
-    return new ShopProtectionFlag(shop.bukkitLocation().toString(), Util.serialize(itemStack));
+    return new ShopProtectionFlag(shop.bukkitLocation().toString(), shop.itemSerializeString());
   }
 
   public static boolean isVirtualDisplayDoesntWork() {

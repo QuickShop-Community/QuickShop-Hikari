@@ -132,7 +132,7 @@ tags:
     removed: "<green>Removed this shop from your favorite list."
     unable: "<red>Unable to toggle favorite on this shop."
     none: "<red>You have no favorite shops."
-    label: "<yellow>Favorite"
+    label: "<yellow>Favoris"
   watch:
     added: "<green>You are now watching this shop."
     removed: "<green>You are no longer watching this shop."

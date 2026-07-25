@@ -282,8 +282,15 @@ public class PlayerSelectionPage {
 
     return players.stream()
             .filter(player->{
-              if(player.getName() != null) {
-                return player.getName().toLowerCase(Locale.ROOT).contains(query);
+              try {
+                if(player.getName() != null) {
+                  return player.getName().toLowerCase(Locale.ROOT).contains(query);
+                }
+              } catch (final RuntimeException | LinkageError ex) {
+                QuickShop.getInstance().logger().warn("Unable to read offline player "
+                                                      + player.getUniqueId()
+                                                      + " while building the staff selection menu. This is related to https://github.com/PaperMC/Paper/issues/13312");
+                return false;
               }
               // Also match UUID if name is not available
               return player.getUniqueId().toString().toLowerCase(Locale.ROOT).contains(query);

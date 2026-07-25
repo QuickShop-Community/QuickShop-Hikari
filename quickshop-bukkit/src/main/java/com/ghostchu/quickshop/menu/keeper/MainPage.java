@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.menu.keeper;
  */
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.event.display.ItemPreviewComponentPrePopulateEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
@@ -117,7 +118,10 @@ public class MainPage extends QuickShopPage {
         // Shop item preview - top center (slot 4)
         final ItemStack shopItem = shop.get().getItem();
         final int shopItemSlot = shopItemConfig != null? shopItemConfig.getSlot() : 4;
-        final AbstractItemStack<ItemStack> shopItemStack = QuickShop.getInstance().stack(shopItem);
+
+        final ItemPreviewComponentPrePopulateEvent previewComponentPrePopulateEvent = new ItemPreviewComponentPrePopulateEvent(shopItem, player);
+        previewComponentPrePopulateEvent.callEvent();
+        final AbstractItemStack<ItemStack> shopItemStack = QuickShop.getInstance().stack(previewComponentPrePopulateEvent.getItemStack());
         open.getPage().addIcon(new IconBuilder(shopItemStack).withSlot(shopItemSlot).build());
 
         // Always read price directly from shop to get the latest value
