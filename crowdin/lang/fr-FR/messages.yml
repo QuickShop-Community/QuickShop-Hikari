@@ -8,9 +8,9 @@ shops-backingup: Création d'une sauvegarde de la boutique à partir de la base 
 _comment: .
 unlimited-shop-owner-changed: <yellow>Ce propriétaire de magasin illimité a été remplacé par {0}.
 bad-command-usage-detailed: '<red>Arguments de commande incorrects ! Paramètres acceptés : <gray>{0}'
-thats-not-a-number: <red>Nombre invalide.
-shop-name-disallowed: <red>Le nom de la boutique <yellow>{0} <red>est interdit. Choisissez un autre !
-console-only-danger: <red>Cette commande est dangereuse pour que seule la console puisse l'exécuter.
+thats-not-a-number: <red>Nombre invalide
+shop-name-disallowed: <red>Le nom de la boutique <yellow>{0} </yellow>est interdit. Choisissez un autre !
+console-only-danger: <red>Cette commande est dangereuse, donc seule la console peut l'exécuter.
 not-a-number: <red>Vous ne pouvez saisir qu'un nombre, votre entrée était {0}.
 not-looking-at-valid-shop-block: <red>Impossible de créer un magasin. Veuillez regarder un type de bloc pris en charge et réessayer
 shop-removed-cause-ongoing-fee: <red>Ta boutique aux coordonnées {0} a été supprimé car tu n'avais plus assez d'argent pour la garder!
