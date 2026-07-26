@@ -9,7 +9,7 @@ _comment: 翻訳者の皆さまへ。もしこれをGitHub上やソースコー�
 unlimited-shop-owner-changed: <yellow>この無制限の店主は {0} に変更されました。
 bad-command-usage-detailed: '<red>コマンド引数が不正です! 次のパラメータを受け付けます: <gray>{0}'
 thats-not-a-number: <red>無効な番号です
-shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
+shop-name-disallowed: <red>ショップ名 <yellow>{0}</yellow> は使用できません。別の名前を選んでください！
 console-only-danger: <red>これは危険なコマンドなので、コンソールのみが実行できます。
 not-a-number: <red>数字しか入力出来ません。あなたの入力は {0} でした。
 not-looking-at-valid-shop-block: <red>ショップを作成できませんでした。対応するブロックの種類を確認して、再度お試しください。
@@ -113,14 +113,14 @@ pagination:
   footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Previous page\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Next page\"><white>></white></hover></click>]</light_purple>"
 tags:
   commands:
-    tag: "<yellow>Manage your shop tags."
-    favorite: "<yellow>Toggle favorite on looked-at shop."
+    tag: "<yellow>ショップのタグを管理します。"
+    favorite: "<yellow>見ているショップのお気に入りを切り替えます。"
     watch: "<yellow>Toggle watch on looked-at shop."
     avoid: "<yellow>Toggle avoid on looked-at shop."
   general:
-    database-error: "<red>An error occurred while executing a tag operation."
-    list-entry: "<green>{0}.</green> <aqua>{1}</aqua> <light_purple>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>View all shops with this tag\">View Shops</hover></click>]</light_purple> <red>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove</hover></click>]</red>"
-    invalid: "<red>Invalid tag. Only letters, dash (-), and underscore (_) are allowed. Max length: <yellow>{0}</yellow>"
+    database-error: "<red>タグ操作の実行中にエラーが発生しました。"
+    list-entry: "<green>{0}.</green> <aqua>{1}</aqua> <light_purple>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>このタグのすべてのショップを表示\">ショップを表示</hover></click>]</light_purple> <red>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>このショップからタグを削除\">削除</hover></click>]</red>"
+    invalid: "<red>無効なタグです。英数字、ダッシュ (-)、アンダースコア (_) のみ許可されています。最大長: <yellow>{0}</yellow>"
   avoid:
     added: "<green>Added this shop to your avoid list."
     removed: "<green>Removed this shop from your avoid list."
@@ -128,11 +128,11 @@ tags:
     none: "<red>You have no avoided shops."
     label: "<yellow>Avoid"
   favorite:
-    added: "<green>Added this shop to your favorite list."
-    removed: "<green>Removed this shop from your favorite list."
-    unable: "<red>Unable to toggle favorite on this shop."
-    none: "<red>You have no favorite shops."
-    label: "<yellow>Favorite"
+    added: "<green>このショップをお気に入りに追加しました。"
+    removed: "<green>このショップをお気に入りから削除しました。"
+    unable: "<red>このショップのお気に入りを切り替えられませんでした。"
+    none: "<red>お気に入りのショップはありません。"
+    label: "<yellow>お気に入り"
   watch:
     added: "<green>You are now watching this shop."
     removed: "<green>You are no longer watching this shop."
@@ -149,12 +149,12 @@ tags:
     shops-entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <light_purple>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>View all tags on this shop\">View {10} tags</hover></click>]</light_purple>"
     entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <red>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove Tag</hover></click>]</red>"
     list-tag-shop-entry-tp: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Teleport to this shop\">Teleport</hover></click>]</light_purple>"
-    added: "<green>Added tag <aqua>{0}</aqua> to this shop."
-    duplicate: "<red>This shop already has tag <aqua>{0}</aqua>."
-    failed-add: "<red>An error occurred while adding tag <aqua>{0}</aqua> to this shop."
-    failed-remove: "<red>An error occurred while removing tag <aqua>{0}</aqua> from this shop."
-    removed: "<green>Removed tag <aqua>{0}</aqua> from this shop."
-    does-not-exist: "<red>This shop does not have tag <aqua>{0}</aqua>."
+    added: "<green>タグ <aqua>{0}</aqua> をこのショップに追加しました。"
+    duplicate: "<red>このショップには既にタグ <aqua>{0}</aqua> が付いています。"
+    failed-add: "<red>このショップにタグ <aqua>{0}</aqua> を追加中にエラーが発生しました。"
+    failed-remove: "<red>このショップからタグ <aqua>{0}</aqua> を削除中にエラーが発生しました。"
+    removed: "<green>タグ <aqua>{0}</aqua> をこのショップから削除しました。"
+    does-not-exist: "<red>このショップにはタグ <aqua>{0}</aqua> がありません。"
     cleared: "<green>Cleared all tags from this shop."
     cleared-all: "<green>Cleared all tags from all shops."
     cleared-tag: "<green>Cleared tag <aqua>{0}</aqua> from all your tagged shops."
