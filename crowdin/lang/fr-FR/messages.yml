@@ -6,7 +6,7 @@ how-much-to-trade-for: <green>Entrez dans le chat, combien vous souhaitez échan
 client-language-changed: <green>QuickShop a détecté que votre paramètre de langue client a été modifié, nous utilisons maintenant la langue {0} pour vous.
 shops-backingup: Création d'une sauvegarde de la boutique à partir de la base de données...
 _comment: Bonjour traducteur ! Si vous éditez ceci sur GitHub ou depuis le code source, rendez-vous plutôt sur https://crowdin.com/project/qs-hikari.
-unlimited-shop-owner-changed: <yellow>Ce propriétaire de magasin illimité a été remplacé par {0}.
+unlimited-shop-owner-changed: <yellow>Ce propriétaire de boutique illimitée a été remplacé par {0}.
 bad-command-usage-detailed: '<red>Arguments de commande incorrects ! Paramètres acceptés : <gray>{0}'
 thats-not-a-number: <red>Nombre invalide
 shop-name-disallowed: <red>Le nom de la boutique <yellow>{0} </yellow>est interdit. Choisissez un autre !
@@ -131,14 +131,14 @@ tags:
     added: "<green>Added this shop to your favorite list."
     removed: "<green>Removed this shop from your favorite list."
     unable: "<red>Unable to toggle favorite on this shop."
-    none: "<red>You have no favorite shops."
+    none: "<red>Vous n'avez pas de boutique favorite."
     label: "<yellow>Favoris"
   watch:
-    added: "<green>You are now watching this shop."
+    added: "<green>Vous n'êtes pas en train de regarder cette boutique."
     removed: "<green>You are no longer watching this shop."
     unable: "<red>Unable to toggle watch on this shop."
     none: "<red>Vous n'êtes pas en train de regarder de boutique."
-    label: "<yellow>Watching"
+    label: "<yellow>Regarde"
   tag:
     title-avoided-shops: "<green>Avoided shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
     title-favorited-shops: "<green>Magasins favoris</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
@@ -146,7 +146,7 @@ tags:
     list-player-shops-title: "<green>Your tagged shops</green> <gray>(<yellow>{0}</yellow> shops, <yellow>{1}</yellow> tags)</gray>"
     list-player-shop-title: "<green>Shop tags</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
     list-tag-title: "<green>Tag <aqua>{0}</aqua> usage</green> <gray>(<yellow>{1}</yellow> shops)</gray>"
-    shops-entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <light_purple>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>View all tags on this shop\">View {10} tags</hover></click>]</light_purple>"
+    shops-entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Prix <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <light_purple>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>Voir toutes les étiquettes de cette boutique\">Voir l'étiquette {10}</hover></click>]</light_purple>"
     entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <red>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove Tag</hover></click>]</red>"
     list-tag-shop-entry-tp: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Se téléporter à ce magasin\">Se téléporter</hover></click>]</light_purple>"
     added: "<green>Étiquette <aqua>{0}</aqua> ajoutée à ce magasin."
@@ -159,7 +159,7 @@ tags:
     cleared-all: "<green>Cleared all tags from all shops."
     cleared-tag: "<green>Cleared tag <aqua>{0}</aqua> from all your tagged shops."
     no-tags-all: "<red>There are no tags on any shop."
-    no-tags: "<red>This shop has no tags."
+    no-tags: "<red>Cette boutique n'a pas d'étiquette."
     no-tagged-shops-player: "<red>You have no tags on this shop."
     no-tagged-shops: "<red>You have no tagged shops."
     no-tagged-shops-tag: "<red>You have no shops with tag <aqua>{0}</aqua>."
@@ -181,7 +181,7 @@ menu:
   this-shop-is-selling: <green>Cette boutique <light_purple>VEND<green> des objets.
   this-shop-is-buying: <green>Cette boutique <light_purple>ACHETE<green> des objets.
   this-shop-is-frozen: <blue>FROZEN</blue>
-  this-shop-is-active: <aqua>ACTIVE</aqua>
+  this-shop-is-active: <aqua>ACTIF</aqua>
   this-shop-is-state: <green>This shop's current state is {0}<green>.
   shop-stack: '<green>Quantité par lot : <yellow>{0}'
   space: '<green>Espace restant: <yellow>{0}'
@@ -226,7 +226,7 @@ metric:
   shop-hover: |-
     <yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, World: {4}<newline><gold>Owner: <gray>{5}<newline><gold>Shop Type: <gray>{6}<newline><gold>Item: <gray>{7}<newline><gold>Price: <gray>{8}
   time-hover: '<yellow>Temps : {0}'
-  amount-stack-hover: <yellow>{0}x stack
+  amount-stack-hover: <yellow>{0}x pile
 permission-denied-3rd-party: '<red>Permission refusée: plugin tiers [{0}].'
 you-dont-have-that-many-items: <red>Vous ne possédez que {0} {1} dans votre inventaire.
 complete: <green>Action effectuée
@@ -245,9 +245,9 @@ unknown-player: <red>Le joueur cible n'existe pas, merci de vérifier le pseudo 
 player-offline: <red>Le joueur spécifié est actuellement hors-ligne.
 player-profile-format: <aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>
 shop-type:
-  selling: SELLING
-  buying: BUYING
-  frozen: FROZEN
+  selling: VEND
+  buying: ACHÈTE
+  frozen: GELÉ
 shop-state:
   frozen: FROZEN
   unfrozen: UNFROZEN
@@ -387,7 +387,7 @@ signs:
   status-available: <green>
   item-left: ''
   item-duration: 'Dur: {0}'
-  item-level: 'Level: {0}'
+  item-level: 'Niveau : {0}'
   splash-potion: "Splash"
   linger-potion: "Lingering"
 negative-amount: <red>Vous ne pouvez pas échanger une quantité négative
@@ -482,7 +482,7 @@ timeunit:
   justnow: à l'instant
   minute: "{0} minute"
   std-format: dd/MM/yyyy HH:mm:ss
-  future-plain-text: future
+  future-plain-text: futur
   month: "{0} mois"
   future: dans {0}
   days: "{0} jours"
@@ -618,13 +618,13 @@ permission:
     everyone: <yellow>Default group for all users excepted shop owner.
     staff: <yellow>System group for shop staffs.
     administrator: <red>System group for administrators, the users in this group will have permissions almost same with shop owner.
-invalid-group: <red>Invalid group name.
-invalid-permission: <red>Invalid permission.
-invalid-operation: <red>Invalid operation, only {0} are allowed.
+invalid-group: <red>Nom de groupe invalide.
+invalid-permission: <red>Permission invalide.
+invalid-operation: <red>Opération invalide, seuls {0} sont autorisés.
 player-no-group: <yellow>Player {0} not in any group in this shop.
-player-in-group: <green>Player {0} is in group <aqua>{1}</aqua> in this shop.
-permission-required: <red>You don't have permission {0} in this shop to do this.
-no-permission-detailed: <red>You don't have permission <yellow>{0}</yellow> to do this.
+player-in-group: <green>Le joueur {0} est dans le groupe <aqua>{1}</aqua> dans cette boutique.
+permission-required: <red>Vous n'avez pas la permission {0} dans cette boutique pour faire cela.
+no-permission-detailed: <red>Vous n'avez pas la permission <yellow>{0}</yellow> pour faire cela.
 paste-notice: "<yellow>Note: If you are creating a Paste for troubleshooting purposes, be sure to reproduce the error before creating the Paste as quickly as possible; we need the logs retained briefly in the buffer to troubleshoot. If you create a Paste too slowly or without first reproducing the error or restarted server, the Paste will record nothing and useless."
 paste-uploading: <aqua>Please wait... Uploading the paste to pastebin......
 paste-created: '<green>Paste created, click to open in browser: <yellow>{0}</yellow><newline><red>Warning: <gray>Never send paste to who you don''t trust.'
@@ -636,9 +636,9 @@ paste-451: |-
 paste-upload-failed: <red>Failed to upload paste to {0}, trying other pastebin provider...
 paste-upload-failed-local: <red>Failed to upload paste, trying generate local paste...
 command-incorrect: '<red>Command usage incorrect, type /qs help to check help. Usage: {0}.'
-successfully-set-player-group: <green>Successfully set player {0} group to <aqua>{1}</aqua>.
+successfully-set-player-group: <green>Joueur {0} mis dans le groupe <aqua>{1}</aqua> avec succès.
 successfully-unset-player-group: <green>Successfully remove player group in this shop.
-successfully-set-player-permission: <green>Successfully set player {0} permission <aqua>{1}</aqua> in shop <aqua>{2}</aqua>.
+successfully-set-player-permission: <green>Permission <aqua>{1}</aqua> ajoutée au joueur {0} dans la boutique <aqua>{2}</aqua> avec succès.
 lookup-item-created: <green>An item named <aqua>{0}</aqua> has been created in the lookup table. You can refer this item in configurations now.
 lookup-item-exists: <red>An item named <yellow>{0}</yellow> already exists in the lookup table, delete it or pick another name.
 lookup-item-not-found: <red>An item named <yellow>{0}</yellow> not exists.
@@ -660,7 +660,7 @@ not-a-valid-time: |-
   <gold>Valid timestamp example: (for Sat, 17 Dec 2022 10:31:37 GMT)</gold>
   <aqua>-<aqua> <yellow>2022-12-17T10:31:37Z</yellow> <grey>(Zulu Time)</grey>
   <aqua>-<aqua> <yellow>1671273097</yellow> <grey>(Unix Epoch Time in seconds)</grey>
-invalid-past-time: <red>You can't specify a time in the past.
+invalid-past-time: <red>Vous ne pouvez pas spécifier de temps dans le passé.
 debug:
   arguments-invalid: <red>Provided arguments <yellow>{0}</yellow> invalid.
   sign-located: '<green>Sign valid: <yellow>{0}</yellow>.'
@@ -709,7 +709,7 @@ debug:
   restart-database-manager-unfinished-task: "<yellow>Unfinished task: <white>{0}</white>"
   restart-database-manager-unfinished-task-history-query: "<yellow>Unfinished task (History Query): <white>{0}</white>"
   restart-database-manager-reconnect: "<yellow>Re-launching SQLManager via initial sequence (via async executor)"
-  restart-database-manager-done: "<green>Done!"
+  restart-database-manager-done: "<green>Terminé !"
   property-incorrect: "<yellow>You must enter a (and only one) property key=value set. E.g   aaa=bbb"
   property-security-block: "<red>Request was rejected, for security reason, you can only change the property that startsWith <aqua>com.ghostchu.quickshop</aqua> or <aqua>quickshop</aqua>."
   property-removed: "<green>Removed property key <white>{0}</white>"
@@ -722,9 +722,9 @@ database:
   already-scanning: <red>An scan task has been started, please wait until it finished.
   trim-warning: '<yellow><red><bold>Warning: </red>Backup your database before continue database trim to avoid the data loss. Once you get ready, execute <aqua>/qs database trim confirm</aqua> to continue.'
   status: '<yellow>Status : {0}'
-  status-good: <green>Good
+  status-good: <green>Bon
   status-bad: <yellow>Maintenance Required
-  isolated: '<yellow>Isolated Data:'
+  isolated: '<yellow>Données isolées :'
   isolated-data-ids: '<yellow><aqua>└</aqua> Data Records: <gold>{0}</gold>'
   isolated-shop-ids: '<yellow><aqua>└</aqua> Shop Indexes: <gold>{0}</gold>'
   isolated-logs: '<yellow><aqua>└</aqua> Logs: <gold>{0}</gold>'
@@ -776,7 +776,7 @@ transfer-rejected-fromside: <red>Player <aqua>{0}</aqua> rejected your shop tran
 transfer-rejected-toside: <red>You rejected <aqua>{0}</aqua>'s shop transfer request.
 transfer-no-pending-operation: <red>You don't have pending transfer request yet.
 transfer-no-self: <red>Vous ne pouvez pas transférer vos boutiques à vous-même.
-transfer-no-buy: <red>You can't transfer shops that are buy shops.
+transfer-no-buy: <red>Vous ne pouvez pas transférer de boutique qui est une boutique qui achète.
 transfer-failed-some: <red>Failed to transfer some of the shops as they're not eligible.
 benefit-overflow: <red>The sum of all benefits cannot be greater than or equal to 100%.
 benefit-exists: <red>Target player already in benefits list on this shop.
