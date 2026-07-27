@@ -252,6 +252,7 @@ public class DisplayEntityDisplayItem extends AbstractDisplayItem implements Rel
     }
 
     if (itemDisplay != null) {
+
       itemDisplay.remove();
     }
 
@@ -335,6 +336,7 @@ public class DisplayEntityDisplayItem extends AbstractDisplayItem implements Rel
     if(isSpawned || !shop.isLoaded()) {
       return;
     }
+
     if(new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.DISPLAY_ENTITY).callCancellableEvent()) {
       Log.debug("Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
       return;
