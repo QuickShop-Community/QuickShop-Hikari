@@ -24,11 +24,14 @@ import com.ghostchu.quickshop.api.shop.ShopChunk;
 import com.ghostchu.quickshop.api.shop.display.DisplayManager;
 import com.ghostchu.quickshop.listener.InteractionEntityListener;
 import com.ghostchu.quickshop.shop.SimpleShopChunk;
+import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * DisplayEntityItemManager
@@ -110,12 +113,58 @@ public class DisplayEntityItemManager implements DisplayManager<DisplayEntityDis
                              k -> new DisplayEntityDisplayItem(shop, chunk));
   }
 
+  /*
   public void addPlayer(final Player player) {
+
+    System.out.println("add player");
 
     final ShopChunk chunk = SimpleShopChunk.fromLocation(player.getLocation());
     chunksMapping.computeIfPresent(chunk, (k, v) -> {
-      v.values().forEach(display -> display.sendFakeItemToPlayer(player));
+      v.values().forEach(display -> {
+
+        QuickShop.folia().getScheduler().runAtLocationLater(display.getDisplayLocation(), task -> {
+          display.sendFakeItemToPlayer(player);
+        }, 1, TimeUnit.SECONDS);
+      });
       return v;
     });
+  }*/
+
+  public void addPlayer(final Player player) {
+
+    final Location playerLocation = player.getLocation();
+    final World world = playerLocation.getWorld();
+
+    if (world == null) {
+      return;
+    }
+
+    final int centerChunkX = playerLocation.getBlockX() >> 4;
+    final int centerChunkZ = playerLocation.getBlockZ() >> 4;
+    final int chunkRadius = 8;
+
+    for (int offsetX = -chunkRadius; offsetX <= chunkRadius; offsetX++) {
+      for (int offsetZ = -chunkRadius; offsetZ <= chunkRadius; offsetZ++) {
+
+        final int chunkX = centerChunkX + offsetX;
+        final int chunkZ = centerChunkZ + offsetZ;
+
+        final Location chunkLocation = new Location(world, chunkX << 4, playerLocation.getY(), chunkZ << 4);
+
+        final ShopChunk chunk = SimpleShopChunk.fromLocation(chunkLocation);
+        final var displays = chunksMapping.get(chunk);
+
+        if (displays == null) {
+          continue;
+        }
+
+        displays.values().forEach(display ->QuickShop.folia().getScheduler().runAtLocationLater(
+                display.getDisplayLocation(), task -> {
+                    if (player.isOnline() && player.getWorld().equals(world)) {
+                        display.sendFakeItemToPlayer(player);
+                    }
+                }, 1, TimeUnit.SECONDS));
+      }
+    }
   }
 }
