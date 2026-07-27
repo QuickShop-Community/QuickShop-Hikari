@@ -1,16 +1,16 @@
-break-shop-use-supertool: <yellow>Vous pouvez casser le magasin avec l'outil super outil.
-fee-charged-for-price-change: <green>Vous payez <red>{0}<green> pour changer le prix.
-not-allowed-to-create: <red>Vous ne pouvez pas créer un shop ici.
+break-shop-use-supertool: <yellow>Vous pouvez casser la boutique en utilisant le super outil.
+fee-charged-for-price-change: <green>Vous payez <red>{0}</red> pour changer le prix.
+not-allowed-to-create: <red>Vous ne pouvez pas créer de boutique ici.
 disabled-in-this-world: <red>QuickShop est désactivé dans ce monde
 how-much-to-trade-for: <green>Entrez dans le chat, combien vous souhaitez échanger <yellow>{1}x {0}<green>.
-client-language-changed: <green>QuickShop a détecté que votre paramètre de langue client a été modifié, nous utilisons maintenant la locale {0} pour vous.
+client-language-changed: <green>QuickShop a détecté que votre paramètre de langue client a été modifié, nous utilisons maintenant la langue {0} pour vous.
 shops-backingup: Création d'une sauvegarde de la boutique à partir de la base de données...
-_comment: .
+_comment: Bonjour traducteur ! Si vous éditez ceci sur GitHub ou depuis le code source, rendez-vous plutôt sur https://crowdin.com/project/qs-hikari.
 unlimited-shop-owner-changed: <yellow>Ce propriétaire de magasin illimité a été remplacé par {0}.
 bad-command-usage-detailed: '<red>Arguments de commande incorrects ! Paramètres acceptés : <gray>{0}'
-thats-not-a-number: <red>Nombre invalide.
-shop-name-disallowed: <red>Le nom de la boutique <yellow>{0} <red>est interdit. Choisissez un autre !
-console-only-danger: <red>Cette commande est dangereuse pour que seule la console puisse l'exécuter.
+thats-not-a-number: <red>Nombre invalide
+shop-name-disallowed: <red>Le nom de la boutique <yellow>{0} </yellow>est interdit. Choisissez un autre !
+console-only-danger: <red>Cette commande est dangereuse, donc seule la console peut l'exécuter.
 not-a-number: <red>Vous ne pouvez saisir qu'un nombre, votre entrée était {0}.
 not-looking-at-valid-shop-block: <red>Impossible de créer un magasin. Veuillez regarder un type de bloc pris en charge et réessayer
 shop-removed-cause-ongoing-fee: <red>Ta boutique aux coordonnées {0} a été supprimé car tu n'avais plus assez d'argent pour la garder!
@@ -24,15 +24,15 @@ tabcomplete:
   page: '[page #]'
   shop-id: '[magasin id]'
   currency: '[Type de monnaie]'
-  percentage: ''
+  percentage: '[pourcentage%]'
   add: 'ajouter'
   remove: 'supprimer'
   clear: 'clear'
   clearall: 'clearall'
   shops: 'magasins'
-  tagged: 'tagged'
+  tagged: 'étiqueté'
   purge: 'purge'
-  tag: '[tag]'
+  tag: '[étiquette]'
 taxaccount-unset: <green>Le compte de taxe de cette boutique suit maintenant le paramètre global du serveur.
 blacklisted-item: <red>Vous ne pouvez pas vendre cet objet car il se trouve sur la liste noire
 command-type-mismatch: <red>Cette commande ne peut être exécutée que par <aqua>{0}.
@@ -59,7 +59,7 @@ quick-fill:
     - '<yellow>Prix : <aqua>{price}'
     - '<yellow>Item : <aqua>{item}'
     - '<yellow>Emplacement : <aqua>{location}'
-  header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
+  header: '<yellow>Vous avez plusieurs magasins avec le même nom"<green>{0}</green>", choisissez en un pour continuer :'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow> <red> [co] <aqua> {0} <light_purple> {1}'
 3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> à refusé les vérifications des permissions. Si ce comportement n’est pas attendu, essayez d’ajouter <light_purple>{1} <gray>à la blacklist des listener. Guide de configuration: https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
@@ -110,10 +110,10 @@ virtual-player-component-hover: "<gray>Ceci est un joueur virtuel.\n<gray>Il s�
 real-player-component-hover: "<gray>Ce joueur existe réellement.\n<green>UUID : <yellow>{0}</yellow></green>\n<green>Nom d’utilisateur : <yellow>{1}</yellow></green>\n<green>Affiché comme : <yellow>{2}</yellow></green>\n<gray>Si vous souhaitez utiliser un compte système virtuel avec le même nom, ajoutez <dark_gray>\"[]\"</dark_gray> de chaque côté du nom d’utilisateur : <dark_gray>[{1}]</dark_gray>."
 pagination:
   header: "<green>{0}</green>:"
-  footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Previous page\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Next page\"><white>></white></hover></click>]</light_purple>"
+  footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>page précédente\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>page suivante\"><white>></white></hover></click>]</light_purple>"
 tags:
   commands:
-    tag: "<yellow>Manage your shop tags."
+    tag: "<yellow>Gérer les étiquettes de la boutique."
     favorite: "<yellow>Activer/désactiver Les favoris sur la boutique regardée."
     watch: "<yellow>Toggle watch on looked-at shop."
     avoid: "<yellow>Toggle avoid on looked-at shop."
@@ -141,16 +141,16 @@ tags:
     label: "<yellow>Watching"
   tag:
     title-avoided-shops: "<green>Avoided shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
-    title-favorited-shops: "<green>Favorited shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    title-favorited-shops: "<green>Magasins favoris</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
     title-watched-shops: "<green>Watched shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
     list-player-shops-title: "<green>Your tagged shops</green> <gray>(<yellow>{0}</yellow> shops, <yellow>{1}</yellow> tags)</gray>"
     list-player-shop-title: "<green>Shop tags</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
     list-tag-title: "<green>Tag <aqua>{0}</aqua> usage</green> <gray>(<yellow>{1}</yellow> shops)</gray>"
     shops-entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <light_purple>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>View all tags on this shop\">View {10} tags</hover></click>]</light_purple>"
     entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <red>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove Tag</hover></click>]</red>"
-    list-tag-shop-entry-tp: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Teleport to this shop\">Teleport</hover></click>]</light_purple>"
-    added: "<green>Added tag <aqua>{0}</aqua> to this shop."
-    duplicate: "<red>This shop already has tag <aqua>{0}</aqua>."
+    list-tag-shop-entry-tp: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Se téléporter à ce magasin\">Se téléporter</hover></click>]</light_purple>"
+    added: "<green>Étiquette <aqua>{0}</aqua> ajoutée à ce magasin."
+    duplicate: "<red>Ce magasin à déjà l'étiquette <aqua>{0}</aqua>."
     failed-add: "<red>An error occurred while adding tag <aqua>{0}</aqua> to this shop."
     failed-remove: "<red>An error occurred while removing tag <aqua>{0}</aqua> from this shop."
     removed: "<green>Étiquette <aqua>{0}</aqua> supprimée de ce magasin."
@@ -225,7 +225,7 @@ metric:
   transaction-count: <yellow>{0} total
   shop-hover: |-
     <yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, World: {4}<newline><gold>Owner: <gray>{5}<newline><gold>Shop Type: <gray>{6}<newline><gold>Item: <gray>{7}<newline><gold>Price: <gray>{8}
-  time-hover: '<yellow>Time: {0}'
+  time-hover: '<yellow>Temps : {0}'
   amount-stack-hover: <yellow>{0}x stack
 permission-denied-3rd-party: '<red>Permission refusée: plugin tiers [{0}].'
 you-dont-have-that-many-items: <red>Vous ne possédez que {0} {1} dans votre inventaire.
@@ -254,8 +254,8 @@ shop-state:
   freeze: Freeze
   unfreeze: Unfreeze
 shop-display:
-  enabled: Enabled
-  disabled: Disabled
+  enabled: Activé
+  disabled: Désactivé
 language:
   qa-issues: '<yellow>Problèmes d''assurance qualité : <aqua>{0}%'
   code: '<yellow>Nom: <gold>{0}'
@@ -271,7 +271,7 @@ updatenotify:
   onekeybuttontitle: '[Mise à jour instantanée]'
   label:
     github: '[GitHub]'
-    ore: '[Ore]'
+    ore: '[Minerais]'
     lts: '[LTS]'
     nbtapi: '[+NBTAPI]'
     qualityverifyed: '[Qualité]'
@@ -284,7 +284,7 @@ updatenotify:
     bukkitdev: '[BukkitDev]'
     polymart: '[Polymart]'
     modrinth: '[Modrinth]'
-    basic: '[Basic]'
+    basic: '[Basique]'
   list:
     - '{0} a été publiée. Vous utilisez encore la version {1} !'
     - Boum! Nouvelle mise à jour {0} disponible!
@@ -472,16 +472,16 @@ timeunit:
   scheduled-at: scheduled at {0}
   after: après
   day: "{0} jour"
-  recent: recent
+  recent: récent
   between: entre
   hours: "{0} heures"
-  months: "{0} months"
-  longtimeago: long time ago
-  between-format: between {0} and {1}
+  months: "{0} mois"
+  longtimeago: il y a longtemps
+  between-format: entre {0} et {1}
   minutes: "{0} minutes"
   justnow: à l'instant
   minute: "{0} minute"
-  std-format: MM/dd/yyyy HH:mm:ss
+  std-format: dd/MM/yyyy HH:mm:ss
   future-plain-text: future
   month: "{0} mois"
   future: dans {0}
@@ -721,7 +721,7 @@ database:
   scanning-async: <yellow>Scanning the isolated data in QuickShop databases on async task thread, the database load may increase in scan progress, this might need a while, try again later.
   already-scanning: <red>An scan task has been started, please wait until it finished.
   trim-warning: '<yellow><red><bold>Warning: </red>Backup your database before continue database trim to avoid the data loss. Once you get ready, execute <aqua>/qs database trim confirm</aqua> to continue.'
-  status: '<yellow>Status: {0}'
+  status: '<yellow>Status : {0}'
   status-good: <green>Good
   status-bad: <yellow>Maintenance Required
   isolated: '<yellow>Isolated Data:'
@@ -865,8 +865,8 @@ addon:
         {
          "embed":
            {
-             "title": ":inbox_tray: Somebody sold items to your shop",
-             "description": "The player %%purchase.name%% sold x%%purchase.amount%% %%shop.item.name%% to your shop.",
+             "title": ":inbox_tray: Quelqu'un a vendu des objets dabs votre boutique",
+             "description": "Le joueur %%purchase.name%% a vendu x%%purchase.amount%% %%shop.item.name%% dans votre bouitique.",
              "color": 52084,
              "author": {
                "name": "QuickShop-Hikari",
@@ -879,32 +879,32 @@ addon:
                "url": ""
              },
              "footer": {
-               "text": "QuickShop-Hikari Discord Notification",
+               "text": "Notification Discord QuickShop-Hikari",
                "icon_url": ""
              },
              "fields": [
                {
-                 "name": "Shop",
+                 "name": "Boutique",
                  "value": "%%shop.display-name%%",
                  "inline": false
                },
                {
-                 "name": "Purchaser",
+                 "name": "Acheteur",
                  "value": "%%purchase.name%%",
                  "inline": true
                },
                {
-                 "name": "Item",
+                 "name": "Objet",
                  "value": "%%shop.item.name%%",
                  "inline": true
                },
                {
-                 "name": "Amount",
+                 "name": "Montant",
                  "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
                  "inline": true
                },
                {
-                 "name": "Your paid",
+                 "name": "Votre paiement",
                  "value": "%%purchase.balance-formatted%%",
                  "inline": true
                },
@@ -1380,14 +1380,14 @@ addon:
             }
         }
     field:
-      player: Player
-      item: Item
-      amount: Amount
-      balance: Balance
+      player: Joueur
+      item: Objet
+      amount: Montant
+      balance: Solde
       balance-after-tax: Balance (after tax)
       account: Your account balance
       taxes: Taxes
-      cost: Cost
+      cost: Coût
   discount:
     commands:
       discount:
@@ -1423,7 +1423,7 @@ addon:
             UNIX Example: 1671273097
     discount-code-already-exists: <red>Sorry, the name of your discount code already in use.
     invalid-discount-code-regex: '<red>The discount code must matches the regex: <yellow>{0}</yellow>'
-    invalid-discount-code: <red>This discount code are invalid.
+    invalid-discount-code: <red>Ce code de promotion est invalide.
     discount-code-added: <green>Your discount code <yellow>{0}</yellow> has been added into shop <aqua>{1}</aqua>
     discount-code-removed: <green>Your discount code <yellow>{0}</yellow> has been removed from shop <aqua>{1}</aqua>
     invalid-code-type: <red>The code type <yellow>{0}</yellow> are invalid.
@@ -1573,13 +1573,13 @@ suite:
   dynmap:
     title: '{0} - {1} - {2}'
     description: |-
-      Item: {0}
-      Owner: {1}
-      Type: {2} {3}
-      Price: {4}
-      Location: {5} {6}, {7}, {8}
-      Space: {9}
-      Stock: {10}
+      Objet : {0}
+      Propriétaire : {1}
+      Type : {2} {3}
+      Prix : {4}
+      Position : {5} {6}, {7}, {8}
+      Espace : {9}
+      Stockage : {10}
   limited:
     command-description: <yellow>Set a limit that restrict the purchase that player can make in period.
     reach-the-quota-limit: <red>You have reach the purchase limit in this shop ({0}/{1}).
@@ -1620,31 +1620,31 @@ gui:
     info-stock:
       display: "<yellow>Stock Information</yellow>"
       lore:
-        - "<gray>Available: <white>{0}</white></gray>"
+        - "<gray>Disponible : <white>{0}</white></gray>"
     info-price:
       display: "<gold>Price Information</gold>"
       lore:
-        - "<gray>Price: <white>{0}</white></gray>"
-        - "<gray>Per: <white>{1} item(s)</white></gray>"
+        - "<gray>Prix : <white>{0}</white></gray>"
+        - "<gray>Par : <white>{1} objet(s)</white></gray>"
     info-seller:
       display: "<aqua>Seller Information</aqua>"
       lore:
-        - "<gray>Owner: <white>{0}</white></gray>"
+        - "<gray>Propriétaire : <white>{0}</white></gray>"
     custom-amount:
       display: "<bold><blue>Custom Order</blue></bold>"
     quantity-button:
-      display-buy: "<green>Buy x{0}</green>"
-      display-sell: "<gold>Sell x{0}</gold>"
+      display-buy: "<green>Acheter x{0}</green>"
+      display-sell: "<gold>Vendre x{0}</gold>"
       lore:
         - "<yellow>{0}</yellow>"
   keeper:
     title: "<dark_aqua>Shop Management</dark_aqua>"
     change-price:
-      display: "<bold><green>Change Price</green></bold>"
+      display: "<bold><green>Changer le prix</green></bold>"
       lore:
         - "<gray>Current price: <white>{0}</white></gray>"
         - ""
-        - "<yellow>Click to change price</yellow>"
+        - "<yellow>Cliquer pour changer le prix</yellow>"
     display-toggle:
       display: "<bold><green>Toggle Preview</green></bold>"
       lore:
@@ -1654,7 +1654,7 @@ gui:
       display: "<bold><green>Toggle Freeze</green></bold>"
       lore:
         - "<gray>Currently <white>{0}</white></gray>"
-        - "<gray>Click to <white>{1}</white></gray>"
+        - "<gray>Cliquer pour <white>{1}</white></gray>"
     mode-toggle:
       display: "<bold><green>Change Mode</green></bold>"
       lore:
@@ -1663,7 +1663,7 @@ gui:
     inventory:
       display: "<bold><green>View Inventory</green></bold>"
       lore:
-        - "<gray>Click to view your</gray>"
+        - "<gray>Cliquer pour voir votre</gray>"
         - "<gray>shop's chest inventory.</gray>"
     staff:
       display: "<bold><aqua>Shop Staff</aqua></bold>"
@@ -1713,37 +1713,37 @@ gui:
           worst: "▼▼ Below Avg"
       display: "<yellow>{0}</yellow>"
       lore:
-        - "<gray>Owner: <white>{0}</white></gray>"
-        - "<gray>Type: {1}</gray>"
-        - "<gray>Price: {2}</gray>"
+        - "<gray>Propriétaire : <white>{0}</white></gray>"
+        - "<gray>Type : {1}</gray>"
+        - "<gray>Prix : {2}</gray>"
         - "<gray><aqua>{3}</aqua></gray>"
-        - "<gray>Location: <white>{4}</white></gray>"
+        - "<gray>Position : <white>{4}</white></gray>"
         - "<dark_gray>{5}</dark_gray>"
-      teleport: "<newline><yellow>Click to teleport</yellow>"
+      teleport: "<newline><yellow>Cliquer pour se téléporter</yellow>"
     shop-item:
       lore:
-        - "<green>Owner: </green><yellow>{0}</yellow>"
-        - "<green>Location: </green><yellow>{1}</yellow>"
-        - "<green>Type: </green><yellow>{2}</yellow>"
-        - "<green>Price: </green><yellow>{3}</yellow>"
-        - "<green>Stock: </green><yellow>{4}</yellow>"
+        - "<green>Propriétaire : </green><yellow>{0}</yellow>"
+        - "<green>Position : </green><yellow>{1}</yellow>"
+        - "<green>Type : </green><yellow>{2}</yellow>"
+        - "<green>Prix : </green><yellow>{3}</yellow>"
+        - "<green>Stockage : </green><yellow>{4}</yellow>"
     grouped-item:
       display: "<yellow>{0}</yellow>"
       lore-title:
-        - "<gray>Shops: <white>{0}</white></gray>"
+        - "<gray>Boutiques : <white>{0}</white></gray>"
       lore-selling:
-        - "<green>▼ Selling ({0} shops)</green>"
-        - "<gray> Price: <white>{1} - {2}</white></gray>"
+        - "<green>▼ Vend ({0} magasins)</green>"
+        - "<gray> Prix : <white>{1} - {2}</white></gray>"
         - "<gray> Average: <yellow>{3}</yellow></gray>"
         - "<gray> Median: <gold>{4}</gold></gray>"
-        - "<gray> Stock: <aqua>{5}</aqua></gray>"
+        - "<gray> Stockage : <aqua>{5}</aqua></gray>"
       lore-buying:
         - "<#FFA500>▲ Buying ({0} shops)</#FFA500>"
-        - "<gray> Price: <white>{1} - {2}</white></gray>"
+        - "<gray> Prix : <white>{1} - {2}</white></gray>"
         - "<gray> Average: <yellow>{3}</yellow></gray>"
         - "<gray> Median: <gold>{4}</gold></gray>"
       lore-footer:
-        - "<yellow>Click to view all shops</yellow>"
+        - "<yellow>Cliquer pour voir toutes les boutiques</yellow>"
     search:
       display: "<yellow>Search: {0}</yellow>"
       lore:
@@ -1789,7 +1789,7 @@ gui:
     back:
       display: "<white>Back</white>"
     close:
-      display: "<red>Close</red>"
+      display: "<red>Fermer</red>"
   messages:
     #Keeper menu messages
     keeper:
@@ -1826,29 +1826,29 @@ gui:
       enter-search: "<yellow>Enter an item name to search. Type '<white>clear</white>' to reset, or right-click the search button.</yellow>"
 history:
   shop:
-    gui-title: "View purchase history"
+    gui-title: "Voir l'historique d'achats"
     header-icon-multiple-shop: "<white>The query result across {0} shops</white>"
     header-icon-shop-name: '<yellow>Shop {0}</yellow>'
     header-icon-shop-empty-name: '<yellow>Shop in world ''{0}'' at x: {1}, y: {2}, z: {3}</yellow>'
     header-icon-description:
-      - "<white>Type: <yellow>{0}</yellow></white>"
-      - "<white>Owner: <yellow>{1}</yellow></white>"
-      - "<white>Item: <yellow>{2}</yellow></white>"
-      - "<white>Price: <yellow>{3} <aqua>x{4}</aqua></yellow></white>"
-      - "<white>Location: <yellow>{5}</yellow></white>"
+      - "<white>Type : <yellow>{0}</yellow></white>"
+      - "<white>Propriétaire : <yellow>{1}</yellow></white>"
+      - "<white>Objet : <yellow>{2}</yellow></white>"
+      - "<white>Prix : <yellow>{3}<aqua>x{4}</aqua></yellow></white>"
+      - "<white>Position : <yellow>{5}</yellow></white>"
     log-icon-title: "<reset><green>Time: {0}</green>"
     log-icon-description:
       - "<white>Purchaser: <yellow>{0}</yellow></white>"
-      - "<white>Item: <yellow>{1} <aqua>x{2}</aqua></yellow></white>"
+      - "<white>Objet : <yellow>{1} <aqua>x{2}</aqua></yellow></white>"
       - "<white>Balance: <yellow>{3}</yellow></white>"
-      - "<white>Tax: <yellow>{4}</yellow></white>"
+      - "<white>Taxe : <yellow>{4}</yellow></white>"
     log-icon-description-with-store-name:
       - "<white>Store: <yellow>{0}</yellow></white>"
       - "<white>Buyer: <yellow>{1}</yellow></white>"
-      - "<white>Item: <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
-      - "<white>Amount: <yellow>{4}</yellow></white>"
-      - "<white>Total: <yellow>{5}</yellow></white>"
-      - "<white>Tax: <yellow>{5}</yellow></white>"
+      - "<white>Objet : <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
+      - "<white>Montant : <yellow>{4}</yellow></white>"
+      - "<white>Total : <yellow>{5}</yellow></white>"
+      - "<white>Taxe : <yellow>{5}</yellow></white>"
       - "<white>Net: <yellow>{6}</yellow></white>"
     query-icon: "<gray>Please wait, querying...</gray>"
     current-page: "<white>Page {0}</white>"
