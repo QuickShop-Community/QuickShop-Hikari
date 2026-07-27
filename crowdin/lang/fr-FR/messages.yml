@@ -13,7 +13,7 @@ shop-name-disallowed: <red>Le nom de la boutique <yellow>{0} </yellow>est interd
 console-only-danger: <red>Cette commande est dangereuse, donc seule la console peut l'exécuter.
 not-a-number: <red>Vous ne pouvez saisir qu'un nombre, votre entrée était {0}.
 not-looking-at-valid-shop-block: <red>Impossible de créer un magasin. Veuillez regarder un type de bloc pris en charge et réessayer
-shop-removed-cause-ongoing-fee: <red>Ta boutique aux coordonnées {0} a été supprimé car tu n'avais plus assez d'argent pour la garder!
+shop-removed-cause-ongoing-fee: <red>Votre boutique aux coordonnées {0} a été supprimé car vous n'aviez plus assez d'argent pour la garder !
 tabcomplete:
   amount: '[quantité]'
   item: '[item]'
@@ -36,7 +36,7 @@ tabcomplete:
 taxaccount-unset: <green>Le compte de taxe de cette boutique suit maintenant le paramètre global du serveur.
 blacklisted-item: <red>Vous ne pouvez pas vendre cet objet car il se trouve sur la liste noire
 command-type-mismatch: <red>Cette commande ne peut être exécutée que par <aqua>{0}.
-server-crash-warning: '<red>Le serveur peut planter après l’éxécution de la commande /qs reload si vous remplacez ou supprimez le fichier Jar du plugin QuickShop pendant l’exécution du serveur.'
+server-crash-warning: '<red>ATTENTION : Si vous utilisez la commande /quickshop reload pour remplacer/supprimer le fichier Jar du plugin QuickShop peut faire planter le serveur lorsqu''il est allumé.'
 you-cant-afford-to-change-price: <red>Cela coûte {0} de changer le prix de ta boutique.
 safe-mode: <red>QuickShop est à présent en mode sans échec, vous ne pouvez pas ouvrir ce conteneur, veuillez contacter l'administrateur du serveur pour corriger les erreurs.
 forbidden-vanilla-behavior: <red>L'opération est indisponible car elle n'est pas compatible avec la version vanilla
@@ -67,44 +67,44 @@ average-price-nearby: '<green>Prix moyen à proximité : <yellow>{0}'
 inventory-check-global-alert: "<red>[Vérification de l'inventaire] <gray>Attention ! Un objet d’affichage QuickShop <gold>{2}</gold> a été trouvé dans l’inventaire à l’emplacement <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, ce qui ne devrait pas arriver. Cela signifie généralement qu’une personne tente d’exploiter une faille pour dupliquer un objet d’affichage."
 digits-reach-the-limit: <red>Vous avez atteint les limites de décimales dans le prix.
 currency-unset: <green>La boutique a été supprimée avec succès. Utiliser les paramètres par défaut maintenant.
-you-cant-create-shop-in-there: <red>Tu n'as pas la permission de créer une boutique à cet emplacement!
+you-cant-create-shop-in-there: <red>Tu n'as pas la permission de créer une boutique à cet emplacement.
 no-pending-action: <red>Tu n'as aucune action en attente
 refill-success: <green>Remplissage de la boutique effectué avec succès
-failed-to-paste: <red>Erreur lors de l'upload des données vers PasteBin, verifier la connection internet et rééssayez. (Voir la console)
+failed-to-paste: <red>Erreur lors de l'envoi des données vers Pastebin, vérifier la connexion internet et réessayez. (Voir la console)
 shop-out-of-stock-name: <dark_purple>Votre boutique {0} est à court de {1} !
-shop-name-invalid: <red>Le nom de la boutique <yellow>{0} <red>n'est pas valide. Choisissez un autre !
-how-many-buy-stack: <yellow>Entrez dans le chat, combien d'items vous souhaitez <aqua>Acheter<green>. Il y a <yellow>{0}<green>item que vous pouvez acheter <yellow>{1}<green>. Entrer<aqua>{2}<green> dans chat pour acheter tout.
+shop-name-invalid: <red>Le nom de la boutique <yellow>{0}</yellow> n'est pas valide. Choisissez un autre !
+how-many-buy-stack: <yellow>Entrez dans le chat, combien d'items vous souhaitez <aqua>ACHETER</aqua>. Il y a <green>{0}</green> articles que vous pouvez acheter <green>{1}</green>. Entrer<aqua>{2}</aqua> dans chat pour tout acheter.
 exceeded-maximum: <red>La valeur maximale à ne pas dépasser en Java.
 unlimited-shop-owner-keeped: '<yellow>Attention : Le propriétaire de la boutique est toujours propriétaire de la boutique illimitée, vous devez re-définir nouveau propriétaire de la boutique par vous-même.'
 no-enough-money-to-keep-shops: <red>Tu n'as plus assez d'argent pour garder tes boutiques! Tous tes coffres ont été supprimés...
 3rd-plugin-build-check-failed: Un plugin tiers <bold>{0}<reset><red> a refusé les vérifications de permission, avez-vous les droits pour paramétrer ici ?
 not-a-integer: <red>Vous devez entrer un nombre entier, votre entrée était {0}.
 translation-country: 'Langue: Français (fr_FR)'
-buying-more-than-selling: '<red>ATTENTION: Vous êtes entrain d''acheter des objets plus cher que vous ne les vendez!'
-purchase-failed: '<red>Echec de l''achat : Erreur interne, veuillez contacter un administrateur du serveur.'
-denied-put-in-item: <red>Vous ne pouvez pas mettre cet objet dans votre boutique!
-shop-has-changed: <red>La boutique que vous essayez d'utiliser à changée depuis que vous avez cliqué dessus!
-flush-finished: <green>Messages communiqués avec succès
-no-price-given: <red>Merci de donner un nombre/chiffre valide.
+buying-more-than-selling: '<red>ATTENTION : Vous êtes en train d''acheter des objets plus cher que vous ne les vendez !'
+purchase-failed: '<red>Échec de l''achat : Erreur interne, veuillez contacter un administrateur du serveur.'
+denied-put-in-item: <red>Vous ne pouvez pas mettre cet objet dans votre boutique !
+shop-has-changed: <red>La boutique que vous essayez d'utiliser à changée depuis que vous avez cliqué dessus !
+flush-finished: <green>Les messages récents ont été effacés avec succès.
+no-price-given: <red>Merci de donner un prix valide.
 shop-already-owned: <red>Ceci est déjà une boutique.
 backup-success: <green>Sauvegarde réussie.
-not-looking-at-shop: <red>Impossible de trouver un QuickShop. Vous devez en regarder un.
-you-cant-afford-a-new-shop: <red>La création d'une boutique coûte {0}.
-success-created-shop: <red>Boutique crée avec succès.
+not-looking-at-shop: <red>Impossible de trouver une boutique ! <yellow>Vous devez en regarder une.
+you-cant-afford-a-new-shop: <red>Vous ne pouvez pas vous le permettre, cela coûte <green>{0}<red> de créer une nouvelle boutique.
+success-created-shop: <green>Boutique crée avec succès.
 shop-creation-cancelled: <red>Création de la boutique annulée.
-shop-owner-self-trade: <yellow>Vous négociez avec vous en magasin, vous ne pourrez donc pas gagner de solde.
-shop-owner-self-trade-denied: <red>Vous ne pouvez pas échanger avec votre propre shop.
-purchase-out-of-space: <red>Cette boutique est à court d'espace, contactez le propriétaire ou le personnel de la boutique pour vider la boutique.
+shop-owner-self-trade: <yellow>Vous négociez avec votre propre boutique. <gray>Vous ne pourrez donc pas gagner d'argent.
+shop-owner-self-trade-denied: <red>Vous ne pouvez pas échanger avec votre propre boutique.
+purchase-out-of-space: <red>Cette boutique est à court d'espace, contactez le propriétaire ou le personnel de la boutique pour la vider.
 reloading-status:
   success: <green>Rechargement effectué sans erreurs.
-  scheduled: <green>Rechargement terminé. <gray>(Certaines modifications nécessitent un certain temps)
-  require-restart: <green>Rechargement terminé. <yellow>(Certaines modifications nécessitent un redémarrage du serveur pour prendre effet)
+  scheduled: <green>Rechargement terminé. <gray>(<yellow>Certaines modifications nécessitent un certain temps pour être activées<gray>)
+  require-restart: <green>Rechargement terminé. <gray>(<yellow>Certaines modifications nécessitent un redémarrage du serveur pour prendre effet<gray>)
   failed: <red>Rechargement échoué, vérifiez la console du serveur
-player-bought-from-your-store-tax: <green>{0} a acheté {1} {2} de ta boutique et tu as gagné {3} ({4} in taxes).
-not-enough-space: <red>Il ne vous reste que {0} place(s) restante(s) pour ceci!
-shop-name-success: <green>Le nom de votre boutique a bien été défini à <yellow>{0}<green>.
-shop-staff-added: <green> {0} a été ajouté avec succès comme membre du personnel pour votre boutique.
-shop-staff-empty: <yellow>Cette boutique n'a pas de Staff.
+player-bought-from-your-store-tax: <green>{0} a acheté {1} {2} de votre boutique et vous avez gagné {3} ({4} de taxes).
+not-enough-space: <red>Il ne vous reste que <yellow>{0}<red> place(s) restante(s) pour ceci !
+shop-name-success: <green>La boutique a été renommée avec succès en <yellow>{0}<green>.
+shop-staff-added: <green><yellow>{0}<green> a été ajouté avec succès en tant que membre du personnel de votre boutique.
+shop-staff-empty: <yellow>Ce magasin n’a pas de personnel.
 shops-recovering: Récupération des boutiques à partir de la sauvegarde...
 virtual-player-component-hover: "<gray>Ceci est un joueur virtuel.\n<gray>Il s’agit d’un compte système portant le même nom.</gray>\n<green>UUID : <yellow>{0}</yellow></green>\n<green>Nom d’utilisateur : <yellow>{1}</yellow></green>\n<green>Affiché comme : <yellow>{2}</yellow></green>"
 real-player-component-hover: "<gray>Ce joueur existe réellement.\n<green>UUID : <yellow>{0}</yellow></green>\n<green>Nom d’utilisateur : <yellow>{1}</yellow></green>\n<green>Affiché comme : <yellow>{2}</yellow></green>\n<gray>Si vous souhaitez utiliser un compte système virtuel avec le même nom, ajoutez <dark_gray>\"[]\"</dark_gray> de chaque côté du nom d’utilisateur : <dark_gray>[{1}]</dark_gray>."
@@ -165,8 +165,8 @@ tags:
     no-tagged-shops-tag: "<red>You have no shops with tag <aqua>{0}</aqua>."
 menu:
   sell-tax: <green>Tu as payé<yellow>{0} <green>en taxes.
-  owner: '<green>Propriétaire: {0}'
-  preview: <aqua>[Aperçu de l'article]
+  owner: '<green>Propriétaire : {0}'
+  preview: <gray>[<aqua>Aperçu de l'article<gray>]
   enchants: <dark_purple>Enchantements
   sell-tax-self: <green>Vous n'avez pas payé de taxes parce que vous possédez cette boutique.
   shop-information: '<green>Informations sur la boutique :'
@@ -217,7 +217,8 @@ metric:
   amount-hover: <yellow>{0}x
   header-shop: '<yellow>Les transactions de la boutique {0} sont {1} {2}:'
   player-hover: |-
-    <yellow>{0}<newline><gold>UUID: <gray>{1}
+    <yellow>{0}
+    <gold>UUID: <gray>{1}
   looking-up: <yellow>Recherche de métriques en cours, veuillez patienter...
   tax-hover: <yellow>{0} taxes
   header-global: '<yellow>The server {0} {1} transactions:'
@@ -227,17 +228,17 @@ metric:
     <yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, World: {4}<newline><gold>Owner: <gray>{5}<newline><gold>Shop Type: <gray>{6}<newline><gold>Item: <gray>{7}<newline><gold>Price: <gray>{8}
   time-hover: '<yellow>Temps : {0}'
   amount-stack-hover: <yellow>{0}x pile
-permission-denied-3rd-party: '<red>Permission refusée: plugin tiers [{0}].'
-you-dont-have-that-many-items: <red>Vous ne possédez que {0} {1} dans votre inventaire.
-complete: <green>Action effectuée
-translate-not-completed-yet-url: 'La traduction de la langue {0} a terminé {1}, Voulez-vous nous aider à améliorer la traduction ? Cliquez ici : {2}'
-success-removed-shop: <green>Boutique supprimée avec succès.
+permission-denied-3rd-party: '<red>Permission refusée : plugin tiers [{0}].'
+you-dont-have-that-many-items: <red>Vous ne possédez que {0} {1}.
+complete: <green>Complet !
+translate-not-completed-yet-url: 'La traduction de la langue {0} n''a pas été terminée {1}, Voulez-vous nous aider à améliorer la traduction ? Cliquez ici : {2}'
+success-removed-shop: <green>Boutique supprimée.
 currency-set: <green>Le mode de la boutique a été définie avec succès à {0}.
 shop-purged-start: <green>La purge a commencé, vérifiez la console pour plus de détails.
 economy-transaction-failed: <red>Désolé une erreur s'est produite pendant votre transaction. Elle a donc été annulée et vous avez récupéré votre argent. S'il vous plait contactez un administrateur pour résoudre ce problème.
 nothing-to-flush: <green>Aucun nouveau message.
 no-price-change: <red>Le prix ne changera pas!
-edition-confilct: QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.
+edition-confilct: QuicShop-Hikari avec QuickShop-Reremake d'installé peut causer des conflits. Désinstallez-en un.
 inventory-unavailable: |-
   <red>This shop InventoryWrapper not exists or invalid. Did you using addon to re-binding the shop Inventory? Information: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the server administrators.
 file-test: Ceci est un fichier texte de test. Nous l'utilisons pour tester si les messages sont cassé. Vous pouvez le remplir avec n'importe quel "easter eggs" que vous aimez ici :)
@@ -261,10 +262,10 @@ language:
   code: '<yellow>Nom: <gold>{0}'
   approval-progress: '<yellow>Progression de l''Approbation : <aqua>{0}%'
   translate-progress: '<yellow>Progression de la traduction : <aqua>{0}%'
-  name: '<yellow>Nom: <gold>{0}'
+  name: '<yellow>Nom : <gold>{0}'
   help-us: <green>[Aidez-nous à améliorer la qualité de la traduction]
 warn-to-paste: |-
-  <yellow>Assemblage de données et upload vers PasteBin, cela peut prendre un moment. <red><bold>Attention :<red> Les données sont gardées publiques pendant UNE semaine, cela peut faire fuiter la config de votre serveur, assurez vous de la partager à des gens de confiances.
+  <yellow>Assemblage de données et envoi vers Pastebin, cela peut prendre un moment. <red><bold>Attention :</bold> Les données sont gardées publiques pendant une semaine, cela peut faire fuiter la config de votre serveur, assurez-vous de la partager à des <bold>personnes de confiances.
 how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL<green>. There are <yellow>{0}<green> items per bulk and you can sell <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to sell all.
 updatenotify:
   buttontitle: '[Mettre à jour]'
@@ -300,8 +301,8 @@ updatenotify:
     - Mise à jour de {0} activée. Sauvegardez la mise à jour !
     - Il y a une mise à jour commandant, {0} vient de sortir!
     - Regarde mon style --- {0} mise à jour, tu as toujours la version {1}
-    - Ahhhhhhh! Nouvelle mise à jour {0}!
-    - Qu'est-ce que tu penses? {0} Une nouvelle mise à jour publiée!
+    - Ahhhhhhh ! Nouvelle mise à jour {0} ! Mise à jour !
+    - Qu'est-ce que tu penses ? {0} Une nouvelle mise à jour publiée ! Mise à jour !
     - Docteur, QuickShop a une nouvelle mise à jour {0}! Vous devriez mettre à jour ~
     - Ko~ko~da~yo~ QuickShop a une nouvelle mise à jour {0}~
     - Paimon souhaite te dire que QuickShop a une nouvelle mise à jour {0}!
