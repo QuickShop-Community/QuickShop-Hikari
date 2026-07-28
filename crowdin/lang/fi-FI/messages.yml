@@ -1,4 +1,4 @@
-break-shop-use-supertool: <yellow>You can break the shop by using the super tool.
+break-shop-use-supertool: <yellow>Rikot kauppoja käyttäen työkalua.
 fee-charged-for-price-change: <green>Maksoit {0} vaihtaaksesi kaupan hinnan.
 not-allowed-to-create: <red>Et luultavasti voi luoda kauppaa tänne.
 disabled-in-this-world: <red>QuickShop on poistettu käytöstä tässä maailmassa
