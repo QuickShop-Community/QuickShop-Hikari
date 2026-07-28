@@ -1854,7 +1854,7 @@ history:
       - "<white>商店： <yellow>{0}</yellow></white>"
       - "<white>买家： <yellow>{1}</yellow></white>"
       - "<white>物品： <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
-      - "<white>数量: <yellow>{4}</yellow></white>"
+      - "<white>价格: <yellow>{4}</yellow></white>"
       - "<white>总计： <yellow>{5}</yellow></white>"
       - "<white>税： <yellow>{5}</yellow></white>"
       - "<white>实收： <yellow>{6}</yellow></white>"
