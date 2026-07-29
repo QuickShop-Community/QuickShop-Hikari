@@ -9,6 +9,7 @@ import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.shop.history.ShopHistory;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
+import net.kyori.adventure.text.Component;
 import net.tnemc.menu.core.compatibility.MenuPlayer;
 import net.tnemc.menu.core.manager.MenuManager;
 import net.tnemc.menu.core.viewer.MenuViewer;
@@ -18,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -28,6 +30,7 @@ import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_DATA_RECORDS;
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_RECORDS;
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_SUMMARY;
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.SHOPS_DATA;
+import static com.ghostchu.quickshop.menu.ShopHistoryMenu.SHOPS_HEADERS;
 
 public class SubCommand_History implements CommandHandler<Player> {
 
@@ -96,6 +99,16 @@ public class SubCommand_History implements CommandHandler<Player> {
     Util.asyncThreadRun(()->{
       final ShopHistory shopHistory = new ShopHistory(QuickShop.getInstance(), shops);
 
+      final Map<Long, Component> shopHeader = HashMap.newHashMap(100);
+      for (final Shop shop : shops) {
+
+        if (shop.getShopName() != null) {
+          shopHeader.put(shop.getShopId(), QuickShop.getInstance().text().of("history.shop.header-icon-shop-name", shop.getShopName()).forLocale());
+          continue;
+        }
+        shopHeader.put(shop.getShopId(), QuickShop.getInstance().text().of("history.shop.header-icon-shop-empty-name", shop.bukkitLocation().getWorld().getName(), shop.bukkitLocation().getBlockX(), shop.bukkitLocation().getBlockY(), shop.bukkitLocation().getBlockZ()).forLocale());
+      }
+
       try {
         final List<ShopHistory.ShopHistoryRecord> queryResult = shopHistory.query();
         final ShopHistory.ShopSummary summary = shopHistory.generateSummary().join();
@@ -133,6 +146,7 @@ public class SubCommand_History implements CommandHandler<Player> {
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
 
         viewer.addData(SHOPS_DATA, shops);
+        viewer.addData(SHOPS_HEADERS, shopHeader);
         viewer.addData(HISTORY_RECORDS, queryResult);
         viewer.addData(HISTORY_DATA_RECORDS, dataRecords);
         viewer.addData(HISTORY_SUMMARY, summary);

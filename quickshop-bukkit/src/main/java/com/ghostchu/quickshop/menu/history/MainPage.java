@@ -54,6 +54,7 @@ import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_DATA_RECORDS;
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_RECORDS;
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_SUMMARY;
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.SHOPS_DATA;
+import static com.ghostchu.quickshop.menu.ShopHistoryMenu.SHOPS_HEADERS;
 import static com.ghostchu.quickshop.menu.shared.QuickShopPage.get;
 import static com.ghostchu.quickshop.menu.shared.QuickShopPage.getConfigDisplay;
 import static com.ghostchu.quickshop.menu.shared.QuickShopPage.getConfigLore;
@@ -98,11 +99,12 @@ public class MainPage {
     if(viewer.isPresent()) {
 
       final Optional<Object> shopsData = viewer.get().findData(SHOPS_DATA);
+      final Optional<Object> shopsHeaders = viewer.get().findData(SHOPS_HEADERS);
       final Optional<Object> historyData = viewer.get().findData(HISTORY_RECORDS);
       final Map<Long, DataRecord> dataRecords = (Map<Long, DataRecord>) viewer.get().findData(HISTORY_DATA_RECORDS).orElse(Map.of());
       final Optional<Object> summaryData = viewer.get().findData(HISTORY_SUMMARY);
       final Player player = Bukkit.getPlayer(viewer.get().uuid());
-      if(shopsData.isPresent() && historyData.isPresent() && summaryData.isPresent() && player != null) {
+      if(shopsData.isPresent() && shopsHeaders.isPresent() && historyData.isPresent() && summaryData.isPresent() && player != null) {
 
         final ProxiedLocale locale = QuickShop.getInstance().getTextManager().findRelativeLanguages(player);
 
@@ -130,6 +132,7 @@ public class MainPage {
         final int start = ((page - 1) * offset);
 
         final List<Shop> shops = (ArrayList<Shop>)shopsData.get();
+        final Map<Long, Component> headers = (Map<Long, Component>)shopsHeaders.get();
         final List<ShopHistory.ShopHistoryRecord> queryResult = (List<ShopHistory.ShopHistoryRecord>)historyData.get();
         final ShopHistory.ShopSummary summary = (ShopHistory.ShopSummary)summaryData.get();
 
@@ -316,7 +319,7 @@ public class MainPage {
             stack = stack.of(type, Math.min(max, record.amount()));
           }
           stack = stack.customName(getConfigDisplay(id, entryConfig, "<yellow>{0}</yellow>", dateStr));
-          stack = stack.lore(getConfigLore(id, entryConfig, shopName, userName, itemName,
+          stack = stack.lore(getConfigLore(id, entryConfig, headers.getOrDefault(record.shopId(), shopName), userName, itemName,
                                            record.amount(), record.money(), record.tax(),
                                            record.money() - record.tax()));
 

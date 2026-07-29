@@ -108,7 +108,8 @@ public class ShopListPage {
     final boolean stockOnly = (Boolean)viewer.dataOrDefault(BROWSE_STOCK_ONLY, false);
     final int page = (Integer)viewer.dataOrDefault(SHOP_LIST_PAGE, 1);
 
-    @SuppressWarnings("unchecked") final List<Shop> allShops = (ArrayList<Shop>)shopsData.get();
+    @SuppressWarnings("unchecked")
+    final List<Shop> allShops = (ArrayList<Shop>)shopsData.get();
 
     // Apply filter and stock filter, then sort
     List<Shop> filteredShops = MarketUtils.filterShops(allShops, filterMode);
