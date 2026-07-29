@@ -295,7 +295,7 @@ public class MainPage {
               }
             }
           }
-          final String type = historyItem.getType().getKey().getKey();
+          //final String type = historyItem.getType().getKey().getKey();
           final Component itemName = Util.getItemStackName(historyItem);
           final int max = historyItem.getMaxStackSize();
 
@@ -316,7 +316,7 @@ public class MainPage {
               stack = stack.profile(profile);
             }
           } else {
-            stack = stack.of(type, Math.min(max, record.amount()));
+            stack = QuickShop.getInstance().stack(historyItem);
           }
           stack = stack.customName(getConfigDisplay(id, entryConfig, "<yellow>{0}</yellow>", dateStr));
           stack = stack.lore(getConfigLore(id, entryConfig, headers.getOrDefault(record.shopId(), shopName), userName, itemName,
