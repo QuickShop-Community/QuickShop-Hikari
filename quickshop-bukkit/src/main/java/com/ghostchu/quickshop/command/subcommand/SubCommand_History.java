@@ -99,7 +99,7 @@ public class SubCommand_History implements CommandHandler<Player> {
     Util.asyncThreadRun(()->{
       final ShopHistory shopHistory = new ShopHistory(QuickShop.getInstance(), shops);
 
-      final Map<Long, Component> shopHeader = HashMap.newHashMap(100);
+      final Map<Long, Component> shopHeader = HashMap.newHashMap(shops.size());
       for (final Shop shop : shops) {
 
         if (shop.getShopName() != null) {
