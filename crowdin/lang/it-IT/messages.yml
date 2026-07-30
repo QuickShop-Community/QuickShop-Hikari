@@ -110,7 +110,7 @@ virtual-player-component-hover: "<gray>Questo è un giocatore virtuale.\n<gray>S
 real-player-component-hover: "<gray>Questo è un vero e proprio giocatore esistente.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Nome utente: <yellow>{1}</yellow></green>\n<green>Mostra come: <yellow>{2}</yellow></green>\n<gray>Se desideri utilizzare un account di sistema virtuale con lo stesso nome, aggiungi <dark_gray>\"[]\"</dark_gray> ai lati del nome utente: <dark_gray>[{1}]</dark_gray>."
 pagination:
   header: "<green>{0}</green>:"
-  footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Previous page\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Next page\"><white>></white></hover></click>]</light_purple>"
+  footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Pagina precedente\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Pagina successiva\"><white>></white></hover></click>]</light_purple>"
 tags:
   commands:
     tag: "<yellow>Manage your shop tags."
@@ -131,7 +131,7 @@ tags:
     added: "<green>Added this shop to your favorite list."
     removed: "<green>Removed this shop from your favorite list."
     unable: "<red>Unable to toggle favorite on this shop."
-    none: "<red>You have no favorite shops."
+    none: "<red>Non hai negozi preferiti."
     label: "<yellow>Favorite"
   watch:
     added: "<green>You are now watching this shop."
@@ -161,7 +161,7 @@ tags:
     no-tags-all: "<red>There are no tags on any shop."
     no-tags: "<red>This shop has no tags."
     no-tagged-shops-player: "<red>Non hai tag su questo negozio."
-    no-tagged-shops: "<red>You have no tagged shops."
+    no-tagged-shops: "<red>Non hai negozi taggati."
     no-tagged-shops-tag: "<red>You have no shops with tag <aqua>{0}</aqua>."
 menu:
   sell-tax: <green>Hai pagato <yellow>{0}</yellow> nelle tasse.
@@ -1689,7 +1689,7 @@ gui:
   staff:
     title: "<dark_aqua>Staff Management</dark_aqua>"
     search:
-      display: "<yellow>Search: {0}</yellow>"
+      display: "<yellow>Ricerca: {0}</yellow>"
       lore:
         - "<gray>Left-click to search for players</gray>"
         - "<gray>Right-click to clear search</gray>"
@@ -1762,7 +1762,7 @@ gui:
         - "<gray>Shops: <white>{1}</white></gray>"
         - "<gray>Average price: <gold>{2}</gold></gray>"
     sort:
-      display: "<green>Sort: {0}</green>"
+      display: "<green>Ordina: {0}</green>"
       lore:
         - "<gray>Click to cycle</gray>"
       price-asc: "Price ↑"
