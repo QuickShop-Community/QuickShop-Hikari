@@ -1015,6 +1015,14 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   }
 
   @Override
+  public void removeExtraPartial(final @NotNull NamespacedKey key) {
+
+    this.extraMap.keySet().removeIf(mapKey -> mapKey.asString().contains(key.asString()));
+    setDirty();
+  }
+
+
+  @Override
   public void removeAll(@NotNull final Plugin plugin) {
     final String prefix = plugin.getName().toLowerCase(Locale.ROOT) + ":";
 
