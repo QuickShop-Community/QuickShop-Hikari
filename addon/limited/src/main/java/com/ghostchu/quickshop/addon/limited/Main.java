@@ -128,7 +128,7 @@ public final class Main extends JavaPlugin implements Listener {
       }
       try {
         if(event.getCalendarTriggerType().ordinal() >= CalendarEvent.CalendarTriggerType.valueOf(shop.getExtra(new NamespacedKey(this, "period"), "")).ordinal()) {
-          shop.removeExtra(new NamespacedKey(this, "data"));
+          shop.removeExtraPartial(new NamespacedKey(this, "data"));
           Log.debug("Limit data has been reset. Shop -> " + shop);
         }
       } catch(final IllegalArgumentException ignored) {

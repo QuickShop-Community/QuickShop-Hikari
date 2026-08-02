@@ -396,6 +396,14 @@ public interface ShopExtraHolder {
   void removeExtra(@NotNull final NamespacedKey key);
 
   /**
+   * Removes an extra entry identified if the key contains any part of the identifier for the provided key.
+   *
+   * @param key the identifier for the extra entry to be removed; must not be null
+   * @since 6.3.0.0
+   */
+  void removeExtraPartial(@NotNull final NamespacedKey key);
+
+  /**
    * Removes all entries from the collection whose keys start with the specified prefix
    * derived from the provided plugin's name.
    *
