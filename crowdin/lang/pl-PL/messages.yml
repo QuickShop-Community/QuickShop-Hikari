@@ -21,8 +21,8 @@ tabcomplete:
   name: '[nazwa]'
   range: '[zakres]'
   list: 'list'
-  page: '[page #]'
-  shop-id: '[shop id]'
+  page: '[strona #]'
+  shop-id: '[ID sklepu]'
   currency: '[nazwa waluty]'
   percentage: '[percentage%]'
   add: 'add'
@@ -113,7 +113,7 @@ pagination:
   footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Previous page\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Next page\"><white>></white></hover></click>]</light_purple>"
 tags:
   commands:
-    tag: "<yellow>Manage your shop tags."
+    tag: "<yellow>Zarządzaj tagami sklepu."
     favorite: "<yellow>Toggle favorite on looked-at shop."
     watch: "<yellow>Toggle watch on looked-at shop."
     avoid: "<yellow>Toggle avoid on looked-at shop."
@@ -128,11 +128,11 @@ tags:
     none: "<red>You have no avoided shops."
     label: "<yellow>Avoid"
   favorite:
-    added: "<green>Added this shop to your favorite list."
-    removed: "<green>Removed this shop from your favorite list."
+    added: "<green>usunął ten sklep z Twojej listy ulubionych."
+    removed: "<green>usunął ten sklep z Twojej listy ulubionych."
     unable: "<red>Unable to toggle favorite on this shop."
     none: "<red>You have no favorite shops."
-    label: "<yellow>Favorite"
+    label: "<yellow>Ulubione"
   watch:
     added: "<green>You are now watching this shop."
     removed: "<green>You are no longer watching this shop."
@@ -149,20 +149,20 @@ tags:
     shops-entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <light_purple>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>View all tags on this shop\">View {10} tags</hover></click>]</light_purple>"
     entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <red>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove Tag</hover></click>]</red>"
     list-tag-shop-entry-tp: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Teleport to this shop\">Teleport</hover></click>]</light_purple>"
-    added: "<green>Added tag <aqua>{0}</aqua> to this shop."
-    duplicate: "<red>This shop already has tag <aqua>{0}</aqua>."
-    failed-add: "<red>An error occurred while adding tag <aqua>{0}</aqua> to this shop."
-    failed-remove: "<red>An error occurred while removing tag <aqua>{0}</aqua> from this shop."
-    removed: "<green>Removed tag <aqua>{0}</aqua> from this shop."
-    does-not-exist: "<red>This shop does not have tag <aqua>{0}</aqua>."
-    cleared: "<green>Cleared all tags from this shop."
-    cleared-all: "<green>Cleared all tags from all shops."
-    cleared-tag: "<green>Cleared tag <aqua>{0}</aqua> from all your tagged shops."
-    no-tags-all: "<red>There are no tags on any shop."
-    no-tags: "<red>This shop has no tags."
-    no-tagged-shops-player: "<red>You have no tags on this shop."
-    no-tagged-shops: "<red>You have no tagged shops."
-    no-tagged-shops-tag: "<red>You have no shops with tag <aqua>{0}</aqua>."
+    added: "<green>Dodano tag <aqua>{0}</aqua> do tego sklepu."
+    duplicate: "<red>Ten sklep ma już tag <aqua>{0}</aqua>."
+    failed-add: "<red>Wystąpił błąd podczas dodawania tagu <aqua>{0}</aqua> do tego sklepu."
+    failed-remove: "<red>Wystąpił błąd podczas usuwania tagu <aqua>{0}</aqua> z tego sklepu."
+    removed: "<green>Usunięto tag <aqua>{0}</aqua> z tego sklepu."
+    does-not-exist: "<red>Ten sklep nie ma tagu <aqua>{0}</aqua>."
+    cleared: "<green>Usunięto wszystkie tagi z tego sklepu."
+    cleared-all: "<green>Wyczyszczono wszystkie tagi ze wszystkich sklepów."
+    cleared-tag: "<green>Wyczyszczono tag <aqua>{0}</aqua> ze wszystkich Twoich otagowanych sklepów."
+    no-tags-all: "<red>W żadnym sklepie nie ma tagów."
+    no-tags: "<red>Ten sklep nie ma tagów."
+    no-tagged-shops-player: "<red>Nie masz żadnych tagów w tym sklepie."
+    no-tagged-shops: "<red>Nie masz otagowanych sklepów."
+    no-tagged-shops-tag: "<red>Nie masz sklepów z tagiem <aqua>{0}</aqua>."
 menu:
   sell-tax: <green>Zapłaciłeś <yellow>{0} </yellow>podatku.
   owner: '<green>Właściciel: {0}'
@@ -180,9 +180,9 @@ menu:
   item-holochat-error: <red>[Błąd]
   this-shop-is-selling: <green>Ten sklep <aqua>SPRZEDAJE<green> itemy.
   this-shop-is-buying: <green>Ten sklep <light_purple>SKUPUJE<green> itemy.
-  this-shop-is-frozen: <blue>FROZEN</blue>
-  this-shop-is-active: <aqua>ACTIVE</aqua>
-  this-shop-is-state: <green>This shop's current state is {0}<green>.
+  this-shop-is-frozen: <blue>ZAMROŻONY</blue>
+  this-shop-is-active: <aqua>AKTYWNY</aqua>
+  this-shop-is-state: <green>Aktualny stan tego sklepu to {0}<green>.
   shop-stack: '<green>Ilość stacków: <yellow>{0}'
   space: '<green>Miejsce: <yellow>{0}'
   effects: <green>Efekty
@@ -195,7 +195,7 @@ currency-not-exists: <red>Nie można znaleźć waluty, którą chcesz ustawić. 
 no-nearby-shop: <red>Brak pobliskiego sklepu pasującego do {0}.
 translation-author: 'Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red>Integracja {0} odmówiła handlu ze sklepem
-shop-transaction-failed: "<red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any other operations have been rolled back. Reason: {0}"
+shop-transaction-failed: "<red>Przepraszamy, wystąpił wewnętrzny błąd podczas przetwarzania zakupu. Zakup został anulowany, a wszelkie inne operacje zostały wycofane. Powód: {0}"
 success-change-owner-to-server: <green>Pomyślnie ustawiono właściciela sklepu na Serwer.
 shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
 shop-name-too-long: <red>Nazwa tego sklepu jest zbyt długa (maksymalna długość {0}), proszę wybrać inną!
@@ -254,8 +254,8 @@ shop-state:
   freeze: Freeze
   unfreeze: Unfreeze
 shop-display:
-  enabled: Enabled
-  disabled: Disabled
+  enabled: Włączony
+  disabled: Wyłączony
 language:
   qa-issues: '<yellow>Problemy z zapewnieniem jakości: <aqua>{0}'
   code: '<yellow>Kod: <gold>{0}'
@@ -387,7 +387,7 @@ signs:
   status-available: <green>
   item-left: ''
   item-duration: 'Dur: {0}'
-  item-level: 'Level: {0}'
+  item-level: 'Poziom: {0}'
   splash-potion: "Splash"
   linger-potion: "Lingering"
 negative-amount: <red>Nie możesz handlować ujemnymi kwotami
@@ -643,7 +643,7 @@ lookup-item-created: <green>An item named <aqua>{0}</aqua> has been created in t
 lookup-item-exists: <red>An item named <yellow>{0}</yellow> already exists in the lookup table, delete it or pick another name.
 lookup-item-not-found: <red>An item named <yellow>{0}</yellow> not exists.
 lookup-item-name-illegal: <red>Item name illegal. Only alphanumeric characters and underscores are allowed.
-lookup-item-name-regex: '<red>The name must match this regex: <aqua>{0}</aqua>.'
+lookup-item-name-regex: '<red>Nazwa musi być zgodna z tym wyrażeniem: <aqua>{0}</aqua>.'
 lookup-item-test-not-found: '<gold>Test: <yellow>The item in your hand not registered in lookup table.'
 lookup-item-test-found: '<gold>Test: <green>The item in your hand was registered as name <aqua>{0}</aqua> in lookup table.'
 lookup-item-removed: <green>The specified item <aqua>{0}</aqua> has been successfully removed from lookup table.
@@ -703,7 +703,7 @@ debug:
   hikari-cp-not-working: "<red>Niepowodzenie! Połączenie z HikariCP nie powiodło się (nie przeszło testu w 1 sekundę)"
   hikari-cp-timeout: "<red>HikariCP is timed out while getting a valid connection, please clean up all active queries to release connection resources."
   queries-stopped: "<green>Stopped <white>{0}</white> active queries."
-  queries-dumping: "<yellow>Dumping active queries..."
+  queries-dumping: "<yellow>Zrzucanie aktywnych zapytań..."
   restart-database-manager: "<yellow>Restartowanie SQLManager..."
   restart-database-manager-clear-executors: "<yellow>Czyszczenie egzekutorów..."
   restart-database-manager-unfinished-task: "<yellow>Niedokończone zadanie: <white>{0}</white>"
@@ -746,7 +746,7 @@ database:
   purge-players-cache: <yellow>Please wait, purging players caches...
   purge-players-completed: |-
     <green>Successfully purged {0} players caches from both memory and database.<newline><aqua>Note: You server performance may impact by this operation.
-  purge-players-error: <red>Failed to purge players caches, please check the server console.
+  purge-players-error: <red>Nie udało się wyczyścić pamięci podręcznej graczy, sprawdź konsolę serwera.
   suggestion:
     trim: <yellow>This database require a isolated data trim, execute command <aqua>/qs database trim</aqua> to trim the database.
 always-counting-removal-early-warning: <red>Always Counting feature is scheduled for removal, you shouldn't use it anymore and will stop work in future.
@@ -839,12 +839,12 @@ addon:
     owner-create-only: <red>Tylko właściciel wyspy może stworzyć tu sklep.
     owner-member-create-only: <red>Tylko właściciel lub członek wyspy może stworzyć tutaj sklep.
   fabledskyblock:
-    owner-create-only: <red>Only island owner can create shop there.
-    owner-member-create-only: <red>Only island owner or member can create shop there.
+    owner-create-only: <red>Tylko właściciel wyspy może stworzyć sklep.
+    owner-member-create-only: <red>Tylko właściciel lub członek wyspy może stworzyć sklep.
   worldguard:
     creation-flag-test-failed: <red>Nie masz uprawnień na stworzenie sklepu w tym miejscu (WorldGuard).
     trade-flag-test-failed: <red>Nie masz uprawnień, aby handlować w tym miejscu (WorldGuard).
-    reached-per-region-amount-limit: "<red>You have reached the maximum amount of shops in this region."
+    reached-per-region-amount-limit: "<red>Osiągnąłeś maksymalną liczbę sklepów w tym regionie."
   discord:
     __to_translators: 'To translators: `addon.discord.discord-messages` use a special variable in strings, %%LANG_KEY%% instead of QuickShop''s style {LANG_INDEX}, do not translate anything inside double ''%'' section. BUT for any other section texts, it respect the normal QuickShop Text System syntax ({0},{1} etc.) This may be difficult to understand because two different variable forms are used in the same program at the same time, but trust me, it is reasonable. (you don''t need translate this string, it''s a comment)'
     __to_users: Like the QuickShop Text System, Discord addon will also auto-detect user language and use user's language to send Discord message, it following the QuickShop-Hikari's language system settings.
@@ -1245,11 +1245,11 @@ addon:
       shop-price-changed: |
         {
             "embed": {
-                "title": ":money_with_wings: Your shop price was changed",
-                "description": "You or your shop staff changed your shop price.",
+                "title": ":money_with_wings: Cena Twojego sklepu została zmieniona",
+                "opis": "Ty lub Twój personel zmienił cenę sklepu. ,
                 "color": 16172079,
-                "author": {
-                    "name": "QuickShop-Hikari",
+                "autor": {
+                    "nazwa": "QuickShop-Hikari",
                     "icon_url": ""
                 },
                 "thumbnail": {
@@ -1258,24 +1258,24 @@ addon:
                 "image": {
                     "url": ""
                 },
-                "footer": {
-                    "text": "QuickShop-Hikari Discord Notification",
+                "stopka": {
+                    "text": "QuickShop-Hikari Powiadomienie Discord",
                     "icon_url": ""
                 },
                 "fields": [
                     {
-                        "name": "Shop",
-                        "value": "%%shop.display-name%%",
+                        "name": "Sklep",
+                        "wartość": "%%shop.display-name%%",
                         "inline": false
                     },
                     {
-                        "name": "From",
-                        "value": "%%change-price.from%%",
+                        "nazwa": "Z",
+                        "wartość": "%%change-price.from%%",
                         "inline": true
                     },
                     {
-                        "name": "To",
-                        "value": "%%change-price.to%%",
+                        "nazwa": "Na",
+                        "wartość": "%%change-price.to%%",
                         "inline": true
                     }
                 ]
@@ -1284,11 +1284,11 @@ addon:
       mod-shop-price-changed: |
         {
             "embed": {
-                "title": ":money_with_wings: A shop price has been changed",
-                "description": "A shop changed its price settings.",
+                "title": ":money_with_wings: Cena sklepu została zmieniona",
+                "opis": "Sklep zmienił ustawienia cenowe. ,
                 "color": 6061450,
-                "author": {
-                    "name": "QuickShop-Hikari",
+                "autor": {
+                    "nazwa": "QuickShop-Hikari",
                     "icon_url": ""
                 },
                 "thumbnail": {
@@ -1297,34 +1297,34 @@ addon:
                 "image": {
                     "url": ""
                 },
-                "footer": {
-                    "text": "QuickShop-Hikari Discord Notification",
+                "stopka": {
+                    "text": "QuickShop-Hikari Powiadomienie Discord ",
                     "icon_url": ""
                 },
                 "fields": [
                     {
-                        "name": "Shop",
-                        "value": "%%shop.display-name%%",
+                        "name": "Sklep",
+                        "wartość": "%%shop.display-name%%",
                         "inline": true
                     },
                     {
-                        "name": "Owner",
-                        "value": "%%shop.owner.name%%",
+                        "name": "Właściciel",
+                        "wartość": "%%shop.owner.name%%",
                         "inline": true
                     },
                     {
-                        "name": "",
-                        "value": "",
+                        "nazwa": "",
+                        "wartość": "",
                         "inline": true
                     },
                     {
-                        "name": "From",
-                        "value": "%%change-price.from%%",
+                        "nazwa": "Z",
+                        "wartość": "%%change-price.from%%",
                         "inline": true
                     },
                     {
-                        "name": "To",
-                        "value": "%%change-price.to%%",
+                        "nazwa": "Na",
+                        "wartość": "%%change-price.to%%",
                         "inline": true
                     }
                 ]
@@ -1442,7 +1442,7 @@ addon:
     discount-code-not-applicable: <red>Your discount code <yellow><bold>{0}</bold></yellow> are <bold>not applicable</bold> in this shop!
     discount-code-reach-the-limit: <red>You have reach the usage limit of discount code <yellow><bold>{0}</bold></yellow>, discount are not applied.
     discount-code-no-permission: <red>You didn't have permission to use any discount code in this shop!
-    discount-code-has-been-expired: <red>Your discount has been expired!
+    discount-code-has-been-expired: <red>Twój rabat wygasł!
     discount-code-config-shop-added: <green>Successfully to add this shop into your discount code allow list.
     discount-code-config-shop-add-failure: <red>This shop already in your discount code allow list.
     discount-code-config-shop-removed: <green>Successfully to remove this shop from your discount code allow list.
@@ -1510,7 +1510,7 @@ addon:
       Nielimitowany: {6}
       Lokalizacja: {7}
   bluemap:
-    markerset-title: QuickShop-Hikari Shops
+    markerset-title: Sklepy QuickShop-Hikari
     marker-name: '{0} @ {2} @ {3} dla x{4} @ {5}'
     marker-description: |
       Nazwa: {0}
@@ -1595,7 +1595,7 @@ suite:
     command-description: <yellow>List all shops owned by yourself or another player.
     table-prefix: <yellow>You owned total <aqua>{0}</aqua> shops on this server.
     entry-syntax: <aqua>- <yellow>{0}
-    entry-syntax-fallback-name: '<yellow>Item:{0} X:{1}, Y:{2}, Z:{3}, World: {4}'
+    entry-syntax-fallback-name: '<yellow>Przedmiot:{0} X:{1}, Y:{2}, Z:{3}, Świat: {4}'
     hover-text: |-
       <yellow>{0}
       <gray>{1} {2}, {3}, {4}
@@ -1613,10 +1613,10 @@ delete-controlpanel-button-confirm: "<red>Do you really want remove this shop? C
 cannot-suggest-price: "<red>Sorry, For the time being, no more people are trading the same item as you and there is not enough data to generate a suggested price."
 price-suggest: "<green>Based on data from <aqua>{0}</aqua> stores, the highest priced store is priced at <light_purple>{1}</light_purple>, the lowest priced store is priced at <light_purple>{2}</light_purple>, the average price is <light_purple>{3}</light_purple>, and the median price is <light_purple>{4}</light_purple>. <newline><yellow>It's recommended that you set your price around <gold>{5}</gold>.</yellow>"
 price-suggest-multi: "<green>Suggestion for {0} type.</green>{1}"
-suggest-wait: "<green>Please wait... Calculating recommend price."
+suggest-wait: "<green>Proszę czekać... Obliczanie zalecanej ceny."
 gui:
   trade:
-    title: "<dark_aqua>Shop</dark_aqua>"
+    title: "<dark_aqua>Sklep</dark_aqua>"
     info-stock:
       display: "<yellow>Stock Information</yellow>"
       lore:
@@ -1624,29 +1624,29 @@ gui:
     info-price:
       display: "<gold>Price Information</gold>"
       lore:
-        - "<gray>Price: <white>{0}</white></gray>"
+        - "<gray>Cena: <white>{0}</white></gray>"
         - "<gray>Per: <white>{1} item(s)</white></gray>"
     info-seller:
-      display: "<aqua>Seller Information</aqua>"
+      display: "<aqua>Informacje o sprzedawcy</aqua>"
       lore:
-        - "<gray>Owner: <white>{0}</white></gray>"
+        - "<gray>Właściciel: <white>{0}</white></gray>"
     custom-amount:
-      display: "<bold><blue>Custom Order</blue></bold>"
+      display: "<bold><blue>Niestandardowe zamówienie</blue></bold>"
     quantity-button:
-      display-buy: "<green>Buy x{0}</green>"
-      display-sell: "<gold>Sell x{0}</gold>"
+      display-buy: "<green>Kup x{0}</green>"
+      display-sell: "<gold>Sprzedaj x{0}</gold>"
       lore:
         - "<yellow>{0}</yellow>"
   keeper:
     title: "<dark_aqua>Shop Management</dark_aqua>"
     change-price:
-      display: "<bold><green>Change Price</green></bold>"
+      display: "<bold><green>Zmień cenę</green></bold>"
       lore:
         - "<gray>Current price: <white>{0}</white></gray>"
         - ""
-        - "<yellow>Click to change price</yellow>"
+        - "<yellow>Kliknij, aby zmienić cenę</yellow>"
     display-toggle:
-      display: "<bold><green>Toggle Preview</green></bold>"
+      display: "<bold><green>Przełącz podgląd</green></bold>"
       lore:
         - "<gray>Toggle item preview in shops</gray>"
         - "<gray>Status: <white>{0}</white>. Click to toggle.</gray>"
@@ -1663,7 +1663,7 @@ gui:
     inventory:
       display: "<bold><green>View Inventory</green></bold>"
       lore:
-        - "<gray>Click to view your</gray>"
+        - "<gray>Kliknij, aby wyświetlić</gray>"
         - "<gray>shop's chest inventory.</gray>"
     staff:
       display: "<bold><aqua>Shop Staff</aqua></bold>"
@@ -1673,68 +1673,68 @@ gui:
     history:
       display: "<bold><light_purple>Transaction History</light_purple></bold>"
       lore:
-        - "<gray>Click to view your</gray>"
+        - "<gray>Kliknij, aby wyświetlić</gray>"
         - "<gray>shop's transaction history.</gray>"
     remove:
-      display: "<bold><red>Delete Shop</red></bold>"
+      display: "<bold><red>Usuń Sklep</red></bold>"
       lore:
-        - "<gray>Click to delete your shop.</gray>"
+        - "<gray>Kliknij, aby usunąć swój sklep.</gray>"
         - "<dark_gray>You can also break the sign/chest.</dark_gray>"
   staff:
     title: "<dark_aqua>Staff Management</dark_aqua>"
     search:
-      display: "<yellow>Search: {0}</yellow>"
+      display: "<yellow>Szukaj: {0}</yellow>"
       lore:
         - "<gray>Left-click to search for players</gray>"
         - "<gray>Right-click to clear search</gray>"
     add-staff:
       display: "<green>Add Staff Member</green>"
       lore:
-        - "<gray>Click to add a new</gray>"
+        - "<gray>Kliknij, aby dodać nowy</gray>"
         - "<gray>staff member to your shop.</gray>"
     back:
-      display: "<white>Back to Shop</white>"
+      display: "<white>Wróć do sklepu</white>"
   browse:
-    title: "<dark_aqua>Market Browser</dark_aqua>"
+    title: "<dark_aqua>Przeglądarka Marketów</dark_aqua>"
     shop-list:
       buying-label: "<#FFA500>Buying</#FFA500>"
       selling-label: "<green>Selling</green>"
       price-indicator:
-        average: "● Average"
+        average: "● Średnia"
         selling:
-          great: "▼▼ Great Deal!"
-          good: "▼ Below Avg"
-          bad: "▲▲ Expensive"
-          worst: "▲ Above Avg"
+          great: "▼▼ Świetna oferta!"
+          good: "▼ Poniżej średniej"
+          bad: "▲▲ Drogi"
+          worst: "▲ Powyżej średniej"
         buying:
-          great: "▲▲ Great Price!"
-          good: "▲ Above Avg"
-          bad: "▼▼ Low Offer"
-          worst: "▼▼ Below Avg"
+          great: "▲▲ Świetna cena!"
+          good: "▲ Powyżej średniej"
+          bad: "▼▼ Niska oferta"
+          worst: "▼▼ Poniżej średniej"
       display: "<yellow>{0}</yellow>"
       lore:
-        - "<gray>Owner: <white>{0}</white></gray>"
-        - "<gray>Type: {1}</gray>"
-        - "<gray>Price: {2}</gray>"
+        - "<gray>Właściciel: <white>{0}</white></gray>"
+        - "<gray>Typ: {1}</gray>"
+        - "<gray>Cena: {2}</gray>"
         - "<gray><aqua>{3}</aqua></gray>"
-        - "<gray>Location: <white>{4}</white></gray>"
+        - "<gray>Lokalizacja: <white>{4}</white></gray>"
         - "<dark_gray>{5}</dark_gray>"
-      teleport: "<newline><yellow>Click to teleport</yellow>"
+      teleport: "<newline><yellow>Kliknij, aby teleportować</yellow>"
     shop-item:
       lore:
-        - "<green>Owner: </green><yellow>{0}</yellow>"
-        - "<green>Location: </green><yellow>{1}</yellow>"
-        - "<green>Type: </green><yellow>{2}</yellow>"
-        - "<green>Price: </green><yellow>{3}</yellow>"
-        - "<green>Stock: </green><yellow>{4}</yellow>"
+        - "<green>Właściciel: </green><yellow>{0}</yellow>"
+        - "<green>Lokalizacja: </green><yellow>{1}</yellow>"
+        - "<green>Typ: </green><yellow>{2}</yellow>"
+        - "<green>Cena: </green><yellow>{3}</yellow>"
+        - "<green>Ilość: </green><yellow>{4}</yellow>"
     grouped-item:
       display: "<yellow>{0}</yellow>"
       lore-title:
-        - "<gray>Shops: <white>{0}</white></gray>"
+        - "<gray>Sklepy: <white>{0}</white></gray>"
       lore-selling:
-        - "<green>▼ Selling ({0} shops)</green>"
-        - "<gray> Price: <white>{1} - {2}</white></gray>"
-        - "<gray> Average: <yellow>{3}</yellow></gray>"
+        - "<green>▼ Sprzedaż ({0} sklepów)</green>"
+        - "<gray> Cena: <white>{1} - {2}</white></gray>"
+        - "<gray> Średnia: <yellow>{3}</yellow></gray>"
         - "<gray> Median: <gold>{4}</gold></gray>"
         - "<gray> Stock: <aqua>{5}</aqua></gray>"
       lore-buying:
@@ -1745,7 +1745,7 @@ gui:
       lore-footer:
         - "<yellow>Click to view all shops</yellow>"
     search:
-      display: "<yellow>Search: {0}</yellow>"
+      display: "<yellow>Szukaj: {0}</yellow>"
       lore:
         - "<gray>Left-click to search for items</gray>"
         - "<gray>Right-click to clear search</gray>"
@@ -1756,45 +1756,45 @@ gui:
         - "<gray>Shops: <white>{1}</white></gray>"
         - "<gray>Average price: <gold>{2}</gold></gray>"
     sort:
-      display: "<green>Sort: {0}</green>"
+      display: "<green>Sortowanie: {0}</green>"
       lore:
         - "<gray>Click to cycle</gray>"
-      price-asc: "Price ↑"
-      price-desc: "Price ↓"
-      stock: "Stock"
-      name: "Name"
+      price-asc: "Cena ↑"
+      price-desc: "Cena ↓"
+      stock: "Asortyment"
+      name: "Nazwa"
     filter:
-      display: "<aqua>Filter: {0}</aqua>"
+      display: "<aqua>Filtrowanie: {0}</aqua>"
       lore:
         - "<gray>Click to cycle</gray>"
-      all: "All"
-      selling: "Selling"
-      buying: "Buying"
-      all-indicator: "<white>All Shops</white>"
+      all: "Wszystkie"
+      selling: "Sprzedaż"
+      buying: "Kupno"
+      all-indicator: "<white>Wszystkie sklepy</white>"
       selling-indicator: "<green>Selling Shops</green>"
       buying-indicator: "<#FFA500>Buying Shops</#FFA500>"
     stock-filter:
       display: "<gold>In Stock Only: {0}</gold>"
       lore:
-        - "<gray>Click to toggle</gray>"
+        - "<gray>Kliknij, aby przełączyć</gray>"
     back:
-      display: "<white>Back to Market</white>"
+      display: "<white>Wróć do Marketu</white>"
   shared:
     previous-page:
-      display: "<white><< Previous Page</white>"
+      display: "<white><< Poprzednia Strona</white>"
     next-page:
-      display: "<white>Next Page >></white>"
+      display: "<white>Następna strona >></white>"
     page-info:
-      display: "<yellow>Page {0}/{1}</yellow>"
+      display: "<yellow>Strona {0}/{1}</yellow>"
     back:
-      display: "<white>Back</white>"
+      display: "<white>Wróć</white>"
     close:
-      display: "<red>Close</red>"
+      display: "<red>Zamknij</red>"
   messages:
     #Keeper menu messages
     keeper:
       #Shown when player clicks "Change Price" button
-      enter-price: "<yellow>Enter a new price in chat.</yellow>"
+      enter-price: "<yellow>Wprowadź nową cenę na czacie.</yellow>"
       #Shown when player clicks "Delete Shop" button
       confirm-delete: "<yellow>Type '<white>confirm</white>' in chat to delete your shop. Type anything else to cancel.</yellow>"
     #Staff menu messages
@@ -1844,15 +1844,15 @@ history:
       - "<white>Podatek: <yellow>{4}</yellow></white>"
     log-icon-description-with-store-name:
       - "<white>Sklep: <yellow>{0}</yellow></white>"
-      - "<white>Buyer: <yellow>{1}</yellow></white>"
+      - "<white>Kupując: <yellow>{1}</yellow></white>"
       - "<white>Przedmiot: <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
       - "<white>Amount: <yellow>{4}</yellow></white>"
-      - "<white>Total: <yellow>{5}</yellow></white>"
-      - "<white>Tax: <yellow>{5}</yellow></white>"
+      - "<white>Łącznie: <yellow>{5}</yellow></white>"
+      - "<white>Podatki: <yellow>{5}</yellow></white>"
       - "<white>Net: <yellow>{6}</yellow></white>"
     query-icon: "<gray>Proszę czekać, trwa wykonywanie zapytania...</gray>"
     current-page: "<white>Strona {0}</white>"
-    multi-shops-icon-title: "<yellow>Multiple Shops</yellow>"
+    multi-shops-icon-title: "<yellow>Wiele sklepów</yellow>"
     summary-icon-title: "<yellow>Summary</yellow>"
     summary-icon-description:
       - "<white>Total unique purchasers: <yellow>{0}</yellow></white>"
@@ -1870,7 +1870,7 @@ history:
     top-n-valuable-customers-entry:
       - "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
     top-n-valuable-customers-title: "<gold>Top {0} valuable customers</gold>"
-    no-result: "<white>No result</white>"
+    no-result: "<white>Brak wyniku</white>"
 about:
   text:
     - "<b><aqua>QuickShop <yellow>{0}</yellow></aqua></b>"
