@@ -128,7 +128,7 @@ tags:
     none: "<red>You have no avoided shops."
     label: "<yellow>Avoid"
   favorite:
-    added: "<green>usunął ten sklep z Twojej listy ulubionych."
+    added: "<green>Dodał ten sklep do listy ulubionych."
     removed: "<green>usunął ten sklep z Twojej listy ulubionych."
     unable: "<red>Unable to toggle favorite on this shop."
     none: "<red>You have no favorite shops."
@@ -331,7 +331,7 @@ shop-not-exist: <red>Sklep nie istnieje.
 bad-command-usage: <red>Błędne argumenty poleceń!
 cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
 cleanghost-starting: <green>Starting to check for ghost shops (missing container blocks). All non-existing shops will be removed...
-cleanghost-deleting: <yellow>Found a corrupted shop <aqua>{0}</aqua> because {1}, mark it to delete...
+cleanghost-deleting: <yellow>Znaleziono uszkodzony sklep <aqua>{0}</aqua> ponieważ {1}, oznaczono go jako do usunięcia...
 cleanghost-deleted: <green>Usunięto łącznie <yellow>{0}</yellow> sklepów.
 shop-purchase-cancelled: <red>Zakup w sklepie został anulowany.
 bypassing-lock: <red>Omijanie blokady QuickShop!
@@ -388,13 +388,13 @@ signs:
   item-left: ''
   item-duration: 'Dur: {0}'
   item-level: 'Poziom: {0}'
-  splash-potion: "Splash"
-  linger-potion: "Lingering"
+  splash-potion: "Miotana"
+  linger-potion: "Trwała"
 negative-amount: <red>Nie możesz handlować ujemnymi kwotami
 display-turn-on: <green>Pomyślnie włączono wyświetlacz sklepu.
 display-turn-off: <green>Pomyślnie wyłączono wyświetlacz sklepu.
-display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
-display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-owned: <green>Pomyślnie włączono wyświetlacz sklepu dla wszystkich posiadanych sklepów.
+display-turn-off-owned: <green>Pomyślnie wyłączono wyświetlacz sklepu dla wszystkich posiadanych sklepów.
 display-turn-on-all: <green>Successfully turned on shop display for all server shops.
 display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <green>Pomyślnie usunięto {0} jako członka personelu twojego sklepu.
@@ -403,7 +403,7 @@ backup-failed: Nie można wykonać kopii zapasowej bazy danych. Sprawdź konsol�
 shop-staff-cleared: <green>Pomyślnie usunięto wszystkich graczy z twojego sklepu.
 price-too-high: <red>Zbyt wysoka cena sklepu! Nie można utworzyć takiego, którego cena jest wyższa niż {0}.
 plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
-player-sold-to-your-store: <green>{0} sold {1} {2} to your shop for {3}.
+player-sold-to-your-store: <green>{0} sprzedał {1} {2} do Twojego sklepu za {3}.
 shop-out-of-stock: <dark_purple>W twoim sklepie na {0}, {1}, {2}, zabrakło {3}!
 how-many-buy: <green>Wpisz ilość jaką chcesz <aqua>KUPIĆ<green> na czacie. Możesz kupić <yellow>{0}<green>. Wpisz <aqua>{1}<green>, jeśli chcesz kupić wszystko.
 language-info-panel:
@@ -537,8 +537,8 @@ command:
     database: <yellow>View and maintain QuickShop database
     benefit: <yellow>Settings of divide benefits between shop owner and other players
     browse: <yellow>Browse shops that exist in this server.
-    tag: <yellow>Add, remove or query tags of a shop
-    suggestprice: <yellow>Suggest a recommend price for looking shop, based on other shops
+    tag: <yellow>Dodaj, usuń lub wyszukaj tagi sklepu
+    suggestprice: <yellow>Zaproponuj zalecaną cenę dla sklepu w oparciu o inne sklepy
     history: <yellow>Zobacz historię transakcji sklepu
     sign: <yellow>Zmień materiał znaku sklepu
   bulk-size-not-set: '<red>Użycie: /qs size <amount>'
@@ -620,27 +620,27 @@ permission:
     administrator: <red>System group for administrators, the users in this group will have permissions almost same with shop owner.
 invalid-group: <red>Niepoprawna nazwa grupy.
 invalid-permission: <red>Niepoprawne uprawnienie.
-invalid-operation: <red>Invalid operation, only {0} are allowed.
+invalid-operation: <red>Niepoprawna operacja, tylko {0} jest dozwolone.
 player-no-group: <yellow>Player {0} not in any group in this shop.
 player-in-group: <green>Player {0} is in group <aqua>{1}</aqua> in this shop.
-permission-required: <red>You don't have permission {0} in this shop to do this.
-no-permission-detailed: <red>You don't have permission <yellow>{0}</yellow> to do this.
+permission-required: <red>Nie masz uprawnień {0} w tym sklepie, aby to zrobić.
+no-permission-detailed: <red>Nie masz uprawnień <yellow>{0}</yellow> aby to zrobić.
 paste-notice: "<yellow>Note: If you are creating a Paste for troubleshooting purposes, be sure to reproduce the error before creating the Paste as quickly as possible; we need the logs retained briefly in the buffer to troubleshoot. If you create a Paste too slowly or without first reproducing the error or restarted server, the Paste will record nothing and useless."
-paste-uploading: <aqua>Please wait... Uploading the paste to pastebin......
+paste-uploading: <aqua>Proszę czekać... Przesyłanie danych do pastebin......
 paste-created: '<green>Paste created, click to open in browser: <yellow>{0}</yellow><newline><red>Warning: <gray>Never send paste to who you don''t trust.'
 paste-created-local: |-
   <green>Paste created and saved to your local disk at: {0}<newline><red>Warning: <gray>Never send paste to who you don't trust.
-paste-created-local-failed: <red>Failed to save paste to your local disk, please check your disk.
+paste-created-local-failed: <red>Nie udało się zapisać pliku na dysku lokalnym, sprawdź swój dysk.
 paste-451: |-
   <gray><b>TIPS: </b> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.<newline><gray>If the subsequent operation fails, try adding the --file additional parameter to generate a local Paste: <dark_gray>/qs paste --file</dark_gray>
 paste-upload-failed: <red>Failed to upload paste to {0}, trying other pastebin provider...
 paste-upload-failed-local: <red>Failed to upload paste, trying generate local paste...
 command-incorrect: '<red>Command usage incorrect, type /qs help to check help. Usage: {0}.'
-successfully-set-player-group: <green>Successfully set player {0} group to <aqua>{1}</aqua>.
+successfully-set-player-group: <green>Pomyślnie ustawiono grupę gracza {0} na <aqua>{1}</aqua>.
 successfully-unset-player-group: <green>Successfully remove player group in this shop.
-successfully-set-player-permission: <green>Successfully set player {0} permission <aqua>{1}</aqua> in shop <aqua>{2}</aqua>.
+successfully-set-player-permission: <green>Pomyślnie ustawiono uprawnienie <aqua>{1}</aqua> dla gracza {0} w sklepie <aqua>{2}</aqua>.
 lookup-item-created: <green>An item named <aqua>{0}</aqua> has been created in the lookup table. You can refer this item in configurations now.
-lookup-item-exists: <red>An item named <yellow>{0}</yellow> already exists in the lookup table, delete it or pick another name.
+lookup-item-exists: <red>Element o nazwie <yellow>{0}</yellow> już istnieje w tablicy, usuń go lub wybierz inną nazwę.
 lookup-item-not-found: <red>An item named <yellow>{0}</yellow> not exists.
 lookup-item-name-illegal: <red>Item name illegal. Only alphanumeric characters and underscores are allowed.
 lookup-item-name-regex: '<red>Nazwa musi być zgodna z tym wyrażeniem: <aqua>{0}</aqua>.'
@@ -650,11 +650,11 @@ lookup-item-removed: <green>The specified item <aqua>{0}</aqua> has been success
 internal-error: <red>An internal error occurred, please contact the server administrator.
 argument-cannot-be: <red>The argument <aqua>{0}</aqua> cannot be <yellow>{1}</yellow>.
 argument-must-between: <red>The argument <aqua>{0}</aqua> value must between <yellow>{1}</yellow> and <yellow>{2}</yellow>
-invalid-percentage: <red>Percentage invalid, you must add '%' after the number of percentage.
+invalid-percentage: <red>Procent jest nieprawidłowy, musisz dodać znak '%' po liczbie procentów.
 display-fallback: |-
-  <red>Due to an internal failure, a fallback message is being displayed.
-  The value of this item may not be localized or processed correctly.
-  Please contact the server administrator.
+  <red>Ze względu na błąd wewnętrzny, wyświetlany jest komunikat awaryjny.
+  Wartość tego elementu może nie być poprawnie zlokalizowana lub przetworzona.
+  Skontaktuj się z administratorem serwera.
 not-a-valid-time: |-
   <red>The string <yellow>{0}</yellow> not a valid timestamp, please enter a <aqua>Zulu Time (ISO 8601)</aqua> or <aqua>Unix Epoch Time in seconds</aqua>.
   <gold>Valid timestamp example: (for Sat, 17 Dec 2022 10:31:37 GMT)</gold>
@@ -687,13 +687,13 @@ debug:
   toggle-shop-loaded-status: <aqua>Toggle this shop loaded status to <gold>{0}</gold>
   shop-internal-data: '<yellow>The internal data of this shop: <reset>{0}</reset>'
   handler-list-not-valid-bukkit-event-class: <red>The provided class <yellow>{0}</yellow> is not a valid Bukkit event class.
-  update-player-shops-signs-no-username-given: <red>You must provide a valid player username.
-  update-player-shops-signs-create-async-task: <yellow>Creating async tasks for force updating signs...
+  update-player-shops-signs-no-username-given: <red>Musisz podać poprawną nazwę gracza.
+  update-player-shops-signs-create-async-task: <yellow>Tworzenie zadań asynchronicznych dla wymuszania aktualizacji tabliczek...
   update-player-shops-player-selected: '<yellow>Player selected: <gold>{0}</gold>'
-  update-player-shops-player-shops: <yellow>Total <gold>{0}</gold> shops waiting for updates.
+  update-player-shops-player-shops: <yellow>Łącznie <gold>{0}</gold> sklepów oczekuje na aktualizację.
   update-player-shops-per-tick-threshold: '<yellow>Max shops can be update per tick: <gold>{0}</gold>'
-  update-player-shops-complete: <green>Task completed, Used <yellow>{0}ms</yellow> for updating.
-  update-player-shops-task-started: <gold>The tasks has been started, please wait for it to complete.
+  update-player-shops-complete: <green>Zadanie zakończone, użyto <yellow>{0}ms</yellow> do aktualizacji.
+  update-player-shops-task-started: <gold>Zadania zostały rozpoczęte, proszę poczekać na ich zakończenie.
   item-info-store-as-string: "<green>The store you looking at: <gold>{0}</gold> Hash: <white>{1}</white>"
   item-info-hand-as-string: "<green>The item in your hand: <gold>{0}</gold> Hash: <white>{1}</white>"
   item-matching-result: "<green>Hand2Store: <aqua>{0}</aqua>, Store2Hand: <aqua>{1}</aqua>"
@@ -702,7 +702,7 @@ debug:
   hikari-cp-working: "<green>Dalej! HikariCP działa bez problemów!"
   hikari-cp-not-working: "<red>Niepowodzenie! Połączenie z HikariCP nie powiodło się (nie przeszło testu w 1 sekundę)"
   hikari-cp-timeout: "<red>HikariCP is timed out while getting a valid connection, please clean up all active queries to release connection resources."
-  queries-stopped: "<green>Stopped <white>{0}</white> active queries."
+  queries-stopped: "<green>Zatrzymano <white>{0}</white> aktywne zapytania."
   queries-dumping: "<yellow>Zrzucanie aktywnych zapytań..."
   restart-database-manager: "<yellow>Restartowanie SQLManager..."
   restart-database-manager-clear-executors: "<yellow>Czyszczenie egzekutorów..."
@@ -743,7 +743,7 @@ database:
   purge-task-created: <green>Task created! Database are silent purging history records in background.
   purge-done-with-line: <green>Purge task completed, total <gold>{0}</gold> lines purged from database.
   purge-done-with-error: <red>Purge task failed, check the server console for details.
-  purge-players-cache: <yellow>Please wait, purging players caches...
+  purge-players-cache: <yellow>Proszę czekać, czyszczenie pamięci podręcznej graczy...
   purge-players-completed: |-
     <green>Successfully purged {0} players caches from both memory and database.<newline><aqua>Note: You server performance may impact by this operation.
   purge-players-error: <red>Nie udało się wyczyścić pamięci podręcznej graczy, sprawdź konsolę serwera.
@@ -815,15 +815,15 @@ addon:
     trade-flag-denied: <red>You don't have permission to purchase in this residence.
     you-cannot-create-shop-in-wildness: <red>Nie możesz stworzyć sklepu w dzikości.
   griefprevention:
-    creation-denied: <red>You don't have permission to create shops in this claim.
+    creation-denied: <red>Nie masz uprawnień do tworzenia sklepów na tej działce.
     trade-denied: <red>Nie masz zezwolenia na zakupy w tym miejscu.
   lands:
     world-not-enabled: <red>Nie masz pozwolenia, aby tworzyć lub kupować w tym świecie.
     creation-denied: <red>Nie masz uprawnień na tworzenie sklepów w tym miejscu.
   quests:
-    create-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to create a shop.
-    sell-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to sell items to a shop.
-    buy-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to buy items from a shop.
+    create-quest-required: <red>Musisz ukończyć zadanie <aqua>{0}</aqua> aby utworzyć sklep.
+    sell-quest-required: <red>Musisz ukończyć zadanie <aqua>{0}</aqua> aby sprzedać przedmioty w sklepie.
+    buy-quest-required: <red>Musisz ukończyć zadanie <aqua>{0}</aqua> aby kupić przedmioty w sklepie.
   dominion:
     creation-denied: <red>You don't have permission to create shops in this Dominion area.
     trade-denied: <red>The shop must be within a Dominion to trade with it.
@@ -1246,10 +1246,10 @@ addon:
         {
             "embed": {
                 "title": ":money_with_wings: Cena Twojego sklepu została zmieniona",
-                "opis": "Ty lub Twój personel zmienił cenę sklepu. ,
+                "description": "Ty lub Twój personel zmienił cenę sklepu. ,
                 "color": 16172079,
-                "autor": {
-                    "nazwa": "QuickShop-Hikari",
+                "author": {
+                    "name": "QuickShop-Hikari",
                     "icon_url": ""
                 },
                 "thumbnail": {
@@ -1258,24 +1258,24 @@ addon:
                 "image": {
                     "url": ""
                 },
-                "stopka": {
+                "footer": {
                     "text": "QuickShop-Hikari Powiadomienie Discord",
                     "icon_url": ""
                 },
                 "fields": [
                     {
                         "name": "Sklep",
-                        "wartość": "%%shop.display-name%%",
+                        "value": "%%shop.display-name%%",
                         "inline": false
                     },
                     {
-                        "nazwa": "Z",
-                        "wartość": "%%change-price.from%%",
+                        "name": "Z",
+                        "value": "%%change-price.from%%",
                         "inline": true
                     },
                     {
-                        "nazwa": "Na",
-                        "wartość": "%%change-price.to%%",
+                        "name": "Na",
+                        "value": "%%change-price.to%%",
                         "inline": true
                     }
                 ]
@@ -1285,10 +1285,10 @@ addon:
         {
             "embed": {
                 "title": ":money_with_wings: Cena sklepu została zmieniona",
-                "opis": "Sklep zmienił ustawienia cenowe. ,
+                "description": "Sklep zmienił ustawienia cenowe. ,
                 "color": 6061450,
-                "autor": {
-                    "nazwa": "QuickShop-Hikari",
+                "author": {
+                    "name": "QuickShop-Hikari",
                     "icon_url": ""
                 },
                 "thumbnail": {
@@ -1297,34 +1297,34 @@ addon:
                 "image": {
                     "url": ""
                 },
-                "stopka": {
+                "footer": {
                     "text": "QuickShop-Hikari Powiadomienie Discord ",
                     "icon_url": ""
                 },
                 "fields": [
                     {
                         "name": "Sklep",
-                        "wartość": "%%shop.display-name%%",
+                        "value": "%%shop.display-name%%",
                         "inline": true
                     },
                     {
                         "name": "Właściciel",
-                        "wartość": "%%shop.owner.name%%",
+                        "value": "%%shop.owner.name%%",
                         "inline": true
                     },
                     {
-                        "nazwa": "",
-                        "wartość": "",
+                        "name": "",
+                        "value": "",
                         "inline": true
                     },
                     {
-                        "nazwa": "Z",
-                        "wartość": "%%change-price.from%%",
+                        "name": "Z",
+                        "value": "%%change-price.from%%",
                         "inline": true
                     },
                     {
-                        "nazwa": "Na",
-                        "wartość": "%%change-price.to%%",
+                        "name": "Na",
+                        "value": "%%change-price.to%%",
                         "inline": true
                     }
                 ]
@@ -1426,7 +1426,7 @@ addon:
     invalid-discount-code: <red>Ten kod rabatowy jest nieprawidłowy.
     discount-code-added: <green>Your discount code <yellow>{0}</yellow> has been added into shop <aqua>{1}</aqua>
     discount-code-removed: <green>Your discount code <yellow>{0}</yellow> has been removed from shop <aqua>{1}</aqua>
-    invalid-code-type: <red>The code type <yellow>{0}</yellow> are invalid.
+    invalid-code-type: <red>Typ kodu <yellow>{0}</yellow> jest nieprawidłowy.
     invalid-usage-restriction: <red>The usage restriction <yellow>{0}</yellow> are invalid.
     invalid-threshold-restriction: <red>The threshold restriction <yellow>{0}</yellow> are invalid.
     invalid-effect-scope: <red>The scope <yellow>{0}</yellow> are invalid.
@@ -1441,14 +1441,14 @@ addon:
     discount-code-applicable-with-threshold: '<color:#bcef26>Your discount code <yellow><bold>{0}</bold></yellow> are <bold>applicable</bold> in this shop, but only your purchase cost over <yellow>{1}</yellow> in single transaction.'
     discount-code-not-applicable: <red>Your discount code <yellow><bold>{0}</bold></yellow> are <bold>not applicable</bold> in this shop!
     discount-code-reach-the-limit: <red>You have reach the usage limit of discount code <yellow><bold>{0}</bold></yellow>, discount are not applied.
-    discount-code-no-permission: <red>You didn't have permission to use any discount code in this shop!
+    discount-code-no-permission: <red>Nie masz uprawnień do używania żadnego kodu rabatowego w tym sklepie!
     discount-code-has-been-expired: <red>Twój rabat wygasł!
     discount-code-config-shop-added: <green>Successfully to add this shop into your discount code allow list.
     discount-code-config-shop-add-failure: <red>This shop already in your discount code allow list.
     discount-code-config-shop-removed: <green>Successfully to remove this shop from your discount code allow list.
     discount-code-config-shop-remove-failure: <red>This shop not exists in your discount code allow list.
     discount-code-config-expire: <green>Successfully changed your code expire time.
-    discount-code-config-applied: <green>Config the discount code successfully!
+    discount-code-config-applied: <green>Konfiguracja kodu rabatowego powiodła się!
     discount-code-created-successfully: |
       <green>Your discount code <yellow>{0}</yellow> has been successfully created!
       <gold>Scope: <aqua>{1}</aqua></gold>.
@@ -1462,7 +1462,7 @@ addon:
     discount-code-applied-in-purchase: '<color:#bcef26>Your discount code <yellow>{0}</yellow> has been applied to this purchase and you saved <gold>{1}</gold>!'
     scope:
       this-shop: '{0}'
-      your-shops-owned: all your shops (owned)
+      your-shops-owned: wszystkie Twoje sklepy (własne)
       your-shops-managed: wszystkie Twoje sklepy (zarządzane)
       server: cały serwer
     code-type:
@@ -1480,9 +1480,9 @@ addon:
   list:
     commands:
       list: <yellow>Listowanie wszystkich sklepów należących do Ciebie lub konkretnego gracza
-    table-prefix: '<yellow><green>{0}</green>''s shops <gray>(Total {1})</gray>: '
-    table-prefix-pageable: '<yellow><green>{0}</green>''s shops <gray>(Page {1}/{2})</gray>: '
-    entry: "<yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>Price <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}<br><green>{10}'>{0}.<aqua>{1}</hover>"
+    table-prefix: '<yellow>sklepy <green>{0}</green> <gray>(Łącznie {1})</gray> '
+    table-prefix-pageable: '<yellow>sklepy <green>{0}</green> <gray>(Strona {1}/{2})</gray>: '
+    entry: "<yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>Cena <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}<br><green>{10}'>{0}<aqua>{1}</hover>"
   shopitemonly:
     message: <red>You can't put non-shop items into shop container, all non-shop items will dropped at your location.
   limited:
@@ -1547,20 +1547,20 @@ addon:
         migrate-price-restriction: "<yellow>Migrating price-restriction related settings..."
         migrate-price-restriction-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
       shop:
-        start-migrate: "<yellow>Migrating shops (total {0} entries)..."
+        start-migrate: "<yellow>Migracja sklepów (łącznie {0} wpisów)..."
         migrate-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
         unloading-reremake: "<gold>Unloading Reremake to avoid data overwrite..."
         register-entry: "<gray> - Registering <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-        save-entry: "<gray> - Saving <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-        saving-shops: "<yellow>Saving <gold>{0}</gold> shops, this may need a while™ (the time based on shops amounts)..."
+        save-entry: "<gray> - Zapisywanie <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        saving-shops: "<yellow>Zapisywanie <gold>{0}</gold> sklepów, może to potrwać chwilę (czas zależny od ilości sklepów)..."
         conflict: "<gray> - CONFLICT > Detects a conflict between a Reremake store and an existing Hikari store location, taking a predefined behavior: <dark_gray>{0}</dark_gray>"
       translation:
-        start-migrate: "<yellow>Migrating translation files...</yellow>"
+        start-migrate: "<yellow>Migracja plików tłumaczeń...</yellow>"
         copy-values: "<yellow>Copying values in locale <gold>{0}</gold> (total {1} entries)..."
-        migrate-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-        copying-value: "<gray> - Copying <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        migrate-entry: "<gray> - Migracja <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        copying-value: "<gray> - Kopiowanie <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
       shop-logs:
-        start-migrate: "<yellow>Migrating shop logs (details in console), please wait...</yellow>"
+        start-migrate: "<yellow>Migracja dzienników sklepów (szczegóły w konsoli), proszę czekać...</yellow>"
         extract-history-files: "<gray>Please wait for us to unzip and append the history logs..."
         filter-history-files: "<gray>Please wait for us to filter the history log..."
         filtered-history-files: "<gray>Filtered {0} lines out of queue."
@@ -1583,9 +1583,9 @@ suite:
   limited:
     command-description: <yellow>Set a limit that restrict the purchase that player can make in period.
     reach-the-quota-limit: <red>You have reach the purchase limit in this shop ({0}/{1}).
-    quota-reset-countdown: <yellow>The quota in this shop will reset in {0}.
-    quota-reset-player-successfully: <green>The quota for player {0} in this shop has been reset successfully.
-    quota-reset-everybody-successfully: <green>The quota for everyone in this shop has been reset successfully.
+    quota-reset-countdown: <yellow>Limit w tym sklepie zostanie zresetowany za {0}.
+    quota-reset-player-successfully: <green>Limit gracza {0} w tym sklepie został pomyślnie zresetowany.
+    quota-reset-everybody-successfully: <green>Limit dla wszystkich w tym sklepie został pomyślnie zresetowany.
     quota-setup: <green>The purchase restriction now apply to this shop!
     quota-remove: <green>The purchase restriction now removed from this shop!
     subtitles:
@@ -1622,7 +1622,7 @@ gui:
       lore:
         - "<gray>Available: <white>{0}</white></gray>"
     info-price:
-      display: "<gold>Price Information</gold>"
+      display: "<gold>Informacje o cenie</gold>"
       lore:
         - "<gray>Cena: <white>{0}</white></gray>"
         - "<gray>Per: <white>{1} item(s)</white></gray>"
@@ -1638,28 +1638,28 @@ gui:
       lore:
         - "<yellow>{0}</yellow>"
   keeper:
-    title: "<dark_aqua>Shop Management</dark_aqua>"
+    title: "<dark_aqua>Zarządzanie sklepem</dark_aqua>"
     change-price:
       display: "<bold><green>Zmień cenę</green></bold>"
       lore:
-        - "<gray>Current price: <white>{0}</white></gray>"
+        - "<gray>Aktualna cena: <white>{0}</white></gray>"
         - ""
         - "<yellow>Kliknij, aby zmienić cenę</yellow>"
     display-toggle:
       display: "<bold><green>Przełącz podgląd</green></bold>"
       lore:
-        - "<gray>Toggle item preview in shops</gray>"
-        - "<gray>Status: <white>{0}</white>. Click to toggle.</gray>"
+        - "<gray>Przełącz podgląd przedmiotów w sklepach</gray>"
+        - "<gray>Status: <white>{0}</white>. Kliknij, aby przełączyć.</gray>"
     freeze-toggle:
-      display: "<bold><green>Toggle Freeze</green></bold>"
+      display: "<bold><green>Przełącz Zamrożenie</green></bold>"
       lore:
-        - "<gray>Currently <white>{0}</white></gray>"
-        - "<gray>Click to <white>{1}</white></gray>"
+        - "<gray>Obecnie <white>{0}</white></gray>"
+        - "<gray>Kliknij aby <white>{1}</white></gray>"
     mode-toggle:
-      display: "<bold><green>Change Mode</green></bold>"
+      display: "<bold><green>Zmień Tryb</green></bold>"
       lore:
-        - "<gray>Current: <white>{0}</white></gray>"
-        - "<gray>Click to change to: <white>{1}</white></gray>"
+        - "<gray>Obecnie: <white>{0}</white></gray>"
+        - "<gray>Kliknij, aby zmienić na: <white>{1}</white></gray>"
     inventory:
       display: "<bold><green>View Inventory</green></bold>"
       lore:
@@ -1668,27 +1668,27 @@ gui:
     staff:
       display: "<bold><aqua>Shop Staff</aqua></bold>"
       lore:
-        - "<gray>Click to manage your</gray>"
+        - "<gray>Kliknij, aby zarządzać swoim</gray>"
         - "<gray>shop's staff members.</gray>"
     history:
-      display: "<bold><light_purple>Transaction History</light_purple></bold>"
+      display: "<bold><light_purple>Historia transakcji</light_purple></bold>"
       lore:
         - "<gray>Kliknij, aby wyświetlić</gray>"
-        - "<gray>shop's transaction history.</gray>"
+        - "<gray>historia transakcji sklepu.</gray>"
     remove:
       display: "<bold><red>Usuń Sklep</red></bold>"
       lore:
         - "<gray>Kliknij, aby usunąć swój sklep.</gray>"
-        - "<dark_gray>You can also break the sign/chest.</dark_gray>"
+        - "<dark_gray>Możesz również zniszczyć tabliczkę/skrzynię.</dark_gray>"
   staff:
     title: "<dark_aqua>Staff Management</dark_aqua>"
     search:
       display: "<yellow>Szukaj: {0}</yellow>"
       lore:
-        - "<gray>Left-click to search for players</gray>"
-        - "<gray>Right-click to clear search</gray>"
+        - "<gray>Kliknij lewym przyciskiem myszy, aby wyszukać graczy</gray>"
+        - "<gray>Kliknij prawym przyciskiem myszy, aby wyczyścić wyszukiwanie</gray>"
     add-staff:
-      display: "<green>Add Staff Member</green>"
+      display: "<green>Dodaj członka personelu</green>"
       lore:
         - "<gray>Kliknij, aby dodać nowy</gray>"
         - "<gray>staff member to your shop.</gray>"
@@ -1739,26 +1739,26 @@ gui:
         - "<gray> Stock: <aqua>{5}</aqua></gray>"
       lore-buying:
         - "<#FFA500>▲ Buying ({0} shops)</#FFA500>"
-        - "<gray> Price: <white>{1} - {2}</white></gray>"
-        - "<gray> Average: <yellow>{3}</yellow></gray>"
+        - "<gray> Cena: <white>{1} - {2}</white></gray>"
+        - "<gray> Średnia: <yellow>{3}</yellow></gray>"
         - "<gray> Median: <gold>{4}</gold></gray>"
       lore-footer:
-        - "<yellow>Click to view all shops</yellow>"
+        - "<yellow>Kliknij, aby zobaczyć wszystkie sklepy</yellow>"
     search:
       display: "<yellow>Szukaj: {0}</yellow>"
       lore:
-        - "<gray>Left-click to search for items</gray>"
-        - "<gray>Right-click to clear search</gray>"
+        - "<gray>Kliknij lewym przyciskiem myszy, aby wyszukać przedmioty</gray>"
+        - "<gray>Kliknij prawym przyciskiem myszy, aby wyczyścić wyszukiwanie</gray>"
     search-item:
       display: "<yellow>{0}</yellow>"
       lore:
         - "<gray>Showing: {0}</gray>"
-        - "<gray>Shops: <white>{1}</white></gray>"
-        - "<gray>Average price: <gold>{2}</gold></gray>"
+        - "<gray>Sklepy: <white>{1}</white></gray>"
+        - "<gray>Średnia cena: <gold>{2}</gold></gray>"
     sort:
       display: "<green>Sortowanie: {0}</green>"
       lore:
-        - "<gray>Click to cycle</gray>"
+        - "<gray>Kliknij, aby przełączyć</gray>"
       price-asc: "Cena ↑"
       price-desc: "Cena ↓"
       stock: "Asortyment"
@@ -1766,7 +1766,7 @@ gui:
     filter:
       display: "<aqua>Filtrowanie: {0}</aqua>"
       lore:
-        - "<gray>Click to cycle</gray>"
+        - "<gray>Kliknij, aby przełączyć</gray>"
       all: "Wszystkie"
       selling: "Sprzedaż"
       buying: "Kupno"
@@ -1846,7 +1846,7 @@ history:
       - "<white>Sklep: <yellow>{0}</yellow></white>"
       - "<white>Kupując: <yellow>{1}</yellow></white>"
       - "<white>Przedmiot: <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
-      - "<white>Amount: <yellow>{4}</yellow></white>"
+      - "<white>Ilość: <yellow>{4}</yellow></white>"
       - "<white>Łącznie: <yellow>{5}</yellow></white>"
       - "<white>Podatki: <yellow>{5}</yellow></white>"
       - "<white>Net: <yellow>{6}</yellow></white>"
@@ -1874,9 +1874,9 @@ history:
 about:
   text:
     - "<b><aqua>QuickShop <yellow>{0}</yellow></aqua></b>"
-    - "<aqua>Version <yellow>>></yellow> <green>{1}</green></aqua>"
-    - "<aqua>Release <yellow>>></yellow> <green>{2}</green></aqua>"
-    - "<aqua>Developers <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Click to check contributors'><click:open_url:'https://github.com/QuickShop-Community/QuickShop-Hikari/graphs/contributors'>[View contributors on GitHub]</click></hover></color></aqua>"
+    - "<aqua>Wersja <yellow>>></yellow> <green>{1}</green></aqua>"
+    - "<aqua>Wydanie <yellow>>></yellow> <green>{2}</green></aqua>"
+    - "<aqua>Developerzy <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Kliknij, aby sprawdzić współtwórców'><click:open_url:'https://github.com/QuickShop-Community/QuickShop-Hikari/graphs/contributors'>[Zobacz współtwórców na GitHub]</click></hover></color></aqua>"
     - "<aqua>Localized members <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
     - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Click to open Crowdin translate page'><click:open_url:'https://crowdin.com/project/qs-hikari'>[Help translate on Crowdin]</click></hover></color></yellow>"
     - "<aqua>Donation Key <yellow>>></yellow> <green>{6}</green></aqua>"
