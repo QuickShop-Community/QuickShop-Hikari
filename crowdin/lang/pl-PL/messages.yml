@@ -131,20 +131,20 @@ tags:
     added: "<green>Dodał ten sklep do listy ulubionych."
     removed: "<green>usunął ten sklep z Twojej listy ulubionych."
     unable: "<red>Unable to toggle favorite on this shop."
-    none: "<red>You have no favorite shops."
+    none: "<red>Nie masz ulubionych sklepów."
     label: "<yellow>Ulubione"
   watch:
-    added: "<green>You are now watching this shop."
-    removed: "<green>You are no longer watching this shop."
+    added: "<green>Teraz obserwujesz ten sklep."
+    removed: "<green>Nie obserwujesz już tego sklepu."
     unable: "<red>Unable to toggle watch on this shop."
-    none: "<red>You are not watching any shops."
+    none: "<red>Nie obserwujesz żadnych sklepów."
     label: "<yellow>Watching"
   tag:
     title-avoided-shops: "<green>Avoided shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
     title-favorited-shops: "<green>Favorited shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
     title-watched-shops: "<green>Watched shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
     list-player-shops-title: "<green>Your tagged shops</green> <gray>(<yellow>{0}</yellow> shops, <yellow>{1}</yellow> tags)</gray>"
-    list-player-shop-title: "<green>Shop tags</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    list-player-shop-title: "<green>Tagi sklepu</green> <gray>(Łącznie <yellow>{0}</yellow>)</gray>"
     list-tag-title: "<green>Tag <aqua>{0}</aqua> usage</green> <gray>(<yellow>{1}</yellow> shops)</gray>"
     shops-entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <light_purple>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>View all tags on this shop\">View {10} tags</hover></click>]</light_purple>"
     entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <red>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove Tag</hover></click>]</red>"
@@ -386,7 +386,7 @@ signs:
   selling: Kup {0}
   status-available: <green>
   item-left: ''
-  item-duration: 'Dur: {0}'
+  item-duration: 'Czas trwania: {0}'
   item-level: 'Poziom: {0}'
   splash-potion: "Miotana"
   linger-potion: "Trwała"
@@ -536,7 +536,7 @@ command:
     lookup: <yellow>Zarządzaj tabelą elementów do wyszukiwania
     database: <yellow>View and maintain QuickShop database
     benefit: <yellow>Settings of divide benefits between shop owner and other players
-    browse: <yellow>Browse shops that exist in this server.
+    browse: <yellow>Przeglądaj sklepy, które istnieją na tym serwerze.
     tag: <yellow>Dodaj, usuń lub wyszukaj tagi sklepu
     suggestprice: <yellow>Zaproponuj zalecaną cenę dla sklepu w oparciu o inne sklepy
     history: <yellow>Zobacz historię transakcji sklepu
@@ -612,7 +612,7 @@ permission:
     set-stack-amount: <yellow>Pozwolenie na umożliwienie użytkownikom, którzy mają to do ustawienia ilości stosu sklepu.
     set-currency: <yellow>Pozwolenie na umożliwienie użytkownikom, którzy mają to ustawienie waluty sklepu.
     set-name: <yellow>Pozwolenie na umożliwienie użytkownikom, którzy mają to do ustawienia nazwy sklepu.
-    set-sign-type: <yellow>Change the sign material that attached on the shop.
+    set-sign-type: <yellow>Zmień materiał tabliczki, która jest dołączona do sklepu.
     view-purchase-logs: <yellow>Permission to view shop purchase logs.
   group:
     everyone: <yellow>Default group for all users excepted shop owner.
@@ -681,7 +681,7 @@ debug:
   force-shop-reload-complete: <green>Wymuszono przeładowanie <aqua>{0}</aqua> sklepów.
   force-shop-loader-reload: <yellow>Forcing shop-loader reloading...
   force-shop-loader-reload-unloading-shops: <yellow>Unloading <aqua>{0}</aqua> loaded shops...
-  force-shop-loader-reload-unloading-shops-from-memory: <yellow>Removing <aqua>{0}</aqua> shops from memory...
+  force-shop-loader-reload-unloading-shops-from-memory: <yellow>Usuwanie <aqua>{0}</aqua> sklepów z pamięci...
   force-shop-loader-reload-reloading-shop-loader: <yellow>Re-calling shop-loader for reloading all shops from database...
   force-shop-loader-reload-complete: <green>Shop-loader has been reloaded all shops!
   toggle-shop-loaded-status: <aqua>Toggle this shop loaded status to <gold>{0}</gold>
@@ -1545,18 +1545,18 @@ addon:
         copy-values: "<yellow>Copying values (total {0} entries)..."
         copying-value: "<gray> - Copying <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
         migrate-price-restriction: "<yellow>Migrating price-restriction related settings..."
-        migrate-price-restriction-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        migrate-price-restriction-entry: "<gray> - Migracja <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
       shop:
         start-migrate: "<yellow>Migracja sklepów (łącznie {0} wpisów)..."
-        migrate-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        migrate-entry: "<gray> - Migracja <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
         unloading-reremake: "<gold>Unloading Reremake to avoid data overwrite..."
-        register-entry: "<gray> - Registering <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        register-entry: "<gray> - Rejestrowanie <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
         save-entry: "<gray> - Zapisywanie <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
         saving-shops: "<yellow>Zapisywanie <gold>{0}</gold> sklepów, może to potrwać chwilę (czas zależny od ilości sklepów)..."
         conflict: "<gray> - CONFLICT > Detects a conflict between a Reremake store and an existing Hikari store location, taking a predefined behavior: <dark_gray>{0}</dark_gray>"
       translation:
         start-migrate: "<yellow>Migracja plików tłumaczeń...</yellow>"
-        copy-values: "<yellow>Copying values in locale <gold>{0}</gold> (total {1} entries)..."
+        copy-values: "<yellow>Kopiowanie wartości w ustawieniach regionalnych <gold>{0}</gold> (łącznie {1} wpisów)..."
         migrate-entry: "<gray> - Migracja <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
         copying-value: "<gray> - Kopiowanie <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
       shop-logs:
@@ -1589,7 +1589,7 @@ suite:
     quota-setup: <green>The purchase restriction now apply to this shop!
     quota-remove: <green>The purchase restriction now removed from this shop!
     subtitles:
-      title: <green>Purchase Success
+      title: <green>Pomyślnie Zakupiono
       subtitle: <aqua>You can purchase <yellow>{0}</yellow> more in this shop
   list:
     command-description: <yellow>List all shops owned by yourself or another player.
@@ -1661,7 +1661,7 @@ gui:
         - "<gray>Obecnie: <white>{0}</white></gray>"
         - "<gray>Kliknij, aby zmienić na: <white>{1}</white></gray>"
     inventory:
-      display: "<bold><green>View Inventory</green></bold>"
+      display: "<bold><green>Zobacz ekwipunek</green></bold>"
       lore:
         - "<gray>Kliknij, aby wyświetlić</gray>"
         - "<gray>shop's chest inventory.</gray>"
@@ -1735,7 +1735,7 @@ gui:
         - "<green>▼ Sprzedaż ({0} sklepów)</green>"
         - "<gray> Cena: <white>{1} - {2}</white></gray>"
         - "<gray> Średnia: <yellow>{3}</yellow></gray>"
-        - "<gray> Median: <gold>{4}</gold></gray>"
+        - "<gray> Mediana: <gold>{4}</gold></gray>"
         - "<gray> Stock: <aqua>{5}</aqua></gray>"
       lore-buying:
         - "<#FFA500>▲ Buying ({0} shops)</#FFA500>"
