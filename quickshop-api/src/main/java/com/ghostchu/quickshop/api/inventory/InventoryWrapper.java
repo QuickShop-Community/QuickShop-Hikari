@@ -36,11 +36,17 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
     boolean shouldContinue = true;
     while(shouldContinue && iterator.hasNext()) {
       final ItemStack itemStack = iterator.next();
+      if(itemStack == null) {
+        continue;
+      }
+
+      final ItemStack original = itemStack.clone();
       shouldContinue = itemChanger.changeItem(index, itemStack);
       if(itemStack.getAmount() == 0 || itemStack.getType() == Material.AIR) {
         iterator.setCurrent(null);
 
-      } else {
+      } else if(!original.equals(itemStack)) {
+        // only update when changed
         iterator.setCurrent(itemStack);
       }
       index++;

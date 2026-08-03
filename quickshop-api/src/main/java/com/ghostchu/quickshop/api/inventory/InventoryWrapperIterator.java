@@ -33,7 +33,7 @@ public interface InventoryWrapperIterator extends Iterator<ItemStack> {
       }
 
       @Override
-      public ItemStack next() {
+      public @Nullable ItemStack next() {
 
         if(!hasNext()) {
           throw new NoSuchElementException();
@@ -70,7 +70,7 @@ public interface InventoryWrapperIterator extends Iterator<ItemStack> {
       }
 
       @Override
-      public ItemStack next() {
+      public @Nullable ItemStack next() {
 
         if(!hasNext()) {
           throw new NoSuchElementException();
@@ -95,6 +95,7 @@ public interface InventoryWrapperIterator extends Iterator<ItemStack> {
    * @return the next ItemStack instance
    */
   @Override
+  @Nullable
   ItemStack next();
 
   /**
