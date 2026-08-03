@@ -119,7 +119,7 @@ tags:
     avoid: "<yellow>Toggle avoid on looked-at shop."
   general:
     database-error: "<red>An error occurred while executing a tag operation."
-    list-entry: "<green>{0}.</green> <aqua>{1}</aqua> <light_purple>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>View all shops with this tag\">View Shops</hover></click>]</light_purple> <red>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove</hover></click>]</red>"
+    list-entry: "<green>{0}.</green> <aqua>{1}</aqua> <light_purple>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>Zobacz wszystkie sklepy z tym tagiem\">Zobacz sklepy</hover></click>]</light_purple> <red>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Usuń ten tag z tego sklepu\">Usuń</hover></click>]</red>"
     invalid: "<red>Invalid tag. Only letters, dash (-), and underscore (_) are allowed. Max length: <yellow>{0}</yellow>"
   avoid:
     added: "<green>Added this shop to your avoid list."
@@ -613,7 +613,7 @@ permission:
     set-currency: <yellow>Pozwolenie na umożliwienie użytkownikom, którzy mają to ustawienie waluty sklepu.
     set-name: <yellow>Pozwolenie na umożliwienie użytkownikom, którzy mają to do ustawienia nazwy sklepu.
     set-sign-type: <yellow>Zmień materiał tabliczki, która jest dołączona do sklepu.
-    view-purchase-logs: <yellow>Permission to view shop purchase logs.
+    view-purchase-logs: <yellow>Pozwolenie na przeglądanie dzienników zakupów sklepu.
   group:
     everyone: <yellow>Default group for all users excepted shop owner.
     staff: <yellow>System group for shop staffs.
@@ -622,7 +622,7 @@ invalid-group: <red>Niepoprawna nazwa grupy.
 invalid-permission: <red>Niepoprawne uprawnienie.
 invalid-operation: <red>Niepoprawna operacja, tylko {0} jest dozwolone.
 player-no-group: <yellow>Player {0} not in any group in this shop.
-player-in-group: <green>Player {0} is in group <aqua>{1}</aqua> in this shop.
+player-in-group: <green>Gracz {0} jest w grupie <aqua>{1}</aqua> w tym sklepie.
 permission-required: <red>Nie masz uprawnień {0} w tym sklepie, aby to zrobić.
 no-permission-detailed: <red>Nie masz uprawnień <yellow>{0}</yellow> aby to zrobić.
 paste-notice: "<yellow>Note: If you are creating a Paste for troubleshooting purposes, be sure to reproduce the error before creating the Paste as quickly as possible; we need the logs retained briefly in the buffer to troubleshoot. If you create a Paste too slowly or without first reproducing the error or restarted server, the Paste will record nothing and useless."
@@ -647,8 +647,8 @@ lookup-item-name-regex: '<red>Nazwa musi być zgodna z tym wyrażeniem: <aqua>{0
 lookup-item-test-not-found: '<gold>Test: <yellow>The item in your hand not registered in lookup table.'
 lookup-item-test-found: '<gold>Test: <green>The item in your hand was registered as name <aqua>{0}</aqua> in lookup table.'
 lookup-item-removed: <green>The specified item <aqua>{0}</aqua> has been successfully removed from lookup table.
-internal-error: <red>An internal error occurred, please contact the server administrator.
-argument-cannot-be: <red>The argument <aqua>{0}</aqua> cannot be <yellow>{1}</yellow>.
+internal-error: <red>Wystąpił błąd wewnętrzny, skontaktuj się z administratorem serwera.
+argument-cannot-be: <red>Argument <aqua>{0}</aqua> nie może być <yellow>{1}</yellow>.
 argument-must-between: <red>The argument <aqua>{0}</aqua> value must between <yellow>{1}</yellow> and <yellow>{2}</yellow>
 invalid-percentage: <red>Procent jest nieprawidłowy, musisz dodać znak '%' po liczbie procentów.
 display-fallback: |-
@@ -679,8 +679,8 @@ debug:
   sql-disabled: '<red>For security reason, SQL queries are disabled in this server, If you really need this feature, you can add the following flag to startup arguments: <aqua>{0}</aqua> with `true` value to enable it.'
   force-shop-reload: <yellow>Wymuszanie przeładowania wszystkich załadowanych sklepów...
   force-shop-reload-complete: <green>Wymuszono przeładowanie <aqua>{0}</aqua> sklepów.
-  force-shop-loader-reload: <yellow>Forcing shop-loader reloading...
-  force-shop-loader-reload-unloading-shops: <yellow>Unloading <aqua>{0}</aqua> loaded shops...
+  force-shop-loader-reload: <yellow>Wymuszanie przeładowania shop-loader...
+  force-shop-loader-reload-unloading-shops: <yellow>Odładowuje <aqua>{0}</aqua> załadowanych sklepów...
   force-shop-loader-reload-unloading-shops-from-memory: <yellow>Usuwanie <aqua>{0}</aqua> sklepów z pamięci...
   force-shop-loader-reload-reloading-shop-loader: <yellow>Re-calling shop-loader for reloading all shops from database...
   force-shop-loader-reload-complete: <green>Shop-loader has been reloaded all shops!
@@ -697,7 +697,7 @@ debug:
   item-info-store-as-string: "<green>The store you looking at: <gold>{0}</gold> Hash: <white>{1}</white>"
   item-info-hand-as-string: "<green>The item in your hand: <gold>{0}</gold> Hash: <white>{1}</white>"
   item-matching-result: "<green>Hand2Store: <aqua>{0}</aqua>, Store2Hand: <aqua>{1}</aqua>"
-  hikari-cp-size-tweak: "<green>HikariCP MaximumPoolSize and MinimumIdle was set to <white>{0}</white>"
+  hikari-cp-size-tweak: "<green>HikariCP MaximumPoolSize i MinimumIdle został ustawiony na <white>{0}</white>"
   hikari-cp-testing: "<green>Proszę czekać, trwa testowanie połączenia HikariCP..."
   hikari-cp-working: "<green>Dalej! HikariCP działa bez problemów!"
   hikari-cp-not-working: "<red>Niepowodzenie! Połączenie z HikariCP nie powiodło się (nie przeszło testu w 1 sekundę)"
@@ -801,7 +801,7 @@ addon:
     shop-owning-changing-notice: <grey>This shop now owned by a town/nation, original shop owner has been automatically added into administrator list, modify or add any new owner / staff by using command /qs permission
     target-shop-already-is-town-shop: <red>The target shop is already owned by a town.
     target-shop-already-is-nation-shop: <red>The target shop is already owned by a nation.
-    target-shop-not-in-town-region: <red>The target shop is not in the town.
+    target-shop-not-in-town-region: <red>Sklep docelowy nie jest w mieście.
     target-shop-not-in-nation-region: <red>The target shop is not in the nation.
     item-not-allowed: <red>This shop's item are not allowed used by town/nation shop, pick another one!
     operation-disabled-due-shop-status: <red>This shop operation has been disabled due this already is a town/nation shop.
@@ -811,8 +811,8 @@ addon:
       modify: <red>You didn't have build permission on this towny plot.
       shop-type: <red>You must create shop on a shop type towny plot.
   residence:
-    creation-flag-denied: <red>You don't have permission to create shops in this residence.
-    trade-flag-denied: <red>You don't have permission to purchase in this residence.
+    creation-flag-denied: <red>Nie masz uprawnień do tworzenia sklepów w tej lokalizacji.
+    trade-flag-denied: <red>Nie masz uprawnień do zakupu w tym miejscu.
     you-cannot-create-shop-in-wildness: <red>Nie możesz stworzyć sklepu w dzikości.
   griefprevention:
     creation-denied: <red>Nie masz uprawnień do tworzenia sklepów na tej działce.
@@ -1544,7 +1544,7 @@ addon:
       config:
         copy-values: "<yellow>Copying values (total {0} entries)..."
         copying-value: "<gray> - Copying <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-        migrate-price-restriction: "<yellow>Migrating price-restriction related settings..."
+        migrate-price-restriction: "<yellow>Migracja ustawień związanych z ograniczeniem cen..."
         migrate-price-restriction-entry: "<gray> - Migracja <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
       shop:
         start-migrate: "<yellow>Migracja sklepów (łącznie {0} wpisów)..."
@@ -1561,10 +1561,10 @@ addon:
         copying-value: "<gray> - Kopiowanie <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
       shop-logs:
         start-migrate: "<yellow>Migracja dzienników sklepów (szczegóły w konsoli), proszę czekać...</yellow>"
-        extract-history-files: "<gray>Please wait for us to unzip and append the history logs..."
-        filter-history-files: "<gray>Please wait for us to filter the history log..."
+        extract-history-files: "<gray>Proszę poczekać na rozpakowanie i dołączenie dzienników historii..."
+        filter-history-files: "<gray>Proszę poczekać na filtrowanie dziennika historii..."
         filtered-history-files: "<gray>Filtered {0} lines out of queue."
-        import-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        import-entry: "<gray> - Migracja <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
 compat:
   advancedchests:
     created: <green>You're successfully created a shop on AdvancedChests container!
@@ -1620,7 +1620,7 @@ gui:
     info-stock:
       display: "<yellow>Stock Information</yellow>"
       lore:
-        - "<gray>Available: <white>{0}</white></gray>"
+        - "<gray>Dostępne: <white>{0}</white></gray>"
     info-price:
       display: "<gold>Informacje o cenie</gold>"
       lore:
@@ -1666,10 +1666,10 @@ gui:
         - "<gray>Kliknij, aby wyświetlić</gray>"
         - "<gray>shop's chest inventory.</gray>"
     staff:
-      display: "<bold><aqua>Shop Staff</aqua></bold>"
+      display: "<bold><aqua>Personel Sklepu</aqua></bold>"
       lore:
         - "<gray>Kliknij, aby zarządzać swoim</gray>"
-        - "<gray>shop's staff members.</gray>"
+        - "<gray>członkowie personelu sklepu.</gray>"
     history:
       display: "<bold><light_purple>Historia transakcji</light_purple></bold>"
       lore:
@@ -1681,7 +1681,7 @@ gui:
         - "<gray>Kliknij, aby usunąć swój sklep.</gray>"
         - "<dark_gray>Możesz również zniszczyć tabliczkę/skrzynię.</dark_gray>"
   staff:
-    title: "<dark_aqua>Staff Management</dark_aqua>"
+    title: "<dark_aqua>Zarządzanie personelem</dark_aqua>"
     search:
       display: "<yellow>Szukaj: {0}</yellow>"
       lore:
@@ -1741,7 +1741,7 @@ gui:
         - "<#FFA500>▲ Buying ({0} shops)</#FFA500>"
         - "<gray> Cena: <white>{1} - {2}</white></gray>"
         - "<gray> Średnia: <yellow>{3}</yellow></gray>"
-        - "<gray> Median: <gold>{4}</gold></gray>"
+        - "<gray> Mediana: <gold>{4}</gold></gray>"
       lore-footer:
         - "<yellow>Kliknij, aby zobaczyć wszystkie sklepy</yellow>"
     search:
@@ -1849,7 +1849,7 @@ history:
       - "<white>Ilość: <yellow>{4}</yellow></white>"
       - "<white>Łącznie: <yellow>{5}</yellow></white>"
       - "<white>Podatki: <yellow>{5}</yellow></white>"
-      - "<white>Net: <yellow>{6}</yellow></white>"
+      - "<white>Netto: <yellow>{6}</yellow></white>"
     query-icon: "<gray>Proszę czekać, trwa wykonywanie zapytania...</gray>"
     current-page: "<white>Strona {0}</white>"
     multi-shops-icon-title: "<yellow>Wiele sklepów</yellow>"
@@ -1860,7 +1860,7 @@ history:
       - "<white>Recent <aqua>{4}</aqua> purchases: <yellow>{5}</yellow></white>"
       - "<white>Recent <aqua>{6}</aqua> purchases: <yellow>{7}</yellow></white>"
       - "<white>Recent <aqua>{8}</aqua> purchases: <yellow>{9}</yellow></white>"
-      - "<white>Total purchases: <yellow>{10}</yellow></white>"
+      - "<white>Wszystkie zakupy: <yellow>{10}</yellow></white>"
       - "<white>Recent <aqua>{11}</aqua> turnover: <yellow>{12}</yellow></white>"
       - "<white>Recent <aqua>{13}</aqua> turnover: <yellow>{14}</yellow></white>"
       - "<white>Recent <aqua>{15}</aqua> turnover: <yellow>{16}</yellow></white>"
@@ -1881,8 +1881,8 @@ about:
     - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Click to open Crowdin translate page'><click:open_url:'https://crowdin.com/project/qs-hikari'>[Help translate on Crowdin]</click></hover></color></yellow>"
     - "<aqua>Donation Key <yellow>>></yellow> <green>{6}</green></aqua>"
   valid-donation-key: "<color:#00AFF1>Bound to <color:#F9C23C>{0}</color></color>"
-  invalid-donation-key: "<gray>Invalid donation key</gra>"
+  invalid-donation-key: "<gray>Nieprawidłowy klucz darowizny</gra>"
   kofi-thanks: "<gold>Special thanks to those who support QuickShop on Ko-fi :)</gold>"
 history-command-leave-blank: "<Leave blank for seeing store>"
-browse-command-leave-blank: "<Leave blank for seeing all stores in server>"
-shop-information-not-shown-due-an-internal-error: "<red>An internal error occurred. The store information panel may be displayed incompletely, please contact the server administrator."
+browse-command-leave-blank: "<Pozostaw puste aby zobaczyć dla wszystkich sklepów na serwerze>"
+shop-information-not-shown-due-an-internal-error: "<red>Wystąpił błąd wewnętrzny. Panel informacji sklepu może być wyświetlany niekompletnie, skontaktuj się z administratorem serwera."
