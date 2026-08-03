@@ -49,288 +49,294 @@
 <span class="source-line-no">036</span><span id="line-36">    boolean shouldContinue = true;</span>
 <span class="source-line-no">037</span><span id="line-37">    while(shouldContinue &amp;&amp; iterator.hasNext()) {</span>
 <span class="source-line-no">038</span><span id="line-38">      final ItemStack itemStack = iterator.next();</span>
-<span class="source-line-no">039</span><span id="line-39">      shouldContinue = itemChanger.changeItem(index, itemStack);</span>
-<span class="source-line-no">040</span><span id="line-40">      if(itemStack.getAmount() == 0 || itemStack.getType() == Material.AIR) {</span>
-<span class="source-line-no">041</span><span id="line-41">        iterator.setCurrent(null);</span>
+<span class="source-line-no">039</span><span id="line-39">      if(itemStack == null) {</span>
+<span class="source-line-no">040</span><span id="line-40">        continue;</span>
+<span class="source-line-no">041</span><span id="line-41">      }</span>
 <span class="source-line-no">042</span><span id="line-42"></span>
-<span class="source-line-no">043</span><span id="line-43">      } else {</span>
-<span class="source-line-no">044</span><span id="line-44">        iterator.setCurrent(itemStack);</span>
-<span class="source-line-no">045</span><span id="line-45">      }</span>
-<span class="source-line-no">046</span><span id="line-46">      index++;</span>
-<span class="source-line-no">047</span><span id="line-47">    }</span>
-<span class="source-line-no">048</span><span id="line-48">  }</span>
-<span class="source-line-no">049</span><span id="line-49"></span>
-<span class="source-line-no">050</span><span id="line-50">  /**</span>
-<span class="source-line-no">051</span><span id="line-51">   * Return the iterator for this inventory It's not thread-safe, please use that in main-thread</span>
-<span class="source-line-no">052</span><span id="line-52">   *</span>
-<span class="source-line-no">053</span><span id="line-53">   * @return the iterator for this inventory</span>
-<span class="source-line-no">054</span><span id="line-54">   */</span>
-<span class="source-line-no">055</span><span id="line-55">  @NotNull</span>
-<span class="source-line-no">056</span><span id="line-56">  @Override</span>
-<span class="source-line-no">057</span><span id="line-57">  InventoryWrapperIterator iterator();</span>
-<span class="source-line-no">058</span><span id="line-58"></span>
-<span class="source-line-no">059</span><span id="line-59">  /**</span>
-<span class="source-line-no">060</span><span id="line-60">   * Clear the inventory</span>
-<span class="source-line-no">061</span><span id="line-61">   */</span>
-<span class="source-line-no">062</span><span id="line-62">  void clear();</span>
-<span class="source-line-no">063</span><span id="line-63"></span>
-<span class="source-line-no">064</span><span id="line-64">  /**</span>
-<span class="source-line-no">065</span><span id="line-65">   * Create an Inventory snapshot (including Empty slots). QuickShop-Hikari will shoot a snapshot</span>
-<span class="source-line-no">066</span><span id="line-66">   * for inventory used for purchase failure rollback. Note: provide an invalid snapshot will cause</span>
-<span class="source-line-no">067</span><span id="line-67">   * rollback break whole Inventory! WARNING: High recommend to override this method, default method</span>
-<span class="source-line-no">068</span><span id="line-68">   * doing by badways and low-performance, may mess up Inventory item order.</span>
-<span class="source-line-no">069</span><span id="line-69">   *</span>
-<span class="source-line-no">070</span><span id="line-70">   * @return The inventory contents for snapshot use.</span>
-<span class="source-line-no">071</span><span id="line-71">   */</span>
-<span class="source-line-no">072</span><span id="line-72">  @NotNull</span>
-<span class="source-line-no">073</span><span id="line-73">  default ItemStack[] createSnapshot() {</span>
-<span class="source-line-no">074</span><span id="line-74"></span>
-<span class="source-line-no">075</span><span id="line-75">    Logger.getLogger("QuickShop-Hikari").log(Level.WARNING, "InventoryWrapper provider " + getWrapperManager().getClass().getName() + " didn't override default InventoryWrapper#createSnapshot method, it may cause un-excepted behavior like item missing, mess order and heavy hit performance! Please report this issue to InventoryWrapper provider plugin author!");</span>
-<span class="source-line-no">076</span><span id="line-76">    final List&lt;ItemStack&gt; contents = new ArrayList&lt;&gt;();</span>
-<span class="source-line-no">077</span><span id="line-77">    for(final ItemStack stack : this) {</span>
-<span class="source-line-no">078</span><span id="line-78">      if(stack == null) {</span>
-<span class="source-line-no">079</span><span id="line-79">        continue;</span>
-<span class="source-line-no">080</span><span id="line-80">      }</span>
-<span class="source-line-no">081</span><span id="line-81">      contents.add(stack.clone());</span>
-<span class="source-line-no">082</span><span id="line-82">    }</span>
-<span class="source-line-no">083</span><span id="line-83">    return contents.toArray(new ItemStack[0]);</span>
-<span class="source-line-no">084</span><span id="line-84">  }</span>
-<span class="source-line-no">085</span><span id="line-85"></span>
-<span class="source-line-no">086</span><span id="line-86">  /**</span>
-<span class="source-line-no">087</span><span id="line-87">   * Gets the Inventory Wrapper Manager</span>
-<span class="source-line-no">088</span><span id="line-88">   *</span>
-<span class="source-line-no">089</span><span id="line-89">   * @return Wrapper Manager</span>
-<span class="source-line-no">090</span><span id="line-90">   */</span>
-<span class="source-line-no">091</span><span id="line-91">  @NotNull</span>
-<span class="source-line-no">092</span><span id="line-92">  InventoryWrapperManager getWrapperManager();</span>
-<span class="source-line-no">093</span><span id="line-93"></span>
-<span class="source-line-no">094</span><span id="line-94">  /**</span>
-<span class="source-line-no">095</span><span id="line-95">   * Gets the block or entity belonging to the open inventory</span>
-<span class="source-line-no">096</span><span id="line-96">   *</span>
-<span class="source-line-no">097</span><span id="line-97">   * @return The holder of the inventory; null if it has no holder.</span>
-<span class="source-line-no">098</span><span id="line-98">   */</span>
-<span class="source-line-no">099</span><span id="line-99">  @Nullable</span>
-<span class="source-line-no">100</span><span id="line-100">  InventoryHolder getHolder();</span>
-<span class="source-line-no">101</span><span id="line-101"></span>
-<span class="source-line-no">102</span><span id="line-102">  /**</span>
-<span class="source-line-no">103</span><span id="line-103">   * Gets the Inventory Type</span>
-<span class="source-line-no">104</span><span id="line-104">   *</span>
-<span class="source-line-no">105</span><span id="line-105">   * @return The Inventory Type</span>
-<span class="source-line-no">106</span><span id="line-106">   */</span>
-<span class="source-line-no">107</span><span id="line-107">  @NotNull</span>
-<span class="source-line-no">108</span><span id="line-108">  InventoryWrapperType getInventoryType();</span>
-<span class="source-line-no">109</span><span id="line-109"></span>
-<span class="source-line-no">110</span><span id="line-110">  /**</span>
-<span class="source-line-no">111</span><span id="line-111">   * Get the location of the block or entity which corresponds to this inventory. May return null if</span>
-<span class="source-line-no">112</span><span id="line-112">   * this container was custom created or is a virtual / subcontainer.</span>
-<span class="source-line-no">113</span><span id="line-113">   *</span>
-<span class="source-line-no">114</span><span id="line-114">   * @return location or null if not applicable.</span>
-<span class="source-line-no">115</span><span id="line-115">   */</span>
-<span class="source-line-no">116</span><span id="line-116">  @Nullable</span>
-<span class="source-line-no">117</span><span id="line-117">  Location getLocation();</span>
-<span class="source-line-no">118</span><span id="line-118"></span>
-<span class="source-line-no">119</span><span id="line-119">  /**</span>
-<span class="source-line-no">120</span><span id="line-120">   * Do valid check, check if this Inventory is valid.</span>
-<span class="source-line-no">121</span><span id="line-121">   *</span>
-<span class="source-line-no">122</span><span id="line-122">   * @return valid</span>
-<span class="source-line-no">123</span><span id="line-123">   */</span>
-<span class="source-line-no">124</span><span id="line-124">  default boolean isValid() {</span>
-<span class="source-line-no">125</span><span id="line-125"></span>
-<span class="source-line-no">126</span><span id="line-126">    return true;</span>
-<span class="source-line-no">127</span><span id="line-127">  }</span>
-<span class="source-line-no">128</span><span id="line-128"></span>
-<span class="source-line-no">129</span><span id="line-129">  /**</span>
-<span class="source-line-no">130</span><span id="line-130">   * Do update check, check if inventory-wrapper should discard and re-create via locateSymbolLink</span>
-<span class="source-line-no">131</span><span id="line-131">   *</span>
-<span class="source-line-no">132</span><span id="line-132">   * @return should re-locate inventory</span>
-<span class="source-line-no">133</span><span id="line-133">   */</span>
-<span class="source-line-no">134</span><span id="line-134">  boolean isNeedUpdate();</span>
-<span class="source-line-no">135</span><span id="line-135"></span>
-<span class="source-line-no">136</span><span id="line-136">  /**</span>
-<span class="source-line-no">137</span><span id="line-137">   * Remove specific items from inventory</span>
-<span class="source-line-no">138</span><span id="line-138">   *</span>
-<span class="source-line-no">139</span><span id="line-139">   * @param itemStacks items to remove</span>
-<span class="source-line-no">140</span><span id="line-140">   *</span>
-<span class="source-line-no">141</span><span id="line-141">   * @return The map of containing item index and itemStack itself which is not fit</span>
-<span class="source-line-no">142</span><span id="line-142">   */</span>
-<span class="source-line-no">143</span><span id="line-143">  /*@NotNull</span>
-<span class="source-line-no">144</span><span id="line-144">  default Map&lt;Integer, ItemStack&gt; removeItem(final ItemStack... itemStacks) {</span>
-<span class="source-line-no">145</span><span id="line-145"></span>
-<span class="source-line-no">146</span><span id="line-146">    if(itemStacks.length == 0) {</span>
-<span class="source-line-no">147</span><span id="line-147">      return Collections.emptyMap();</span>
-<span class="source-line-no">148</span><span id="line-148">    }</span>
-<span class="source-line-no">149</span><span id="line-149">    final InventoryWrapperIterator iterator = iterator();</span>
-<span class="source-line-no">150</span><span id="line-150">    final Map&lt;Integer, ItemStack&gt; integerItemStackMap = new HashMap&lt;&gt;();</span>
-<span class="source-line-no">151</span><span id="line-151">    RemoveProcess:</span>
-<span class="source-line-no">152</span><span id="line-152">    for(int i = 0; i &lt; itemStacks.length; i++) {</span>
-<span class="source-line-no">153</span><span id="line-153">      final ItemStack itemStackToRemove = itemStacks[i];</span>
-<span class="source-line-no">154</span><span id="line-154">      while(iterator.hasNext()) {</span>
-<span class="source-line-no">155</span><span id="line-155">        final ItemStack itemStack = iterator.next();</span>
-<span class="source-line-no">156</span><span id="line-156">        // TODO: Need lots of verification, it cause mismatch between items under non-Bukkit item matcher</span>
-<span class="source-line-no">157</span><span id="line-157">        if(itemStack != null &amp;&amp; QuickShopAPI.getInstance().getItemMatcher().matches(itemStackToRemove, itemStack)) {</span>
-<span class="source-line-no">158</span><span id="line-158">          final int couldRemove = itemStack.getAmount();</span>
-<span class="source-line-no">159</span><span id="line-159">          final int actuallyRemove = Math.min(itemStackToRemove.getAmount(), couldRemove);</span>
-<span class="source-line-no">160</span><span id="line-160">          itemStack.setAmount(itemStack.getAmount() - actuallyRemove);</span>
-<span class="source-line-no">161</span><span id="line-161">          final int needsNow = itemStackToRemove.getAmount() - actuallyRemove;</span>
-<span class="source-line-no">162</span><span id="line-162">          itemStackToRemove.setAmount(needsNow);</span>
-<span class="source-line-no">163</span><span id="line-163">          iterator.setCurrent(itemStack);</span>
-<span class="source-line-no">164</span><span id="line-164">          if(needsNow == 0) {</span>
-<span class="source-line-no">165</span><span id="line-165">            continue RemoveProcess;</span>
-<span class="source-line-no">166</span><span id="line-166">          }</span>
-<span class="source-line-no">167</span><span id="line-167">        }</span>
-<span class="source-line-no">168</span><span id="line-168">      }</span>
-<span class="source-line-no">169</span><span id="line-169">      if(itemStackToRemove.getAmount() != 0) {</span>
-<span class="source-line-no">170</span><span id="line-170">        integerItemStackMap.put(i, itemStackToRemove);</span>
-<span class="source-line-no">171</span><span id="line-171">      }</span>
-<span class="source-line-no">172</span><span id="line-172">    }</span>
-<span class="source-line-no">173</span><span id="line-173">    return integerItemStackMap;</span>
-<span class="source-line-no">174</span><span id="line-174">  }*/</span>
-<span class="source-line-no">175</span><span id="line-175"></span>
-<span class="source-line-no">176</span><span id="line-176">  /* Need to test the following before implementation, but I think it's a better impl.</span>
-<span class="source-line-no">177</span><span id="line-177">  */</span>
-<span class="source-line-no">178</span><span id="line-178">  @NotNull</span>
-<span class="source-line-no">179</span><span id="line-179">  default ItemRemoveResult removeItem(final ItemStack... itemStacks) {</span>
-<span class="source-line-no">180</span><span id="line-180"></span>
-<span class="source-line-no">181</span><span id="line-181">    final Map&lt;Integer, ItemStack&gt; leftovers = new HashMap&lt;&gt;();</span>
-<span class="source-line-no">182</span><span id="line-182">    final Map&lt;Integer, ItemStack&gt; removed = new HashMap&lt;&gt;();</span>
-<span class="source-line-no">183</span><span id="line-183"></span>
-<span class="source-line-no">184</span><span id="line-184">    for (int i = 0; i &lt; itemStacks.length; i++) {</span>
-<span class="source-line-no">185</span><span id="line-185"></span>
-<span class="source-line-no">186</span><span id="line-186">      final ItemStack requested = itemStacks[i];</span>
-<span class="source-line-no">187</span><span id="line-187">      int remaining = requested.getAmount();</span>
-<span class="source-line-no">188</span><span id="line-188"></span>
-<span class="source-line-no">189</span><span id="line-189">      final InventoryWrapperIterator iterator = iterator();</span>
-<span class="source-line-no">190</span><span id="line-190"></span>
-<span class="source-line-no">191</span><span id="line-191">      int iteratorSlot = 0;</span>
-<span class="source-line-no">192</span><span id="line-192">      while (remaining &gt; 0 &amp;&amp; iterator.hasNext()) {</span>
-<span class="source-line-no">193</span><span id="line-193">        final ItemStack current = iterator.next();</span>
+<span class="source-line-no">043</span><span id="line-43">      final ItemStack original = itemStack.clone();</span>
+<span class="source-line-no">044</span><span id="line-44">      shouldContinue = itemChanger.changeItem(index, itemStack);</span>
+<span class="source-line-no">045</span><span id="line-45">      if(itemStack.getAmount() == 0 || itemStack.getType() == Material.AIR) {</span>
+<span class="source-line-no">046</span><span id="line-46">        iterator.setCurrent(null);</span>
+<span class="source-line-no">047</span><span id="line-47"></span>
+<span class="source-line-no">048</span><span id="line-48">      } else if(!original.equals(itemStack)) {</span>
+<span class="source-line-no">049</span><span id="line-49">        // only update when changed</span>
+<span class="source-line-no">050</span><span id="line-50">        iterator.setCurrent(itemStack);</span>
+<span class="source-line-no">051</span><span id="line-51">      }</span>
+<span class="source-line-no">052</span><span id="line-52">      index++;</span>
+<span class="source-line-no">053</span><span id="line-53">    }</span>
+<span class="source-line-no">054</span><span id="line-54">  }</span>
+<span class="source-line-no">055</span><span id="line-55"></span>
+<span class="source-line-no">056</span><span id="line-56">  /**</span>
+<span class="source-line-no">057</span><span id="line-57">   * Return the iterator for this inventory It's not thread-safe, please use that in main-thread</span>
+<span class="source-line-no">058</span><span id="line-58">   *</span>
+<span class="source-line-no">059</span><span id="line-59">   * @return the iterator for this inventory</span>
+<span class="source-line-no">060</span><span id="line-60">   */</span>
+<span class="source-line-no">061</span><span id="line-61">  @NotNull</span>
+<span class="source-line-no">062</span><span id="line-62">  @Override</span>
+<span class="source-line-no">063</span><span id="line-63">  InventoryWrapperIterator iterator();</span>
+<span class="source-line-no">064</span><span id="line-64"></span>
+<span class="source-line-no">065</span><span id="line-65">  /**</span>
+<span class="source-line-no">066</span><span id="line-66">   * Clear the inventory</span>
+<span class="source-line-no">067</span><span id="line-67">   */</span>
+<span class="source-line-no">068</span><span id="line-68">  void clear();</span>
+<span class="source-line-no">069</span><span id="line-69"></span>
+<span class="source-line-no">070</span><span id="line-70">  /**</span>
+<span class="source-line-no">071</span><span id="line-71">   * Create an Inventory snapshot (including Empty slots). QuickShop-Hikari will shoot a snapshot</span>
+<span class="source-line-no">072</span><span id="line-72">   * for inventory used for purchase failure rollback. Note: provide an invalid snapshot will cause</span>
+<span class="source-line-no">073</span><span id="line-73">   * rollback break whole Inventory! WARNING: High recommend to override this method, default method</span>
+<span class="source-line-no">074</span><span id="line-74">   * doing by badways and low-performance, may mess up Inventory item order.</span>
+<span class="source-line-no">075</span><span id="line-75">   *</span>
+<span class="source-line-no">076</span><span id="line-76">   * @return The inventory contents for snapshot use.</span>
+<span class="source-line-no">077</span><span id="line-77">   */</span>
+<span class="source-line-no">078</span><span id="line-78">  @NotNull</span>
+<span class="source-line-no">079</span><span id="line-79">  default ItemStack[] createSnapshot() {</span>
+<span class="source-line-no">080</span><span id="line-80"></span>
+<span class="source-line-no">081</span><span id="line-81">    Logger.getLogger("QuickShop-Hikari").log(Level.WARNING, "InventoryWrapper provider " + getWrapperManager().getClass().getName() + " didn't override default InventoryWrapper#createSnapshot method, it may cause un-excepted behavior like item missing, mess order and heavy hit performance! Please report this issue to InventoryWrapper provider plugin author!");</span>
+<span class="source-line-no">082</span><span id="line-82">    final List&lt;ItemStack&gt; contents = new ArrayList&lt;&gt;();</span>
+<span class="source-line-no">083</span><span id="line-83">    for(final ItemStack stack : this) {</span>
+<span class="source-line-no">084</span><span id="line-84">      if(stack == null) {</span>
+<span class="source-line-no">085</span><span id="line-85">        continue;</span>
+<span class="source-line-no">086</span><span id="line-86">      }</span>
+<span class="source-line-no">087</span><span id="line-87">      contents.add(stack.clone());</span>
+<span class="source-line-no">088</span><span id="line-88">    }</span>
+<span class="source-line-no">089</span><span id="line-89">    return contents.toArray(new ItemStack[0]);</span>
+<span class="source-line-no">090</span><span id="line-90">  }</span>
+<span class="source-line-no">091</span><span id="line-91"></span>
+<span class="source-line-no">092</span><span id="line-92">  /**</span>
+<span class="source-line-no">093</span><span id="line-93">   * Gets the Inventory Wrapper Manager</span>
+<span class="source-line-no">094</span><span id="line-94">   *</span>
+<span class="source-line-no">095</span><span id="line-95">   * @return Wrapper Manager</span>
+<span class="source-line-no">096</span><span id="line-96">   */</span>
+<span class="source-line-no">097</span><span id="line-97">  @NotNull</span>
+<span class="source-line-no">098</span><span id="line-98">  InventoryWrapperManager getWrapperManager();</span>
+<span class="source-line-no">099</span><span id="line-99"></span>
+<span class="source-line-no">100</span><span id="line-100">  /**</span>
+<span class="source-line-no">101</span><span id="line-101">   * Gets the block or entity belonging to the open inventory</span>
+<span class="source-line-no">102</span><span id="line-102">   *</span>
+<span class="source-line-no">103</span><span id="line-103">   * @return The holder of the inventory; null if it has no holder.</span>
+<span class="source-line-no">104</span><span id="line-104">   */</span>
+<span class="source-line-no">105</span><span id="line-105">  @Nullable</span>
+<span class="source-line-no">106</span><span id="line-106">  InventoryHolder getHolder();</span>
+<span class="source-line-no">107</span><span id="line-107"></span>
+<span class="source-line-no">108</span><span id="line-108">  /**</span>
+<span class="source-line-no">109</span><span id="line-109">   * Gets the Inventory Type</span>
+<span class="source-line-no">110</span><span id="line-110">   *</span>
+<span class="source-line-no">111</span><span id="line-111">   * @return The Inventory Type</span>
+<span class="source-line-no">112</span><span id="line-112">   */</span>
+<span class="source-line-no">113</span><span id="line-113">  @NotNull</span>
+<span class="source-line-no">114</span><span id="line-114">  InventoryWrapperType getInventoryType();</span>
+<span class="source-line-no">115</span><span id="line-115"></span>
+<span class="source-line-no">116</span><span id="line-116">  /**</span>
+<span class="source-line-no">117</span><span id="line-117">   * Get the location of the block or entity which corresponds to this inventory. May return null if</span>
+<span class="source-line-no">118</span><span id="line-118">   * this container was custom created or is a virtual / subcontainer.</span>
+<span class="source-line-no">119</span><span id="line-119">   *</span>
+<span class="source-line-no">120</span><span id="line-120">   * @return location or null if not applicable.</span>
+<span class="source-line-no">121</span><span id="line-121">   */</span>
+<span class="source-line-no">122</span><span id="line-122">  @Nullable</span>
+<span class="source-line-no">123</span><span id="line-123">  Location getLocation();</span>
+<span class="source-line-no">124</span><span id="line-124"></span>
+<span class="source-line-no">125</span><span id="line-125">  /**</span>
+<span class="source-line-no">126</span><span id="line-126">   * Do valid check, check if this Inventory is valid.</span>
+<span class="source-line-no">127</span><span id="line-127">   *</span>
+<span class="source-line-no">128</span><span id="line-128">   * @return valid</span>
+<span class="source-line-no">129</span><span id="line-129">   */</span>
+<span class="source-line-no">130</span><span id="line-130">  default boolean isValid() {</span>
+<span class="source-line-no">131</span><span id="line-131"></span>
+<span class="source-line-no">132</span><span id="line-132">    return true;</span>
+<span class="source-line-no">133</span><span id="line-133">  }</span>
+<span class="source-line-no">134</span><span id="line-134"></span>
+<span class="source-line-no">135</span><span id="line-135">  /**</span>
+<span class="source-line-no">136</span><span id="line-136">   * Do update check, check if inventory-wrapper should discard and re-create via locateSymbolLink</span>
+<span class="source-line-no">137</span><span id="line-137">   *</span>
+<span class="source-line-no">138</span><span id="line-138">   * @return should re-locate inventory</span>
+<span class="source-line-no">139</span><span id="line-139">   */</span>
+<span class="source-line-no">140</span><span id="line-140">  boolean isNeedUpdate();</span>
+<span class="source-line-no">141</span><span id="line-141"></span>
+<span class="source-line-no">142</span><span id="line-142">  /**</span>
+<span class="source-line-no">143</span><span id="line-143">   * Remove specific items from inventory</span>
+<span class="source-line-no">144</span><span id="line-144">   *</span>
+<span class="source-line-no">145</span><span id="line-145">   * @param itemStacks items to remove</span>
+<span class="source-line-no">146</span><span id="line-146">   *</span>
+<span class="source-line-no">147</span><span id="line-147">   * @return The map of containing item index and itemStack itself which is not fit</span>
+<span class="source-line-no">148</span><span id="line-148">   */</span>
+<span class="source-line-no">149</span><span id="line-149">  /*@NotNull</span>
+<span class="source-line-no">150</span><span id="line-150">  default Map&lt;Integer, ItemStack&gt; removeItem(final ItemStack... itemStacks) {</span>
+<span class="source-line-no">151</span><span id="line-151"></span>
+<span class="source-line-no">152</span><span id="line-152">    if(itemStacks.length == 0) {</span>
+<span class="source-line-no">153</span><span id="line-153">      return Collections.emptyMap();</span>
+<span class="source-line-no">154</span><span id="line-154">    }</span>
+<span class="source-line-no">155</span><span id="line-155">    final InventoryWrapperIterator iterator = iterator();</span>
+<span class="source-line-no">156</span><span id="line-156">    final Map&lt;Integer, ItemStack&gt; integerItemStackMap = new HashMap&lt;&gt;();</span>
+<span class="source-line-no">157</span><span id="line-157">    RemoveProcess:</span>
+<span class="source-line-no">158</span><span id="line-158">    for(int i = 0; i &lt; itemStacks.length; i++) {</span>
+<span class="source-line-no">159</span><span id="line-159">      final ItemStack itemStackToRemove = itemStacks[i];</span>
+<span class="source-line-no">160</span><span id="line-160">      while(iterator.hasNext()) {</span>
+<span class="source-line-no">161</span><span id="line-161">        final ItemStack itemStack = iterator.next();</span>
+<span class="source-line-no">162</span><span id="line-162">        // TODO: Need lots of verification, it cause mismatch between items under non-Bukkit item matcher</span>
+<span class="source-line-no">163</span><span id="line-163">        if(itemStack != null &amp;&amp; QuickShopAPI.getInstance().getItemMatcher().matches(itemStackToRemove, itemStack)) {</span>
+<span class="source-line-no">164</span><span id="line-164">          final int couldRemove = itemStack.getAmount();</span>
+<span class="source-line-no">165</span><span id="line-165">          final int actuallyRemove = Math.min(itemStackToRemove.getAmount(), couldRemove);</span>
+<span class="source-line-no">166</span><span id="line-166">          itemStack.setAmount(itemStack.getAmount() - actuallyRemove);</span>
+<span class="source-line-no">167</span><span id="line-167">          final int needsNow = itemStackToRemove.getAmount() - actuallyRemove;</span>
+<span class="source-line-no">168</span><span id="line-168">          itemStackToRemove.setAmount(needsNow);</span>
+<span class="source-line-no">169</span><span id="line-169">          iterator.setCurrent(itemStack);</span>
+<span class="source-line-no">170</span><span id="line-170">          if(needsNow == 0) {</span>
+<span class="source-line-no">171</span><span id="line-171">            continue RemoveProcess;</span>
+<span class="source-line-no">172</span><span id="line-172">          }</span>
+<span class="source-line-no">173</span><span id="line-173">        }</span>
+<span class="source-line-no">174</span><span id="line-174">      }</span>
+<span class="source-line-no">175</span><span id="line-175">      if(itemStackToRemove.getAmount() != 0) {</span>
+<span class="source-line-no">176</span><span id="line-176">        integerItemStackMap.put(i, itemStackToRemove);</span>
+<span class="source-line-no">177</span><span id="line-177">      }</span>
+<span class="source-line-no">178</span><span id="line-178">    }</span>
+<span class="source-line-no">179</span><span id="line-179">    return integerItemStackMap;</span>
+<span class="source-line-no">180</span><span id="line-180">  }*/</span>
+<span class="source-line-no">181</span><span id="line-181"></span>
+<span class="source-line-no">182</span><span id="line-182">  /* Need to test the following before implementation, but I think it's a better impl.</span>
+<span class="source-line-no">183</span><span id="line-183">  */</span>
+<span class="source-line-no">184</span><span id="line-184">  @NotNull</span>
+<span class="source-line-no">185</span><span id="line-185">  default ItemRemoveResult removeItem(final ItemStack... itemStacks) {</span>
+<span class="source-line-no">186</span><span id="line-186"></span>
+<span class="source-line-no">187</span><span id="line-187">    final Map&lt;Integer, ItemStack&gt; leftovers = new HashMap&lt;&gt;();</span>
+<span class="source-line-no">188</span><span id="line-188">    final Map&lt;Integer, ItemStack&gt; removed = new HashMap&lt;&gt;();</span>
+<span class="source-line-no">189</span><span id="line-189"></span>
+<span class="source-line-no">190</span><span id="line-190">    for (int i = 0; i &lt; itemStacks.length; i++) {</span>
+<span class="source-line-no">191</span><span id="line-191"></span>
+<span class="source-line-no">192</span><span id="line-192">      final ItemStack requested = itemStacks[i];</span>
+<span class="source-line-no">193</span><span id="line-193">      int remaining = requested.getAmount();</span>
 <span class="source-line-no">194</span><span id="line-194"></span>
-<span class="source-line-no">195</span><span id="line-195">        if (current == null) {</span>
-<span class="source-line-no">196</span><span id="line-196">          iteratorSlot++;</span>
-<span class="source-line-no">197</span><span id="line-197">          continue;</span>
-<span class="source-line-no">198</span><span id="line-198">        }</span>
-<span class="source-line-no">199</span><span id="line-199"></span>
-<span class="source-line-no">200</span><span id="line-200">        if (!QuickShopAPI.getInstance().getItemMatcher().matches(requested, current)) {</span>
-<span class="source-line-no">201</span><span id="line-201">          iteratorSlot++;</span>
-<span class="source-line-no">202</span><span id="line-202">          continue;</span>
-<span class="source-line-no">203</span><span id="line-203">        }</span>
-<span class="source-line-no">204</span><span id="line-204"></span>
-<span class="source-line-no">205</span><span id="line-205">        final ItemStack currentClone = current.clone();</span>
-<span class="source-line-no">206</span><span id="line-206"></span>
-<span class="source-line-no">207</span><span id="line-207">        final int amount = Math.min(remaining, current.getAmount());</span>
-<span class="source-line-no">208</span><span id="line-208"></span>
-<span class="source-line-no">209</span><span id="line-209">        current.setAmount(current.getAmount() - amount);</span>
-<span class="source-line-no">210</span><span id="line-210">        currentClone.setAmount(amount);</span>
-<span class="source-line-no">211</span><span id="line-211">        iterator.setCurrent(current);</span>
+<span class="source-line-no">195</span><span id="line-195">      final InventoryWrapperIterator iterator = iterator();</span>
+<span class="source-line-no">196</span><span id="line-196"></span>
+<span class="source-line-no">197</span><span id="line-197">      int iteratorSlot = 0;</span>
+<span class="source-line-no">198</span><span id="line-198">      while (remaining &gt; 0 &amp;&amp; iterator.hasNext()) {</span>
+<span class="source-line-no">199</span><span id="line-199">        final ItemStack current = iterator.next();</span>
+<span class="source-line-no">200</span><span id="line-200"></span>
+<span class="source-line-no">201</span><span id="line-201">        if (current == null) {</span>
+<span class="source-line-no">202</span><span id="line-202">          iteratorSlot++;</span>
+<span class="source-line-no">203</span><span id="line-203">          continue;</span>
+<span class="source-line-no">204</span><span id="line-204">        }</span>
+<span class="source-line-no">205</span><span id="line-205"></span>
+<span class="source-line-no">206</span><span id="line-206">        if (!QuickShopAPI.getInstance().getItemMatcher().matches(requested, current)) {</span>
+<span class="source-line-no">207</span><span id="line-207">          iteratorSlot++;</span>
+<span class="source-line-no">208</span><span id="line-208">          continue;</span>
+<span class="source-line-no">209</span><span id="line-209">        }</span>
+<span class="source-line-no">210</span><span id="line-210"></span>
+<span class="source-line-no">211</span><span id="line-211">        final ItemStack currentClone = current.clone();</span>
 <span class="source-line-no">212</span><span id="line-212"></span>
-<span class="source-line-no">213</span><span id="line-213">        remaining -= amount;</span>
-<span class="source-line-no">214</span><span id="line-214">        if (amount &gt; 0) {</span>
-<span class="source-line-no">215</span><span id="line-215"></span>
-<span class="source-line-no">216</span><span id="line-216">          removed.merge(iteratorSlot, currentClone, (existing, added) -&gt; existing.add(added.getAmount()));</span>
-<span class="source-line-no">217</span><span id="line-217">        }</span>
-<span class="source-line-no">218</span><span id="line-218">        iteratorSlot++;</span>
-<span class="source-line-no">219</span><span id="line-219">      }</span>
-<span class="source-line-no">220</span><span id="line-220"></span>
-<span class="source-line-no">221</span><span id="line-221">      if (remaining &gt; 0) {</span>
-<span class="source-line-no">222</span><span id="line-222"></span>
-<span class="source-line-no">223</span><span id="line-223">        final ItemStack leftoverStack = requested.clone();</span>
-<span class="source-line-no">224</span><span id="line-224">        leftoverStack.setAmount(remaining);</span>
-<span class="source-line-no">225</span><span id="line-225">        leftovers.put(i, leftoverStack);</span>
-<span class="source-line-no">226</span><span id="line-226">      }</span>
-<span class="source-line-no">227</span><span id="line-227">    }</span>
+<span class="source-line-no">213</span><span id="line-213">        final int amount = Math.min(remaining, current.getAmount());</span>
+<span class="source-line-no">214</span><span id="line-214"></span>
+<span class="source-line-no">215</span><span id="line-215">        current.setAmount(current.getAmount() - amount);</span>
+<span class="source-line-no">216</span><span id="line-216">        currentClone.setAmount(amount);</span>
+<span class="source-line-no">217</span><span id="line-217">        iterator.setCurrent(current);</span>
+<span class="source-line-no">218</span><span id="line-218"></span>
+<span class="source-line-no">219</span><span id="line-219">        remaining -= amount;</span>
+<span class="source-line-no">220</span><span id="line-220">        if (amount &gt; 0) {</span>
+<span class="source-line-no">221</span><span id="line-221"></span>
+<span class="source-line-no">222</span><span id="line-222">          removed.merge(iteratorSlot, currentClone, (existing, added) -&gt; existing.add(added.getAmount()));</span>
+<span class="source-line-no">223</span><span id="line-223">        }</span>
+<span class="source-line-no">224</span><span id="line-224">        iteratorSlot++;</span>
+<span class="source-line-no">225</span><span id="line-225">      }</span>
+<span class="source-line-no">226</span><span id="line-226"></span>
+<span class="source-line-no">227</span><span id="line-227">      if (remaining &gt; 0) {</span>
 <span class="source-line-no">228</span><span id="line-228"></span>
-<span class="source-line-no">229</span><span id="line-229">    return new ItemRemoveResult(leftovers, removed);</span>
-<span class="source-line-no">230</span><span id="line-230">  }</span>
-<span class="source-line-no">231</span><span id="line-231"></span>
-<span class="source-line-no">232</span><span id="line-232">  /**</span>
-<span class="source-line-no">233</span><span id="line-233">   * Rollback Inventory by a snapshot. Snapshot can be created by InventoryWrapper#createSnapshot()</span>
-<span class="source-line-no">234</span><span id="line-234">   * WARNING: High recommend to override this method, default method doing by badways and</span>
-<span class="source-line-no">235</span><span id="line-235">   * low-performance, may mess up Inventory item order.</span>
-<span class="source-line-no">236</span><span id="line-236">   *</span>
-<span class="source-line-no">237</span><span id="line-237">   * @param snapshot The inventory content snapshot</span>
-<span class="source-line-no">238</span><span id="line-238">   *</span>
-<span class="source-line-no">239</span><span id="line-239">   * @return The result of rollback.</span>
-<span class="source-line-no">240</span><span id="line-240">   */</span>
-<span class="source-line-no">241</span><span id="line-241">  default boolean restoreSnapshot(@NotNull final ItemStack[] snapshot) {</span>
-<span class="source-line-no">242</span><span id="line-242"></span>
-<span class="source-line-no">243</span><span id="line-243">    Logger.getLogger("QuickShop-Hikari").log(Level.WARNING, "InventoryWrapper provider " + getWrapperManager().getClass().getName() + " didn't override default InventoryWrapper#restoreSnapshot method, it may cause un-excepted behavior like item missing, mess order and heavy hit performance! Please report this issue to InventoryWrapper provider plugin author!");</span>
-<span class="source-line-no">244</span><span id="line-244">    final InventoryWrapperIterator it = iterator();</span>
-<span class="source-line-no">245</span><span id="line-245">    while(it.hasNext()) {</span>
-<span class="source-line-no">246</span><span id="line-246">      it.remove();</span>
-<span class="source-line-no">247</span><span id="line-247">    }</span>
-<span class="source-line-no">248</span><span id="line-248">    final Map&lt;Integer, ItemStack&gt; result = addItem(snapshot);</span>
-<span class="source-line-no">249</span><span id="line-249">    return result.isEmpty();</span>
-<span class="source-line-no">250</span><span id="line-250">  }</span>
-<span class="source-line-no">251</span><span id="line-251"></span>
-<span class="source-line-no">252</span><span id="line-252">  /**</span>
-<span class="source-line-no">253</span><span id="line-253">   * Add specific items from inventory</span>
-<span class="source-line-no">254</span><span id="line-254">   *</span>
-<span class="source-line-no">255</span><span id="line-255">   * @param itemStacks items to add</span>
-<span class="source-line-no">256</span><span id="line-256">   *</span>
-<span class="source-line-no">257</span><span id="line-257">   * @return The map of containing item index and itemStack itself which is not fit</span>
-<span class="source-line-no">258</span><span id="line-258">   */</span>
-<span class="source-line-no">259</span><span id="line-259">  @NotNull</span>
-<span class="source-line-no">260</span><span id="line-260">  default Map&lt;Integer, ItemStack&gt; addItem(final ItemStack... itemStacks) {</span>
-<span class="source-line-no">261</span><span id="line-261"></span>
-<span class="source-line-no">262</span><span id="line-262">    if(itemStacks.length == 0) {</span>
-<span class="source-line-no">263</span><span id="line-263">      return Collections.emptyMap();</span>
-<span class="source-line-no">264</span><span id="line-264">    }</span>
-<span class="source-line-no">265</span><span id="line-265">    final InventoryWrapperIterator iterator = iterator();</span>
-<span class="source-line-no">266</span><span id="line-266">    final Map&lt;Integer, ItemStack&gt; integerItemStackMap = new HashMap&lt;&gt;();</span>
-<span class="source-line-no">267</span><span id="line-267">    AddProcess:</span>
-<span class="source-line-no">268</span><span id="line-268">    for(int i = 0; i &lt; itemStacks.length; i++) {</span>
-<span class="source-line-no">269</span><span id="line-269">      final ItemStack itemStackToAdd = itemStacks[i];</span>
-<span class="source-line-no">270</span><span id="line-270">      while(iterator.hasNext()) {</span>
-<span class="source-line-no">271</span><span id="line-271">        final ItemStack itemStack = iterator.next();</span>
-<span class="source-line-no">272</span><span id="line-272">        if(itemStack == null) {</span>
-<span class="source-line-no">273</span><span id="line-273">          iterator.setCurrent(itemStackToAdd);</span>
-<span class="source-line-no">274</span><span id="line-274">          itemStackToAdd.setAmount(0);</span>
-<span class="source-line-no">275</span><span id="line-275">          continue AddProcess;</span>
-<span class="source-line-no">276</span><span id="line-276">        } else {</span>
-<span class="source-line-no">277</span><span id="line-277">          if(itemStack.isSimilar(itemStackToAdd)) {</span>
-<span class="source-line-no">278</span><span id="line-278">            final int couldAdd = itemStack.getMaxStackSize() - Math.min(itemStack.getMaxStackSize(), itemStack.getAmount());</span>
-<span class="source-line-no">279</span><span id="line-279">            final int actuallyAdd = Math.min(itemStackToAdd.getAmount(), couldAdd);</span>
-<span class="source-line-no">280</span><span id="line-280">            itemStack.setAmount(itemStack.getAmount() + actuallyAdd);</span>
-<span class="source-line-no">281</span><span id="line-281">            final int needsNow = itemStackToAdd.getAmount() - actuallyAdd;</span>
-<span class="source-line-no">282</span><span id="line-282">            itemStackToAdd.setAmount(needsNow);</span>
-<span class="source-line-no">283</span><span id="line-283">            iterator.setCurrent(itemStack);</span>
-<span class="source-line-no">284</span><span id="line-284">            if(needsNow == 0) {</span>
-<span class="source-line-no">285</span><span id="line-285">              continue AddProcess;</span>
-<span class="source-line-no">286</span><span id="line-286">            }</span>
-<span class="source-line-no">287</span><span id="line-287">          }</span>
-<span class="source-line-no">288</span><span id="line-288">        }</span>
-<span class="source-line-no">289</span><span id="line-289">      }</span>
-<span class="source-line-no">290</span><span id="line-290">      if(itemStackToAdd.getAmount() != 0) {</span>
-<span class="source-line-no">291</span><span id="line-291">        integerItemStackMap.put(i, itemStackToAdd);</span>
-<span class="source-line-no">292</span><span id="line-292">      }</span>
-<span class="source-line-no">293</span><span id="line-293">    }</span>
-<span class="source-line-no">294</span><span id="line-294">    return integerItemStackMap;</span>
-<span class="source-line-no">295</span><span id="line-295">  }</span>
-<span class="source-line-no">296</span><span id="line-296"></span>
-<span class="source-line-no">297</span><span id="line-297">  /**</span>
-<span class="source-line-no">298</span><span id="line-298">   * Set the contents of inventory</span>
-<span class="source-line-no">299</span><span id="line-299">   *</span>
-<span class="source-line-no">300</span><span id="line-300">   * @param itemStacks the contents you want to set</span>
-<span class="source-line-no">301</span><span id="line-301">   */</span>
-<span class="source-line-no">302</span><span id="line-302">  void setContents(ItemStack[] itemStacks);</span>
-<span class="source-line-no">303</span><span id="line-303"></span>
-<span class="source-line-no">304</span><span id="line-304">  /**</span>
-<span class="source-line-no">305</span><span id="line-305">   * Change the item from Inventory</span>
-<span class="source-line-no">306</span><span id="line-306">   */</span>
-<span class="source-line-no">307</span><span id="line-307">  interface ItemChanger {</span>
-<span class="source-line-no">308</span><span id="line-308"></span>
-<span class="source-line-no">309</span><span id="line-309">    /**</span>
-<span class="source-line-no">310</span><span id="line-310">     * Do item change action in the inventory</span>
-<span class="source-line-no">311</span><span id="line-311">     *</span>
-<span class="source-line-no">312</span><span id="line-312">     * @param index     the item index in the inventory, start from zero</span>
-<span class="source-line-no">313</span><span id="line-313">     * @param itemStack the item in this index</span>
-<span class="source-line-no">314</span><span id="line-314">     *</span>
-<span class="source-line-no">315</span><span id="line-315">     * @return If continue to change items in the next index</span>
-<span class="source-line-no">316</span><span id="line-316">     */</span>
-<span class="source-line-no">317</span><span id="line-317">    boolean changeItem(int index, ItemStack itemStack);</span>
-<span class="source-line-no">318</span><span id="line-318">  }</span>
-<span class="source-line-no">319</span><span id="line-319"></span>
-<span class="source-line-no">320</span><span id="line-320">}</span>
+<span class="source-line-no">229</span><span id="line-229">        final ItemStack leftoverStack = requested.clone();</span>
+<span class="source-line-no">230</span><span id="line-230">        leftoverStack.setAmount(remaining);</span>
+<span class="source-line-no">231</span><span id="line-231">        leftovers.put(i, leftoverStack);</span>
+<span class="source-line-no">232</span><span id="line-232">      }</span>
+<span class="source-line-no">233</span><span id="line-233">    }</span>
+<span class="source-line-no">234</span><span id="line-234"></span>
+<span class="source-line-no">235</span><span id="line-235">    return new ItemRemoveResult(leftovers, removed);</span>
+<span class="source-line-no">236</span><span id="line-236">  }</span>
+<span class="source-line-no">237</span><span id="line-237"></span>
+<span class="source-line-no">238</span><span id="line-238">  /**</span>
+<span class="source-line-no">239</span><span id="line-239">   * Rollback Inventory by a snapshot. Snapshot can be created by InventoryWrapper#createSnapshot()</span>
+<span class="source-line-no">240</span><span id="line-240">   * WARNING: High recommend to override this method, default method doing by badways and</span>
+<span class="source-line-no">241</span><span id="line-241">   * low-performance, may mess up Inventory item order.</span>
+<span class="source-line-no">242</span><span id="line-242">   *</span>
+<span class="source-line-no">243</span><span id="line-243">   * @param snapshot The inventory content snapshot</span>
+<span class="source-line-no">244</span><span id="line-244">   *</span>
+<span class="source-line-no">245</span><span id="line-245">   * @return The result of rollback.</span>
+<span class="source-line-no">246</span><span id="line-246">   */</span>
+<span class="source-line-no">247</span><span id="line-247">  default boolean restoreSnapshot(@NotNull final ItemStack[] snapshot) {</span>
+<span class="source-line-no">248</span><span id="line-248"></span>
+<span class="source-line-no">249</span><span id="line-249">    Logger.getLogger("QuickShop-Hikari").log(Level.WARNING, "InventoryWrapper provider " + getWrapperManager().getClass().getName() + " didn't override default InventoryWrapper#restoreSnapshot method, it may cause un-excepted behavior like item missing, mess order and heavy hit performance! Please report this issue to InventoryWrapper provider plugin author!");</span>
+<span class="source-line-no">250</span><span id="line-250">    final InventoryWrapperIterator it = iterator();</span>
+<span class="source-line-no">251</span><span id="line-251">    while(it.hasNext()) {</span>
+<span class="source-line-no">252</span><span id="line-252">      it.remove();</span>
+<span class="source-line-no">253</span><span id="line-253">    }</span>
+<span class="source-line-no">254</span><span id="line-254">    final Map&lt;Integer, ItemStack&gt; result = addItem(snapshot);</span>
+<span class="source-line-no">255</span><span id="line-255">    return result.isEmpty();</span>
+<span class="source-line-no">256</span><span id="line-256">  }</span>
+<span class="source-line-no">257</span><span id="line-257"></span>
+<span class="source-line-no">258</span><span id="line-258">  /**</span>
+<span class="source-line-no">259</span><span id="line-259">   * Add specific items from inventory</span>
+<span class="source-line-no">260</span><span id="line-260">   *</span>
+<span class="source-line-no">261</span><span id="line-261">   * @param itemStacks items to add</span>
+<span class="source-line-no">262</span><span id="line-262">   *</span>
+<span class="source-line-no">263</span><span id="line-263">   * @return The map of containing item index and itemStack itself which is not fit</span>
+<span class="source-line-no">264</span><span id="line-264">   */</span>
+<span class="source-line-no">265</span><span id="line-265">  @NotNull</span>
+<span class="source-line-no">266</span><span id="line-266">  default Map&lt;Integer, ItemStack&gt; addItem(final ItemStack... itemStacks) {</span>
+<span class="source-line-no">267</span><span id="line-267"></span>
+<span class="source-line-no">268</span><span id="line-268">    if(itemStacks.length == 0) {</span>
+<span class="source-line-no">269</span><span id="line-269">      return Collections.emptyMap();</span>
+<span class="source-line-no">270</span><span id="line-270">    }</span>
+<span class="source-line-no">271</span><span id="line-271">    final InventoryWrapperIterator iterator = iterator();</span>
+<span class="source-line-no">272</span><span id="line-272">    final Map&lt;Integer, ItemStack&gt; integerItemStackMap = new HashMap&lt;&gt;();</span>
+<span class="source-line-no">273</span><span id="line-273">    AddProcess:</span>
+<span class="source-line-no">274</span><span id="line-274">    for(int i = 0; i &lt; itemStacks.length; i++) {</span>
+<span class="source-line-no">275</span><span id="line-275">      final ItemStack itemStackToAdd = itemStacks[i];</span>
+<span class="source-line-no">276</span><span id="line-276">      while(iterator.hasNext()) {</span>
+<span class="source-line-no">277</span><span id="line-277">        final ItemStack itemStack = iterator.next();</span>
+<span class="source-line-no">278</span><span id="line-278">        if(itemStack == null) {</span>
+<span class="source-line-no">279</span><span id="line-279">          iterator.setCurrent(itemStackToAdd);</span>
+<span class="source-line-no">280</span><span id="line-280">          itemStackToAdd.setAmount(0);</span>
+<span class="source-line-no">281</span><span id="line-281">          continue AddProcess;</span>
+<span class="source-line-no">282</span><span id="line-282">        } else {</span>
+<span class="source-line-no">283</span><span id="line-283">          if(itemStack.isSimilar(itemStackToAdd)) {</span>
+<span class="source-line-no">284</span><span id="line-284">            final int couldAdd = itemStack.getMaxStackSize() - Math.min(itemStack.getMaxStackSize(), itemStack.getAmount());</span>
+<span class="source-line-no">285</span><span id="line-285">            final int actuallyAdd = Math.min(itemStackToAdd.getAmount(), couldAdd);</span>
+<span class="source-line-no">286</span><span id="line-286">            itemStack.setAmount(itemStack.getAmount() + actuallyAdd);</span>
+<span class="source-line-no">287</span><span id="line-287">            final int needsNow = itemStackToAdd.getAmount() - actuallyAdd;</span>
+<span class="source-line-no">288</span><span id="line-288">            itemStackToAdd.setAmount(needsNow);</span>
+<span class="source-line-no">289</span><span id="line-289">            iterator.setCurrent(itemStack);</span>
+<span class="source-line-no">290</span><span id="line-290">            if(needsNow == 0) {</span>
+<span class="source-line-no">291</span><span id="line-291">              continue AddProcess;</span>
+<span class="source-line-no">292</span><span id="line-292">            }</span>
+<span class="source-line-no">293</span><span id="line-293">          }</span>
+<span class="source-line-no">294</span><span id="line-294">        }</span>
+<span class="source-line-no">295</span><span id="line-295">      }</span>
+<span class="source-line-no">296</span><span id="line-296">      if(itemStackToAdd.getAmount() != 0) {</span>
+<span class="source-line-no">297</span><span id="line-297">        integerItemStackMap.put(i, itemStackToAdd);</span>
+<span class="source-line-no">298</span><span id="line-298">      }</span>
+<span class="source-line-no">299</span><span id="line-299">    }</span>
+<span class="source-line-no">300</span><span id="line-300">    return integerItemStackMap;</span>
+<span class="source-line-no">301</span><span id="line-301">  }</span>
+<span class="source-line-no">302</span><span id="line-302"></span>
+<span class="source-line-no">303</span><span id="line-303">  /**</span>
+<span class="source-line-no">304</span><span id="line-304">   * Set the contents of inventory</span>
+<span class="source-line-no">305</span><span id="line-305">   *</span>
+<span class="source-line-no">306</span><span id="line-306">   * @param itemStacks the contents you want to set</span>
+<span class="source-line-no">307</span><span id="line-307">   */</span>
+<span class="source-line-no">308</span><span id="line-308">  void setContents(ItemStack[] itemStacks);</span>
+<span class="source-line-no">309</span><span id="line-309"></span>
+<span class="source-line-no">310</span><span id="line-310">  /**</span>
+<span class="source-line-no">311</span><span id="line-311">   * Change the item from Inventory</span>
+<span class="source-line-no">312</span><span id="line-312">   */</span>
+<span class="source-line-no">313</span><span id="line-313">  interface ItemChanger {</span>
+<span class="source-line-no">314</span><span id="line-314"></span>
+<span class="source-line-no">315</span><span id="line-315">    /**</span>
+<span class="source-line-no">316</span><span id="line-316">     * Do item change action in the inventory</span>
+<span class="source-line-no">317</span><span id="line-317">     *</span>
+<span class="source-line-no">318</span><span id="line-318">     * @param index     the item index in the inventory, start from zero</span>
+<span class="source-line-no">319</span><span id="line-319">     * @param itemStack the item in this index</span>
+<span class="source-line-no">320</span><span id="line-320">     *</span>
+<span class="source-line-no">321</span><span id="line-321">     * @return If continue to change items in the next index</span>
+<span class="source-line-no">322</span><span id="line-322">     */</span>
+<span class="source-line-no">323</span><span id="line-323">    boolean changeItem(int index, ItemStack itemStack);</span>
+<span class="source-line-no">324</span><span id="line-324">  }</span>
+<span class="source-line-no">325</span><span id="line-325"></span>
+<span class="source-line-no">326</span><span id="line-326">}</span>
 
 
 

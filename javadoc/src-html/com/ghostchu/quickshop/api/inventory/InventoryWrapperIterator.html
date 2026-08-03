@@ -46,7 +46,7 @@
 <span class="source-line-no">033</span><span id="line-33">      }</span>
 <span class="source-line-no">034</span><span id="line-34"></span>
 <span class="source-line-no">035</span><span id="line-35">      @Override</span>
-<span class="source-line-no">036</span><span id="line-36">      public ItemStack next() {</span>
+<span class="source-line-no">036</span><span id="line-36">      public @Nullable ItemStack next() {</span>
 <span class="source-line-no">037</span><span id="line-37"></span>
 <span class="source-line-no">038</span><span id="line-38">        if(!hasNext()) {</span>
 <span class="source-line-no">039</span><span id="line-39">          throw new NoSuchElementException();</span>
@@ -83,7 +83,7 @@
 <span class="source-line-no">070</span><span id="line-70">      }</span>
 <span class="source-line-no">071</span><span id="line-71"></span>
 <span class="source-line-no">072</span><span id="line-72">      @Override</span>
-<span class="source-line-no">073</span><span id="line-73">      public ItemStack next() {</span>
+<span class="source-line-no">073</span><span id="line-73">      public @Nullable ItemStack next() {</span>
 <span class="source-line-no">074</span><span id="line-74"></span>
 <span class="source-line-no">075</span><span id="line-75">        if(!hasNext()) {</span>
 <span class="source-line-no">076</span><span id="line-76">          throw new NoSuchElementException();</span>
@@ -108,24 +108,25 @@
 <span class="source-line-no">095</span><span id="line-95">   * @return the next ItemStack instance</span>
 <span class="source-line-no">096</span><span id="line-96">   */</span>
 <span class="source-line-no">097</span><span id="line-97">  @Override</span>
-<span class="source-line-no">098</span><span id="line-98">  ItemStack next();</span>
-<span class="source-line-no">099</span><span id="line-99"></span>
-<span class="source-line-no">100</span><span id="line-100">  /**</span>
-<span class="source-line-no">101</span><span id="line-101">   * Remove the current ItemStack from inventory</span>
-<span class="source-line-no">102</span><span id="line-102">   */</span>
-<span class="source-line-no">103</span><span id="line-103">  @Override</span>
-<span class="source-line-no">104</span><span id="line-104">  default void remove() {</span>
-<span class="source-line-no">105</span><span id="line-105"></span>
-<span class="source-line-no">106</span><span id="line-106">    setCurrent(null);</span>
-<span class="source-line-no">107</span><span id="line-107">  }</span>
-<span class="source-line-no">108</span><span id="line-108"></span>
-<span class="source-line-no">109</span><span id="line-109">  /**</span>
-<span class="source-line-no">110</span><span id="line-110">   * Set the current ItemStack instance</span>
-<span class="source-line-no">111</span><span id="line-111">   *</span>
-<span class="source-line-no">112</span><span id="line-112">   * @param stack the itemStack need to set</span>
-<span class="source-line-no">113</span><span id="line-113">   */</span>
-<span class="source-line-no">114</span><span id="line-114">  void setCurrent(@Nullable ItemStack stack);</span>
-<span class="source-line-no">115</span><span id="line-115">}</span>
+<span class="source-line-no">098</span><span id="line-98">  @Nullable</span>
+<span class="source-line-no">099</span><span id="line-99">  ItemStack next();</span>
+<span class="source-line-no">100</span><span id="line-100"></span>
+<span class="source-line-no">101</span><span id="line-101">  /**</span>
+<span class="source-line-no">102</span><span id="line-102">   * Remove the current ItemStack from inventory</span>
+<span class="source-line-no">103</span><span id="line-103">   */</span>
+<span class="source-line-no">104</span><span id="line-104">  @Override</span>
+<span class="source-line-no">105</span><span id="line-105">  default void remove() {</span>
+<span class="source-line-no">106</span><span id="line-106"></span>
+<span class="source-line-no">107</span><span id="line-107">    setCurrent(null);</span>
+<span class="source-line-no">108</span><span id="line-108">  }</span>
+<span class="source-line-no">109</span><span id="line-109"></span>
+<span class="source-line-no">110</span><span id="line-110">  /**</span>
+<span class="source-line-no">111</span><span id="line-111">   * Set the current ItemStack instance</span>
+<span class="source-line-no">112</span><span id="line-112">   *</span>
+<span class="source-line-no">113</span><span id="line-113">   * @param stack the itemStack need to set</span>
+<span class="source-line-no">114</span><span id="line-114">   */</span>
+<span class="source-line-no">115</span><span id="line-115">  void setCurrent(@Nullable ItemStack stack);</span>
+<span class="source-line-no">116</span><span id="line-116">}</span>
 
 
 

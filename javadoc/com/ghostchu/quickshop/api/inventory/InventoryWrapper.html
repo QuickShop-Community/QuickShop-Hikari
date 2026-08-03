@@ -240,7 +240,7 @@ extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/ja
 <section class="detail" id="iterator()">
 <h3>iterator</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="InventoryWrapperIterator.html" title="interface in com.ghostchu.quickshop.api.inventory">InventoryWrapperIterator</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/inventory/InventoryWrapper.html#line-55">iterator</a></span>()</div>
+</span><span class="return-type">@NotNull <a href="InventoryWrapperIterator.html" title="interface in com.ghostchu.quickshop.api.inventory">InventoryWrapperIterator</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/inventory/InventoryWrapper.html#line-61">iterator</a></span>()</div>
 <div class="block">Return the iterator for this inventory It's not thread-safe, please use that in main-thread</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -253,7 +253,7 @@ extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/ja
 <li>
 <section class="detail" id="clear()">
 <h3>clear</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/inventory/InventoryWrapper.html#line-62">clear</a></span>()</div>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/inventory/InventoryWrapper.html#line-68">clear</a></span>()</div>
 <div class="block">Clear the inventory</div>
 </section>
 </li>
@@ -261,7 +261,7 @@ extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/ja
 <section class="detail" id="createSnapshot()">
 <h3>createSnapshot</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="modifiers">default</span>&nbsp;<span class="return-type">@NotNull org.bukkit.inventory.ItemStack[]</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/inventory/InventoryWrapper.html#line-72">createSnapshot</a></span>()</div>
+</span><span class="modifiers">default</span>&nbsp;<span class="return-type">@NotNull org.bukkit.inventory.ItemStack[]</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/inventory/InventoryWrapper.html#line-78">createSnapshot</a></span>()</div>
 <div class="block">Create an Inventory snapshot (including Empty slots). QuickShop-Hikari will shoot a snapshot
  for inventory used for purchase failure rollback. Note: provide an invalid snapshot will cause
  rollback break whole Inventory! WARNING: High recommend to override this method, default method
@@ -276,7 +276,7 @@ extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/ja
 <section class="detail" id="getWrapperManager()">
 <h3>getWrapperManager</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="InventoryWrapperManager.html" title="interface in com.ghostchu.quickshop.api.inventory">InventoryWrapperManager</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/inventory/InventoryWrapper.html#line-91">getWrapperManager</a></span>()</div>
+</span><span class="return-type">@NotNull <a href="InventoryWrapperManager.html" title="interface in com.ghostchu.quickshop.api.inventory">InventoryWrapperManager</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/inventory/InventoryWrapper.html#line-97">getWrapperManager</a></span>()</div>
 <div class="block">Gets the Inventory Wrapper Manager</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -288,7 +288,7 @@ extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/ja
 <section class="detail" id="getHolder()">
 <h3>getHolder</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="return-type">@Nullable org.bukkit.inventory.InventoryHolder</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/inventory/InventoryWrapper.html#line-99">getHolder</a></span>()</div>
+</span><span class="return-type">@Nullable org.bukkit.inventory.InventoryHolder</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/inventory/InventoryWrapper.html#line-105">getHolder</a></span>()</div>
 <div class="block">Gets the block or entity belonging to the open inventory</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -300,7 +300,7 @@ extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/ja
 <section class="detail" id="getInventoryType()">
 <h3>getInventoryType</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="InventoryWrapperType.html" title="enum class in com.ghostchu.quickshop.api.inventory">InventoryWrapperType</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/inventory/InventoryWrapper.html#line-107">getInventoryType</a></span>()</div>
+</span><span class="return-type">@NotNull <a href="InventoryWrapperType.html" title="enum class in com.ghostchu.quickshop.api.inventory">InventoryWrapperType</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/inventory/InventoryWrapper.html#line-113">getInventoryType</a></span>()</div>
 <div class="block">Gets the Inventory Type</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -312,7 +312,7 @@ extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/ja
 <section class="detail" id="getLocation()">
 <h3>getLocation</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="return-type">@Nullable org.bukkit.Location</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/inventory/InventoryWrapper.html#line-116">getLocation</a></span>()</div>
+</span><span class="return-type">@Nullable org.bukkit.Location</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/inventory/InventoryWrapper.html#line-122">getLocation</a></span>()</div>
 <div class="block">Get the location of the block or entity which corresponds to this inventory. May return null if
  this container was custom created or is a virtual / subcontainer.</div>
 <dl class="notes">
@@ -324,7 +324,7 @@ extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/ja
 <li>
 <section class="detail" id="isValid()">
 <h3>isValid</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/inventory/InventoryWrapper.html#line-124">isValid</a></span>()</div>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/inventory/InventoryWrapper.html#line-130">isValid</a></span>()</div>
 <div class="block">Do valid check, check if this Inventory is valid.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -335,7 +335,7 @@ extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/ja
 <li>
 <section class="detail" id="isNeedUpdate()">
 <h3>isNeedUpdate</h3>
-<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/inventory/InventoryWrapper.html#line-134">isNeedUpdate</a></span>()</div>
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/inventory/InventoryWrapper.html#line-140">isNeedUpdate</a></span>()</div>
 <div class="block">Do update check, check if inventory-wrapper should discard and re-create via locateSymbolLink</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -347,7 +347,7 @@ extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/ja
 <section class="detail" id="removeItem(org.bukkit.inventory.ItemStack...)">
 <h3>removeItem</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="modifiers">default</span>&nbsp;<span class="return-type">@NotNull <a href="ItemRemoveResult.html" title="class in com.ghostchu.quickshop.api.inventory">ItemRemoveResult</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/inventory/InventoryWrapper.html#line-178">removeItem</a></span><wbr><span class="parameters">(org.bukkit.inventory.ItemStack...&nbsp;itemStacks)</span></div>
+</span><span class="modifiers">default</span>&nbsp;<span class="return-type">@NotNull <a href="ItemRemoveResult.html" title="class in com.ghostchu.quickshop.api.inventory">ItemRemoveResult</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/inventory/InventoryWrapper.html#line-184">removeItem</a></span><wbr><span class="parameters">(org.bukkit.inventory.ItemStack...&nbsp;itemStacks)</span></div>
 <div class="block">Remove specific items from inventory</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -360,7 +360,7 @@ extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/ja
 <li>
 <section class="detail" id="restoreSnapshot(org.bukkit.inventory.ItemStack[])">
 <h3>restoreSnapshot</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/inventory/InventoryWrapper.html#line-241">restoreSnapshot</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/inventory/InventoryWrapper.html#line-247">restoreSnapshot</a></span><wbr><span class="parameters">(@NotNull
  @NotNull org.bukkit.inventory.ItemStack[]&nbsp;snapshot)</span></div>
 <div class="block">Rollback Inventory by a snapshot. Snapshot can be created by InventoryWrapper#createSnapshot()
  WARNING: High recommend to override this method, default method doing by badways and
@@ -377,7 +377,7 @@ extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/ja
 <section class="detail" id="addItem(org.bukkit.inventory.ItemStack...)">
 <h3>addItem</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="modifiers">default</span>&nbsp;<span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>,<wbr>org.bukkit.inventory.ItemStack&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/inventory/InventoryWrapper.html#line-259">addItem</a></span><wbr><span class="parameters">(org.bukkit.inventory.ItemStack...&nbsp;itemStacks)</span></div>
+</span><span class="modifiers">default</span>&nbsp;<span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>,<wbr>org.bukkit.inventory.ItemStack&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/inventory/InventoryWrapper.html#line-265">addItem</a></span><wbr><span class="parameters">(org.bukkit.inventory.ItemStack...&nbsp;itemStacks)</span></div>
 <div class="block">Add specific items from inventory</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -390,7 +390,7 @@ extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/ja
 <li>
 <section class="detail" id="setContents(org.bukkit.inventory.ItemStack[])">
 <h3>setContents</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/inventory/InventoryWrapper.html#line-302">setContents</a></span><wbr><span class="parameters">(org.bukkit.inventory.ItemStack[]&nbsp;itemStacks)</span></div>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/inventory/InventoryWrapper.html#line-308">setContents</a></span><wbr><span class="parameters">(org.bukkit.inventory.ItemStack[]&nbsp;itemStacks)</span></div>
 <div class="block">Set the contents of inventory</div>
 <dl class="notes">
 <dt>Parameters:</dt>
