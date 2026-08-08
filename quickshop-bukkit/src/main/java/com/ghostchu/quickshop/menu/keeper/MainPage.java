@@ -314,30 +314,34 @@ public class MainPage extends QuickShopPage {
         }
 
         // Staff Icon from config
-        final String staffMaterial = staffConfig != null? staffConfig.getMaterial() : "PLAYER_HEAD";
-        final int staffSlot = staffConfig != null? staffConfig.getSlot() : 23;
+        final boolean disableStaff = staffConfig.section().getBoolean("disable", false);
 
-        SkullProfile profile = null;
-        if(shop.get().getOwner().isRealPlayer()) {
-          profile = new SkullProfile();
-          profile.uuid(shop.get().getOwner().getUniqueId());
-        }
+        if(!disableStaff) {
+          final String staffMaterial = staffConfig != null? staffConfig.getMaterial() : "PLAYER_HEAD";
+          final int staffSlot = staffConfig != null? staffConfig.getSlot() : 23;
 
-        if((!shop.get().playerAuthorize(id, BuiltInShopPermission.MANAGEMENT_PERMISSION)
-            && !QuickShop.getInstance().perm().hasPermission(player, "quickshop.other.staff"))) {
+          SkullProfile profile = null;
+          if(shop.get().getOwner().isRealPlayer()) {
+            profile = new SkullProfile();
+            profile.uuid(shop.get().getOwner().getUniqueId());
+          }
 
-          open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(staffMaterial, 1)
-                                                         .customName(getConfigDisplay(id, staffConfig, "<gray>Shop Staff (No Permission)</gray>"))
-                                                         .profile(profile))
-                                         .withSlot(staffSlot).build());
-        } else {
+          if((!shop.get().playerAuthorize(id, BuiltInShopPermission.MANAGEMENT_PERMISSION)
+              && !QuickShop.getInstance().perm().hasPermission(player, "quickshop.other.staff"))) {
 
-          open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(staffMaterial, 1)
-                                                         .customName(getConfigDisplay(id, staffConfig, "<bold><aqua>Shop Staff</aqua></bold>"))
-                                                         .lore(getConfigLore(id, staffConfig))
-                                                         .profile(profile))
-                                         .withSlot(staffSlot)
-                                         .withActions(new SwitchMenuAction("qs:staff")).build());
+            open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(staffMaterial, 1)
+                                                           .customName(getConfigDisplay(id, staffConfig, "<gray>Shop Staff (No Permission)</gray>"))
+                                                           .profile(profile))
+                                           .withSlot(staffSlot).build());
+          } else {
+
+            open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(staffMaterial, 1)
+                                                           .customName(getConfigDisplay(id, staffConfig, "<bold><aqua>Shop Staff</aqua></bold>"))
+                                                           .lore(getConfigLore(id, staffConfig))
+                                                           .profile(profile))
+                                           .withSlot(staffSlot)
+                                           .withActions(new SwitchMenuAction("qs:staff")).build());
+          }
         }
 
         // History Icon from config (NEW - quick access to history)

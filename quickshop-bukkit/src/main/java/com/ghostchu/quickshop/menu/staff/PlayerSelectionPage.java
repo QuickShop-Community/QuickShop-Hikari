@@ -23,6 +23,7 @@ import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.config.GuiConfig;
 import com.ghostchu.quickshop.menu.shared.ClearSearchAction;
 import com.ghostchu.quickshop.menu.shared.GuiChatAction;
+import com.ghostchu.quickshop.api.inventory.SkullProvider;
 import net.tnemc.item.providers.SkullProfile;
 import net.tnemc.menu.core.builder.IconBuilder;
 import net.tnemc.menu.core.callbacks.page.PageOpenCallback;
@@ -64,11 +65,13 @@ public class PlayerSelectionPage {
   protected final String playerPageID;
   protected final int menuRows;
   protected final String iconLore;
+  protected final SkullProvider skullProvider;
   protected final IconAction[] actions;
 
   public PlayerSelectionPage(final String returnMenu, final String menuName,
                              final int menuPage, final int returnPage, final String playerPageID,
-                             final int menuRows, final String iconLore, final IconAction... actions) {
+                             final int menuRows, final String iconLore, final SkullProvider skullProvider,
+                             final IconAction... actions) {
 
     this.returnMenu = returnMenu;
     this.menuName = menuName;
@@ -76,6 +79,7 @@ public class PlayerSelectionPage {
     this.returnPage = returnPage;
     this.playerPageID = playerPageID;
     this.iconLore = iconLore;
+    this.skullProvider = skullProvider;
     this.actions = actions;
 
     //we need a controller row and then at least one row for items.
@@ -217,16 +221,7 @@ public class PlayerSelectionPage {
           }
           if(i >= (start + items)) break;
 
-          SkullProfile profile = null;
-          try {
-
-            if(player.hasPlayedBefore()) {
-              profile = new SkullProfile();
-
-              profile.uuid(uuid);
-            }
-
-          } catch(final Exception ignore) { }
+          final SkullProfile profile = getOrLoadProfile(uuid);
 
           final String name = (player.getName() != null)? player.getName() : uuid.toString();
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("PLAYER_HEAD", 1)
@@ -245,6 +240,20 @@ public class PlayerSelectionPage {
         }
       }
     }
+  }
+
+  private SkullProfile getOrLoadProfile(final UUID uuid) {
+
+    final SkullProfile cached = skullProvider.getCachedProfile(uuid);
+    if(cached != null) {
+      return cached;
+    }
+
+    skullProvider.provideProfile(uuid);
+
+    final SkullProfile fallback = new SkullProfile();
+    fallback.uuid(uuid);
+    return fallback;
   }
 
   public List<OfflinePlayer> sorted(final Shop shop) {

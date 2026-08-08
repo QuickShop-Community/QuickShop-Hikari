@@ -54,11 +54,11 @@ public class ShopStaffMenu extends QuickShopMenu {
     setOpen((open)->open.getMenu().setTitle(QuickShopMenu.getTitle(open.getPlayer().identifier(), menuConfig, this.title, null)));
 
     final Page main = new Page(STAFF_MAIN);
-    final StaffSelectionPage staffSelection = new StaffSelectionPage("qs:keeper", this.name, STAFF_MAIN, KEEPER_MAIN, STAFF_PAGE, this.rows, "gui.staff.head-icon.lore");
+    final StaffSelectionPage staffSelection = new StaffSelectionPage("qs:keeper", this.name, STAFF_MAIN, KEEPER_MAIN, STAFF_PAGE, this.rows, "gui.staff.head-icon.lore", QuickShop.getInstance().getSkullProvider());
     main.setOpen(staffSelection::handle);
 
     final Page add = new Page(STAFF_ADD);
-    final PlayerSelectionPage playerSelection = new PlayerSelectionPage(this.name, this.name, STAFF_ADD, STAFF_MAIN, PLAYER_PAGE, this.rows, "gui.player.select");
+    final PlayerSelectionPage playerSelection = new PlayerSelectionPage(this.name, this.name, STAFF_ADD, STAFF_MAIN, PLAYER_PAGE, this.rows, "gui.player.select", QuickShop.getInstance().getSkullProvider());
     add.setOpen(playerSelection::handle);
 
     addPage(main);
