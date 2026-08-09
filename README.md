@@ -197,13 +197,13 @@ If you make good changes to the project would we apreciate Pull requests for the
 To compile and debug QuickShop, please do the following steps:
 
 1. Make sure you're using Java 21. You can get the latest Java versions from the [Adoptium project][adoptium].
-2. Compile the main project without a signature by using `mvn install -Pgithub` with the GitHub Profile selected.
+2. Compile the main project by using `./gradlew build`.
 3. Put the compiled jar into your Test-server's `plugins` folder, start the server and begin debugging!
 
 To compile the QuickShop and debug it by yourself, please follow these steps:
 
 1. Make sure you're using Java21+ JDK in your PATH.
-2. Compile main-project without signature by using profile: `mvn install -Pgithub` with github profile selected.
+2. Compile main-project by using `./gradlew build`.
 3. Start your server and go on.
 
 ## bStats

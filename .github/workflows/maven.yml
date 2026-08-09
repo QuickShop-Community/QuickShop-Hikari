@@ -25,10 +25,12 @@ jobs:
         with:
           java-version: "21"
           distribution: temurin
-          cache: maven
+          cache: gradle
 
-      - name: Build with Maven
-        run: mvn -B clean verify -T 1.5C -P github --file pom.xml -pl !com.ghostchu.quickshop.compatibility:itemsadder
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Build with Gradle
+        run: ./gradlew build -x :compatibility:itemsadder:compileJava -x :compatibility:itemsadder:shadowJar -x :compatibility:itemsadder:jar
 
       - name: Collect PR artifacts
         if: github.event_name == 'pull_request'
@@ -37,17 +39,17 @@ jobs:
           rm -rf pr-artifacts
           mkdir -p pr-artifacts
 
-          find quickshop-bukkit/target -type f -name "QuickShop-Hikari-*.jar" \
+          find quickshop-bukkit/build/libs -type f -name "QuickShop-Hikari-*.jar" \
             ! -name "*-sources.jar" \
             ! -name "*-javadoc.jar" \
             -exec cp {} pr-artifacts/ \;
 
-          find . -type f -path "*/target/Compat*.jar" \
+          find . -type f -path "*/build/libs/Compat*.jar" \
             ! -name "*-sources.jar" \
             ! -name "*-javadoc.jar" \
             -exec cp {} pr-artifacts/ \;
 
-          find . -type f -path "*/target/Addon*.jar" \
+          find . -type f -path "*/build/libs/Addon*.jar" \
             ! -name "*-sources.jar" \
             ! -name "*-javadoc.jar" \
             -exec cp {} pr-artifacts/ \;
@@ -68,6 +70,6 @@ jobs:
         with:
           name: quickshop-ci-artifacts
           path: |
-            quickshop-bukkit/target/QuickShop-Hikari-*.jar
-            **/target/Compat*.jar
-            **/target/Addon*.jar
+            quickshop-bukkit/build/libs/QuickShop-Hikari-*.jar
+            **/build/libs/Compat*.jar
+            **/build/libs/Addon*.jar

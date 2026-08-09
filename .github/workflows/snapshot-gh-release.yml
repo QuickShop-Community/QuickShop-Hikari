@@ -24,16 +24,15 @@ jobs:
         with:
           java-version: "21"
           distribution: temurin
-          cache: maven
+          cache: gradle
+
+      - uses: gradle/actions/setup-gradle@v4
 
       - name: Generate snapshot info
         id: snapshot
         shell: bash
         run: |
-          MAVEN_VERSION=$(mvn help:evaluate \
-            -Dexpression=project.version \
-            -q \
-            -DforceStdout)
+          MAVEN_VERSION=$(./gradlew -q printVersion)
 
           RAW_TAG="${{ inputs.snapshot_tag }}"
           TAG_VERSION="${RAW_TAG#snapshot/}"
@@ -74,7 +73,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Build snapshot
-        run: mvn -B clean package -T 1.5C -P github --file pom.xml
+        run: ./gradlew build
 
       - name: Collect release artifacts
         shell: bash
@@ -82,17 +81,17 @@ jobs:
           rm -rf release-artifacts
           mkdir -p release-artifacts
 
-          find quickshop-bukkit/target -type f -name "QuickShop-Hikari-*.jar" \
+          find quickshop-bukkit/build/libs -type f -name "QuickShop-Hikari-*.jar" \
             ! -name "*-sources.jar" \
             ! -name "*-javadoc.jar" \
             -exec cp {} release-artifacts/ \;
 
-          find . -type f -path "*/target/Compat*.jar" \
+          find . -type f -path "*/build/libs/Compat*.jar" \
             ! -name "*-sources.jar" \
             ! -name "*-javadoc.jar" \
             -exec cp {} release-artifacts/ \;
 
-          find . -type f -path "*/target/Addon*.jar" \
+          find . -type f -path "*/build/libs/Addon*.jar" \
             ! -name "*-sources.jar" \
             ! -name "*-javadoc.jar" \
             -exec cp {} release-artifacts/ \;

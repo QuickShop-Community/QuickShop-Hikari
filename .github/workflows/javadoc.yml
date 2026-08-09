@@ -22,24 +22,19 @@ jobs:
         with:
           java-version: "21"
           distribution: temurin
-          cache: maven
+          cache: gradle
+
+      - uses: gradle/actions/setup-gradle@v4
 
       - name: Generate Javadocs
-        run: |
-          mvn -B clean install javadoc:javadoc \
-            -DskipTests \
-            -Dmaven.javadoc.failOnError=false \
-            -Dmaven.javadoc.failOnWarnings=false \
-            -pl quickshop-api \
-            -am \
-            --file pom.xml
+        run: ./gradlew :quickshop-api:javadoc
 
       - name: Collect Javadocs
         run: |
           rm -rf public
           mkdir -p public/javadoc
 
-          cp -R quickshop-api/target/reports/apidocs/* public/javadoc/
+          cp -R quickshop-api/build/docs/javadoc/* public/javadoc/
 
           test -f public/javadoc/index.html
 
