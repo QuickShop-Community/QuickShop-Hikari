@@ -304,7 +304,6 @@ public class ShopUtil {
       return false;
     }
     QuickShop.getInstance().getShopManager().sendShopInfo(p, shop);
-    shop.setSignText(QuickShop.getInstance().text().findRelativeLanguages(p));
     Util.playClickSound(p);
     shop.onClick(p);
     if(shop.getRemainingSpace() == 0) {
@@ -381,13 +380,12 @@ public class ShopUtil {
       return false;
     }
     QuickShop.getInstance().getShopManager().sendShopInfo(p, shop);
-    shop.setSignText(QuickShop.getInstance().text().findRelativeLanguages(p));
+    Util.playClickSound(p);
+    shop.onClick(p);
     if(shop.getRemainingStock() == 0) {
       QuickShop.getInstance().text().of(p, "purchase-out-of-stock", shop.ownerName()).send();
       return true;
     }
-    Util.playClickSound(p);
-    shop.onClick(p);
     final EconomyProvider eco = QuickShop.getInstance().getEconomyManager().provider();
     final double price = shop.getPrice();
     final Inventory playerInventory = p.getInventory();
