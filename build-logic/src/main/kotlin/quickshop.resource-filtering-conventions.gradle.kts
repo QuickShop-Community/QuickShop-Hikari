@@ -4,7 +4,8 @@ tasks.named<ProcessResources>("processResources") {
     } else {
         project.name
     }
+    val pluginVersion = project.version.toString()
     filesMatching(listOf("plugin.yml", "bungee.yml", "velocity-plugin.json")) {
-        expand(mapOf("project" to mapOf("version" to project.version, "artifactId" to pluginArtifactId)))
+        expand(mapOf("project" to mapOf("version" to pluginVersion, "artifactId" to pluginArtifactId)))
     }
 }

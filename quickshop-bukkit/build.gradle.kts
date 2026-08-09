@@ -97,14 +97,16 @@ sourceSets {
 }
 
 tasks.named<ProcessResources>("processResources") {
+    val pluginVersion = project.version.toString()
+    val pluginArtifactId = project.name
     filesMatching("plugin.yml") {
-        expand(mapOf("project" to mapOf("version" to project.version, "artifactId" to project.name)))
+        expand(mapOf("project" to mapOf("version" to pluginVersion, "artifactId" to pluginArtifactId)))
     }
 
     val gitInfo = providers.of(GitInfoValueSource::class) {}
     filesMatching("BUILDINFO") {
         filter { line ->
-            val tokens = gitInfo.get() + mapOf("git.build.version" to project.version.toString())
+            val tokens = gitInfo.get() + mapOf("git.build.version" to pluginVersion)
             tokens.entries.fold(line) { acc, (key, value) -> acc.replace("\${$key}", value) }
         }
     }

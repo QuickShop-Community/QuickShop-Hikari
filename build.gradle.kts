@@ -15,5 +15,6 @@ allprojects {
 }
 
 tasks.register("printVersion") {
-    doLast { println(project.version) }
+    val printedVersion = project.version.toString()
+    doLast { println(printedVersion) }
 }
