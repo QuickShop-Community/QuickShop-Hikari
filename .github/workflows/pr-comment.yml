@@ -5,7 +5,7 @@ name: PR Artifact Comment
 on:
   workflow_run:
     workflows:
-      - Maven CI
+      - Gradle CI
     types:
       - completed
 
