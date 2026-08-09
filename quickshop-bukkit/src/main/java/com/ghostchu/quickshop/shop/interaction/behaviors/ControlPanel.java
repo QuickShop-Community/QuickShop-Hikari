@@ -101,6 +101,5 @@ public class ControlPanel implements InteractionBehavior {
     MsgUtil.sendControlPanelInfo(player, shop);
     Util.playClickSound(player);
     shop.onClick(player);
-    shop.setSignText(((QuickShop)plugin).text().findRelativeLanguages(player));
   }
 }
