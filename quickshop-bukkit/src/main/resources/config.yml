@@ -11,7 +11,7 @@
 
 # Internal configuration version.
 # Do not change this unless QuickShop support instructs you to.
-config-version: 1047
+config-version: 1048
 
 # Default language used by the plugin.
 # Set to "default" to use the player's Minecraft client language automatically.
@@ -491,6 +491,9 @@ shop:
 
   # Allow display items to show enchantment glint/enchantments visually.
   display-allow-enchants: true
+
+  # Enable the display item hitbox?
+  display-hitbox: false
 
   # Display offset relative to the shop container location.
   display-coords:
