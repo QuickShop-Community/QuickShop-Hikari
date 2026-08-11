@@ -59,7 +59,7 @@ public class DisplayEntityDisplayItem extends AbstractDisplayItem implements Rel
   private final int locationHash;
   private ItemDisplay itemDisplay;
   private TextDisplay textDisplay;
-  private Interaction interactionEntity;
+  private Interaction interactionEntity = null;
 
   private boolean isSpawned = false;
 
@@ -132,8 +132,10 @@ public class DisplayEntityDisplayItem extends AbstractDisplayItem implements Rel
             Bukkit.getViewDistance() * 16,
             0);*/
 
-    interactionEntity = EntityUtil.spawnInteractionFor(null, getDisplayLocation().toCenterLocation().add(0.0, 0.4, 0.0), 0);
-    interactionEntity.getPersistentDataContainer().set(DISPLAY_ITEM_KEY_INSTANCE, PersistentDataType.STRING, Util.locationToPDCString(shop.bukkitLocation()));
+    if (plugin.getConfig().getBoolean("shop.display-hitbox", false)) {
+      interactionEntity = EntityUtil.spawnInteractionFor(null, getDisplayLocation().toCenterLocation().add(0.0, 0.4, 0.0), 0);
+      interactionEntity.getPersistentDataContainer().set(DISPLAY_ITEM_KEY_INSTANCE, PersistentDataType.STRING, Util.locationToPDCString(shop.bukkitLocation()));
+    }
 
     final int blockDistance = plugin.getConfig().getInt("shop.text-display.range-blocks", 8);
 
@@ -352,12 +354,17 @@ public class DisplayEntityDisplayItem extends AbstractDisplayItem implements Rel
 
   public void sendFakeItemToPlayer(final Player player) {
 
-    player.showEntity(QuickShop.getInstance().getJavaPlugin(), itemDisplay);
+    if (itemDisplay != null) {
+      player.showEntity(QuickShop.getInstance().getJavaPlugin(), itemDisplay);
+    }
     //player.showEntity(QuickShop.getInstance().getJavaPlugin(), glass);
     //player.showEntity(QuickShop.getInstance().getJavaPlugin(), log);
-    player.showEntity(QuickShop.getInstance().getJavaPlugin(), interactionEntity);
 
-    if(QuickShop.getInstance().getConfig().getBoolean("shop.text-display.enabled")) {
+    if (interactionEntity != null && QuickShop.getInstance().getConfig().getBoolean("shop.display-hitbox", false)) {
+      player.showEntity(QuickShop.getInstance().getJavaPlugin(), interactionEntity);
+    }
+
+    if(QuickShop.getInstance().getConfig().getBoolean("shop.text-display.enabled", false)) {
       player.showEntity(QuickShop.getInstance().getJavaPlugin(), textDisplay);
     }
   }
@@ -366,12 +373,16 @@ public class DisplayEntityDisplayItem extends AbstractDisplayItem implements Rel
 
     for(final Player player : Bukkit.getOnlinePlayers()) {
 
-      player.showEntity(QuickShop.getInstance().getJavaPlugin(), itemDisplay);
+      if (itemDisplay != null) {
+        player.showEntity(QuickShop.getInstance().getJavaPlugin(), itemDisplay);
+      }
       //player.showEntity(QuickShop.getInstance().getJavaPlugin(), glass);
       //player.showEntity(QuickShop.getInstance().getJavaPlugin(), log);
-      player.showEntity(QuickShop.getInstance().getJavaPlugin(), interactionEntity);
+      if (interactionEntity != null && QuickShop.getInstance().getConfig().getBoolean("shop.display-hitbox", false)) {
+        player.showEntity(QuickShop.getInstance().getJavaPlugin(), interactionEntity);
+      }
 
-      if(QuickShop.getInstance().getConfig().getBoolean("shop.text-display.enabled")) {
+      if(QuickShop.getInstance().getConfig().getBoolean("shop.text-display.enabled", false)) {
         player.showEntity(QuickShop.getInstance().getJavaPlugin(), textDisplay);
       }
     }

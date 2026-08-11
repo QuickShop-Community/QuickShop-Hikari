@@ -11,11 +11,6 @@
         <version>6.3.0.0-SNAPSHOT-12</version>
     </parent>
 
-    <properties>
-        <tnml.version>1.7.0.1-SNAPSHOT-5</tnml.version>
-        <tnil.version>0.2.0.0-SNAPSHOT-3</tnil.version>
-    </properties>
-
     <artifactId>quickshop-bukkit</artifactId>
     <packaging>takari-jar</packaging>
 

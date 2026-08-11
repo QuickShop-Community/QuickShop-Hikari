@@ -25,6 +25,32 @@
             <version>${project.parent.version}</version>
             <scope>compile</scope>
         </dependency>
+
+        <dependency>
+            <groupId>net.tnemc</groupId>
+            <artifactId>TNIL-Bukkit</artifactId>
+            <version>${tnil.version}</version>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.kyori</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>net.tnemc</groupId>
+            <artifactId>TNIL-Paper</artifactId>
+            <version>${tnil.version}</version>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.kyori</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
