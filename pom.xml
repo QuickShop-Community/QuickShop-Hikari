@@ -18,7 +18,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <qs.relocation>com.ghostchu.quickshop.shade</qs.relocation>
         <tnml.version>1.7.0.1-SNAPSHOT-5</tnml.version>
-        <tnil.version>0.2.0.0-SNAPSHOT-3</tnil.version>
+        <tnil.version>0.2.0.1-SNAPSHOT-1</tnil.version>
         <!-- common lib versions -->
         <depend.adventure-api>5.1.1</depend.adventure-api>
         <depend.adventure-key>5.1.1</depend.adventure-key>
