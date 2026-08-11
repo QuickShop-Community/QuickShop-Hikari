@@ -544,6 +544,7 @@ command:
     lookup: <yellow>Gestisce la tabella degli elementi ricercati
     database: <yellow>View and maintain QuickShop database
     benefit: <yellow>Impostazioni per dividere i benefici tra il proprietario del negozio e gli altri giocatori
+    benefitall: <yellow>Settings of divide benefits between shop owner and other players for all shops you own.
     browse: <yellow>Sfoglia i negozi che esistono in questo server.
     tag: <yellow>Aggiungi, rimuovi o interroga i tag di un negozio
     suggestprice: <yellow>Suggerisci un prezzo consigliato per cercare negozio, basato su altri negozi

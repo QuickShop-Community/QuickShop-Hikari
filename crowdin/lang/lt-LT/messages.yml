@@ -547,6 +547,7 @@ command:
     lookup: <yellow>Peržiūrėti matomų daiktų lentelę
     database: <yellow>Peržiūrėti ir valdyti QuickShop duomenų bazę
     benefit: <yellow>Nustatyti pelno dalijimą tarp savininko ir kitų žaidėjų
+    benefitall: <yellow>Settings of divide benefits between shop owner and other players for all shops you own.
     browse: <yellow>Naršyti esamas serverio parduotuves
     tag: <yellow>Pridėti, pašalinti arba tikrinti parduotuvės žymas
     suggestprice: <yellow>Pasiūlyti rekomenduojamą kainą pagal kitų parduotuvių kainas
