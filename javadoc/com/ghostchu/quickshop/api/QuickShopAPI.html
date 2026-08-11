@@ -88,7 +88,7 @@ loadScripts(document, 'script');</script>
 </div>
 <section class="class-description" id="class-description">
 <hr>
-<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-32">QuickShopAPI</a></span></div>
+<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-33">QuickShopAPI</a></span></div>
 <div class="block">The unique entry point to allow you to access most features of QuickShop</div>
 </section>
 <section class="summary">
@@ -186,56 +186,62 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Getting Shop Manager which managing most of shops</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="localization/text/TextManager.html" title="interface in com.ghostchu.quickshop.api.localization.text">TextManager</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getTextManager()" class="member-name-link">getTextManager</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="inventory/SkullProvider.html" title="interface in com.ghostchu.quickshop.api.inventory">SkullProvider</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getSkullProvider()" class="member-name-link">getSkullProvider</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Retrieves the instance of the <code>SkullProvider</code>, which is responsible for
+ providing methods to asynchronously generate player skulls or skull profiles.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="localization/text/TextManager.html" title="interface in com.ghostchu.quickshop.api.localization.text">TextManager</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getTextManager()" class="member-name-link">getTextManager</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Getting text manager that allow addon to create a user language locale based message</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="hook/Hook.html" title="interface in com.ghostchu.quickshop.api.hook">Hook</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#hooks()" class="member-name-link">hooks</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="hook/Hook.html" title="interface in com.ghostchu.quickshop.api.hook">Hook</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#hooks()" class="member-name-link">hooks</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Retrieves the map of all registered hooks in the QuickShop system.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#isAllowStack()" class="member-name-link">isAllowStack</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#isAllowStack()" class="member-name-link">isAllowStack</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Getting QuickShop current stacking item support status</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#isDisplayEnabled()" class="member-name-link">isDisplayEnabled</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#isDisplayEnabled()" class="member-name-link">isDisplayEnabled</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Getting QuickShop current display item support status</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#isPriceChangeRequiresFee()" class="member-name-link">isPriceChangeRequiresFee</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#isPriceChangeRequiresFee()" class="member-name-link">isPriceChangeRequiresFee</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Check if fee required for changing shop price</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#loadHooks()" class="member-name-link">loadHooks</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#loadHooks()" class="member-name-link">loadHooks</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
 <div class="block">Iterates through all registered hooks in the QuickShop system and enables them
  if they meet the requirements for activation.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#logEvent(java.lang.Object)" class="member-name-link">logEvent</a><wbr>(@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;eventObject)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#logEvent(java.lang.Object)" class="member-name-link">logEvent</a><wbr>(@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;eventObject)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Logs a event into logs database / file</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#registerLocalizedTranslationKeyMapping(java.lang.String,java.lang.String)" class="member-name-link">registerLocalizedTranslationKeyMapping</a><wbr>(@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;translationKey,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#registerLocalizedTranslationKeyMapping(java.lang.String,java.lang.String)" class="member-name-link">registerLocalizedTranslationKeyMapping</a><wbr>(@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;translationKey,
  @NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Register a localized translation key mapping to another key or fixed string</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#removeHook(java.lang.String)" class="member-name-link">removeHook</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifier)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#removeHook(java.lang.String)" class="member-name-link">removeHook</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifier)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
 <div class="block">Removes a hook from the QuickShop system using its unique identifier.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="shop/tag/TagManager.html" title="interface in com.ghostchu.quickshop.api.shop.tag">TagManager</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#tagManager()" class="member-name-link">tagManager</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="shop/tag/TagManager.html" title="interface in com.ghostchu.quickshop.api.shop.tag">TagManager</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#tagManager()" class="member-name-link">tagManager</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Retrieves the TagManager associated with the QuickShop system.</div>
 </div>
 </div>
@@ -255,19 +261,19 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getInstance()">
 <h3>getInstance</h3>
-<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="QuickShopAPI.html" title="interface in com.ghostchu.quickshop.api">QuickShopAPI</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-34">getInstance</a></span>()</div>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="QuickShopAPI.html" title="interface in com.ghostchu.quickshop.api">QuickShopAPI</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-35">getInstance</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="getPluginInstance()">
 <h3>getPluginInstance</h3>
-<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">org.bukkit.plugin.Plugin</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-43">getPluginInstance</a></span>()</div>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">org.bukkit.plugin.Plugin</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-44">getPluginInstance</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="hooks()">
 <h3>hooks</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="hook/Hook.html" title="interface in com.ghostchu.quickshop.api.hook">Hook</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-60">hooks</a></span>()</div>
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="hook/Hook.html" title="interface in com.ghostchu.quickshop.api.hook">Hook</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-61">hooks</a></span>()</div>
 <div class="block">Retrieves the map of all registered hooks in the QuickShop system. Each hook
  is identified by its unique string identifier and provides custom integration
  capabilities for plugins or addons.</div>
@@ -281,7 +287,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="loadHooks()">
 <h3>loadHooks</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-77">loadHooks</a></span>()</div>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-78">loadHooks</a></span>()</div>
 <div class="block">Iterates through all registered hooks in the QuickShop system and enables them
  if they meet the requirements for activation. The hooks are retrieved from the
  internal map of registered hooks, where each hook is identified by a unique string key.
@@ -300,7 +306,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="addHook(com.ghostchu.quickshop.api.hook.Hook)">
 <h3>addHook</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-94">addHook</a></span><wbr><span class="parameters">(<a href="hook/Hook.html" title="interface in com.ghostchu.quickshop.api.hook">Hook</a>&nbsp;hook)</span></div>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-95">addHook</a></span><wbr><span class="parameters">(<a href="hook/Hook.html" title="interface in com.ghostchu.quickshop.api.hook">Hook</a>&nbsp;hook)</span></div>
 <div class="block">Adds a new hook to the QuickShop system. The hook is identified by its unique identifier
  and is stored in the hooks map. This allows plugins or addons to integrate with
  QuickShop by providing custom behavior through hooks.</div>
@@ -313,7 +319,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="removeHook(java.lang.String)">
 <h3>removeHook</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-106">removeHook</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifier)</span></div>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-107">removeHook</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifier)</span></div>
 <div class="block">Removes a hook from the QuickShop system using its unique identifier. The hook is removed
  from the internal hooks map, which is used to manage integrations or custom behaviors added
  to QuickShop by plugins or addons.</div>
@@ -327,7 +333,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getConfig()">
 <h3>getConfig</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull dev.dejvokep.boostedyaml.YamlDocument</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-123">getConfig</a></span>()</div>
+</span><span class="return-type">@NotNull dev.dejvokep.boostedyaml.YamlDocument</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-124">getConfig</a></span>()</div>
 <div class="block">Retrieves the main configuration object of the QuickShop system.
 
  This method provides access to the QSConfig instance, which is responsible
@@ -345,7 +351,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getCommandManager()">
 <h3>getCommandManager</h3>
-<div class="member-signature"><span class="return-type"><a href="command/CommandManager.html" title="interface in com.ghostchu.quickshop.api.command">CommandManager</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-131">getCommandManager</a></span>()</div>
+<div class="member-signature"><span class="return-type"><a href="command/CommandManager.html" title="interface in com.ghostchu.quickshop.api.command">CommandManager</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-132">getCommandManager</a></span>()</div>
 <div class="block">Getting command manager that allow addon direct access QuickShop sub-command system</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -356,7 +362,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getDatabaseHelper()">
 <h3>getDatabaseHelper</h3>
-<div class="member-signature"><span class="return-type"><a href="database/DatabaseHelper.html" title="interface in com.ghostchu.quickshop.api.database">DatabaseHelper</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-138">getDatabaseHelper</a></span>()</div>
+<div class="member-signature"><span class="return-type"><a href="database/DatabaseHelper.html" title="interface in com.ghostchu.quickshop.api.database">DatabaseHelper</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-139">getDatabaseHelper</a></span>()</div>
 <div class="block">Getting the helper to directly access the database</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -367,7 +373,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getGameVersion()">
 <h3>getGameVersion</h3>
-<div class="member-signature"><span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-145">getGameVersion</a></span>()</div>
+<div class="member-signature"><span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-146">getGameVersion</a></span>()</div>
 <div class="block">Getting this server game version</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -379,7 +385,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getInventoryWrapperRegistry()">
 <h3>getInventoryWrapperRegistry</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="inventory/InventoryWrapperRegistry.html" title="class in com.ghostchu.quickshop.api.inventory">InventoryWrapperRegistry</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-152">getInventoryWrapperRegistry</a></span>()</div>
+</span><span class="return-type">@NotNull <a href="inventory/InventoryWrapperRegistry.html" title="class in com.ghostchu.quickshop.api.inventory">InventoryWrapperRegistry</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-153">getInventoryWrapperRegistry</a></span>()</div>
 <div class="block">Gets registry of InventoryWrappers</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -388,9 +394,27 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="getSkullProvider()">
+<h3>getSkullProvider</h3>
+<div class="member-signature"><span class="return-type"><a href="inventory/SkullProvider.html" title="interface in com.ghostchu.quickshop.api.inventory">SkullProvider</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-168">getSkullProvider</a></span>()</div>
+<div class="block">Retrieves the instance of the <code>SkullProvider</code>, which is responsible for
+ providing methods to asynchronously generate player skulls or skull profiles.
+
+ The <code>SkullProvider</code> interface offers functionality to retrieve player
+ skulls (as <code>ItemStack</code> objects) or skull profile information (via
+ <code>SkullProfile</code>), using identifiers such as UUID or player name.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>The <code>SkullProvider</code> instance for accessing skull-related utilities.</dd>
+<dt>Since:</dt>
+<dd>6.3.0.0</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="getItemMatcher()">
 <h3>getItemMatcher</h3>
-<div class="member-signature"><span class="return-type"><a href="shop/ItemMatcher.html" title="interface in com.ghostchu.quickshop.api.shop">ItemMatcher</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-160">getItemMatcher</a></span>()</div>
+<div class="member-signature"><span class="return-type"><a href="shop/ItemMatcher.html" title="interface in com.ghostchu.quickshop.api.shop">ItemMatcher</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-175">getItemMatcher</a></span>()</div>
 <div class="block">Getting current using ItemMatcher impl</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -401,7 +425,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getEconomyManager()">
 <h3>getEconomyManager</h3>
-<div class="member-signature"><span class="return-type"><a href="economy/EconomyManager.html" title="interface in com.ghostchu.quickshop.api.economy">EconomyManager</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-168">getEconomyManager</a></span>()</div>
+<div class="member-signature"><span class="return-type"><a href="economy/EconomyManager.html" title="interface in com.ghostchu.quickshop.api.economy">EconomyManager</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-183">getEconomyManager</a></span>()</div>
 <div class="block">Retrieves the EconomyManager instance that manages all economies associated with their unique
  identifiers.</div>
 <dl class="notes">
@@ -413,7 +437,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="tagManager()">
 <h3>tagManager</h3>
-<div class="member-signature"><span class="return-type"><a href="shop/tag/TagManager.html" title="interface in com.ghostchu.quickshop.api.shop.tag">TagManager</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-178">tagManager</a></span>()</div>
+<div class="member-signature"><span class="return-type"><a href="shop/tag/TagManager.html" title="interface in com.ghostchu.quickshop.api.shop.tag">TagManager</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-193">tagManager</a></span>()</div>
 <div class="block">Retrieves the TagManager associated with the QuickShop system. The TagManager
  is responsible for handling operations related to managing tags, which may
  include inventory item metadata and custom item tags used by the system.</div>
@@ -427,7 +451,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getShopControlPanelManager()">
 <h3>getShopControlPanelManager</h3>
-<div class="member-signature"><span class="return-type"><a href="shop/ShopControlPanelManager.html" title="interface in com.ghostchu.quickshop.api.shop">ShopControlPanelManager</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-185">getShopControlPanelManager</a></span>()</div>
+<div class="member-signature"><span class="return-type"><a href="shop/ShopControlPanelManager.html" title="interface in com.ghostchu.quickshop.api.shop">ShopControlPanelManager</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-200">getShopControlPanelManager</a></span>()</div>
 <div class="block">Getting the control panel manager</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -438,7 +462,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getInteractionManager()">
 <h3>getInteractionManager</h3>
-<div class="member-signature"><span class="return-type"><a href="shop/interaction/InteractionManager.html" title="interface in com.ghostchu.quickshop.api.shop.interaction">InteractionManager</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-192">getInteractionManager</a></span>()</div>
+<div class="member-signature"><span class="return-type"><a href="shop/interaction/InteractionManager.html" title="interface in com.ghostchu.quickshop.api.shop.interaction">InteractionManager</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-207">getInteractionManager</a></span>()</div>
 <div class="block">Retrieves the InteractionManager associated with this QuickShopProvider.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -449,7 +473,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getShopManager()">
 <h3>getShopManager</h3>
-<div class="member-signature"><span class="return-type"><a href="shop/ShopManager.html" title="interface in com.ghostchu.quickshop.api.shop">ShopManager</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-199">getShopManager</a></span>()</div>
+<div class="member-signature"><span class="return-type"><a href="shop/ShopManager.html" title="interface in com.ghostchu.quickshop.api.shop">ShopManager</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-214">getShopManager</a></span>()</div>
 <div class="block">Getting Shop Manager which managing most of shops</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -461,7 +485,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getDisplayManager()">
 <h3>getDisplayManager</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="return-type">@Nullable <a href="shop/display/DisplayManager.html" title="interface in com.ghostchu.quickshop.api.shop.display">DisplayManager</a>&lt;?&gt;</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-206">getDisplayManager</a></span>()</div>
+</span><span class="return-type">@Nullable <a href="shop/display/DisplayManager.html" title="interface in com.ghostchu.quickshop.api.shop.display">DisplayManager</a>&lt;?&gt;</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-221">getDisplayManager</a></span>()</div>
 <div class="block">Retrieves the instance of the DisplayManager responsible for managing display functionalities.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -472,7 +496,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getTextManager()">
 <h3>getTextManager</h3>
-<div class="member-signature"><span class="return-type"><a href="localization/text/TextManager.html" title="interface in com.ghostchu.quickshop.api.localization.text">TextManager</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-214">getTextManager</a></span>()</div>
+<div class="member-signature"><span class="return-type"><a href="localization/text/TextManager.html" title="interface in com.ghostchu.quickshop.api.localization.text">TextManager</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-229">getTextManager</a></span>()</div>
 <div class="block">Getting text manager that allow addon to create a user language locale based message</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -483,7 +507,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="isAllowStack()">
 <h3>isAllowStack</h3>
-<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-221">isAllowStack</a></span>()</div>
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-236">isAllowStack</a></span>()</div>
 <div class="block">Getting QuickShop current stacking item support status</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -494,7 +518,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="isDisplayEnabled()">
 <h3>isDisplayEnabled</h3>
-<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-228">isDisplayEnabled</a></span>()</div>
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-243">isDisplayEnabled</a></span>()</div>
 <div class="block">Getting QuickShop current display item support status</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -505,19 +529,19 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getRankLimiter()">
 <h3>getRankLimiter</h3>
-<div class="member-signature"><span class="return-type"><a href="RankLimiter.html" title="interface in com.ghostchu.quickshop.api">RankLimiter</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-230">getRankLimiter</a></span>()</div>
+<div class="member-signature"><span class="return-type"><a href="RankLimiter.html" title="interface in com.ghostchu.quickshop.api">RankLimiter</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-245">getRankLimiter</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="getPlayerFinder()">
 <h3>getPlayerFinder</h3>
-<div class="member-signature"><span class="return-type"><a href="shop/PlayerFinder.html" title="interface in com.ghostchu.quickshop.api.shop">PlayerFinder</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-232">getPlayerFinder</a></span>()</div>
+<div class="member-signature"><span class="return-type"><a href="shop/PlayerFinder.html" title="interface in com.ghostchu.quickshop.api.shop">PlayerFinder</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-247">getPlayerFinder</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="isPriceChangeRequiresFee()">
 <h3>isPriceChangeRequiresFee</h3>
-<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-239">isPriceChangeRequiresFee</a></span>()</div>
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-254">isPriceChangeRequiresFee</a></span>()</div>
 <div class="block">Check if fee required for changing shop price</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -528,7 +552,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="logEvent(java.lang.Object)">
 <h3>logEvent</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-246">logEvent</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-261">logEvent</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;eventObject)</span></div>
 <div class="block">Logs a event into logs database / file</div>
 <dl class="notes">
@@ -540,7 +564,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="registerLocalizedTranslationKeyMapping(java.lang.String,java.lang.String)">
 <h3>registerLocalizedTranslationKeyMapping</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-254">registerLocalizedTranslationKeyMapping</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-269">registerLocalizedTranslationKeyMapping</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;translationKey,
  @NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key)</span></div>
@@ -555,19 +579,19 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getSemVersion()">
 <h3>getSemVersion</h3>
-<div class="member-signature"><span class="return-type">com.vdurmont.semver4j.Semver</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-256">getSemVersion</a></span>()</div>
+<div class="member-signature"><span class="return-type">com.vdurmont.semver4j.Semver</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-271">getSemVersion</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="getShopItemBlackList()">
 <h3>getShopItemBlackList</h3>
-<div class="member-signature"><span class="return-type"><a href="shop/ShopItemBlackList.html" title="interface in com.ghostchu.quickshop.api.shop">ShopItemBlackList</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-258">getShopItemBlackList</a></span>()</div>
+<div class="member-signature"><span class="return-type"><a href="shop/ShopItemBlackList.html" title="interface in com.ghostchu.quickshop.api.shop">ShopItemBlackList</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-273">getShopItemBlackList</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="getRegistry()">
 <h3>getRegistry</h3>
-<div class="member-signature"><span class="return-type"><a href="registry/RegistryManager.html" title="interface in com.ghostchu.quickshop.api.registry">RegistryManager</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-260">getRegistry</a></span>()</div>
+<div class="member-signature"><span class="return-type"><a href="registry/RegistryManager.html" title="interface in com.ghostchu.quickshop.api.registry">RegistryManager</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/QuickShopAPI.html#line-275">getRegistry</a></span>()</div>
 </section>
 </li>
 </ul>

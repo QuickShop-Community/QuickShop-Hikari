@@ -1319,6 +1319,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/obj/QUser.html#getBukkitPlayer()" class="member-name-link">getBukkitPlayer()</a> - Method in interface com.ghostchu.quickshop.api.obj.<a href="com/ghostchu/quickshop/api/obj/QUser.html" title="interface in com.ghostchu.quickshop.api.obj">QUser</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/ghostchu/quickshop/api/inventory/SkullProvider.html#getCachedProfile(java.util.UUID)" class="member-name-link">getCachedProfile(UUID)</a> - Method in interface com.ghostchu.quickshop.api.inventory.<a href="com/ghostchu/quickshop/api/inventory/SkullProvider.html" title="interface in com.ghostchu.quickshop.api.inventory">SkullProvider</a></dt>
+<dd>
+<div class="block">Retrieves a cached SkullProfile associated with the given UUID.</div>
+</dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/cache/ShopCache.html#getCacheStats(com.ghostchu.quickshop.api.shop.cache.ShopCacheNamespacedKey)" class="member-name-link">getCacheStats(ShopCacheNamespacedKey)</a> - Method in interface com.ghostchu.quickshop.api.shop.cache.<a href="com/ghostchu/quickshop/api/shop/cache/ShopCache.html" title="interface in com.ghostchu.quickshop.api.shop.cache">ShopCache</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/event/display/ShopDisplayItemSpawnEvent.html#getCancelReason()" class="member-name-link">getCancelReason()</a> - Method in class com.ghostchu.quickshop.api.event.display.<a href="com/ghostchu/quickshop/api/event/display/ShopDisplayItemSpawnEvent.html" title="class in com.ghostchu.quickshop.api.event.display">ShopDisplayItemSpawnEvent</a></dt>
@@ -1997,6 +2001,11 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/ghostchu/quickshop/api/shop/meta/ShopDisplay.html#getSignTextAsync(com.ghostchu.quickshop.api.localization.text.ProxiedLocale)" class="member-name-link">getSignTextAsync(ProxiedLocale)</a> - Method in interface com.ghostchu.quickshop.api.shop.meta.<a href="com/ghostchu/quickshop/api/shop/meta/ShopDisplay.html" title="interface in com.ghostchu.quickshop.api.shop.meta">ShopDisplay</a></dt>
 <dd>
 <div class="block">Retrieves the text to be displayed on the shop's sign asynchronously.</div>
+</dd>
+<dt><a href="com/ghostchu/quickshop/api/QuickShopAPI.html#getSkullProvider()" class="member-name-link">getSkullProvider()</a> - Method in interface com.ghostchu.quickshop.api.<a href="com/ghostchu/quickshop/api/QuickShopAPI.html" title="interface in com.ghostchu.quickshop.api">QuickShopAPI</a></dt>
+<dd>
+<div class="block">Retrieves the instance of the <code>SkullProvider</code>, which is responsible for
+ providing methods to asynchronously generate player skulls or skull profiles.</div>
 </dd>
 <dt><a href="com/ghostchu/quickshop/api/event/inventory/ShopInventoryCalculateEvent.html#getSpace()" class="member-name-link">getSpace()</a> - Method in class com.ghostchu.quickshop.api.event.inventory.<a href="com/ghostchu/quickshop/api/event/inventory/ShopInventoryCalculateEvent.html" title="class in com.ghostchu.quickshop.api.event.inventory">ShopInventoryCalculateEvent</a></dt>
 <dd>
@@ -3597,6 +3606,22 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The status about protection check current status.</div>
 </dd>
+<dt><a href="com/ghostchu/quickshop/api/inventory/SkullProvider.html#provide(java.lang.String)" class="member-name-link">provide(String)</a> - Method in interface com.ghostchu.quickshop.api.inventory.<a href="com/ghostchu/quickshop/api/inventory/SkullProvider.html" title="interface in com.ghostchu.quickshop.api.inventory">SkullProvider</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/ghostchu/quickshop/api/inventory/SkullProvider.html#provide(java.util.UUID)" class="member-name-link">provide(UUID)</a> - Method in interface com.ghostchu.quickshop.api.inventory.<a href="com/ghostchu/quickshop/api/inventory/SkullProvider.html" title="interface in com.ghostchu.quickshop.api.inventory">SkullProvider</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/ghostchu/quickshop/api/inventory/SkullProvider.html#provideProfile(java.lang.String)" class="member-name-link">provideProfile(String)</a> - Method in interface com.ghostchu.quickshop.api.inventory.<a href="com/ghostchu/quickshop/api/inventory/SkullProvider.html" title="interface in com.ghostchu.quickshop.api.inventory">SkullProvider</a></dt>
+<dd>
+<div class="block">Asynchronously provides a SkullProfile associated with the given player name.</div>
+</dd>
+<dt><a href="com/ghostchu/quickshop/api/inventory/SkullProvider.html#provideProfile(java.util.UUID)" class="member-name-link">provideProfile(UUID)</a> - Method in interface com.ghostchu.quickshop.api.inventory.<a href="com/ghostchu/quickshop/api/inventory/SkullProvider.html" title="interface in com.ghostchu.quickshop.api.inventory">SkullProvider</a></dt>
+<dd>
+<div class="block">Asynchronously provides a SkullProfile associated with the given UUID.</div>
+</dd>
+<dt><a href="com/ghostchu/quickshop/api/inventory/SkullProvider.html#provideProfile(java.util.UUID,java.lang.String)" class="member-name-link">provideProfile(UUID, String)</a> - Method in interface com.ghostchu.quickshop.api.inventory.<a href="com/ghostchu/quickshop/api/inventory/SkullProvider.html" title="interface in com.ghostchu.quickshop.api.inventory">SkullProvider</a></dt>
+<dd>
+<div class="block">Asynchronously provides a SkullProfile associated with the given UUID and the player's last known name.</div>
+</dd>
 <dt><a href="com/ghostchu/quickshop/api/economy/EconomyManager.html#provider()" class="member-name-link">provider()</a> - Method in interface com.ghostchu.quickshop.api.economy.<a href="com/ghostchu/quickshop/api/economy/EconomyManager.html" title="interface in com.ghostchu.quickshop.api.economy">EconomyManager</a></dt>
 <dd>
 <div class="block">Retrieves the current EconomyProvider.</div>
@@ -4987,6 +5012,8 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/ghostchu/quickshop/api/shop/cache/ShopCacheNamespacedKey.html#SINGLE" class="member-name-link">SINGLE</a> - Enum constant in enum class com.ghostchu.quickshop.api.shop.cache.<a href="com/ghostchu/quickshop/api/shop/cache/ShopCacheNamespacedKey.html" title="enum class in com.ghostchu.quickshop.api.shop.cache">ShopCacheNamespacedKey</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/ShopManager.InteractiveManager.html#size()" class="member-name-link">size()</a> - Method in interface com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/ShopManager.InteractiveManager.html" title="interface in com.ghostchu.quickshop.api.shop">ShopManager.InteractiveManager</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/ghostchu/quickshop/api/inventory/SkullProvider.html" class="type-name-link" title="interface in com.ghostchu.quickshop.api.inventory">SkullProvider</a> - Interface in <a href="com/ghostchu/quickshop/api/inventory/package-summary.html">com.ghostchu.quickshop.api.inventory</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/event/packet/send/PacketHandlerSendSpawnEvent.html#spawnPacket()" class="member-name-link">spawnPacket()</a> - Method in class com.ghostchu.quickshop.api.event.packet.send.<a href="com/ghostchu/quickshop/api/event/packet/send/PacketHandlerSendSpawnEvent.html" title="class in com.ghostchu.quickshop.api.event.packet.send">PacketHandlerSendSpawnEvent</a></dt>
 <dd>&nbsp;</dd>
