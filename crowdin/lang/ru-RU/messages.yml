@@ -536,6 +536,7 @@ command:
     lookup: <yellow>Управление справочной таблицей предметов
     database: <yellow>Просмотр и обслуживание базы данных QuickShop
     benefit: <yellow>Настройки разделения выгоды между владельцем магазина и другими игроками
+    benefitall: <yellow>Settings of divide benefits between shop owner and other players for all shops you own.
     browse: <yellow>Просмотр магазинов, существующих на этом сервере.
     tag: <yellow>Добавить, удалить или запросить теги магазина
     suggestprice: <yellow>Предложить рекомендуемую цену для просматриваемого магазина на основе других магазинов
