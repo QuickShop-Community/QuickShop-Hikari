@@ -13,6 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Map;
@@ -33,11 +34,27 @@ public final class Main extends CompatibilityModule {
       Bukkit.getPluginManager().disablePlugin(this);
       return;
     }
+
+    initFlags();
+  }
+
+  public void initFlags() {
+
     whitelist = getConfig().getBoolean("whitelist-mode");
     defaultTrade = getConfig().getBoolean("trade-default", false);
 
     FlagPermissions.addFlag(CREATE_FLAG);
     FlagPermissions.addFlag(TRADE_FLAG);
+  }
+
+  @EventHandler(ignoreCancelled = true)
+  public void onEnable(final PluginEnableEvent event) {
+
+    if (!event.getPlugin().getName().equalsIgnoreCase("Residence")) {
+      return;
+    }
+
+    initFlags();
   }
 
   @EventHandler(ignoreCancelled = true)
@@ -83,7 +100,7 @@ public final class Main extends CompatibilityModule {
   @EventHandler(ignoreCancelled = true)
   public void onPurchase(final ShopPurchaseEvent event) {
 
-    final Location shopLoc = event.getShop().getLocation();
+    final Location shopLoc = event.getShop().bukkitLocation();
     final ClaimedResidence residence = Residence.getInstance().getResidenceManager().getByLoc(shopLoc);
     if(residence == null) {
       return;
@@ -103,7 +120,7 @@ public final class Main extends CompatibilityModule {
     if(!getConfig().getBoolean("allow-permission-override") || event.shop().isEmpty()) {
       return;
     }
-    final Location shopLoc = event.shop().get().getLocation();
+    final Location shopLoc = event.shop().get().bukkitLocation();
 
 
     final ClaimedResidence residence = ResidenceApi.getResidenceManager().getByLoc(shopLoc);

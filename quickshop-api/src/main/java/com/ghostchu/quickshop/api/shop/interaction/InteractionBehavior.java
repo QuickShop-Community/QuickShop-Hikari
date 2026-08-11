@@ -20,6 +20,8 @@ package com.ghostchu.quickshop.api.shop.interaction;
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.shop.Shop;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -48,6 +50,46 @@ public interface InteractionBehavior {
    * @param clickType   The type of click that triggered the interaction, not null.
    * @param interaction The type of interaction that occurred, can be null.
    */
-  void handle(final @NotNull QuickShopAPI plugin, final @Nullable Shop shop, final @NotNull Player player, final @NotNull PlayerInteractEvent event,
-              final @NotNull InteractionClick clickType, final @Nullable InteractionType interaction);
+  void handle(final @NotNull QuickShopAPI plugin,
+              final @Nullable Shop shop,
+              final @NotNull Player player,
+              final @NotNull PlayerInteractEvent event,
+              final @NotNull InteractionClick clickType,
+              final @Nullable InteractionType interaction);
+
+  /**
+   * Handles player interactions with entities in the context of a shop.
+   *
+   * @param plugin      The QuickShopAPI instance used for handling the interaction, not null.
+   * @param shop        The shop involved in the interaction, can be null.
+   * @param player      The player involved in the interaction, not null.
+   * @param event       The PlayerInteractEntityEvent that triggered the interaction, not null.
+   * @param clickType   The type of click that triggered the interaction, not null.
+   * @param interaction The type of interaction that occurred, can be null.
+   */
+  default void handle(final @NotNull QuickShopAPI plugin,
+                      final @Nullable Shop shop,
+                      final @NotNull Player player,
+                      final @NotNull PlayerInteractEntityEvent event,
+                      final @NotNull InteractionClick clickType,
+                      final @Nullable InteractionType interaction) {
+
+  }
+
+  /**
+   * Handles interactions where a player damages an entity in the context of a shop.
+   *
+   * @param plugin      The QuickShopAPI instance used for handling the interaction, not null.
+   * @param shop        The shop involved in the interaction, can be null.
+   * @param player      The player involved in the interaction, not null.
+   * @param event       The EntityDamageByEntityEvent that triggered the interaction, not null.
+   * @param clickType   The type of click that triggered the interaction, not null.
+   * @param interaction The type of interaction that occurred, can be null.
+   */
+  default void handle(final @NotNull QuickShopAPI plugin,
+                      final @Nullable Shop shop,
+                      final @NotNull Player player,
+                      final @NotNull EntityDamageByEntityEvent event,
+                      final @NotNull InteractionClick clickType,
+                      final @Nullable InteractionType interaction) {}
 }

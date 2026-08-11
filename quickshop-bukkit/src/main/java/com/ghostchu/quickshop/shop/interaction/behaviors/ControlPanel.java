@@ -27,6 +27,8 @@ import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -65,14 +67,39 @@ public class ControlPanel implements InteractionBehavior {
     if(shop == null) return;
 
     //send control panel
-    MsgUtil.sendControlPanelInfo(player, shop);
-    Util.playClickSound(player);
-    shop.onClick(player);
-    shop.setSignText(((QuickShop)plugin).text().findRelativeLanguages(player));
+    handle(plugin, shop, player);
 
     //cancel event stuff
     event.setCancelled(true);
     event.setUseInteractedBlock(Event.Result.DENY);
     event.setUseItemInHand(Event.Result.DENY);
+  }
+
+  @Override
+  public void handle(final @NotNull QuickShopAPI plugin, final @Nullable Shop shop, final @NotNull Player player, final @NotNull PlayerInteractEntityEvent event, final @NotNull InteractionClick clickType, final @Nullable InteractionType interaction) {
+    if(shop == null) return;
+
+    //send control panel
+    handle(plugin, shop, player);
+
+    //cancel event stuff
+    event.setCancelled(true);
+  }
+
+  @Override
+  public void handle(final @NotNull QuickShopAPI plugin, final @Nullable Shop shop, final @NotNull Player player, final @NotNull EntityDamageByEntityEvent event, final @NotNull InteractionClick clickType, final @Nullable InteractionType interaction) {
+    if(shop == null) return;
+
+    //send control panel
+    handle(plugin, shop, player);
+
+    //cancel event stuff
+    event.setCancelled(true);
+  }
+
+  private void handle(final @NotNull QuickShopAPI plugin, @NotNull final Shop shop, final @NotNull Player player) {
+    MsgUtil.sendControlPanelInfo(player, shop);
+    Util.playClickSound(player);
+    shop.onClick(player);
   }
 }

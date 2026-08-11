@@ -55,10 +55,10 @@ public class MessageFactory {
 
     map.put("shop.name", ChatColor.stripColor(shop.getShopName()));
     map.put("shop.owner.name", wrap(shop.ownerName(plugin.text().findRelativeLanguages(langUser, false))));
-    map.put("shop.location.world", shop.getLocation().getWorld().getName());
-    map.put("shop.location.x", String.valueOf(shop.getLocation().getBlockX()));
-    map.put("shop.location.y", String.valueOf(shop.getLocation().getBlockY()));
-    map.put("shop.location.z", String.valueOf(shop.getLocation().getBlockZ()));
+    map.put("shop.location.world", shop.bukkitLocation().getWorld().getName());
+    map.put("shop.location.x", String.valueOf(shop.bukkitLocation().getBlockX()));
+    map.put("shop.location.y", String.valueOf(shop.bukkitLocation().getBlockY()));
+    map.put("shop.location.z", String.valueOf(shop.bukkitLocation().getBlockZ()));
     map.put("shop.location.id", String.valueOf(shop.getShopId()));
     final Component customName = Util.getItemCustomName(shop.getItem());
     if(customName != null) {
@@ -77,7 +77,7 @@ public class MessageFactory {
       map.put("shop.display-name", shop.getShopName());
     } else {
       // world, x, y, z
-      map.put("shop.display-name", String.format("%s %s, %s, %s", shop.getLocation().getWorld().getName(), shop.getLocation().getBlockX(), shop.getLocation().getBlockY(), shop.getLocation().getBlockZ()));
+      map.put("shop.display-name", String.format("%s %s, %s, %s", shop.bukkitLocation().getWorld().getName(), shop.bukkitLocation().getBlockX(), shop.bukkitLocation().getBlockY(), shop.bukkitLocation().getBlockZ()));
     }
     map.put("shop.type", shop.shopType().identifier());
     return map;
@@ -126,10 +126,11 @@ public class MessageFactory {
     placeHolders.put("purchase.uuid", event.getPurchaser().toString());
     placeHolders.put("purchase.name", getPlayerName(langUser));
     //noinspection DataFlowIssue
-    placeHolders.put("purchase.world", shop.getLocation().getWorld().getName());
+    placeHolders.put("purchase.world", shop.bukkitLocation().getWorld().getName());
     placeHolders.put("purchase.amount", String.valueOf(event.getAmount()));
-    placeHolders.put("purchase.balance", String.valueOf(event.getBalanceWithoutTax()));
-    placeHolders.put("purchase.balance-formatted", purgeColors(plugin.getShopManager().format(event.getBalanceWithoutTax(), shop)));
+    final double balance = shop.isSelling()? event.getBalance() : event.getBalanceWithoutTax();
+    placeHolders.put("purchase.balance", String.valueOf(balance));
+    placeHolders.put("purchase.balance-formatted", purgeColors(plugin.getShopManager().format(balance, shop)));
     placeHolders.put("purchase.taxes", String.valueOf(event.getTax()));
     placeHolders.put("purchase.taxes-formatted", purgeColors(plugin.getShopManager().format(event.getTax(), shop)));
     return placeHolders;

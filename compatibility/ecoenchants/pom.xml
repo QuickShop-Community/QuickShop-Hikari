@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>6.2.0.11</version>
+        <version>6.3.0.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>com.ghostchu.quickshop.compatibility</groupId>
@@ -63,6 +63,12 @@
             <groupId>com.willfp</groupId>
             <artifactId>EcoEnchants</artifactId>
             <version>${compat.ecoenchants}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.willfp</groupId>
+            <artifactId>libreforge-loader</artifactId>
+            <version>${compat.libreforge-loader}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

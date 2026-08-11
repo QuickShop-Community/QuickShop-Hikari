@@ -3,7 +3,7 @@ package com.ghostchu.quickshop.api;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
+import java.util.function.Consumer;
 
 /**
  * Utilities to help QuickShop quickly check server supported features
@@ -29,6 +29,8 @@ public enum GameVersion {
   v1_21_R6(new String[]{ "1.21.7", "1.21.8", "1.21.9" }, true, false, true, true, true),
   v1_21_R9(new String[]{ "1.21.10" }, true, false, true, true, true),
   v1_21_R10(new String[]{ "1.21.11" }, true, false, true, true, true),
+  v26_1(new String[]{ "26.1", "26.1.1", "26.1.2" }, true, false, true, true, true),
+  v26_2(new String[]{ "26.2" }, true, false, true, true, true),
   UNKNOWN(new String[0], true, false, false, true, true);
   private final String[] mcVersion;
   /**
@@ -74,13 +76,32 @@ public enum GameVersion {
   @NotNull
   public static GameVersion get(@NotNull final String nmsVersion) {
 
-    for(final GameVersion version : GameVersion.values()) {
-      if(version.name().equals(nmsVersion)) {
+    return get(nmsVersion, null);
+  }
+
+  public static GameVersion get(@NotNull final String nmsVersion, final Consumer<Boolean> fallback) {
+
+    for (final GameVersion version : GameVersion.values()) {
+      if (version.name().equals(nmsVersion.trim())) {
+
+        if (fallback != null) {
+          fallback.accept(false);
+        }
         return version;
       }
-      if(Arrays.asList(version.mcVersion).contains(nmsVersion)) {
-        return version;
+
+      for (final String str : version.mcVersion) {
+        if (str.trim().equalsIgnoreCase(nmsVersion.trim())) {
+          if (fallback != null) {
+            fallback.accept(false);
+          }
+          return version;
+        }
       }
+    }
+
+    if (fallback != null) {
+      fallback.accept(true);
     }
     return v1_21_R10;
   }

@@ -21,7 +21,7 @@ import com.ghostchu.quickshop.api.event.AbstractQSEvent;
 import com.ghostchu.quickshop.api.shop.display.PacketHandler;
 
 /**
- * PacketHandlersAdded
+ * PacketHandlerEvent
  *
  * @author creatorfromhell
  * @since 6.2.0.8

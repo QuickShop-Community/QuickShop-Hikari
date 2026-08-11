@@ -8,13 +8,8 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>6.2.0.11</version>
+        <version>6.3.0.0</version>
     </parent>
-
-    <properties>
-        <tnml.version>1.6.0.0-SNAPSHOT-15</tnml.version>
-        <tnil.version>0.1.7.6-LEGACY-13</tnil.version>
-    </properties>
 
     <artifactId>quickshop-bukkit</artifactId>
     <packaging>takari-jar</packaging>
@@ -54,6 +49,10 @@
             <url>https://repo.codemc.io/repository/maven-public/</url>
         </repository>
         <repository>
+            <id>codemc-creatorfromhell</id>
+            <url>https://repo.codemc.io/repository/creatorfromhell/</url>
+        </repository>
+        <repository>
             <id>tcoded-releases</id>
             <url>https://repo.tcoded.com/releases</url>
         </repository>
@@ -72,6 +71,11 @@
         <repository>
             <id>enginehub-repo</id>
             <url>https://maven.enginehub.org/repo/</url>
+        </repository>
+        <repository>
+            <id>faststats</id>
+            <name>TheNextLvl</name>
+            <url>https://repo.thenextlvl.net/releases</url>
         </repository>
     </repositories>
     <dependencies>
@@ -115,6 +119,13 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+            <groupId>net.luckperms</groupId>
+            <artifactId>api</artifactId>
+            <version>${depend.luckperms}</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <groupId>net.milkbowl.vault</groupId>
             <artifactId>VaultUnlockedAPI</artifactId>
             <version>${depend.vaultunlocked}</version>
@@ -128,24 +139,11 @@
             <optional>true</optional>
         </dependency>
         <!--JsonConfiguration Dependency End-->
-        <dependency>
-            <groupId>com.github.MilkBowl</groupId>
-            <artifactId>VaultAPI</artifactId>
-            <version>${depend.vault}</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>*</artifactId>
-                    <groupId>*</groupId>
-                </exclusion>
-            </exclusions>
-            <optional>true</optional>
-        </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.clerezza.ext/org.json.simple -->
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.11.6</version>
+            <version>${depend.papi}</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -187,6 +185,10 @@
                     <groupId>net.tnemc</groupId>
                     <artifactId>TNIL-CORE</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>net.kyori</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -195,6 +197,25 @@
             <artifactId>TNIL-Bukkit</artifactId>
             <version>${tnil.version}</version>
             <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.kyori</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>net.tnemc</groupId>
+            <artifactId>TNIL-Paper</artifactId>
+            <version>${tnil.version}</version>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.kyori</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.tnemc</groupId>
@@ -206,6 +227,10 @@
                     <groupId>net.tnemc</groupId>
                     <artifactId>TNIL-Core</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>net.kyori</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -213,13 +238,12 @@
             <artifactId>TNIL-Core</artifactId>
             <version>${tnil.version}</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.tnemc</groupId>
-            <artifactId>EconomyCore</artifactId>
-            <version>0.1.3.6-Pre-1</version>
-            <scope>provided</scope>
-            <optional>true</optional>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.kyori</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>io.papermc</groupId>
@@ -232,7 +256,7 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>2.1.214</version>
+            <version>${depend.h2}</version>
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
@@ -262,7 +286,7 @@
         <dependency>
             <groupId>net.essentialsx</groupId>
             <artifactId>EssentialsX</artifactId>
-            <version>2.21.0</version>
+            <version>${depend.essx}</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -323,6 +347,11 @@
             <artifactId>easysql-hikaricp</artifactId>
             <scope>compile</scope>
             <version>0.4.7</version>
+        </dependency>
+        <dependency>
+            <groupId>dev.faststats.metrics</groupId>
+            <artifactId>bukkit</artifactId>
+            <version>${depend.faststats}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

@@ -22,7 +22,7 @@ import com.ghostchu.quickshop.api.event.AbstractQSEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 
 /**
- * PlayerRankCalculateEvent
+ * UserLimitCalculateEvent
  *
  * @author creatorfromhell
  * @since 6.2.0.11

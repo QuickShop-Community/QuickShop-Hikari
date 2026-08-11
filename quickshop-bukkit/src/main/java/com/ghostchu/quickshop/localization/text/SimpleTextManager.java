@@ -13,7 +13,6 @@ import com.ghostchu.quickshop.localization.text.postprocessing.impl.FixClientIte
 import com.ghostchu.quickshop.localization.text.postprocessing.impl.ForceReplaceFillerProcessor;
 import com.ghostchu.quickshop.localization.text.postprocessing.impl.PlaceHolderApiProcessor;
 import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.paste.GuavaCacheRender;
@@ -191,13 +190,13 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
 
     // Register post processor
     postProcessors.add(new FillerProcessor());
-    if(PackageUtil.parsePackageProperly("betaForceReplaceFillerProcessor").asBoolean(false)) {
+    if(plugin.getConfig().getBoolean("lang-processor.replace-filller-post-process", false)) {
       postProcessors.add(new ForceReplaceFillerProcessor());
     }
-    if(PackageUtil.parsePackageProperly("usePAPIPostProcess").asBoolean(true)) {
+    if(plugin.getConfig().getBoolean("lang-processor.papi-post-process", true)) {
       postProcessors.add(new PlaceHolderApiProcessor());
     }
-    if(PackageUtil.parsePackageProperly("fixClientItemTextRenderAlwaysItalic").asBoolean(true)) {
+    if(plugin.getConfig().getBoolean("lang-processor.fix-item-always-italic", true)) {
       postProcessors.add(new FixClientItemItalicRenderProcessor());
     }
 
@@ -488,8 +487,9 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     return false;
   }
 
+  @Override
   @NotNull
-  private String getDefLocale() {
+  public String getDefLocale() {
 
     final Iterator<String> defLocale = availableLanguages.iterator();
     if(defLocale.hasNext()) {
@@ -833,7 +833,10 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
           Log.debug("Fallback Missing Language Key: " + path + ", report to QuickShop!");
           return Collections.singletonList(LegacyComponentSerializer.legacySection().deserialize(path));
         }
-        final List<Component> components = str.stream().map(s->manager.plugin.platform().miniMessage().deserialize(s, tagResolvers)).toList();
+        final List<Component> components = str.stream()
+                .map(s -> MiniMessageFiller.fillRaw(s, args))
+                .map(s -> manager.plugin.platform().miniMessage().deserialize(s, tagResolvers))
+                .toList();
         return postProcess(components);
       }
     }
@@ -994,7 +997,10 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
           }
           return LegacyComponentSerializer.legacySection().deserialize(path);
         }
-        final Component component = manager.plugin.platform().miniMessage().deserialize(str, tagResolvers);
+
+        final String filled = MiniMessageFiller.fillRaw(str, args);
+        final Component component = manager.plugin.platform().miniMessage().deserialize(filled, tagResolvers);
+        //final Component component = MiniMessageFiller.fill(str, manager.plugin.platform().miniMessage(), tagResolvers, args);
         return postProcess(component);
       }
     }

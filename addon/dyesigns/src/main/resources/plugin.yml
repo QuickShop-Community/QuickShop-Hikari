@@ -1,0 +1,28 @@
+name: qsaddon-${project.artifactId}
+version: '${project.version}'
+main: org.quickshophikari.community.addon.${project.artifactId}.Main
+#Has to be included for folia support
+folia-supported: true
+api-version: '1.20'
+depend:
+  - QuickShop-Hikari
+authors: [ creatorfromhell ]
+permissions:
+  quickshopaddon.dyesigns.dye:
+    default: true
+    description: Allow players to dye their own shop signs
+  quickshopaddon.dyesigns.dye.other:
+    default: op
+    description: Allow players to dye others' shop signs
+  quickshopaddon.dyesigns.glow:
+    default: true
+    description: Allow players to add glow text to others' shop signs
+  quickshopaddon.dyesigns.glow.other:
+    default: op
+    description: Allow players to add glow text to their own shop signs.
+  quickshopaddon.dyesigns.clear:
+    default: true
+    description: Allow players to clear extra effects added to their own shop signs.
+  quickshopaddon.dyesigns.clear.other:
+    default: op
+    description: Allow players to clear extra effects added to others' shop signs.

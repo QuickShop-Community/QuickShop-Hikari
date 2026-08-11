@@ -1,7 +1,6 @@
 package com.ghostchu.quickshop.util.paste.item;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,7 +37,7 @@ public class DatabaseInfoItem implements SubPasteItem {
       table.insert("Version", meta.getDatabaseProductVersion());
       table.insert("Driver", meta.getDriverName());
       table.insert("Driver Version", meta.getDriverVersion());
-      if(PackageUtil.parsePackageProperly("generateDatabaseFullReport").asBoolean()) {
+      if(QuickShop.getInstance().getConfig().getBoolean("database.generate-full-report", false)) {
         processFullReportGenerate(meta, table);
       }
       return table.render();

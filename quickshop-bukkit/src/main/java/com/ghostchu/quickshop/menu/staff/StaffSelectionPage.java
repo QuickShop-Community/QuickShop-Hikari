@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.menu.staff;
  */
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.inventory.SkullProvider;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
@@ -53,7 +54,7 @@ import static com.ghostchu.quickshop.menu.shared.QuickShopPage.getShop;
 import static com.ghostchu.quickshop.menu.shared.QuickShopPage.guiMessage;
 
 /**
- * PlayerSelectionMenu
+ * StaffSelectionPage
  *
  * @author creatorfromhell
  * @since 6.2.0.8
@@ -67,11 +68,12 @@ public class StaffSelectionPage {
   protected final String staffPageID;
   protected final int menuRows;
   protected final String iconLore;
+  protected final SkullProvider skullProvider;
   protected final IconAction[] actions;
 
   public StaffSelectionPage(final String returnMenu, final String menuName,
                             final int menuPage, final int returnPage, final String staffPageID,
-                            final int menuRows, final String iconLore, final IconAction... actions) {
+                            final int menuRows, final String iconLore, final SkullProvider skullProvider, final IconAction... actions) {
 
     this.returnMenu = returnMenu;
     this.menuName = menuName;
@@ -79,6 +81,7 @@ public class StaffSelectionPage {
     this.returnPage = returnPage;
     this.staffPageID = staffPageID;
     this.iconLore = iconLore;
+    this.skullProvider = skullProvider;
     this.actions = actions;
 
     //we need a controller row and then at least one row for items.
@@ -97,6 +100,7 @@ public class StaffSelectionPage {
         final List<UUID> allStaffs = shop.get().playersCanAuthorize(BuiltInShopPermissionGroup.STAFF);
 
         callback.getPage().getIcons().clear();
+        callback.getPage().setLockEmptySlots(true);
         final UUID id = viewer.get().uuid();
         final Player viewerPlayer = Bukkit.getPlayer(id);
         if(viewerPlayer != null) {
@@ -149,7 +153,7 @@ public class StaffSelectionPage {
           final Long capturedShopId = shop.get().getShopId();
 
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(searchMaterial, 1)
-                                                             .display(getConfigDisplay(id, searchConfig, "<yellow>Search: {0}</yellow>", currentSearchDisplay))
+                                                             .customName(getConfigDisplay(id, searchConfig, "<yellow>Search: {0}</yellow>", currentSearchDisplay))
                                                              .lore(getConfigLore(id, searchConfig, currentSearchDisplay)))
                                              .withSlot(searchSlot)
                                              .withActions(new GuiChatAction((message)->{
@@ -178,7 +182,7 @@ public class StaffSelectionPage {
           final String addStaffMaterial = addStaffConfig != null? addStaffConfig.getMaterial() : "EMERALD";
           final int addStaffSlot = addStaffConfig != null? addStaffConfig.getSlot() : 4;
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(addStaffMaterial, 1)
-                                                             .display(getConfigDisplay(id, addStaffConfig, "<green>Add Staff Member</green>"))
+                                                             .customName(getConfigDisplay(id, addStaffConfig, "<green>Add Staff Member</green>"))
                                                              .lore(getConfigLore(id, addStaffConfig)))
                                              .withActions(new SwitchPageAction(menuName, STAFF_ADD))
                                              .withSlot(addStaffSlot)
@@ -188,7 +192,7 @@ public class StaffSelectionPage {
           final String backMaterial = backConfig != null? backConfig.getMaterial() : "OAK_DOOR";
           final int backSlot = backConfig != null? backConfig.getSlot() : 8;
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(backMaterial, 1)
-                                                             .display(getConfigDisplay(id, backConfig, "<white>Back to Shop</white>")))
+                                                             .customName(getConfigDisplay(id, backConfig, "<white>Back to Shop</white>")))
                                              .withActions(new SwitchPageAction(returnMenu, returnPage))
                                              .withSlot(backSlot)
                                              .build());
@@ -203,13 +207,13 @@ public class StaffSelectionPage {
 
           if(maxPages > 1) {
             callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(prevMaterial, 1)
-                                                               .display(getConfigDisplay(id, prevPageConfig, "<white><< Previous Page</white>")))
+                                                               .customName(getConfigDisplay(id, prevPageConfig, "<white><< Previous Page</white>")))
                                                .withActions(new DataAction(staffPageID, prev), new SwitchPageAction(menuName, menuPage))
                                                .withSlot(prevSlot)
                                                .build());
 
             callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(nextMaterial, 1)
-                                                               .display(getConfigDisplay(id, nextPageConfig, "<white>Next Page >></white>")))
+                                                               .customName(getConfigDisplay(id, nextPageConfig, "<white>Next Page >></white>")))
                                                .withActions(new DataAction(staffPageID, next), new SwitchPageAction(menuName, menuPage))
                                                .withSlot(nextSlot)
                                                .build());
@@ -217,7 +221,7 @@ public class StaffSelectionPage {
 
           // Page info (always show)
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(pageInfoMaterial, 1)
-                                                             .display(getConfigDisplay(id, pageInfoConfig, "<yellow>Page {0}/{1}</yellow>", page, Math.max(1, maxPages))))
+                                                             .customName(getConfigDisplay(id, pageInfoConfig, "<yellow>Page {0}/{1}</yellow>", page, Math.max(1, maxPages))))
                                              .withSlot(pageInfoSlot)
                                              .build());
 
@@ -234,20 +238,11 @@ public class StaffSelectionPage {
             }
             if(i >= (start + items)) break;
 
-            SkullProfile profile = null;
-            try {
-
-              if(player.isPresent() && player.get().hasPlayedBefore()) {
-                profile = new SkullProfile();
-
-                profile.setUuid(uuid);
-              }
-
-            } catch(final Exception ignore) { }
+            final SkullProfile profile = getOrLoadProfile(uuid);
 
             final String name = (player.isPresent() && player.get().getName() != null)? player.get().getName() : uuid.toString();
             callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("PLAYER_HEAD", 1)
-                                                               .display(QuickShop.getInstance().platform().miniMessage().deserialize("<yellow>" + name + "</yellow>"))
+                                                               .customName(QuickShop.getInstance().platform().miniMessage().deserialize("<yellow>" + name + "</yellow>"))
                                                                .lore(getConfigLore(id, null, name))
                                                                .profile(profile))
                                                .withActions(new GuiChatAction((message)->{
@@ -266,7 +261,7 @@ public class StaffSelectionPage {
                                                  if(!message.isEmpty()) {
                                                    if(message.equalsIgnoreCase("confirm")) {
                                                      if(shop.get().playerAuthorize(id, BuiltInShopPermission.OWNERSHIP_TRANSFER)) {
-                                                       Util.regionThread(shop.get().getLocation(), ()->ShopUtil.transferRequest(id, uuid, name, shop.get()));
+                                                       Util.regionThread(shop.get().bukkitLocation(), ()->ShopUtil.transferRequest(id, uuid, name, shop.get()));
                                                      } else {
                                                        QuickShop.getInstance().text().of(id, "no-permission").send();
                                                      }
@@ -285,6 +280,20 @@ public class StaffSelectionPage {
         }
       }
     }
+  }
+
+  private SkullProfile getOrLoadProfile(final UUID uuid) {
+
+    final SkullProfile cached = skullProvider.getCachedProfile(uuid);
+    if(cached != null) {
+      return cached;
+    }
+
+    skullProvider.provideProfile(uuid);
+
+    final SkullProfile fallback = new SkullProfile();
+    fallback.uuid(uuid);
+    return fallback;
   }
 
   /**

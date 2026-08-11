@@ -83,7 +83,7 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
   private void saveShops(final CommandSender sender, @NotNull final List<String> subParams) {
 
     plugin.logger().info("Saving all in-memory changed shops...");
-    final List<CompletableFuture<Void>> futures = plugin.getShopManager().getAllShops().stream().filter(Shop::isDirty).map(Shop::update).toList();
+    final List<CompletableFuture> futures = plugin.getShopManager().getAllShops().stream().filter(Shop::isDirty).map(Shop::update).toList();
 
     plugin.logger().info("Shops needed saved: " + futures.size());
     final CompletableFuture<?>[] completableFutures = futures.toArray(new CompletableFuture<?>[0]);
@@ -105,7 +105,7 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
             shop.updateSync();
           } catch(final RuntimeException re) {
 
-            plugin.logger().warn("Issue occurred while saving a shop. This may cause data loss. Please check the logs for more information. ID: " + shop.getShopId() + " Location: " + shop.getLocation(), re);
+            plugin.logger().warn("Issue occurred while saving a shop. This may cause data loss. Please check the logs for more information. ID: " + shop.getShopId() + " Location: " + shop.bukkitLocation(), re);
           }
         }
       }

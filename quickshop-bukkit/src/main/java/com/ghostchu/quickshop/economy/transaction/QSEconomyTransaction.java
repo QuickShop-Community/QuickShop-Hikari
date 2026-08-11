@@ -27,6 +27,7 @@ import com.ghostchu.quickshop.api.economy.transaction.TransactionCallback;
 import com.ghostchu.quickshop.api.event.economy.EconomyTransactionEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.operation.Operation;
+import com.ghostchu.quickshop.api.operation.OperationResult;
 import com.ghostchu.quickshop.common.util.CalculateUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.economy.QSBenefitProvider;
@@ -61,7 +62,6 @@ public class QSEconomyTransaction implements EconomyTransaction {
   private @NotNull String world;
   private @Nullable String currency;
   private @NotNull BigDecimal amount;
-  private @NotNull BigDecimal tax = BigDecimal.ZERO;
   private final @NotNull BigDecimal fromAmount;
   private @NotNull BigDecimal amountAfterTax = BigDecimal.ZERO;
   private @NotNull BigDecimal toTax = BigDecimal.ZERO;
@@ -262,28 +262,6 @@ public class QSEconomyTransaction implements EconomyTransaction {
   public void taxer(final @Nullable QUser user) {
 
     this.taxer = user;
-  }
-
-  /**
-   * Retrieves the tax amount associated with this transaction.
-   *
-   * @return a BigDecimal value representing the tax amount of the transaction
-   */
-  @Override
-  public @NotNull BigDecimal tax() {
-
-    return tax;
-  }
-
-  /**
-   * Sets the tax for the transaction.
-   *
-   * @param tax the amount of tax to be set for the transaction
-   */
-  @Override
-  public void tax(final @NotNull BigDecimal tax) {
-
-    this.tax = tax;
   }
 
   /**
@@ -561,9 +539,9 @@ public class QSEconomyTransaction implements EconomyTransaction {
     }
 
     try {
-      final boolean result = operation.commit();
+      final OperationResult<?> result = operation.commit();
 
-      if(!result) {
+      if(!result.success()) {
 
         return false;
       }

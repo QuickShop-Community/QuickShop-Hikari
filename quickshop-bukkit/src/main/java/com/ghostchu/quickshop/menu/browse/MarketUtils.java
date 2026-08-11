@@ -20,16 +20,19 @@ package com.ghostchu.quickshop.menu.browse;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.ItemMatcher;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.api.shop.cache.ShopInventoryCountCache;
 import com.ghostchu.quickshop.common.util.CommonUtil;
+import com.ghostchu.quickshop.shop.ContainerShop;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * MarketUtils - Utility class for market/browse operations Handles grouping shops by item,
@@ -55,13 +58,14 @@ public final class MarketUtils {
   public static List<MarketItemGroup> groupShopsByItem(@NotNull final List<Shop> shops) {
 
     final List<MarketItemGroup> groups = new ArrayList<>();
+    final Map<Material, List<MarketItemGroup>> groupsByMat = new EnumMap<>(Material.class);
     final ItemMatcher matcher = QuickShop.getInstance().getItemMatcher();
 
     for(final Shop shop : shops) {
       MarketItemGroup matchingGroup = null;
-
+      final List<MarketItemGroup> matGroups = groupsByMat.computeIfAbsent(shop.getItem().getType(), k->new ArrayList<>());
       // Find existing group that matches this shop's item
-      for(final MarketItemGroup group : groups) {
+      for(final MarketItemGroup group : matGroups) {
         if(matcher.matches(group.getRepresentativeItem(), shop.getItem())) {
           matchingGroup = group;
           break;
@@ -71,6 +75,7 @@ public final class MarketUtils {
       // Create new group if no match found
       if(matchingGroup == null) {
         matchingGroup = new MarketItemGroup(shop.getItem());
+        matGroups.add(matchingGroup);
         groups.add(matchingGroup);
       }
 
@@ -97,12 +102,15 @@ public final class MarketUtils {
   public static List<Shop> filterShops(@NotNull final List<Shop> shops,
                                        @NotNull final BrowseFilterMode filterMode) {
 
+    final boolean disableUnlimitedBrowse = QuickShop.getInstance().getConfig().getBoolean("shop.disable-unlimited-browse", false);
     return switch(filterMode) {
-      case ALL -> new ArrayList<>(shops);
+      case ALL -> new ArrayList<>(shops.stream().filter(shop -> !disableUnlimitedBrowse || !shop.isUnlimited()).toList());
       case BUYING -> shops.stream()
+              .filter(shop -> !disableUnlimitedBrowse || !shop.isUnlimited())
               .filter(Shop::isBuying)
               .toList();
       case SELLING -> shops.stream()
+              .filter(shop -> !disableUnlimitedBrowse || !shop.isUnlimited())
               .filter(Shop::isSelling)
               .toList();
     };
@@ -208,8 +216,11 @@ public final class MarketUtils {
     final List<Shop> sorted = new ArrayList<>(shops);
 
     switch(sortMode) {
-      case PRICE_ASC -> sorted.sort(Comparator.comparingDouble(Shop::getPrice));
-      case PRICE_DESC -> sorted.sort(Comparator.comparingDouble(Shop::getPrice).reversed());
+      case PRICE_ASC -> {
+
+        sorted.sort((a, b) -> a.comparePrice(b.price(), false));
+      }
+      case PRICE_DESC -> sorted.sort((a, b) -> a.comparePrice(b.price(), true));
       case STOCK -> sorted.sort(Comparator.comparingInt(MarketUtils::getStockFromCache).reversed());
       case NAME -> sorted.sort(Comparator.comparing(shop->
                                                             CommonUtil.prettifyText(shop.getItem().getType().name())));
@@ -400,16 +411,8 @@ public final class MarketUtils {
     if(shop.isUnlimited()) {
       return -1;
     }
-    try {
-      final ShopInventoryCountCache cache = QuickShop.getInstance().getShopManager()
-              .queryShopInventoryCacheInDatabase(shop).join();
-      final int stock = cache.getStock();
-      // Return stock if available, otherwise return 0 for uninitialized cache
-      return stock >= 0? stock : 0;
-    } catch(final Exception e) {
-      // Fallback to 0 if cache query fails
-      return 0;
-    }
+
+    return Math.max(((ContainerShop) shop).getInventoryCountCache().getStock(), 0);
   }
 
   /**
@@ -425,15 +428,7 @@ public final class MarketUtils {
     if(shop.isUnlimited()) {
       return -1;
     }
-    try {
-      final ShopInventoryCountCache cache = QuickShop.getInstance().getShopManager()
-              .queryShopInventoryCacheInDatabase(shop).join();
-      final int space = cache.getSpace();
-      // Return space if available, otherwise return 0 for uninitialized cache
-      return space >= 0? space : 0;
-    } catch(final Exception e) {
-      // Fallback to 0 if cache query fails
-      return 0;
-    }
+
+    return Math.max(((ContainerShop) shop).getInventoryCountCache().getSpace(), 0);
   }
 }

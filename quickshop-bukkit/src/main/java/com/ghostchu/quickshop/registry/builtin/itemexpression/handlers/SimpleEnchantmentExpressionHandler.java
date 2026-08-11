@@ -48,14 +48,14 @@ public class SimpleEnchantmentExpressionHandler implements ItemExpressionHandler
     int minLevel = -1;
     final int maxLevel;
     if(split.length > 1) {
-      if(CommonUtil.isNumeric(split[1])) {
+      if(CommonUtil.isInteger(split[1])) {
         minLevel = Integer.parseInt(split[1]);
       } else {
         return false;
       }
     }
     if(split.length > 2) {
-      if(CommonUtil.isNumeric(split[2])) {
+      if(CommonUtil.isInteger(split[2])) {
         maxLevel = Integer.parseInt(split[2]);
       } else {
         return false;

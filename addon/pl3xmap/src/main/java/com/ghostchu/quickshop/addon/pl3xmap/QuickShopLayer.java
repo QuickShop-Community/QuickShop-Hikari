@@ -11,17 +11,17 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 import java.util.Collections;
 
-public class QuickShopLayer  extends WorldLayer {
+public class QuickShopLayer extends WorldLayer {
 
   final String worldName;
 
-  public QuickShopLayer(World world) {
+  public QuickShopLayer(final World world) {
     super(Main.PL3X_KEY, world, ()->Main.instance().layerName());
 
     this.worldName = world.getName();
 
     setShowControls(Main.instance().showControls());
-    setDefaultHidden(Main.instance().layerEnabled());
+    setDefaultHidden(!Main.instance().layerEnabled());
     setUpdateInterval(Main.instance().refreshPerSeconds());
     setPriority(Main.instance().layerPriority());
   }

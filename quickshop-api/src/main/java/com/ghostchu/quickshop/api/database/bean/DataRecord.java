@@ -45,6 +45,8 @@ public interface DataRecord {
 
   int getType();
 
+  String getState();
+
   boolean isHologram();
 
   boolean isUnlimited();

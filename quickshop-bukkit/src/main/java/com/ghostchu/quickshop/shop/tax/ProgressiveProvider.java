@@ -75,9 +75,11 @@ public class ProgressiveProvider implements TaxProvider {
   public TaxRates calculateTax(final Shop shop, final QUser player) {
 
     final double interactorRate = (appliesTo.equalsIgnoreCase("player")
-                                   || appliesTo.equalsIgnoreCase("both"))? normalizeRate(shop, player, getRate(player, shop.getLocation().getWorld().getName(), shop.getCurrency())) : 0.0;
+                                   || appliesTo.equalsIgnoreCase("payee") && shop.isBuying()
+                                   || appliesTo.equalsIgnoreCase("both"))? normalizeRate(shop, player, getRate(player, shop.bukkitLocation().getWorld().getName(), shop.getCurrency())) : 0.0;
     final double ownerRate = (appliesTo.equalsIgnoreCase("shop")
-                              || appliesTo.equalsIgnoreCase("both"))? normalizeRate(shop, shop.getOwner(), getRate(shop.getOwner(), shop.getLocation().getWorld().getName(), shop.getCurrency())) : 0.0;
+                              || appliesTo.equalsIgnoreCase("payee") && shop.isSelling()
+                              || appliesTo.equalsIgnoreCase("both"))? normalizeRate(shop, shop.getOwner(), getRate(shop.getOwner(), shop.bukkitLocation().getWorld().getName(), shop.getCurrency())) : 0.0;
 
     return new TaxRates(interactorRate, ownerRate);
   }
@@ -102,6 +104,10 @@ public class ProgressiveProvider implements TaxProvider {
 
     if(QuickShop.getInstance().perm().hasPermission(user, "quickshop.tax")) {
       Log.debug("Disable the Tax for player " + user + " cause they have permission quickshop.tax");
+      return 0.0;
+    }
+
+    if(shop.isUnlimited() && QuickShop.getInstance().getConfig().getBoolean("shop-tax.disable-for-unlimited-shop", false)) {
       return 0.0;
     }
 

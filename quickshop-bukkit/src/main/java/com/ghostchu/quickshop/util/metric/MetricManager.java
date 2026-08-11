@@ -1,61 +1,56 @@
 package com.ghostchu.quickshop.util.metric;
 
+/*
+ * QuickShop-Hikari
+ * Copyright (C) 2026 Daniel "creatorfromhell" Vidmar
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.util.logger.Log;
-import com.ghostchu.quickshop.util.metric.collect.BuiltInCollects;
-import org.bstats.bukkit.Metrics;
-import org.bstats.charts.CustomChart;
-import org.jetbrains.annotations.NotNull;
+import com.ghostchu.quickshop.util.metric.bstats.BStats;
+import com.ghostchu.quickshop.util.metric.faststats.FastStats;
 
-import java.lang.reflect.Method;
-import java.util.Locale;
-
+/**
+ * MetricManager
+ *
+ * @author creatorfromhell
+ * @since 6.3.0.0
+ */
 public class MetricManager {
 
-  private final QuickShop plugin;
-  private final Metrics metrics;
+  private final BStats bStats;
+  private final FastStats fastStats;
+  private final StatCollector collector;
 
-  public MetricManager(final QuickShop plugin) {
+  public MetricManager() {
 
-    this.plugin = plugin;
-    this.metrics = new Metrics(plugin.getJavaPlugin(), 14281);
-    initCollects();
+    this.collector = new StatCollector(QuickShop.getInstance());
+
+    QuickShop.getInstance().logger().info("Initializing bStats....");
+    this.bStats = new BStats(collector);
+
+    QuickShop.getInstance().logger().info("Initializing FastStats....");
+    this.fastStats = new FastStats(collector);
   }
 
-  public void registerChart(final MetricDataType dataType, final String moduleName, final String reason, final CustomChart chart) {
+  public void initPlatforms() {
 
-    if(chart == null) {
-      return; // ignore
-    }
-    plugin.getPrivacyController().privacyReview(dataType, moduleName.replace(" ", "_").replace("-", "_").toUpperCase(Locale.ROOT), reason, ()->this.metrics.addCustomChart(chart), ()->Log.debug("Blocked chart register: failed privacy reviewing."));
-  }
+    QuickShop.getInstance().logger().info("Registering bStats....");
+    bStats.register();
 
-  public void initCollects() {
-
-    registerMetricCollector(new BuiltInCollects(plugin));
-  }
-
-  public void registerMetricCollector(@NotNull final Object object) {
-
-    for(final Method method : object.getClass().getDeclaredMethods()) {
-      final MetricCollectEntry collectEntry = method.getAnnotation(MetricCollectEntry.class);
-      if(collectEntry == null) {
-        continue;
-      }
-      if(method.getReturnType() != CustomChart.class) {
-        plugin.logger().warn("Failed loading MetricCollectEntry [{}]: Illegal test returns", method.getName());
-        continue;
-      }
-      try {
-        final Object result = method.invoke(object, (Object[])null);
-        if(result != null) {
-          registerChart(collectEntry.dataType(), collectEntry.moduleName(), collectEntry.description(),
-                        (CustomChart)result);
-          Log.debug("Registered metrics collector: " + collectEntry.moduleName());
-        }
-      } catch(Throwable th) {
-        plugin.logger().warn("Failed to register metrics chart", th);
-      }
-    }
+    QuickShop.getInstance().logger().info("Registering FastStats....");
+    fastStats.register();
   }
 }

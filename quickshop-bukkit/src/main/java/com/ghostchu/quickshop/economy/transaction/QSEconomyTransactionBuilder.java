@@ -34,7 +34,6 @@ public class QSEconomyTransactionBuilder {
   private String world;
   private String currency;
   private BigDecimal amount;
-  private BigDecimal tax;
   private BigDecimal fromTax;
   private BigDecimal toTax;
   private QUser from;
@@ -66,12 +65,6 @@ public class QSEconomyTransactionBuilder {
   public QSEconomyTransactionBuilder amount(final BigDecimal amount) {
 
     this.amount = amount;
-    return this;
-  }
-
-  public QSEconomyTransactionBuilder tax(final BigDecimal tax) {
-
-    this.tax = tax;
     return this;
   }
 

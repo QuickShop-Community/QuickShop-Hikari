@@ -91,6 +91,7 @@ public class GroupedItemPage {
     if(shopsData.isEmpty() || player == null) return;
 
     menuPage.getIcons().clear();
+    menuPage.setLockEmptySlots(true);
 
     // Load GUI configuration
     final GuiConfig.MenuConfig menuConfig = QuickShop.getInstance().getGuiConfig().getMenuConfig("browse");
@@ -144,7 +145,7 @@ public class GroupedItemPage {
     final String currentSearchDisplay = searchQuery.isEmpty()? "None" : searchQuery;
 
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(searchMaterial, 1)
-                                             .display(getConfigDisplay(id, searchConfig, "<yellow>Search: {0}</yellow>", currentSearchDisplay))
+                                             .customName(getConfigDisplay(id, searchConfig, "<yellow>Search: {0}</yellow>", currentSearchDisplay))
                                              .lore(getConfigLore(id, searchConfig, currentSearchDisplay)))
                              .withSlot(searchSlot)
                              .withActions(new GuiChatAction((message)->{
@@ -178,7 +179,7 @@ public class GroupedItemPage {
     final int sortSlot = (sortConfig != null)? sortConfig.getSlot() : 2;
 
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(sortMaterial, 1)
-                                             .display(getConfigDisplay(id, sortConfig, "<green>Sort: {0}</green>", getSortDisplayName(id, sortMode)))
+                                             .customName(getConfigDisplay(id, sortConfig, "<green>Sort: {0}</green>", getSortDisplayName(id, sortMode)))
                                              .lore(getConfigLore(id, sortConfig)))
                              .withSlot(sortSlot)
                              .withActions(
@@ -193,7 +194,7 @@ public class GroupedItemPage {
     final int filterSlot = (filterConfig != null)? filterConfig.getSlot() : 4;
 
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(filterMaterial, 1)
-                                             .display(getConfigDisplay(id, filterConfig, "<aqua>Filter: {0}</aqua>", getFilterDisplayName(id, filterMode)))
+                                             .customName(getConfigDisplay(id, filterConfig, "<aqua>Filter: {0}</aqua>", getFilterDisplayName(id, filterMode)))
                                              .lore(getConfigLore(id, filterConfig)))
                              .withSlot(filterSlot)
                              .withActions(
@@ -209,7 +210,7 @@ public class GroupedItemPage {
     final String stockStatus = (stockOnly)? "ON" : "OFF";
 
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(stockMaterial, 1)
-                                             .display(getConfigDisplay(id, stockConfig, "<gold>In Stock Only: {0}</gold>", stockStatus))
+                                             .customName(getConfigDisplay(id, stockConfig, "<gold>In Stock Only: {0}</gold>", stockStatus))
                                              .lore(getConfigLore(id, stockConfig)))
                              .withSlot(stockSlot)
                              .withActions(
@@ -224,7 +225,7 @@ public class GroupedItemPage {
     final int closeSlot = (closeConfig != null)? closeConfig.getSlot() : 8;
 
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(closeMaterial, 1)
-                                             .display(getConfigDisplay(id, closeConfig, "<red>Close</red>")))
+                                             .customName(getConfigDisplay(id, closeConfig, "<red>Close</red>")))
                              .withSlot(closeSlot)
                              .withActions(new RunnableAction((click)->{
                                final Player p = Bukkit.getPlayer(click.player().identifier());
@@ -242,13 +243,13 @@ public class GroupedItemPage {
 
     if(maxPages > 1) {
       menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(prevMaterial, 1)
-                                               .display(getConfigDisplay(id, prevPageConfig, "<white><< Previous Page</white>")))
+                                               .customName(getConfigDisplay(id, prevPageConfig, "<white><< Previous Page</white>")))
                                .withSlot(prevSlot)
                                .withActions(new DataAction(SHOPS_PAGE, prev), new SwitchPageAction(menuName, 1))
                                .build());
 
       menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(nextMaterial, 1)
-                                               .display(getConfigDisplay(id, nextPageConfig, "<white>Next Page >></white>")))
+                                               .customName(getConfigDisplay(id, nextPageConfig, "<white>Next Page >></white>")))
                                .withSlot(nextSlot)
                                .withActions(new DataAction(SHOPS_PAGE, next), new SwitchPageAction(menuName, 1))
                                .build());
@@ -256,7 +257,7 @@ public class GroupedItemPage {
 
     // Page info
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(pageInfoMaterial, 1)
-                                             .display(getConfigDisplay(id, pageInfoConfig, "<yellow>Page {0}/{1}</yellow>", page, Math.max(1, maxPages))))
+                                             .customName(getConfigDisplay(id, pageInfoConfig, "<yellow>Page {0}/{1}</yellow>", page, Math.max(1, maxPages))))
                              .withSlot(pageInfoSlot)
                              .build());
 
@@ -277,7 +278,7 @@ public class GroupedItemPage {
 
       final AbstractItemStack<ItemStack> stack = new BukkitItemStack()
               .of(group.getRepresentativeItem().getType().key().asString(), 1)
-              .display(getConfigDisplay(id, groupedConfig, "<yellow>{0}</yellow>", itemName))
+              .customName(getConfigDisplay(id, groupedConfig, "<yellow>{0}</yellow>", itemName))
               .lore(lore);
 
       // Find ALL shops for this item type from unfiltered list (so filter can be changed on ShopListPage)

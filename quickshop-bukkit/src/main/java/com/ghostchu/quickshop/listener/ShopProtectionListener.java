@@ -15,7 +15,9 @@ import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.Dropper;
 import org.bukkit.block.Hopper;
+import org.bukkit.entity.minecart.HopperMinecart;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockExplodeEvent;
@@ -26,6 +28,7 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.world.StructureGrowEvent;
+import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -34,8 +37,11 @@ import java.util.List;
 public class ShopProtectionListener extends AbstractProtectionListener {
 
   private final NamespacedKey hopperKey = new NamespacedKey(QuickShop.getInstance().getJavaPlugin(), "hopper-persistent-data");
+  private final NamespacedKey dropperKey = new NamespacedKey(QuickShop.getInstance().getJavaPlugin(), "dropper-persistent-data");
   private boolean hopperProtect;
   private boolean hopperOwnerExclude;
+  private boolean dropperProtect;
+  private boolean dropperOwnerExclude;
 
   public ShopProtectionListener(@NotNull final QuickShop plugin) {
 
@@ -47,6 +53,8 @@ public class ShopProtectionListener extends AbstractProtectionListener {
 
     this.hopperProtect = plugin.getConfig().getBoolean("protect.hopper", true);
     this.hopperOwnerExclude = plugin.getConfig().getBoolean("protect.hopper-owner-exclude", false);
+    this.dropperProtect = plugin.getConfig().getBoolean("protect.dropper", true);
+    this.dropperOwnerExclude = plugin.getConfig().getBoolean("protect.dropper-owner-exclude", false);
   }
 
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -128,41 +136,81 @@ public class ShopProtectionListener extends AbstractProtectionListener {
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
-  public void onInventoryMove(final InventoryMoveItemEvent event) {
+  public void onHopperMoveItem(final InventoryMoveItemEvent event) {
 
-    if(!this.hopperProtect) {
+    if (!this.hopperProtect) {
       return;
     }
-    final Location loc = event.getSource().getLocation();
 
-    if(loc == null) {
+    final InventoryHolder destinationHolder = event.getDestination().getHolder(false);
+    if (!(destinationHolder instanceof Hopper || destinationHolder instanceof HopperMinecart)) {
       return;
     }
-    final Shop shop = getShopRedstone(loc, true);
 
+    final Location sourceLocation  = event.getSource().getLocation();
+    if (sourceLocation  == null) {
+      return;
+    }
+
+    final Shop shop = getShopRedstone(sourceLocation , true);
     if(shop == null) {
       return;
     }
-    if(this.hopperOwnerExclude) {
-      if(event.getDestination().getHolder() instanceof final Hopper hopper) {
-        final HopperPersistentData hopperPersistentData = hopper.getPersistentDataContainer().get(hopperKey, HopperPersistentDataType.INSTANCE);
-        if(hopperPersistentData != null) {
-          if(shop.playerAuthorize(hopperPersistentData.getPlayer(), BuiltInShopPermission.ACCESS_INVENTORY)) {
-            return;
-          }
-        }
+
+    if(this.hopperOwnerExclude && destinationHolder instanceof final Hopper hopper) {
+      final HopperPersistentData hopperPersistentData = hopper.getPersistentDataContainer().get(hopperKey, HopperPersistentDataType.INSTANCE);
+      if(hopperPersistentData != null && shop.playerAuthorize(hopperPersistentData.getPlayer(), BuiltInShopPermission.ACCESS_INVENTORY)) {
+        return;
+      }
+    }
+    event.setCancelled(true);
+  }
+
+  @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
+  public void onDropperMoveItem(final InventoryMoveItemEvent event) {
+
+    if (!dropperProtect) {
+      return;
+    }
+
+    final InventoryHolder destinationHolder = event.getDestination().getHolder(false);
+    if (!(destinationHolder instanceof final Dropper dropper)) {
+      return;
+    }
+
+    final Location sourceLocation = event.getDestination().getLocation();
+    if (sourceLocation == null) {
+      return;
+    }
+
+    final Shop shop = getShopRedstone(sourceLocation, true);
+    if (shop == null) {
+      return;
+    }
+
+    if (this.dropperOwnerExclude) {
+
+      final HopperPersistentData hopperPersistentData = dropper.getPersistentDataContainer().get(dropperKey, HopperPersistentDataType.INSTANCE);
+      if (hopperPersistentData != null && shop.playerAuthorize(hopperPersistentData.getPlayer(), BuiltInShopPermission.ACCESS_INVENTORY)) {
+        return;
       }
     }
     event.setCancelled(true);
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-  public void onPlaceHopper(final BlockPlaceEvent e) {
+  public void onPlaceProtectedBlock(final BlockPlaceEvent e) {
 
-    if(e.getBlockPlaced().getState() instanceof final Hopper hopper) {
+    if(e.getBlockPlaced().getState(false) instanceof final Hopper hopper) {
       hopper.getPersistentDataContainer().set(hopperKey, HopperPersistentDataType.INSTANCE, new HopperPersistentData(e.getPlayer().getUniqueId()));
       hopper.setBlockData(e.getBlockPlaced().getBlockData());
       hopper.update();
+    }
+
+    if(e.getBlockPlaced().getState(false) instanceof final Dropper dropper) {
+      dropper.getPersistentDataContainer().set(dropperKey, HopperPersistentDataType.INSTANCE, new HopperPersistentData(e.getPlayer().getUniqueId()));
+      dropper.setBlockData(e.getBlockPlaced().getBlockData());
+      dropper.update();
     }
   }
 

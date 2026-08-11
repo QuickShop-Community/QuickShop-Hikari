@@ -58,10 +58,14 @@ import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 public final class Main extends CompatibilityModule implements Listener {
@@ -75,6 +79,8 @@ public final class Main extends CompatibilityModule implements Listener {
   private TownyMaterialPriceLimiter priceLimiter;
   @Getter
   private UuidConversion uuidConversion;
+
+  private static Main instance;
 
   private boolean isWorldIgnored(final World world) {
 
@@ -125,6 +131,8 @@ public final class Main extends CompatibilityModule implements Listener {
 
   @Override
   public void init() {
+
+    instance = this;
 
     performConfigurationUpgrade();
     api = QuickShopAPI.getInstance();
@@ -192,37 +200,55 @@ public final class Main extends CompatibilityModule implements Listener {
   @EventHandler
   public void onTownLeave(final TownLeaveEvent event) {
 
-    if(isWorldIgnored(event.getTown().getWorld())) {
+    final Town town = event.getTown();
+    if(town == null) {
+      return;
+    }
+    if(isWorldIgnored(town.getWorld())) {
       return;
     }
     if(!getConfig().getBoolean("delete-shop-on-resident-leave", false)) {
       return;
     }
-    Util.mainThreadRun(()->purgeShops(event.getTown().getTownBlocks(), event.getResident().getUUID(), null, "Resident left town", false));
+    final UUID residentUUID = event.getResident().getUUID();
+    final Collection<TownBlock> townBlocks = new HashSet<>(town.getTownBlocks());
+    Util.mainThreadRun(()->purgeShops(townBlocks, residentUUID, null, "Resident left town", false));
   }
 
   @EventHandler
   public void onTownKick(final TownKickEvent event) {
 
-    if(isWorldIgnored(event.getTown().getWorld())) {
+    final Town town = event.getTown();
+    if(town == null) {
+      return;
+    }
+    if(isWorldIgnored(town.getWorld())) {
       return;
     }
     if(!getConfig().getBoolean("delete-shop-on-resident-leave", false)) {
       return;
     }
-    Util.mainThreadRun(()->purgeShops(event.getTown().getTownBlocks(), event.getKickedResident().getUUID(), null, "Town kicked a resident", false));
+    final UUID kickedResidentUUID = event.getKickedResident().getUUID();
+    final Collection<TownBlock> townBlocks = new HashSet<>(town.getTownBlocks());
+    Util.mainThreadRun(()->purgeShops(townBlocks, kickedResidentUUID, null, "Town kicked a resident", false));
   }
 
   @EventHandler
   public void onPlayerLeave(final TownRemoveResidentEvent event) {
 
-    if(isWorldIgnored(event.getTown().getWorld())) {
+    final Town town = event.getTown();
+    if(town == null) {
+      return;
+    }
+    if(isWorldIgnored(town.getWorld())) {
       return;
     }
     if(!getConfig().getBoolean("delete-shop-on-resident-leave", false)) {
       return;
     }
-    Util.mainThreadRun(()->purgeShops(event.getTown().getTownBlocks(), event.getResident().getUUID(), null, "Town removed a resident", false));
+    final UUID residentUUID = event.getResident().getUUID();
+    final Collection<TownBlock> townBlocks = new HashSet<>(town.getTownBlocks());
+    Util.mainThreadRun(()->purgeShops(townBlocks, residentUUID, null, "Town removed a resident", false));
   }
 
   public void purgeShops(@NotNull final Collection<TownBlock> worldCoords, @Nullable final UUID owner, @Nullable final UUID deleter, @NotNull final String reason) {
@@ -232,60 +258,97 @@ public final class Main extends CompatibilityModule implements Listener {
 
   public void purgeShops(@NotNull final Collection<TownBlock> worldCoords, @Nullable final UUID owner, @Nullable final UUID deleter, @NotNull final String reason, final boolean overrideOwner) {
 
+    final Set<WorldCoord> targetCoords = new HashSet<>(worldCoords.size());
     for(final TownBlock townBlock : worldCoords) {
-      purgeShops(townBlock.getWorldCoord(), owner, deleter, reason, overrideOwner);
+      targetCoords.add(townBlock.getWorldCoord());
     }
+    purgeShops(targetCoords, owner, deleter, reason, overrideOwner);
   }
 
   public void purgeShops(@NotNull final WorldCoord worldCoord, @Nullable final UUID owner, @Nullable final UUID deleter, @NotNull final String reason, final boolean overrideOwner) {
-    //Getting all shop with world-chunk-shop mapping
-    for(final Shop shop : api.getShopManager().getAllShops()) {
-      if(!Objects.equals(shop.getLocation().getWorld(), worldCoord.getBukkitWorld())) {
-        continue;
-      }
-      if(WorldCoord.parseWorldCoord(shop.getLocation()).equals(worldCoord)) {
-        if(overrideOwner || owner != null && owner.equals(shop.getOwner().getUniqueId())) {
-          recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "Towny", false), shop, reason);
-          getApi().getShopManager().deleteShop(shop);
+    purgeShops(Set.of(worldCoord), owner, deleter, reason, overrideOwner);
+  }
+
+  private void purgeShops(@NotNull final Set<WorldCoord> worldCoords, @Nullable final UUID owner, @Nullable final UUID deleter, @NotNull final String reason, final boolean overrideOwner) {
+
+    if(worldCoords.isEmpty()) {
+      return;
+    }
+
+    Util.asyncThreadRun(()->{
+      final QUser actor = QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "Towny", false);
+      //Getting all shop with world-chunk-shop mapping
+      final List<Shop> shops = new ArrayList<>();
+      if(WorldCoord.getCellSize() != 16) {
+
+        for(final Shop shop : api.getShopManager().getAllShops()) {
+          if(!worldCoords.contains(WorldCoord.parseWorldCoord(shop.bukkitLocation()))) {
+            continue;
+          }
+          shops.add(shop);
+        }
+      } else {
+        // the size of a worldcoord is the same size as a chunk, we can use a faster way to retrieve all shops
+        for(final WorldCoord worldCoord : worldCoords) {
+          final Map<Location, Shop> shopsInChunk = api.getShopManager().getShops(worldCoord.getWorldName(), worldCoord.getX(), worldCoord.getZ());
+          if(!shopsInChunk.isEmpty()) {
+            shops.addAll(shopsInChunk.values());
+          }
         }
       }
-    }
+
+      for(final Shop shop : shops) {
+        if(overrideOwner || owner != null && owner.equals(shop.getOwner().getUniqueId())) {
+          Util.regionThread(shop.bukkitLocation(), ()->{
+            recordDeletion(actor, shop, reason);
+            getApi().getShopManager().deleteShop(shop);
+          });
+        }
+      }
+    });
   }
 
   @EventHandler
   public void onPlotClear(final PlotClearEvent event) {
 
-    if(isWorldIgnored(event.getTownBlock().getWorldCoord().getBukkitWorld())) {
+    final WorldCoord worldCoord = event.getTownBlock().getWorldCoord();
+    if(isWorldIgnored(worldCoord.getBukkitWorld())) {
       return;
     }
     if(!getConfig().getBoolean("delete-shop-on-plot-clear", false)) {
       return;
     }
-    Util.mainThreadRun(()->purgeShops(event.getTownBlock().getWorldCoord(), null, null, "Plot cleared", true));
+    Util.mainThreadRun(()->purgeShops(worldCoord, null, null, "Plot cleared", true));
   }
 
   @EventHandler
   public void onRuin(final TownRuinedEvent event) {
 
-    if(isWorldIgnored(event.getTown().getWorld())) {
+    final Town town = event.getTown();
+    if(town == null) {
+      return;
+    }
+    if(isWorldIgnored(town.getWorld())) {
       return;
     }
     if(!getConfig().getBoolean("delete-shop-on-town-ruin")) {
       return;
     }
-    Util.mainThreadRun(()->purgeShops(event.getTown().getTownBlocks(), null, null, "Town ruined", true));
+    final Collection<TownBlock> townBlocks = new HashSet<>(town.getTownBlocks());
+    Util.mainThreadRun(()->purgeShops(townBlocks, null, null, "Town ruined", true));
   }
 
   @EventHandler
   public void onPlotUnclaim(final TownUnclaimEvent event) {
 
-    if(isWorldIgnored(event.getWorldCoord().getBukkitWorld())) {
+    final WorldCoord worldCoord = event.getWorldCoord();
+    if(isWorldIgnored(worldCoord.getBukkitWorld())) {
       return;
     }
     if(!getConfig().getBoolean("delete-shop-on-plot-unclaimed")) {
       return;
     }
-    Util.mainThreadRun(()->purgeShops(event.getWorldCoord(), null, null, "Town Unclaimed", true));
+    Util.mainThreadRun(()->purgeShops(worldCoord, null, null, "Town Unclaimed", true));
   }
 
   @EventHandler(ignoreCancelled = true)
@@ -308,11 +371,11 @@ public final class Main extends CompatibilityModule implements Listener {
   @EventHandler(ignoreCancelled = true)
   public void onTrading(final ShopPurchaseEvent event) {
 
-    if(isWorldIgnored(event.getShop().getLocation().getWorld())) {
+    if(isWorldIgnored(event.getShop().bukkitLocation().getWorld())) {
       return;
     }
     event.getPurchaser().getBukkitPlayer().ifPresent(player->{
-      final Optional<Component> component = checkFlags(player, event.getShop().getLocation(), this.tradeFlags);
+      final Optional<Component> component = checkFlags(player, event.getShop().bukkitLocation(), this.tradeFlags);
       component.ifPresent(value->event.setCancelled(true, value));
     });
   }
@@ -350,7 +413,7 @@ public final class Main extends CompatibilityModule implements Listener {
       return;
     }
 
-    final Location shopLoc = event.shop().get().getLocation();
+    final Location shopLoc = event.shop().get().bukkitLocation();
     if(isWorldIgnored(shopLoc.getWorld())) {
       return;
     }
@@ -466,7 +529,7 @@ public final class Main extends CompatibilityModule implements Listener {
       return;
     }
     // Modify tax account to town account if they aren't town shop or nation shop but inside town or nation
-    final Town town = TownyAPI.getInstance().getTown(shop.getLocation());
+    final Town town = TownyAPI.getInstance().getTown(shop.bukkitLocation());
     if(town != null) {
       UUID uuid = QuickShop.getInstance().getPlayerFinder().name2Uuid(town.getAccount().getName());
       if(uuid == null) {
@@ -494,5 +557,9 @@ public final class Main extends CompatibilityModule implements Listener {
     }
 
     return false;
+  }
+
+  public static Main getInstance() {
+    return instance;
   }
 }

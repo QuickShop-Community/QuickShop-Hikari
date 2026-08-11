@@ -10,12 +10,12 @@ import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.ReflectFactory;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
-import com.vdurmont.semver4j.Semver;
 import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -75,6 +75,29 @@ public final class EnvironmentChecker {
     }
     if(plugin.getGameVersion() == GameVersion.UNKNOWN) {
       return new ResultContainer(CheckResult.WARNING, "QuickShop may not fully support version " + ReflectFactory.getNMSVersion() + "/" + plugin.platform().getMinecraftVersion() + ", Some features may not work.");
+    }
+    return new ResultContainer(CheckResult.PASSED, CHECK_PASSED_RETURNS);
+  }
+
+  @EnvCheckEntry(name = "Disable Item Move", priority = Integer.MAX_VALUE, stage = EnvCheckEntry.Stage.ON_ENABLE)
+  public ResultContainer disableItemMoveTest() {
+
+    final File configFile = new File(Bukkit.getWorldContainer(), "config/paper-world-defaults.yml");
+
+    if (configFile.exists()) {
+
+      final YamlConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+      if (config.getBoolean("hopper.disable-move-event", false)) {
+
+        plugin.logger().warn("============================================================");
+        plugin.logger().warn("WARNING: Unsafe Paper configuration detected!");
+        plugin.logger().warn("'hopper.disable-move-event' is ENABLED.");
+        plugin.logger().warn("Chest shops CANNOT prevent hopper theft with this setting.");
+        plugin.logger().warn("Set 'hopper.disable-move-event: false' in");
+        plugin.logger().warn("config/paper-world-defaults.yml to restore protection.");
+        plugin.logger().warn("============================================================");
+        return new ResultContainer(CheckResult.WARNING, "You've disabled item move, your chest shops may be at risk of theft.");
+      }
     }
     return new ResultContainer(CheckResult.PASSED, CHECK_PASSED_RETURNS);
   }
@@ -201,65 +224,6 @@ public final class EnvironmentChecker {
     return new ResultContainer(CheckResult.PASSED, CHECK_PASSED_RETURNS);
   }
 
-  @EnvCheckEntry(name = "EcoEnchants V11 Check", priority = 12, stage = EnvCheckEntry.Stage.ON_ENABLE)
-  public ResultContainer ecoEnchantsNewerVersionWarning() {
-
-    final Plugin eePluginInstance = Bukkit.getPluginManager().getPlugin("EcoEnchants");
-    if(eePluginInstance != null) {
-      final Semver semver = new Semver(eePluginInstance.getDescription().getVersion());
-      if(semver.getMajor() == 12 && semver.getMinor() <= 2 && semver.getPatch() < 1) {
-        plugin.logger().warn("=================================================");
-        plugin.logger().warn("WARNING: Risk of irreversible data corruption! Plugin startup is paused!");
-        plugin.logger().warn("Your installation of EcoEnchants (version >= 11.0.0) has been detected.");
-        plugin.logger().warn("Its plugin's enchantment loading logic was changed on v11 update, but due to EcoEnchants registering their enchantments with Bukkit too late, this would cause ItemStack to permanently lose all EcoEnchants enchantments during deserialization.");
-        plugin.logger().warn("For this reason, once any update to QuickShop's store occurs, it will permanently affect the information saved in the database and cause irreversible, permanent damage to items and stores.");
-        plugin.logger().warn("Unfortunately, EcoEnchants did not patch this issue until we released this version (see the link below), so to avoid widespread data corruption, we had to abort your server loading process.");
-        plugin.logger().warn("https://discordapp.com/channels/452518336627081236/1183846962194300958");
-        plugin.logger().warn("This doesn't just affect QuickShop, but also plugins like the one that loads ItemStack data during startup.");
-        plugin.logger().warn("There is nothing we can do about this issue - until EcoEnchants fixes it.");
-        plugin.logger().warn("If the issue has been fixed, or you are willing to take the risk, add this startup parameter to disable this check:");
-        plugin.logger().warn("-Dcom.ghostchu.quickshop.util.envcheck.EnvironmentChecker.skip.ECOENCHANTS_V11_CHECK=true");
-        plugin.logger().warn("=================================================");
-        plugin.logger().error("Server startup has been terminated.");
-        try {
-          Thread.sleep(Integer.MAX_VALUE);
-        } catch(final InterruptedException e) {
-          return new ResultContainer(CheckResult.DISABLE_PLUGIN, "WARNING: Risk of irreversible data corruption! Plugin startup is paused!");
-        }
-        return new ResultContainer(CheckResult.DISABLE_PLUGIN, "WARNING: Risk of irreversible data corruption! Plugin startup is paused!");
-      }
-
-    }
-    return new ResultContainer(CheckResult.PASSED, CHECK_PASSED_RETURNS);
-  }
-
-//    @EnvCheckEntry(name = "Legal Compliance Check", priority = 12, stage = EnvCheckEntry.Stage.ON_ENABLE)
-//    public ResultContainer neteaseRegionTest() {
-//        HttpResponse<String> resp = Unirest.get("https://cloudflare.com/cdn-cgi/trace")
-//                .connectTimeout(1000 * 10)
-//                .socketTimeout(1000 * 10)
-//                .asString();
-//        if (!resp.isSuccess()) {
-//            return new ResultContainer(CheckResult.PASSED, "Failed to check NetEase region.");
-//        }
-//        String cloudflareResponse = resp.getBody();
-//        String[] exploded = cloudflareResponse.split("\n");
-//        for (String s : exploded) {
-//            if (s.startsWith("loc=")) {
-//                String[] kv = s.split("=");
-//                if (kv.length != 2) {
-//                    continue;
-//                }
-//                String key = kv[0];
-//                String value = kv[1];
-//                if (key.equalsIgnoreCase("loc") && value.equalsIgnoreCase("CN")) {
-//                    return new ResultContainer(CheckResult.DISABLE_PLUGIN, "自 Hikari-4.1.0.3 开始，由于潜在的法律法规风险，我们暂时停止向处于中国大陆的服务器提供服务，有关更多信息，请参考：https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/about/netease");
-//                }
-//            }
-//        }
-//        return new ResultContainer(CheckResult.PASSED, CHECK_PASSED_RETURNS);
-//    }
-
   public ResultReport run(final EnvCheckEntry.Stage stage) {
 
     sortTests();
@@ -383,7 +347,7 @@ public final class EnvironmentChecker {
     if(AbstractDisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
       return new ResultContainer(CheckResult.PASSED, "The setting shop.display-type is not virtual item.");
     }
-    if(plugin.getVirtualDisplayItemManager() == null) {
+    if(plugin.getDisplayManager() == null) {
       AbstractDisplayItem.setVirtualDisplayDoesntWork(true);
       return new ResultContainer(CheckResult.WARNING, "VirtualDisplayItemManager is null, this shouldn't happen, contact with QuickShop-Hikari developer.");
     }
@@ -416,5 +380,21 @@ public final class EnvironmentChecker {
       return new ResultContainer(CheckResult.WARNING, "Incorrect locate: " + stringClassLoader);
     }
     return new ResultContainer(CheckResult.PASSED, stringClassLoader);
+  }
+
+  @EnvCheckEntry(name = "Deprecated Item Matcher Check", priority = 8, stage = EnvCheckEntry.Stage.AFTER_ON_ENABLE)
+  public ResultContainer matchTypeCheck() {
+
+    if(plugin.getConfig().getInt("matcher.work-type", 1) == 0) {
+      plugin.logger().warn("================================================================================");
+      plugin.logger().warn("DEPRECATION WARNING");
+      plugin.logger().warn("The configured Matcher Type is deprecated and is no longer supported.");
+      plugin.logger().warn("It is not expected to work correctly and may cause incorrect item matching.");
+      plugin.logger().warn("Please update your configuration to use the replacement matcher(requires 1.21.4+):");
+      plugin.logger().warn("  config.work-type: 3");
+      plugin.logger().warn("================================================================================");
+      return new ResultContainer(CheckResult.WARNING, "Deprecated work-type: 0");
+    }
+    return new ResultContainer(CheckResult.PASSED, "Work type is valid.");
   }
 }

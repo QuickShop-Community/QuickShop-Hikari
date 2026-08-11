@@ -1,0 +1,49 @@
+package com.ghostchu.quickshop.shop.layout.line;
+
+/*
+ * QuickShop-Hikari
+ * Copyright (C) 2026 Daniel "creatorfromhell" Vidmar
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+import com.ghostchu.quickshop.shop.layout.inline.LevelRenderComponent;
+import org.jetbrains.annotations.NotNull;
+
+/**
+ * LevelLineRenderComponent
+ *
+ * @author creatorfromhell
+ * @since 6.3.0.0
+ */
+public class LevelLineRenderComponent extends LevelRenderComponent {
+
+  @Override
+  public String placeholder() {
+
+    return "level";
+  }
+
+  @Override
+  public boolean fullLine() {
+
+    return true;
+  }
+
+  @Override
+  public boolean appliesTo(final @NotNull String line) {
+
+    return line.contains(placeholder()) && !line.contains("item_level");
+  }
+}

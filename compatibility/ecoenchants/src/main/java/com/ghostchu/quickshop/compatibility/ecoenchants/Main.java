@@ -6,7 +6,6 @@ import com.ghostchu.quickshop.api.event.display.ItemPreviewComponentPrePopulateE
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.willfp.eco.core.display.DisplayProperties;
-import com.willfp.ecoenchants.EcoEnchantsPlugin;
 import com.willfp.ecoenchants.display.EnchantDisplay;
 import com.willfp.ecoenchants.enchant.EcoEnchant;
 import com.willfp.ecoenchants.enchant.EcoEnchants;
@@ -24,7 +23,7 @@ public final class Main extends CompatibilityModule implements Listener {
   @Override
   public void init() {
     // There no init stuffs need to do
-    this.display = new EnchantDisplay(EcoEnchantsPlugin.getPlugin(EcoEnchantsPlugin.class));
+    this.display = EnchantDisplay.INSTANCE;
     initEcoEnchantEnchantmentTranslationKeys();
   }
 

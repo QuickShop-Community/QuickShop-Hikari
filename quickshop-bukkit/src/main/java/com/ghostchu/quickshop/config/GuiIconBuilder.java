@@ -54,10 +54,10 @@ public class GuiIconBuilder {
     if(name != null && !name.isEmpty()) {
       if(name.equals(" ")) {
         // Empty name (single space = blank display name)
-        stack = stack.display(Component.empty());
+        stack = stack.customName(Component.empty());
       } else {
         // Direct inline MiniMessage text (e.g., "<bold><green>Buy Items</green></bold>")
-        stack = stack.display(parseMiniMessage(name));
+        stack = stack.customName(parseMiniMessage(name));
       }
     }
 
@@ -123,7 +123,7 @@ public class GuiIconBuilder {
 
     final AbstractItemStack<?> stack = QuickShop.getInstance().stack()
             .of(config.getMaterial(), config.getAmount())
-            .display(name)
+            .customName(name)
             .lore(lore);
 
     return new IconBuilder(stack).withSlot(slot);
@@ -145,7 +145,7 @@ public class GuiIconBuilder {
 
     final AbstractItemStack<?> stack = QuickShop.getInstance().stack()
             .of(config.getMaterial(), config.getAmount())
-            .display(name);
+            .customName(name);
 
     return new IconBuilder(stack).withSlot(slot);
   }
@@ -166,7 +166,7 @@ public class GuiIconBuilder {
     final String name = config.getName();
     if(name != null) {
       if(name.equals(" ") || name.isEmpty()) {
-        stack = stack.display(Component.empty());
+        stack = stack.customName(Component.empty());
       }
     }
 

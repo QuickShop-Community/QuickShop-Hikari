@@ -24,6 +24,23 @@ import java.util.concurrent.CompletableFuture;
  */
 public interface CommandHandler<T extends CommandSender> {
 
+
+
+  default Shop findShop(final T sender, final CommandParser parser, final int idIndex) {
+
+    final Shop shop = getLookingShop(sender);
+    if(parser.getArgs().size() >= (idIndex + 1)) {
+
+      try {
+
+        final long shopID = Long.parseLong(parser.getArgs().get(idIndex));
+        return QuickShopAPI.getInstance().getShopManager().getShop(shopID);
+      } catch(final Exception ignore) { }
+    }
+
+    return shop;
+  }
+
   /**
    * Getting the player now looking shop
    *

@@ -50,9 +50,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_DATA_RECORDS;
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_RECORDS;
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_SUMMARY;
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.SHOPS_DATA;
+import static com.ghostchu.quickshop.menu.ShopHistoryMenu.SHOPS_HEADERS;
 import static com.ghostchu.quickshop.menu.shared.QuickShopPage.get;
 import static com.ghostchu.quickshop.menu.shared.QuickShopPage.getConfigDisplay;
 import static com.ghostchu.quickshop.menu.shared.QuickShopPage.getConfigLore;
@@ -97,14 +99,17 @@ public class MainPage {
     if(viewer.isPresent()) {
 
       final Optional<Object> shopsData = viewer.get().findData(SHOPS_DATA);
+      final Optional<Object> shopsHeaders = viewer.get().findData(SHOPS_HEADERS);
       final Optional<Object> historyData = viewer.get().findData(HISTORY_RECORDS);
+      final Map<Long, DataRecord> dataRecords = (Map<Long, DataRecord>) viewer.get().findData(HISTORY_DATA_RECORDS).orElse(Map.of());
       final Optional<Object> summaryData = viewer.get().findData(HISTORY_SUMMARY);
       final Player player = Bukkit.getPlayer(viewer.get().uuid());
-      if(shopsData.isPresent() && historyData.isPresent() && summaryData.isPresent() && player != null) {
+      if(shopsData.isPresent() && shopsHeaders.isPresent() && historyData.isPresent() && summaryData.isPresent() && player != null) {
 
         final ProxiedLocale locale = QuickShop.getInstance().getTextManager().findRelativeLanguages(player);
 
         callback.getPage().getIcons().clear();
+        callback.getPage().setLockEmptySlots(true);
         final UUID id = viewer.get().uuid();
 
         // Load GUI configuration
@@ -127,6 +132,7 @@ public class MainPage {
         final int start = ((page - 1) * offset);
 
         final List<Shop> shops = (ArrayList<Shop>)shopsData.get();
+        final Map<Long, Component> headers = (Map<Long, Component>)shopsHeaders.get();
         final List<ShopHistory.ShopHistoryRecord> queryResult = (List<ShopHistory.ShopHistoryRecord>)historyData.get();
         final ShopHistory.ShopSummary summary = (ShopHistory.ShopSummary)summaryData.get();
 
@@ -145,14 +151,14 @@ public class MainPage {
 
         //header icon
         final Shop shop = shops.getFirst();
-        final String world = (shop.getLocation().getWorld() != null)? shop.getLocation().getWorld().getName() : "World";
+        final String world = (shop.bukkitLocation().getWorld() != null)? shop.bukkitLocation().getWorld().getName() : "World";
 
         final Component shopName;
         if(shop.getShopName() != null) {
 
           shopName = QuickShop.getInstance().text().of("history.shop.header-icon-shop-name", shop.getShopName()).forLocale();
         } else {
-          shopName = QuickShop.getInstance().text().of("history.shop.header-icon-shop-empty-name", world, shop.getLocation().getBlockX(), shop.getLocation().getBlockY(), shop.getLocation().getBlockZ()).forLocale();
+          shopName = QuickShop.getInstance().text().of("history.shop.header-icon-shop-empty-name", world, shop.bukkitLocation().getBlockX(), shop.bukkitLocation().getBlockY(), shop.bukkitLocation().getBlockZ()).forLocale();
         }
 
         final Component shopType = QuickShop.getInstance().text().of(shop.shopType().translationKey()).forLocale();
@@ -170,19 +176,19 @@ public class MainPage {
           if(owner.isRealPlayer() && owner.getUniqueId() != null) {
 
             ownerProfile = new SkullProfile();
-            ownerProfile.setUuid(owner.getUniqueId());
+            ownerProfile.uuid(owner.getUniqueId());
           }
 
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(shopInfoMaterial, 1)
-                                                             .display(shopName)
+                                                             .customName(shopName)
                                                              .lore(getConfigLore(id, shopInfoConfig,
                                                                                  shopType,
                                                                                  shop.getOwner().getDisplay(),
                                                                                  Util.getItemStackName(shop.getItem()),
-                                                                                 shop.getPrice(), shop.getShopStackingAmount(),
-                                                                                 shop.getLocation().getWorld().getName() + " " + shop.getLocation().getBlockX()
-                                                                                 + ", " + shop.getLocation().getBlockY() + ", "
-                                                                                 + shop.getLocation().getBlockZ()))
+                                                                                 shop.price(), shop.getShopStackingAmount(),
+                                                                                 shop.bukkitLocation().getWorld().getName() + " " + shop.bukkitLocation().getBlockX()
+                                                                                 + ", " + shop.bukkitLocation().getBlockY() + ", "
+                                                                                 + shop.bukkitLocation().getBlockZ()))
                                                              .profile(ownerProfile))
                                              .withActions(new SwitchPageAction(returnMenu, returnPage))
                                              .withSlot(shopInfoSlot)
@@ -190,7 +196,7 @@ public class MainPage {
         } else {
 
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(multiShopMaterial, 1)
-                                                             .display(getConfigDisplay(id, multiShopConfig, "<yellow>Multiple Shops ({0})</yellow>", shops.size())))
+                                                             .customName(getConfigDisplay(id, multiShopConfig, "<yellow>Multiple Shops ({0})</yellow>", shops.size())))
                                              .withSlot(multiShopSlot)
                                              .build());
         }
@@ -200,7 +206,7 @@ public class MainPage {
         final int summarySlot = (summaryConfig != null)? summaryConfig.getSlot() : 0;
 
         callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(summaryMaterial, 1)
-                                                           .display(getConfigDisplay(id, summaryConfig, "<yellow>Summary</yellow>"))
+                                                           .customName(getConfigDisplay(id, summaryConfig, "<yellow>Summary</yellow>"))
                                                            .lore(getConfigLore(id, summaryConfig, locale.getNumberFormat().format(summary.totalPurchases()),
                                                                                locale.getNumberFormat().format(summary.uniquePurchasers()),
                                                                                hours(id, 24), locale.getNumberFormat().format(summary.recentPurchases24h()),
@@ -228,7 +234,7 @@ public class MainPage {
         }
 
         callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(topCustomersMaterial, 1)
-                                                           .display(getConfigDisplay(id, topCustomersConfig, "<aqua>Top Customers ({0})</aqua>", summary.valuableCustomers().size()))
+                                                           .customName(getConfigDisplay(id, topCustomersConfig, "<aqua>Top Customers ({0})</aqua>", summary.valuableCustomers().size()))
                                                            .lore(valuableDescription)).withSlot(topCustomersSlot).build());
 
         // Pagination icons from config
@@ -240,14 +246,14 @@ public class MainPage {
         if(maxPages > 1) {
 
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(prevPageMaterial, 1)
-                                                             .display(getConfigDisplay(id, prevPageConfig, "<white><< Previous Page</white>"))
+                                                             .customName(getConfigDisplay(id, prevPageConfig, "<white><< Previous Page</white>"))
                                                              .lore(getConfigLore(id, prevPageConfig, page)))
                                              .withActions(new DataAction(staffPageID, prev), new SwitchPageAction(menuName, menuPage))
                                              .withSlot(prevPageSlot)
                                              .build());
 
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(nextPageMaterial, 1)
-                                                             .display(getConfigDisplay(id, nextPageConfig, "<white>Next Page >></white>"))
+                                                             .customName(getConfigDisplay(id, nextPageConfig, "<white>Next Page >></white>"))
                                                              .lore(getConfigLore(id, nextPageConfig, page)))
                                              .withActions(new DataAction(staffPageID, next), new SwitchPageAction(menuName, menuPage))
                                              .withSlot(nextPageSlot)
@@ -257,7 +263,7 @@ public class MainPage {
         int i = 0;
         for(final ShopHistory.ShopHistoryRecord record : queryResult) {
           final String userName = QUserImpl.createSync(QuickShop.getInstance().getPlayerFinder(), record.buyer()).getDisplay();
-          final DataRecord dataRecord = QuickShop.getInstance().getDatabaseHelper().getDataRecord(record.dataId()).join();
+          final DataRecord dataRecord = dataRecords.get(record.dataId());
 
           if(i < start) {
 
@@ -289,7 +295,7 @@ public class MainPage {
               }
             }
           }
-          final String type = historyItem.getType().getKey().getKey();
+          //final String type = historyItem.getType().getKey().getKey();
           final Component itemName = Util.getItemStackName(historyItem);
           final int max = historyItem.getMaxStackSize();
 
@@ -306,14 +312,14 @@ public class MainPage {
             if(offline.isPresent() && offline.get().hasPlayedBefore()) {
 
               final SkullProfile profile = new SkullProfile();
-              profile.setUuid(record.buyer());
+              profile.uuid(record.buyer());
               stack = stack.profile(profile);
             }
           } else {
-            stack = stack.of(type, Math.min(max, record.amount()));
+            stack = QuickShop.getInstance().stack(historyItem);
           }
-          stack = stack.display(getConfigDisplay(id, entryConfig, "<yellow>{0}</yellow>", dateStr));
-          stack = stack.lore(getConfigLore(id, entryConfig, shopName, userName, itemName,
+          stack = stack.customName(getConfigDisplay(id, entryConfig, "<yellow>{0}</yellow>", dateStr));
+          stack = stack.lore(getConfigLore(id, entryConfig, headers.getOrDefault(record.shopId(), shopName), userName, itemName,
                                            record.amount(), record.money(), record.tax(),
                                            record.money() - record.tax()));
 

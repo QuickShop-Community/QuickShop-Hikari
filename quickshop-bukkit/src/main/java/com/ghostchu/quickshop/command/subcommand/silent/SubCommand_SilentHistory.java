@@ -2,11 +2,13 @@ package com.ghostchu.quickshop.command.subcommand.silent;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandParser;
+import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.shop.history.ShopHistory;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
+import net.kyori.adventure.text.Component;
 import net.tnemc.menu.core.compatibility.MenuPlayer;
 import net.tnemc.menu.core.manager.MenuManager;
 import net.tnemc.menu.core.viewer.MenuViewer;
@@ -14,11 +16,17 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 
+import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_DATA_RECORDS;
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_RECORDS;
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_SUMMARY;
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.SHOPS_DATA;
+import static com.ghostchu.quickshop.menu.ShopHistoryMenu.SHOPS_HEADERS;
 
 public class SubCommand_SilentHistory extends SubCommand_SilentBase {
 
@@ -46,6 +54,16 @@ public class SubCommand_SilentHistory extends SubCommand_SilentBase {
     Util.asyncThreadRun(()->{
       final ShopHistory shopHistory = new ShopHistory(QuickShop.getInstance(), shops);
 
+      final Map<Long, Component> shopHeader = HashMap.newHashMap(shops.size());
+      for (final Shop shopObject : shops) {
+
+        if (shopObject.getShopName() != null) {
+          shopHeader.put(shopObject.getShopId(), QuickShop.getInstance().text().of("history.shop.header-icon-shop-name", shopObject.getShopName()).forLocale());
+          continue;
+        }
+        shopHeader.put(shopObject.getShopId(), QuickShop.getInstance().text().of("history.shop.header-icon-shop-empty-name", shopObject.bukkitLocation().getWorld().getName(), shopObject.bukkitLocation().getBlockX(), shopObject.bukkitLocation().getBlockY(), shopObject.bukkitLocation().getBlockZ()).forLocale());
+      }
+
       try {
         final List<ShopHistory.ShopHistoryRecord> queryResult = shopHistory.query();
         final ShopHistory.ShopSummary summary = shopHistory.generateSummary().join();
@@ -55,8 +73,37 @@ public class SubCommand_SilentHistory extends SubCommand_SilentBase {
           return;
         }
 
+        final Map<Long, DataRecord> dataRecords = new ConcurrentHashMap<>();
+        final List<CompletableFuture<Void>> futures = new ArrayList<>();
+
+        for(final ShopHistory.ShopHistoryRecord record : queryResult) {
+          final long id = record.dataId();
+
+          futures.add(QuickShop.getInstance()
+                              .getDatabaseHelper()
+                              .getDataRecord(id)
+                              .thenAccept(data->{
+                                if(data != null) {
+
+                                  dataRecords.put(id, data);
+                                }
+                              })
+                              .exceptionally(ex->{
+
+                                QuickShop.getInstance().logger().warn(
+                                        "Failed to load DataRecord for id {}",
+                                        id,
+                                        ex);
+                                return null;
+                              }));
+        }
+
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+
         viewer.addData(SHOPS_DATA, shops);
+        viewer.addData(SHOPS_HEADERS, shopHeader);
         viewer.addData(HISTORY_RECORDS, queryResult);
+        viewer.addData(HISTORY_DATA_RECORDS, dataRecords);
         viewer.addData(HISTORY_SUMMARY, summary);
         Util.mainThreadRun(()->{
           MenuManager.instance().open("qs:history", 1, menuPlayer);

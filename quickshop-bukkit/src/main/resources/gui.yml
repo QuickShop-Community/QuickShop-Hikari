@@ -20,7 +20,7 @@
 # Common tags: <bold>, <italic>, <red>, <green>, <yellow>, <aqua>, <gradient:color1:color2>
 # If you wish to use a value from the language file for display names or lore, start your value with "lang:"
 
-version: 3
+version: 7
 
 # ===================
 # GLOBAL STYLE SETTINGS
@@ -90,6 +90,9 @@ trade:
     custom-model-data: 0
     slots: [37, 38, 39, 40, 41, 42]
     quantities: [1, 2, 4, 8, 16, 64]
+    close-after: true
+    display-buy: "lang:gui.trade.quantity-button.display-buy"
+    display-sell: "lang:gui.trade.quantity-button.display-sell"
     lore:
       - "lang:gui.trade.quantity-button.lore"
   
@@ -115,7 +118,22 @@ keeper:
   
   # Shop item preview - top center
   shop-item:
+    lore:
+      - "lang:gui.keeper.freeze-toggle.lore"
     slot: 4
+
+  display-toggle:
+
+    active:
+      material: GLOW_ITEM_FRAME
+      custom-model-data: 0
+    inactive:
+      material: ITEM_FRAME
+      custom-model-data: 0
+    name: "lang:gui.keeper.display-toggle.display"
+    lore:
+      - "lang:gui.keeper.display-toggle.lore"
+    slot: 18
   
   # Change price button - GOLD_NUGGET for "price"
   # {0} = current price
@@ -126,8 +144,21 @@ keeper:
       - "lang:gui.keeper.change-price.lore"
     custom-model-data: 0
     slot: 19
-  
-  # Mode toggle (buy/sell/frozen) - concrete for clean look
+
+  freeze-toggle:
+
+    freeze:
+      material: LIGHT_BLUE_CONCRETE
+      custom-model-data: 0
+    unfreeze:
+      material: RED_CONCRETE
+      custom-model-data: 0
+    name: "lang:gui.keeper.freeze-toggle.display"
+    lore:
+      - "lang:gui.keeper.freeze-toggle.lore"
+    slot: 20
+
+  # Mode toggle (buy/sell) - concrete for clean look
   # {0} = current mode, {1} = next mode
   mode-toggle:
     selling:
@@ -135,9 +166,6 @@ keeper:
       custom-model-data: 0
     buying:
       material: ORANGE_CONCRETE
-      custom-model-data: 0
-    frozen:
-      material: LIGHT_BLUE_CONCRETE
       custom-model-data: 0
     name: "lang:gui.keeper.mode-toggle.display"
     lore:
@@ -159,6 +187,7 @@ keeper:
       - "lang:gui.keeper.staff.lore"
     custom-model-data: 0
     slot: 23
+    disable: false
   
   # History button
   history:
@@ -339,6 +368,55 @@ browse:
   shop-item:
     lore:
       - "lang:gui.browse.shop-item.lore"
+
+  shop-list:
+    name: "lang:gui.browse.shop-list.display"
+    lore:
+      - "lang:gui.browse.shop-list.lore"
+    indicators:
+      great:
+        buy:
+          ratio: 1.15
+          color: "<green>"
+          label: "lang:gui.browse.shop-list.price-indicator.buying.great"
+        sell:
+          ratio: 0.85
+          color: "<green>"
+          label: "lang:gui.browse.shop-list.price-indicator.selling.great"
+      good:
+        buy:
+          ratio: 1.05
+          color: "<gold>"
+          label: "lang:gui.browse.shop-list.price-indicator.buying.good"
+        sell:
+          ratio: 0.95
+          color: "<gold>"
+          label: "lang:gui.browse.shop-list.price-indicator.selling.good"
+      bad:
+        buy:
+          ratio: 0.95
+          color: "<yellow>"
+          label: "lang:gui.browse.shop-list.price-indicator.buying.bad"
+        sell:
+          ratio: 1.05
+          color: "<yellow>"
+          label: "lang:gui.browse.shop-list.price-indicator.selling.bad"
+      worst:
+        buy:
+          ratio: 0.85
+          color: "<red>"
+          label: "lang:gui.browse.shop-list.price-indicator.buying.worst"
+        sell:
+          ratio: 1.15
+          color: "<red>"
+          label: "lang:gui.browse.shop-list.price-indicator.selling.worst"
+      average:
+        sell:
+          color: "<white>"
+          label: "lang:gui.browse.shop-list.price-indicator.average"
+        buy:
+          color: "<white>"
+          label: "lang:gui.browse.shop-list.price-indicator.average"
   
   # Search button - opens chat input for item search
   # {0} = current search query or "None"
@@ -349,6 +427,11 @@ browse:
       - "lang:gui.browse.search.lore"
     custom-model-data: 0
     slot: 0
+  #Same as above, but if the player is search for a specific item.
+  search-item:
+    name: "lang:gui.browse.search-item.display"
+    lore:
+      - "lang:gui.browse.search-item.lore"
   
   # Sort button - cycles through sort options
   # {0} = current sort mode

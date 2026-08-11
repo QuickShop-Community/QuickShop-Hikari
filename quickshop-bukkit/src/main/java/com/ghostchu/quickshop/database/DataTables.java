@@ -31,6 +31,7 @@ public enum DataTables {
     table.addColumn("name", "TEXT"); // SHOP NAME
 
     table.addColumn("type", "INT NOT NULL DEFAULT 0"); // SHOP TYPE (see ShopType enum)
+    table.addColumn("shop_state", "VARCHAR(64)"); // shop state
     table.addColumn("currency", "VARCHAR(64)");  // CURRENCY (NULL means use the default currency)
     table.addColumn("price", "DECIMAL(32,2) NOT NULL"); // SHOP ITEM PRICE
 
