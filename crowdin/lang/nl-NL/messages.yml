@@ -547,6 +547,7 @@ command:
     lookup: <yellow>Beheer tabel met opzoekbare items
     database: <yellow>View and maintain QuickShop database
     benefit: <yellow>Instellingen voor het verdelen van voordelen tussen winkeleigenaar en andere spelers
+    benefitall: <yellow>Settings of divide benefits between shop owner and other players for all shops you own.
     browse: <yellow>Blader door winkels die op deze server aanwezig zijn.
     tag: <yellow>Tags van een winkel toevoegen, verwijderen of opvragen
     suggestprice: <yellow>Stel een adviesprijs voor de winkel voor, op basis van andere winkels
