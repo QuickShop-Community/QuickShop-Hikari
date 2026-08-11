@@ -536,6 +536,7 @@ command:
     lookup: <yellow>Aranabilir öğeler tablosunu yönetme
     database: <yellow>View and maintain QuickShop database
     benefit: <yellow>Avantajları mağaza sahibi ve diğer oyuncular arasında bölme ayarları
+    benefitall: <yellow>Settings of divide benefits between shop owner and other players for all shops you own.
     browse: <yellow>Sunucudaki aktif marketlere göz at.
     tag: <yellow>Bir mağazanın etiketlerini ekleme, kaldırma veya sorgulama
     suggestprice: <yellow>Diğer mağazalara göre dükkan aramak için tavsiye edilen bir fiyat önerin
