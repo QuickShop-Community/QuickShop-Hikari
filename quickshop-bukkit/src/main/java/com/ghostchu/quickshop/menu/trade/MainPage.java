@@ -19,6 +19,7 @@ package com.ghostchu.quickshop.menu.trade;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.EconomyProvider;
+import com.ghostchu.quickshop.api.event.display.ItemPreviewComponentPrePopulateEvent;
 import com.ghostchu.quickshop.api.shop.Info;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopAction;
@@ -30,7 +31,8 @@ import com.ghostchu.quickshop.menu.shared.QuickShopPage;
 import com.ghostchu.quickshop.shop.SimpleInfo;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.util.Util;
-import net.tnemc.item.bukkit.BukkitItemStack;
+import net.kyori.adventure.text.Component;
+import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.providers.SkullProfile;
 import net.tnemc.menu.core.builder.IconBuilder;
 import net.tnemc.menu.core.callbacks.page.PageOpenCallback;
@@ -40,10 +42,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import static com.ghostchu.quickshop.menu.ShopKeeperMenu.SHOP_STOCK_ID;
 
 /**
  * MainPage
@@ -89,7 +92,6 @@ public class MainPage extends QuickShopPage {
         // Set up our borders from config (gray for modern look)
         final String borderMaterial = (borderConfig != null)? borderConfig.getMaterial() : "GRAY_STAINED_GLASS_PANE";
         final IconBuilder borderBuilder = new IconBuilder(QuickShop.getInstance().stack().of(borderMaterial, 1));
-
         // Get border rows from config or use defaults (rows 1, 4, 6 for modern 6-row layout)
         final List<Integer> borderRows = (borderConfig != null)? borderConfig.getRows() : List.of(1, 4, 6);
         for(final int row : borderRows) {
@@ -98,30 +100,46 @@ public class MainPage extends QuickShopPage {
 
         final ItemStack shopItem = shop.get().getItem();
         final int amount = shopItem.getAmount();
-        // Use cache to avoid Folia cross-region block access issues
-        final int stock = (shop.get().isBuying())? -1 : MarketUtils.getStockFromCache(shop.get());
-        final String stockString = (shop.get().isUnlimited())? "Unlimited" : stock + "";
-        final String priceFormatted = eco.format(BigDecimal.valueOf(shop.get().getPrice()),
-                                                 shop.get().getLocation().getWorld().getName(),
-                                                 shop.get().getCurrency());
+
+        final int remainingStock = (int)viewer.get().dataOrDefault(SHOP_STOCK_ID, MarketUtils.getStockFromCache(shop.get()));
+        final QuickShop plugin = QuickShop.getInstance();
+        final String baseKey = (shop.get().isStackingShop())? shop.get().shopType().stackTradingTranslationKey()
+                                                            : shop.get().shopType().tradingTranslationKey();
+        final String finalKey = (shop.get().shopState().overrideShopTypeText())? shop.get().shopState().translationKey() : baseKey;
+
+        final Component stockComponent = switch (remainingStock) {
+
+          case -1 -> plugin.text().of(player, finalKey, plugin.text().of(player, "signs.unlimited").forLocale()).forLocale();
+
+          case 0 -> (shop.get().shopState().overrideShopTypeText())? plugin.text().of(player, shop.get().shopState().translationKey()).forLocale()
+                                                                   : plugin.text().of(player, shop.get().shopType().outOfStockTranslationKey()).forLocale();
+
+          default -> Component.text(remainingStock);
+        };
+        final String priceFormatted = shop.get().format(shop.get().bukkitLocation().getWorld().getName(), shop.get().getCurrency());
 
         // Shop item display slot from config (centered in row 2)
         final int shopItemSlot = (shopItemConfig != null)? shopItemConfig.getSlot() : 13;
-        open.getPage().addIcon(new IconBuilder(new BukkitItemStack().of(shopItem)).withSlot(shopItemSlot).build());
+
+        final ItemPreviewComponentPrePopulateEvent previewComponentPrePopulateEvent = new ItemPreviewComponentPrePopulateEvent(shopItem, player);
+        previewComponentPrePopulateEvent.callEvent();
+        final AbstractItemStack<ItemStack> shopItemStack = QuickShop.getInstance().stack(previewComponentPrePopulateEvent.getItemStack());
+
+        open.getPage().addIcon(new IconBuilder(shopItemStack).withSlot(shopItemSlot).build());
 
         // Info icons row (row 3) - Stock info
         final String infoStockMaterial = (infoStockConfig != null)? infoStockConfig.getMaterial() : "CHEST";
         final int infoStockSlot = (infoStockConfig != null)? infoStockConfig.getSlot() : 21;
         open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(infoStockMaterial, 1)
-                                                       .display(getConfigDisplay(id, infoStockConfig, "<yellow>Stock Information</yellow>"))
-                                                       .lore(getConfigLore(id, infoStockConfig, stockString)))
+                                                       .customName(getConfigDisplay(id, infoStockConfig, "<yellow>Stock Information</yellow>"))
+                                                       .lore(getConfigLore(id, infoStockConfig, stockComponent)))
                                        .withSlot(infoStockSlot).build());
 
         // Info icons row - Price info
         final String infoPriceMaterial = infoPriceConfig != null? infoPriceConfig.getMaterial() : "GOLD_INGOT";
         final int infoPriceSlot = infoPriceConfig != null? infoPriceConfig.getSlot() : 22;
         open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(infoPriceMaterial, 1)
-                                                       .display(getConfigDisplay(id, infoPriceConfig, "<gold>Price Information</gold>"))
+                                                       .customName(getConfigDisplay(id, infoPriceConfig, "<gold>Price Information</gold>"))
                                                        .lore(getConfigLore(id, infoPriceConfig, priceFormatted, amount)))
                                        .withSlot(infoPriceSlot).build());
 
@@ -131,11 +149,11 @@ public class MainPage extends QuickShopPage {
         SkullProfile sellerProfile = null;
         if(shop.get().getOwner().isRealPlayer()) {
           sellerProfile = new SkullProfile();
-          sellerProfile.setUuid(shop.get().getOwner().getUniqueId());
+          sellerProfile.uuid(shop.get().getOwner().getUniqueId());
         }
         final String ownerName = shop.get().getOwner().getDisplay();
         open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(infoSellerMaterial, 1)
-                                                       .display(getConfigDisplay(id, infoSellerConfig, "<aqua>Seller Information</aqua>"))
+                                                       .customName(getConfigDisplay(id, infoSellerConfig, "<aqua>Seller Information</aqua>"))
                                                        .lore(getConfigLore(id, infoSellerConfig, ownerName))
                                                        .profile(sellerProfile))
                                        .withSlot(infoSellerSlot).build());
@@ -146,8 +164,8 @@ public class MainPage extends QuickShopPage {
 
         final String enterPath = (shop.get().isSelling())? "trade.enter-buy" : "trade.enter-sell";
         open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(customAmountMaterial, 1)
-                                                       .display(getConfigDisplay(id, customAmountConfig, "<bold><blue>Custom Order</blue></bold>"))
-                                                       .lore(getConfigLore(id, customAmountConfig, amount, stockString)))
+                                                       .customName(getConfigDisplay(id, customAmountConfig, "<bold><blue>Custom Order</blue></bold>"))
+                                                       .lore(getConfigLore(id, customAmountConfig, amount, stockComponent)))
                                        .withActions(new GuiChatAction((message)->{
                                          if(!message.isEmpty()) {
                                            try {
@@ -157,21 +175,24 @@ public class MainPage extends QuickShopPage {
                                                return true;
                                              }
 
-                                             if(!shop.get().isUnlimited() && quantity > stock && stock > -1) {
-                                               player.sendMessage(guiMessage("trade.invalid-stock"));
-                                               return true;
-                                             }
-
                                              if((quantity % amount) > 0) {
                                                player.sendMessage(guiMessage("trade.invalid-multiple", amount));
                                                return true;
                                              }
+
+                                             final int normalizedQuantity = quantity / amount;
+
+                                             if(!shop.get().isUnlimited() && normalizedQuantity > remainingStock && remainingStock > -1) {
+                                               player.sendMessage(guiMessage("trade.invalid-stock"));
+                                               return true;
+                                             }
+
                                              if(shop.get().isBuying()) {
-                                               final Info info = new SimpleInfo(shop.get().getLocation(), ShopAction.PURCHASE_SELL, null, null, shop.get(), false);
-                                               Util.regionThread(shop.get().getLocation(), ()->QuickShop.getInstance().getShopManager().actionBuying(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity));
+                                               final Info info = new SimpleInfo(shop.get().bukkitLocation(), ShopAction.PURCHASE_SELL, null, null, shop.get(), false);
+                                               Util.regionThread(shop.get().bukkitLocation(), ()->QuickShop.getInstance().getShopManager().actionBuying(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), normalizedQuantity));
                                              } else {
-                                               final Info info = new SimpleInfo(shop.get().getLocation(), ShopAction.PURCHASE_BUY, null, null, shop.get(), false);
-                                               Util.regionThread(shop.get().getLocation(), ()->QuickShop.getInstance().getShopManager().actionSelling(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity));
+                                               final Info info = new SimpleInfo(shop.get().bukkitLocation(), ShopAction.PURCHASE_BUY, null, null, shop.get(), false);
+                                               Util.regionThread(shop.get().bukkitLocation(), ()->QuickShop.getInstance().getShopManager().actionSelling(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), normalizedQuantity));
                                              }
                                              return true;
                                            } catch(final NumberFormatException ignore) { }
@@ -196,28 +217,34 @@ public class MainPage extends QuickShopPage {
           final int quantity = configQuantities.get(i);
           final int slot = configSlots.get(i);
           final int adjustedAmount = (amount * quantity);
-          final String totalPrice = eco.format(BigDecimal.valueOf((quantity * shop.get().getPrice())),
-                                               shop.get().getLocation().getWorld().getName(),
-                                               shop.get().getCurrency());
-          final String displayText = (shop.get().isSelling())? "<green>Buy x" + adjustedAmount + "</green>" : "<gold>Sell x" + adjustedAmount + "</gold>";
+          final String totalPrice = shop.get().format(shop.get().bukkitLocation().getWorld().getName(),
+                                                      shop.get().getCurrency(), quantity);
+
+          final Component displayComponent = (shop.get().isSelling())? getConfigDisplay(id, quantityConfig, "display-buy", "<green>Buy x" + adjustedAmount + "</green>", adjustedAmount)
+                                                                     : getConfigDisplay(id, quantityConfig, "display-sell", "<gold>Sell x" + adjustedAmount + "</gold>", adjustedAmount);
+
+          final boolean closeAfter = quantityConfig.section() != null && quantityConfig.section().getBoolean("close-after", true);
+          final int page = (closeAfter)? -1 : 1;
 
           open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(quantityMaterial, Math.min(adjustedAmount, 64))
-                                                         .display(QuickShop.getInstance().platform().miniMessage().deserialize(displayText))
+                                                         .customName(displayComponent)
                                                          .lore(getConfigLore(id, quantityConfig, totalPrice)))
                                          .withActions(new RunnableAction((click->{
                                            if(shop.get().isBuying()) {
 
-                                             final Info info = new SimpleInfo(shop.get().getLocation(), ShopAction.PURCHASE_SELL, null, null, shop.get(), false);
-                                             Util.regionThread(shop.get().getLocation(), ()->QuickShop.getInstance().getShopManager().actionBuying(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity));
-                                             viewer.get().close(QuickShop.getInstance().createMenuPlayer(player));
+                                             final Info info = new SimpleInfo(shop.get().bukkitLocation(), ShopAction.PURCHASE_SELL, null, null, shop.get(), false);
+                                             Util.regionThread(shop.get().bukkitLocation(), ()->QuickShop.getInstance().getShopManager().actionBuying(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity));
                                            } else {
 
-                                             final Info info = new SimpleInfo(shop.get().getLocation(), ShopAction.PURCHASE_BUY, null, null, shop.get(), false);
-                                             Util.regionThread(shop.get().getLocation(), ()->QuickShop.getInstance().getShopManager().actionSelling(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity));
+                                             final Info info = new SimpleInfo(shop.get().bukkitLocation(), ShopAction.PURCHASE_BUY, null, null, shop.get(), false);
+                                             Util.regionThread(shop.get().bukkitLocation(), ()->QuickShop.getInstance().getShopManager().actionSelling(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity));
+                                           }
+
+                                           if (closeAfter) {
                                              viewer.get().close(QuickShop.getInstance().createMenuPlayer(player));
                                            }
                                          })))
-                                         .withActions(new PageSwitchWithCloseAction("qs:trade", -1))
+                                         .withActions(new PageSwitchWithCloseAction("qs:trade", page))
                                          .withSlot(slot).build());
         }
 
@@ -225,7 +252,7 @@ public class MainPage extends QuickShopPage {
         final String closeMaterial = closeConfig != null? closeConfig.getMaterial() : "BARRIER";
         final int closeSlot = closeConfig != null? closeConfig.getSlot() : 49;
         open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(closeMaterial, 1)
-                                                       .display(getConfigDisplay(id, closeConfig, "<red>Close</red>")))
+                                                       .customName(getConfigDisplay(id, closeConfig, "<red>Close</red>")))
                                        .withActions(new RunnableAction((click->viewer.get().close(QuickShop.getInstance().createMenuPlayer(player)))))
                                        .withSlot(closeSlot).build());
       }

@@ -7,9 +7,7 @@ import com.tcoded.folialib.wrapper.task.WrappedTask;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,15 +26,12 @@ public class UpdateWatcher implements Listener {
   public void init() {
 
     cronTask = QuickShop.folia().getScheduler().runTimerAsync(()->{
-      if(!plugin.getNexusManager().isLatest()) {
-        plugin.logger().info("A new version of QuickShop has been released! [{}]", plugin.getNexusManager().getLatestVersion());
+      if(!plugin.updateManager().isLatest()) {
+        plugin.logger().info("A new version of QuickShop has been released! [{}]", plugin.updateManager().getLatestVersion());
         plugin.logger().info("Update here: https://modrinth.com/plugin/quickshop-hikari");
         for(final Player player : Bukkit.getOnlinePlayers()) {
           if(plugin.perm().hasPermission(player, "quickshop.alerts")) {
-            MsgUtil.sendDirectMessage(player, ChatColor.GREEN + "---------------------------------------------------");
-            MsgUtil.sendDirectMessage(player, ChatColor.GREEN + LegacyComponentSerializer.legacySection().serialize(pickRandomMessage(player)));
-            MsgUtil.sendDirectMessage(player, Component.text("https://modrinth.com/plugin/quickshop-hikari").color(NamedTextColor.AQUA).clickEvent(ClickEvent.openUrl("https://modrinth.com/plugin/quickshop-hikari")));
-            MsgUtil.sendDirectMessage(player, ChatColor.GREEN + "---------------------------------------------------");
+            sendUpdateNotification(player);
           }
         }
       }
@@ -56,21 +51,26 @@ public class UpdateWatcher implements Listener {
     } else {
       notify = Component.text("New update {0} now available! Please update!");
     }
-    return MsgUtil.fillArgs(notify, Component.text(plugin.getNexusManager().getLatestVersion()), Component.text(plugin.getVersion()));
+    return MsgUtil.fillArgs(notify, Component.text(plugin.updateManager().getLatestVersion()), Component.text(plugin.getVersion()));
   }
 
   @EventHandler
   public void playerJoin(final PlayerJoinEvent e) {
 
     Util.asyncThreadRun(()->{
-      if(!plugin.perm().hasPermission(e.getPlayer(), "quickshop.alerts") || plugin.getNexusManager().isLatest()) {
+      if(!plugin.perm().hasPermission(e.getPlayer(), "quickshop.alerts") || plugin.updateManager().isLatest()) {
         return;
       }
-      MsgUtil.sendDirectMessage(e.getPlayer(), ChatColor.GREEN + "---------------------------------------------------");
-      MsgUtil.sendDirectMessage(e.getPlayer(), ChatColor.GREEN + LegacyComponentSerializer.legacySection().serialize(pickRandomMessage(e.getPlayer())));
-      MsgUtil.sendDirectMessage(e.getPlayer(), ChatColor.AQUA + " https://modrinth.com/plugin/quickshop-hikari");
-      MsgUtil.sendDirectMessage(e.getPlayer(), ChatColor.GREEN + "---------------------------------------------------");
+      sendUpdateNotification(e.getPlayer());
     });
+  }
+
+  private void sendUpdateNotification(final CommandSender sender) {
+
+    MsgUtil.sendDirectMessage(sender, Component.text("---------------------------------------------------", NamedTextColor.GREEN));
+    MsgUtil.sendDirectMessage(sender, pickRandomMessage(sender).color(NamedTextColor.GREEN));
+    MsgUtil.sendDirectMessage(sender, Component.text("https://modrinth.com/plugin/quickshop-hikari", NamedTextColor.AQUA).clickEvent(ClickEvent.openUrl("https://modrinth.com/plugin/quickshop-hikari")));
+    MsgUtil.sendDirectMessage(sender, Component.text("---------------------------------------------------", NamedTextColor.GREEN));
   }
 
   public void uninit() {

@@ -70,8 +70,10 @@ public class BasicProvider implements TaxProvider {
   public TaxRates calculateTax(final Shop shop, final QUser player) {
 
     final double interactorRate = (appliesTo.equalsIgnoreCase("player")
+                                   || appliesTo.equalsIgnoreCase("payee") && shop.isBuying()
                                    || appliesTo.equalsIgnoreCase("both"))? normalizeRate(shop, player) : 0.0;
     final double ownerRate = (appliesTo.equalsIgnoreCase("shop")
+                              || appliesTo.equalsIgnoreCase("payee") && shop.isSelling()
                               || appliesTo.equalsIgnoreCase("both"))? normalizeRate(shop, shop.getOwner()) : 0.0;
 
     return new TaxRates(interactorRate, ownerRate);
@@ -81,6 +83,10 @@ public class BasicProvider implements TaxProvider {
 
     if(QuickShop.getInstance().perm().hasPermission(user, "quickshop.tax")) {
       Log.debug("Disable the Tax for player " + user + " cause they have permission quickshop.tax");
+      return 0.0;
+    }
+
+    if(shop.isUnlimited() && QuickShop.getInstance().getConfig().getBoolean("shop-tax.disable-for-unlimited-shop", false)) {
       return 0.0;
     }
 

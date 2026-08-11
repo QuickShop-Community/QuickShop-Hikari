@@ -32,9 +32,13 @@ import net.tnemc.menu.core.viewer.MenuViewer;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
  * ControlPanelUI
@@ -76,10 +80,15 @@ public class ControlPanelUI implements InteractionBehavior {
     if(group.equalsIgnoreCase(BuiltInShopPermissionGroup.STAFF.getNamespacedNode())
        || group.equalsIgnoreCase(BuiltInShopPermissionGroup.ADMINISTRATOR.getNamespacedNode())) {
 
-      MenuManager.instance().addViewer(viewer);
 
-      final MenuPlayer menuPlayer = QuickShop.getInstance().createMenuPlayer(event.getPlayer());
-      MenuManager.instance().open("qs:keeper", 1, menuPlayer);
+      final CompletableFuture<Integer> remainingStockFuture = shop.shopType().remainingStockAsync(shop);
+      remainingStockFuture.thenAccept(remainingStock ->{
+        viewer.addData(ShopKeeperMenu.SHOP_STOCK_ID, remainingStock);
+        MenuManager.instance().addViewer(viewer);
+
+        final MenuPlayer menuPlayer = QuickShop.getInstance().createMenuPlayer(event.getPlayer());
+        MenuManager.instance().open("qs:keeper", 1, menuPlayer);
+      });
 
       event.setCancelled(true);
       event.setUseInteractedBlock(Event.Result.DENY);
@@ -98,12 +107,87 @@ public class ControlPanelUI implements InteractionBehavior {
       return;
     }
 
-    MenuManager.instance().addViewer(viewer);
 
-    final MenuPlayer menuPlayer = QuickShop.getInstance().createMenuPlayer(event.getPlayer());
-    MenuManager.instance().open("qs:trade", 1, menuPlayer);
+    final CompletableFuture<Integer> remainingStockFuture = shop.shopType().remainingStockAsync(shop);
+    remainingStockFuture.thenAccept(remainingStock ->{
+      viewer.addData(ShopKeeperMenu.SHOP_STOCK_ID, remainingStock);
+
+      MenuManager.instance().addViewer(viewer);
+
+      final MenuPlayer menuPlayer = QuickShop.getInstance().createMenuPlayer(event.getPlayer());
+      MenuManager.instance().open("qs:trade", 1, menuPlayer);
+    });
+
+
     event.setCancelled(true);
     event.setUseInteractedBlock(Event.Result.DENY);
     event.setUseItemInHand(Event.Result.DENY);
+  }
+
+  @Override
+  public void handle(final @NotNull QuickShopAPI plugin, final @Nullable Shop shop, final @NotNull Player player, final @NotNull PlayerInteractEntityEvent event, final @NotNull InteractionClick clickType, final @Nullable InteractionType interaction) {
+    if(shop == null) return;
+
+    //send control panel
+    handle(plugin, shop, player);
+
+    //cancel event stuff
+    event.setCancelled(true);
+  }
+
+  @Override
+  public void handle(final @NotNull QuickShopAPI plugin, final @Nullable Shop shop, final @NotNull Player player, final @NotNull EntityDamageByEntityEvent event, final @NotNull InteractionClick clickType, final @Nullable InteractionType interaction) {
+    if(shop == null) return;
+
+    //send control panel
+    handle(plugin, shop, player);
+
+    //cancel event stuff
+    event.setCancelled(true);
+  }
+
+  private void handle(final @NotNull QuickShopAPI plugin, @NotNull final Shop shop, final @NotNull Player player) {
+    final MenuViewer viewer = new MenuViewer(player.getUniqueId());
+    viewer.addData(ShopKeeperMenu.SHOP_DATA_ID, shop.getShopId());
+
+    final String group = shop.getPlayerGroup(player.getUniqueId());
+    if(group.equalsIgnoreCase(BuiltInShopPermissionGroup.STAFF.getNamespacedNode())
+       || group.equalsIgnoreCase(BuiltInShopPermissionGroup.ADMINISTRATOR.getNamespacedNode())) {
+
+
+      final CompletableFuture<Integer> remainingStockFuture = shop.shopType().remainingStockAsync(shop);
+      remainingStockFuture.thenAccept(remainingStock ->{
+
+        viewer.addData(ShopKeeperMenu.SHOP_STOCK_ID, remainingStock);
+
+        MenuManager.instance().addViewer(viewer);
+
+        final MenuPlayer menuPlayer = QuickShop.getInstance().createMenuPlayer(player);
+        MenuManager.instance().open("qs:keeper", 1, menuPlayer);
+      });
+      return;
+    }
+
+    Util.playClickSound(player);
+    shop.setSignText(((QuickShop)plugin).text().findRelativeLanguages(player));
+    if(shop.isFrozen()) {
+      ((QuickShop)plugin).text().of(player, "shop-cannot-trade-when-freezing").send();
+      return;
+    }
+
+    if(player.getInventory().getItemInMainHand().getType() == Material.GOLDEN_AXE) {
+      return;
+    }
+
+    final CompletableFuture<Integer> remainingStockFuture = shop.shopType().remainingStockAsync(shop);
+    remainingStockFuture.thenAccept(remainingStock ->{
+
+      viewer.addData(ShopKeeperMenu.SHOP_STOCK_ID, remainingStock);
+
+      MenuManager.instance().addViewer(viewer);
+
+      final MenuPlayer menuPlayer = QuickShop.getInstance().createMenuPlayer(player);
+      MenuManager.instance().open("qs:trade", 1, menuPlayer);
+    });
   }
 }

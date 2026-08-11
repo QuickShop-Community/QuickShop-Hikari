@@ -16,6 +16,7 @@ import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
 import com.ghostchu.quickshop.api.hook.Hook;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperRegistry;
+import com.ghostchu.quickshop.api.inventory.SkullProvider;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
 import com.ghostchu.quickshop.api.registry.BuiltInRegistry;
 import com.ghostchu.quickshop.api.registry.RegistryManager;
@@ -26,7 +27,9 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopControlPanelManager;
 import com.ghostchu.quickshop.api.shop.ShopItemBlackList;
 import com.ghostchu.quickshop.api.shop.ShopManager;
+import com.ghostchu.quickshop.api.shop.display.DisplayManager;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
+import com.ghostchu.quickshop.api.shop.tag.TagManager;
 import com.ghostchu.quickshop.command.QuickShopCommand;
 import com.ghostchu.quickshop.command.SimpleCommandManager;
 import com.ghostchu.quickshop.common.util.CommonUtil;
@@ -77,16 +80,16 @@ import com.ghostchu.quickshop.shop.SimpleShopPermissionManager;
 import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanel;
 import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanelManager;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
+import com.ghostchu.quickshop.shop.display.display.DisplayEntityItemManager;
 import com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItemManager;
 import com.ghostchu.quickshop.shop.interaction.QuickShopInteractionManager;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
 import com.ghostchu.quickshop.shop.sign.SignHooker;
+import com.ghostchu.quickshop.shop.tag.QuickShopTagManager;
 import com.ghostchu.quickshop.util.FastPlayerFinder;
 import com.ghostchu.quickshop.util.ItemMarker;
 import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.PermissionChecker;
-import com.ghostchu.quickshop.util.ReflectFactory;
 import com.ghostchu.quickshop.util.ShopUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.envcheck.CheckResult;
@@ -94,16 +97,18 @@ import com.ghostchu.quickshop.util.envcheck.EnvCheckEntry;
 import com.ghostchu.quickshop.util.envcheck.EnvironmentChecker;
 import com.ghostchu.quickshop.util.envcheck.ResultContainer;
 import com.ghostchu.quickshop.util.envcheck.ResultReport;
+import com.ghostchu.quickshop.util.holder.QuickShopPreviewGUIHolder;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.matcher.item.BukkitItemMatcherImpl;
+import com.ghostchu.quickshop.util.matcher.item.ModernCustomMatcher;
 import com.ghostchu.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
-import com.ghostchu.quickshop.util.matcher.item.TNEItemMatcherImpl;
 import com.ghostchu.quickshop.util.metric.MetricManager;
 import com.ghostchu.quickshop.util.paste.PasteManager;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.ghostchu.quickshop.util.privacy.PrivacyController;
 import com.ghostchu.quickshop.util.reporter.error.RollbarErrorReporter;
-import com.ghostchu.quickshop.util.updater.NexusManager;
+import com.ghostchu.quickshop.util.skin.PaperSkullProvider;
+import com.ghostchu.quickshop.util.updater.UpdateManager;
 import com.ghostchu.quickshop.watcher.CalendarWatcher;
 import com.ghostchu.quickshop.watcher.DisplayAutoDespawnWatcher;
 import com.ghostchu.quickshop.watcher.LogWatcher;
@@ -124,10 +129,10 @@ import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.Setter;
 import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.bukkit.BukkitHelper;
 import net.tnemc.item.bukkit.BukkitItemStack;
+import net.tnemc.item.bukkit.platform.BukkitHelper;
 import net.tnemc.item.paper.PaperItemStack;
-import net.tnemc.item.providers.HelperMethods;
+import net.tnemc.item.platform.registry.BaseHelper;
 import net.tnemc.menu.bukkit.BukkitMenuHandler;
 import net.tnemc.menu.bukkit.BukkitPlayer;
 import net.tnemc.menu.bukkit.listener.BukkitChatListener;
@@ -147,10 +152,13 @@ import net.tnemc.menu.paper.listener.PaperChatListener;
 import net.tnemc.menu.paper.listener.PaperInventoryClickListener;
 import net.tnemc.menu.paper.listener.PaperInventoryCloseListener;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.h2.Driver;
@@ -159,6 +167,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
+import java.awt.print.Paper;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -218,19 +227,23 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   @Getter
   private final EconomyLoader economyLoader = new EconomyLoader(this);
   private final EconomyManager economyManager = new QSEconomyManager();
+  private final QuickShopTagManager tagManager;
+  private UpdateManager updateManager;
   @Getter
   private final PasteManager pasteManager = new PasteManager();
   protected MenuHandler menuHandler;
-  protected HelperMethods helperMethods;
+  protected BaseHelper helperMethods;
   private QuickShopInteractionManager interactionManager;
   @Getter
   private GuiConfig guiConfig;
   private FoliaLib folia;
   /* Public QuickShop API End */
   private GameVersion gameVersion;
+  private boolean isFallbackVersion = false;
   private volatile SimpleDatabaseHelperV2 databaseHelper;
   private SimpleCommandManager commandManager;
   private ItemMatcher itemMatcher;
+  private SkullProvider skullProvider;
   private SimpleShopManager shopManager;
   private SimpleTextManager textManager;
   @Getter
@@ -326,8 +339,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   @Getter
   private ShopItemBlackList shopItemBlackList;
   @Getter
-  private NexusManager nexusManager;
-  @Getter
   private ShopDataSaveWatcher shopSaveWatcher;
   @Getter
   private SignHooker signHooker;
@@ -335,8 +346,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   private BungeeListener bungeeListener;
   private RankLimiter rankLimiter;
   @Nullable
-  @Getter
-  private VirtualDisplayItemManager virtualDisplayItemManager;
+  private DisplayManager<?> displayManager = null;
   @Getter
   private PrivacyController privacyController;
   @Getter
@@ -344,12 +354,16 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   @Getter
   private RegistryManager registry;
 
+  private LockListener shopLockListener;
+  private DisplayProtectionListener displayProtectionListener;
+
   public QuickShop(final QuickShopBukkit javaPlugin, final Logger logger, final Platform platform) {
 
     this.javaPlugin = javaPlugin;
     this.logger = logger;
     this.platform = platform;
     this.helperMethods = new BukkitHelper();
+    this.tagManager = new QuickShopTagManager(this);
   }
 
   /**
@@ -418,14 +432,13 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     this.registry = new SimpleRegistryManager();
     this.registry.registerRegistry(BuiltInRegistry.ITEM_EXPRESSION.getName(), new SimpleItemExpressionRegistry(this));
     logger.info("Setting up metrics manager...");
-    this.metricManager = new MetricManager(this);
+    this.metricManager = new MetricManager();
+    this.metricManager.initPlatforms();
     logger.info("Loading player name and unique id mapping...");
     this.playerFinder = new FastPlayerFinder(this);
     loadTextManager();
     logger.info("Register InventoryWrapper...");
     this.inventoryWrapperRegistry.register(javaPlugin, this.inventoryWrapperManager);
-    logger.info("Initializing NexusManager...");
-    this.nexusManager = new NexusManager(this);
     logger.info("QuickShop " + javaPlugin.getFork() + " - Early boot step - Complete");
   }
 
@@ -489,13 +502,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
       logger.error("Failed to load config.yml, The binary file of QuickShop may be corrupted. Please re-download from our website.");
     }
 
-    /*try {
-      javaPlugin.saveDefaultConfig();
-    } catch(final IllegalArgumentException resourceNotFoundException) {
-      logger.error("Failed to save config.yml from jar, The binary file of QuickShop may be corrupted. Please re-download from our website.");
-    }
-    javaPlugin.reloadConfig();*/
-
     javaPlugin.reloadConfig();
 
     /* It will generate a new UUID above updateConfig */
@@ -538,7 +544,8 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     // Load quick variables
     this.display = this.getConfig().getBoolean("shop.display-items");
     final int type = getConfig().getInt("shop.display-type");
-    if(type != 2 && type != 900) {
+    if(type != 2 && type != 3 && type != 900) {
+
       this.invalidProvider = true;
     }
 
@@ -581,7 +588,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
   private void updateConfig() {
 
-    //new ConfigurationUpdater(this).update(new ConfigUpdateScript(getConfig(), this));
   }
 
   @NotNull
@@ -606,10 +612,9 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   public GameVersion getGameVersion() {
 
     if(gameVersion == null) {
-      gameVersion = GameVersion.get(ReflectFactory.getNMSVersion());
-      if(gameVersion == GameVersion.UNKNOWN) {
-        gameVersion = GameVersion.get(platform.getMinecraftVersion());
-      }
+
+      //NMS version is irrelevant anymore
+      gameVersion = GameVersion.get(platform.getMinecraftVersion(), (fallback)->this.isFallbackVersion = fallback);
     }
     return this.gameVersion;
   }
@@ -618,6 +623,24 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   public @NotNull InventoryWrapperRegistry getInventoryWrapperRegistry() {
 
     return inventoryWrapperRegistry;
+  }
+
+  /**
+   * Retrieves the instance of the {@code SkullProvider}, which is responsible for providing
+   * methods to asynchronously generate player skulls or skull profiles.
+   *
+   * The {@code SkullProvider} interface offers functionality to retrieve player skulls (as
+   * {@code ItemStack} objects) or skull profile information (via {@code SkullProfile}), using
+   * identifiers such as UUID or player name.
+   *
+   * @return The {@code SkullProvider} instance for accessing skull-related utilities.
+   *
+   * @since 6.3.0.0
+   */
+  @Override
+  public SkullProvider getSkullProvider() {
+
+    return skullProvider;
   }
 
   @Override
@@ -639,6 +662,23 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   }
 
   /**
+   * Retrieves the TagManager associated with the QuickShop system. The TagManager is responsible
+   * for handling operations related to managing tags, which may include inventory item metadata and
+   * custom item tags used by the system.
+   *
+   * @return The TagManager instance that provides functionality for tag-related operations within
+   * the QuickShop system.
+   */
+  @Override
+  public TagManager tagManager() {
+    return tagManager;
+  }
+
+  public UpdateManager updateManager() {
+    return this.updateManager;
+  }
+
+  /**
    * Retrieves the InteractionManager associated with this QuickShopProvider.
    *
    * @return The InteractionManager that manages InteractionBehaviors and InteractionTypes.
@@ -653,6 +693,19 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   public ShopManager getShopManager() {
 
     return this.shopManager;
+  }
+
+  /**
+   * Retrieves the instance of the DisplayManager responsible for managing display functionalities.
+   *
+   * @return The DisplayManager instance, which handles operations related to displays for various
+   * types of entities.
+   */
+  @Override
+  @Nullable
+  public DisplayManager<?> getDisplayManager() {
+
+    return displayManager;
   }
 
   @Override
@@ -758,6 +811,8 @@ public class QuickShop implements QuickShopAPI, Reloadable {
       this.menuHandler = new BukkitMenuHandler(javaPlugin, false);
     }
 
+    this.skullProvider = new PaperSkullProvider();
+
     // Initialize GuiConfig before menus that depend on it
     this.guiConfig = new GuiConfig(this);
 
@@ -784,11 +839,36 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     loadRegistry();
     this.shopItemBlackList = new SimpleShopItemBlackList(this);
     Util.initialize();
+    
+    getGameVersion();
+    if (this.isFallbackVersion) {
+
+      logger.warn("=================================================================");
+      logger.warn("=========================   ATTENTION   =========================");
+      logger.warn("=================================================================");
+      logger.warn("The current Minecraft version is not listed as officially");
+      logger.warn("supported by this version of QuickShop-Hikari.");
+      logger.warn("");
+      logger.warn("Display logic is falling back to the last known working");
+      logger.warn("implementation for compatibility.");
+      logger.warn("");
+      logger.warn("Displays, item rendering, holograms, or other visual");
+      logger.warn("features may not function correctly on this server version.");
+      logger.warn("");
+      logger.warn("If you experience issues, please update QuickShop-Hikari");
+      logger.warn("when a version supporting your Minecraft release becomes");
+      logger.warn("available.");
+      logger.warn("");
+      logger.warn("Need help or want to report compatibility issues?");
+      logger.warn("Join our Discord: https://discord.gg/Bu3dVtmsD3");
+      logger.warn("=================================================================");
+    }
     try {
       loadVirtualDisplayItem();
     } catch(final Exception e) {
       logger.warn("Failed to process virtual display item system", e);
     }
+    loadSignHooker();
     //Load the database
     try(final PerfMonitor ignored = new PerfMonitor("Initialize database")) {
       initDatabase();
@@ -825,6 +905,10 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     shopLoader = new ShopLoader(this);
     shopLoader.loadShops();
     QuickExecutor.getCommonExecutor().submit(this::bakeShopsOwnerCache);
+
+    logger.info("Loading shop tags...");
+    this.tagManager.loadAllFromDB();
+
     logger.info("Registering listeners...");
     this.interactionManager = new QuickShopInteractionManager(this);
     // Register events
@@ -886,9 +970,9 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   private void loadItemMatcher() {
 
     final ItemMatcher defItemMatcher = switch(getConfig().getInt("matcher.work-type")) {
-      case 3 -> new TNEItemMatcherImpl(this);
-      case 1 -> new BukkitItemMatcherImpl(this);
       case 0 -> new QuickShopItemMatcherImpl(this);
+      case 3 -> new ModernCustomMatcher(this);
+      case 1 -> new BukkitItemMatcherImpl(this);
       default ->
               throw new IllegalStateException("Unexpected value: " + getConfig().getInt("matcher.work-type"));
     };
@@ -903,20 +987,10 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         logger.info("Using Virtual Displays. Attempting to initialize packet factory...");
         try {
 
-          virtualDisplayItemManager = new VirtualDisplayItemManager(this);
-          if(getConfig().getBoolean("shop.per-player-shop-sign")) {
-
-            //TODO: Revamp sign system.
-            signHooker = new SignHooker(this);
-            logger.info("Successfully registered per-player shop sign!");
-          } else {
-
-            signHooker = null;
-          }
+          this.displayManager = new VirtualDisplayItemManager(this);
         } catch(final Exception e) {
 
           //disable displays since we don't have packet support
-          signHooker = null;
           this.display = false;
           getConfig().set("shop.display-items", false);
           javaPlugin.saveConfig();
@@ -925,6 +999,23 @@ public class QuickShop implements QuickShopAPI, Reloadable {
           throw e;
         }
       }
+
+      if(AbstractDisplayItem.getNowUsing() == DisplayType.DISPLAY_ENTITY) {
+
+        this.displayManager = new DisplayEntityItemManager();
+      }
+    }
+  }
+
+  private void loadSignHooker() {
+    if(getConfig().getBoolean("shop.per-player-shop-sign")) {
+
+      signHooker = new SignHooker(this);
+      signHooker.register();
+      logger.info("Successfully registered per-player shop sign!");
+    } else {
+
+      signHooker = null;
     }
   }
 
@@ -942,12 +1033,22 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   private void registerDisplayAutoDespawn() {
 
     if(this.display && getConfig().getBoolean("shop.display-auto-despawn")) {
-      this.displayAutoDespawnWatcher = new DisplayAutoDespawnWatcher(this);
-      this.displayAutoDespawnWatcher.start(20, getConfig().getInt("shop.display-check-time"));
+
+      final int checkTime = getConfig().getInt("shop.display-check-time");
+      if(this.displayAutoDespawnWatcher != null && this.displayAutoDespawnWatcher.getTaskPeriod() == checkTime) {
+        // Don't restart the task if the check time hasn't changed.
+        return;
+      }
+
+      if(this.displayAutoDespawnWatcher == null) {
+        this.displayAutoDespawnWatcher = new DisplayAutoDespawnWatcher(this);
+      }
+
+      this.displayAutoDespawnWatcher.start(20, checkTime);
       logger.warn("Unrecommended use of display-auto-despawn. This feature may have a heavy impact on the server's performance!");
     } else {
       if(this.displayAutoDespawnWatcher != null) {
-        this.displayAutoDespawnWatcher.stop();
+        this.displayAutoDespawnWatcher.unregister();
         this.displayAutoDespawnWatcher = null;
       }
     }
@@ -961,7 +1062,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
   private void bakeShopsOwnerCache() {
 
-    if(PackageUtil.parsePackageProperly("bakeuuids").asBoolean(false)) {
+    if(config.getYaml().getBoolean("database.bake-uuids", false)) {
       logger.info("Baking shops owner and moderators caches (This may take a while if you upgrade from old versions)...");
       final Set<UUID> waitingForBake = new HashSet<>();
       this.shopManager.getAllShops().forEach(shop->{
@@ -1010,19 +1111,20 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
   private void registerDisplayItem() {
 
-    if(this.display && AbstractDisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
+    if(this.display && AbstractDisplayItem.getNowUsing() != DisplayType.VIRTUALITEM
+       && AbstractDisplayItem.getNowUsing() != DisplayType.DISPLAY_ENTITY) {
       if(getDisplayItemCheckTicks() > 0) {
         if(getConfig().getInt("shop.display-items-check-ticks") < 3000) {
           logger.error("Shop.display-items-check-ticks is too low! It may cause HUGE lag! Pick a number > 3000");
         }
         logger.info("Registering DisplayCheck task....");
         folia.getScheduler().runTimerAsync(()->{
-          for(final Shop shop : getShopManager().getLoadedShops()) {
+          for(final Shop<?, ?> shop : getShopManager().getLoadedShops()) {
             //Shop may be deleted or unloaded when iterating
             if(!shop.isLoaded()) {
               continue;
             }
-            folia.getScheduler().runAtLocationLater(shop.getLocation(), shop::checkDisplay, 1L);
+            folia.getScheduler().runAtLocationLater((Location)shop.bukkitLocation(), shop::checkDisplay, 1L);
           }
         }, 1L, getDisplayItemCheckTicks());
       } else if(getDisplayItemCheckTicks() == 0) {
@@ -1031,29 +1133,46 @@ public class QuickShop implements QuickShopAPI, Reloadable {
       } else {
         logger.error("shop.display-items-check-ticks has been set to an invalid value. Please use a value above 3000.");
       }
-      new DisplayProtectionListener(this).register();
+      if(this.displayProtectionListener == null) {
+        this.displayProtectionListener = new DisplayProtectionListener(this);
+        this.displayProtectionListener.register();
+      }
     } else {
-      Util.unregisterListenerClazz(javaPlugin, DisplayProtectionListener.class);
+      if(this.displayProtectionListener != null) {
+        this.displayProtectionListener.unregister();
+        this.displayProtectionListener = null;
+      }
     }
   }
 
   private void registerShopLock() {
 
-    Util.unregisterListenerClazz(javaPlugin, LockListener.class);
     final boolean useShopLock = getConfig().getBoolean("shop.lock");
     if(useShopLock) {
 
-      new LockListener(this).register();
+      if(this.shopLockListener == null) {
+        this.shopLockListener = new LockListener(this);
+        this.shopLockListener.register();
+      }
+    } else if(this.shopLockListener != null) {
+      this.shopLockListener.unregister();
+      this.shopLockListener = null;
     }
   }
 
   private void registerUpdater() {
 
     final boolean updaterEnabled = this.getConfig().getBoolean("updater", true);
-    if(updaterEnabled) {
+    if(updaterEnabled && this.updateManager == null) {
+      this.updateManager = new UpdateManager(this);
       updateWatcher = new UpdateWatcher();
       updateWatcher.init();
     } else {
+      if (this.updateManager != null) {
+        this.updateManager.unregister();
+        this.updateManager = null;
+      }
+
       if(updateWatcher != null) {
         updateWatcher.uninit();
         updateWatcher = null;
@@ -1186,6 +1305,9 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   public final void onDisable() {
 
     logger.info("QuickShop is finishing remaining work, this may need a while...");
+    if(calendarWatcher != null) {
+      calendarWatcher.stop();
+    }
     if(sentryErrorReporter != null) {
       logger.info("Shutting down error reporter...");
       sentryErrorReporter.unregister();
@@ -1198,22 +1320,22 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         logger.info("Unregistering not successful. Was it already unloaded?");
       }
     }
-    if(getShopManager() != null) {
+    if(shopManager != null) {
       logger.info("Unloading all loaded shops...");
-      getShopManager().getLoadedShops().forEach(shop->getShopManager().unloadShop(shop));
+      shopManager.getLoadedShops().forEach(shop->shopManager.unloadShop(shop));
     }
     if(this.bungeeListener != null) {
       logger.info("Disabling the BungeeChat messenger listener.");
       Bukkit.getOnlinePlayers().forEach(player->this.bungeeListener.notifyForCancel(player));
       this.bungeeListener.unregister();
     }
-    if(getShopSaveWatcher() != null) {
+    if(shopSaveWatcher != null) {
       logger.info("Stopping shop auto save...");
-      getShopSaveWatcher().stop();
+      shopSaveWatcher.stop();
     }
-    if(getShopManager() != null) {
+    if(shopManager != null) {
       logger.info("Saving all in-memory changed shops...");
-      final List<CompletableFuture<Void>> futures = getShopManager().getAllShops().stream().filter(Shop::isDirty).map(Shop::update).toList();
+      final List<@NotNull CompletableFuture> futures = shopManager.getAllShops().stream().filter(Shop::isDirty).map(Shop::update).toList();
 
       logger.info("Shops needed saved: " + futures.size());
       final CompletableFuture<?>[] completableFutures = futures.toArray(new CompletableFuture<?>[0]);
@@ -1227,7 +1349,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
       } catch(final CompletionException ex) {
 
         logger.info("Timed out, running saving synchronously to determine shop with issue.", ex);
-        for(final Shop shop : getShopManager().getAllShops()) {
+        for(final Shop shop : shopManager.getAllShops()) {
 
           if(shop.isDirty()) {
             try {
@@ -1235,7 +1357,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
               shop.updateSync();
             } catch(final RuntimeException re) {
 
-              logger.warn("Issue occurred while saving a shop. This may cause data loss. Please check the logs for more information. ID: " + shop.getShopId() + " Location: " + shop.getLocation(), re);
+              logger.warn("Issue occurred while saving a shop. This may cause data loss. Please check the logs for more information. ID: " + shop.getShopId() + " Location: " + shop.bukkitLocation(), re);
             }
           }
         }
@@ -1246,9 +1368,20 @@ public class QuickShop implements QuickShopAPI, Reloadable {
       logger.info("Cleaning up shop manager...");
       shopManager.clear();
     }
-    if(AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && virtualDisplayItemManager != null) {
+
+    try {
+      for (final Player player : javaPlugin.getServer().getOnlinePlayers()) {
+        if (player.getOpenInventory().getTopInventory().getHolder(false) instanceof QuickShopPreviewGUIHolder) {
+          player.closeInventory();
+        }
+      }
+    } catch(final Exception e) {
+      javaPlugin.getSLF4JLogger().warn("An exception occurred while attempting to close open preview inventories for players", e);
+    }
+
+    if(AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && displayManager != null) {
       logger.info("Cleaning up display manager...");
-      virtualDisplayItemManager.unload();
+      displayManager.unload();
     }
     if(logWatcher != null) {
       logger.info("Stopping log watcher...");
@@ -1256,10 +1389,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     }
     logger.info("Shutting down scheduled timers...");
     folia.getScheduler().cancelAllTasks();
-    if(calendarWatcher != null) {
-      logger.info("Shutting down event calendar watcher...");
-      calendarWatcher.stop();
-    }
     /* Unload UpdateWatcher */
     if(this.updateWatcher != null) {
       logger.info("Shutting down update watcher...");
@@ -1282,13 +1411,13 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     }
     if(this.signHooker != null) {
 
-      this.signHooker.unload();
+      this.signHooker.unregister();
       logger.info("Unload SignHooker module successfully!");
     }
 
-    if(this.virtualDisplayItemManager != null) {
+    if(this.displayManager != null) {
 
-      this.virtualDisplayItemManager.unload();
+      this.displayManager.unload();
     }
   }
 
@@ -1324,6 +1453,14 @@ public class QuickShop implements QuickShopAPI, Reloadable {
       return new PaperItemStack();
     }
     return new BukkitItemStack();
+  }
+
+  public AbstractItemStack<ItemStack> stack(final ItemStack itemStack) {
+
+    if(PaperLib.isPaper()) {
+      return new PaperItemStack().of(itemStack);
+    }
+    return new BukkitItemStack().of(itemStack);
   }
 
   public @NotNull TextManager text() {

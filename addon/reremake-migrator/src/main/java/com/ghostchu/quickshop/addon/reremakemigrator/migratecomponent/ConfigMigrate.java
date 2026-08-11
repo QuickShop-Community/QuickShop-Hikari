@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.addon.reremakemigrator.Main;
 import com.ghostchu.quickshop.util.ProgressMonitor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -131,7 +132,26 @@ public class ConfigMigrate extends AbstractMigrateComponent {
   private void copyValue(final String keyName) {
 
     if(getReremake().getConfig().contains(keyName)) {
-      getHikari().getConfig().set(keyName, getReremake().getConfig().get(keyName));
+      final Object value = getReremake().getConfig().get(keyName);
+      // Handle ConfigurationSection (MemorySection) by converting it to a basic type
+      if(value instanceof ConfigurationSection) {
+        final ConfigurationSection section = (ConfigurationSection) value;
+        copyConfigurationSection(keyName, section);
+      } else {
+        getHikari().getConfig().set(keyName, value);
+      }
+    }
+  }
+
+  private void copyConfigurationSection(final String parentKey, final ConfigurationSection section) {
+    for(final String key : section.getKeys(false)) {
+      final Object value = section.get(key);
+      final String fullKey = parentKey + "." + key;
+      if(value instanceof ConfigurationSection) {
+        copyConfigurationSection(fullKey, (ConfigurationSection) value);
+      } else {
+        getHikari().getConfig().set(fullKey, value);
+      }
     }
   }
 }

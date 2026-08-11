@@ -23,7 +23,7 @@ import com.ghostchu.quickshop.menu.keeper.MainPage;
 import com.ghostchu.quickshop.menu.shared.QuickShopMenu;
 
 /**
- * ShopControlMenu
+ * ShopKeeperMenu
  *
  * @author creatorfromhell
  * @since 6.2.0.8
@@ -33,6 +33,7 @@ public class ShopKeeperMenu extends QuickShopMenu {
   public static final int KEEPER_MAIN = 1;
 
   public static final String SHOP_DATA_ID = "SHOP_ID";
+  public static final String SHOP_STOCK_ID = "SHOP_STOCK_REMAINING";
 
   public ShopKeeperMenu() {
 
@@ -40,8 +41,9 @@ public class ShopKeeperMenu extends QuickShopMenu {
     final GuiConfig.MenuConfig menuConfig = QuickShop.getInstance().getGuiConfig().getMenuConfig("keeper");
     this.rows = (menuConfig != null? menuConfig.getRows() : 4);
     this.name = "qs:keeper";
+    this.title = "Shop Keeper";
 
-    setOpen((open)->open.getMenu().setTitle(legacy(open.getPlayer().identifier(), "gui.keeper.title")));
+    setOpen((open)->open.getMenu().setTitle(QuickShopMenu.getTitle(open.getPlayer().identifier(), menuConfig, this.title, null)));
 
     addPage(new MainPage());
   }

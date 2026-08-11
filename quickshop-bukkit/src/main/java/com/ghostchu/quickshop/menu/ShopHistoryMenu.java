@@ -20,6 +20,7 @@ package com.ghostchu.quickshop.menu;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.config.GuiConfig;
 import com.ghostchu.quickshop.menu.history.MainPage;
+import com.ghostchu.quickshop.menu.shared.QuickShopMenu;
 import net.tnemc.menu.core.Menu;
 import net.tnemc.menu.core.Page;
 
@@ -32,7 +33,9 @@ import net.tnemc.menu.core.Page;
 public class ShopHistoryMenu extends Menu {
 
   public static final String SHOPS_DATA = "SHOPS_LIST";
+  public static final String SHOPS_HEADERS = "SHOPS_HEADERS";
   public static final String HISTORY_RECORDS = "HISTORY_RECORDS";
+  public static final String HISTORY_DATA_RECORDS = "HISTORY_DATA_RECORDS";
   public static final String HISTORY_SUMMARY = "HISTORY_SUMMARY";
   public static final String SHOPS_PAGE = "SHOPS_PAGE_ID";
 
@@ -42,8 +45,9 @@ public class ShopHistoryMenu extends Menu {
     final GuiConfig.MenuConfig menuConfig = QuickShop.getInstance().getGuiConfig().getMenuConfig("history");
     this.rows = (menuConfig != null? menuConfig.getRows() : 6);
     this.name = "qs:history";
+    this.title = "Shop History";
 
-    setOpen((open)->open.getMenu().setTitle(QuickShop.getInstance().text().of(open.getPlayer().identifier(), "history.shop.gui-title").legacy()));
+    setOpen((open)->open.getMenu().setTitle(QuickShopMenu.getTitle(open.getPlayer().identifier(), menuConfig, this.title, null)));
 
     final Page main = new Page(1);
     final MainPage mainPageOpen = new MainPage(this.name, this.name, 1, 1, SHOPS_PAGE, this.rows, "history.shop.log-icon-description-with-store-name");

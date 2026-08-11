@@ -8,6 +8,7 @@ import com.ghostchu.quickshop.api.shop.interaction.InteractionBehavior;
 import com.ghostchu.quickshop.api.shop.interaction.InteractionClick;
 import com.ghostchu.quickshop.api.shop.interaction.InteractionType;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
+import com.ghostchu.quickshop.shop.display.display.DisplayEntityItemManager;
 import com.ghostchu.quickshop.util.ExpiringSet;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.PackageUtil;
@@ -16,6 +17,7 @@ import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import net.tnemc.menu.core.manager.MenuManager;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -45,6 +47,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.AbstractMap;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -87,7 +90,7 @@ public class PlayerListener extends AbstractQSListener {
   @EventHandler(priority = EventPriority.LOW)
   public void onClick(final PlayerInteractEvent event) {
     // Deprecated: Can use useInteractedBlock() == Result.DENY instead
-    if(event.isCancelled() && PackageUtil.parsePackageProperly("ignoreCancelledInteractEvent").asBoolean(true)) {
+    if(event.isCancelled() && plugin.getConfig().getBoolean("shop.ignore-cancelled-interact-event", true)) {
       return;
     }
     if(event.getHand() != EquipmentSlot.HAND) {
@@ -134,13 +137,13 @@ public class PlayerListener extends AbstractQSListener {
   }
 
   @NotNull
-  public Map.Entry<@Nullable Shop, @NotNull InteractionClick> searchShop(@Nullable final Block b, @NotNull final Player p) {
+  public static Map.Entry<@Nullable Shop, @NotNull InteractionClick> searchShop(@Nullable final Block b, @NotNull final Player p) {
 
     if(b == null) {
       return new AbstractMap.SimpleEntry<>(null, InteractionClick.AIR);
     }
 
-    Shop shop = plugin.getShopManager().getShop(b.getLocation());
+    Shop shop = QuickShop.getInstance().getShopManager().getShop(b.getLocation());
 
     // If that wasn't a shop, search nearby shops
     if(shop == null) {
@@ -151,7 +154,7 @@ public class PlayerListener extends AbstractQSListener {
         attached = Util.getAttached(b);
         if(attached != null) {
 
-          shop = plugin.getShopManager().getShop(attached.getLocation());
+          shop = QuickShop.getInstance().getShopManager().getShop(attached.getLocation());
           return new AbstractMap.SimpleImmutableEntry<>(shop, InteractionClick.SIGN);
         }
       } else if(Util.isDoubleChest(b.getBlockData())) {
@@ -159,7 +162,7 @@ public class PlayerListener extends AbstractQSListener {
         attached = Util.getSecondHalf(b);
         if(attached != null) {
 
-          final Shop secondHalfShop = plugin.getShopManager().getShop(attached.getLocation());
+          final Shop secondHalfShop = QuickShop.getInstance().getShopManager().getShop(attached.getLocation());
           if(secondHalfShop != null && !p.getUniqueId().equals(secondHalfShop.getOwner().getUniqueId())) {
             // If player not the owner of the shop, make him select the second half of the
             // shop
@@ -170,7 +173,7 @@ public class PlayerListener extends AbstractQSListener {
       }
     }
 
-    if(shop == null && b.getState() instanceof Container) {
+    if(shop == null && b.getState(false) instanceof Container) {
 
       return new AbstractMap.SimpleImmutableEntry<>(shop, InteractionClick.CONTAINER);
     }
@@ -202,7 +205,7 @@ public class PlayerListener extends AbstractQSListener {
     if(!Util.isWallSign(block.getType())) {
       return;
     }
-    final BlockState state = e.getBlock().getState();
+    final BlockState state = e.getBlock().getState(false);
     if(state instanceof final Sign sign) {
       if(sign.getPersistentDataContainer().has(Shop.SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE)) {
         e.setCancelled(true);
@@ -257,8 +260,14 @@ public class PlayerListener extends AbstractQSListener {
     plugin.getPlayerFinder().cache(e.getPlayer().getUniqueId(), e.getPlayer().getName());
     // Notify the player any messages they were sent
     if(plugin.getConfig().getBoolean("shop.auto-fetch-shop-messages")) {
-      final long delay = PackageUtil.parsePackageProperly("flushTransactionDelay").asLong(60);
+      final long delay = plugin.getConfig().getLong("shop.join-flush-delay", 60L);
       QuickShop.folia().getScheduler().runLaterAsync(()->MsgUtil.flush(e.getPlayer()), delay);
+    }
+
+    if(plugin.getDisplayManager() instanceof final DisplayEntityItemManager displayEntityItemManager) {
+
+      displayEntityItemManager.addPlayer(e.getPlayer());
+
     }
   }
 

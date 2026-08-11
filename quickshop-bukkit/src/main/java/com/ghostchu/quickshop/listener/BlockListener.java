@@ -17,12 +17,15 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.TileState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockFormEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
@@ -30,6 +33,8 @@ import org.bukkit.event.player.PlayerSignOpenEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import static com.ghostchu.quickshop.shop.SimpleShopManager.CHEST_SHOP;
 
 /**
  * BlockListener to listening events about block events
@@ -49,6 +54,34 @@ public class BlockListener extends AbstractProtectionListener {
   private void init() {
 
     this.updateSignWhenInventoryMoving = super.getPlugin().getConfig().getBoolean("shop.update-sign-when-inventory-moving", true);
+  }
+
+  @EventHandler(ignoreCancelled = true)
+  public void onForm(final BlockFormEvent event) {
+
+    if (!getPlugin().getConfig().getBoolean("protect.oxidation")) {
+      return;
+    }
+
+    final Block block = event.getBlock();
+    final BlockState state = block.getState(false);
+
+    //run pdc check first instead of lookup
+    if (state instanceof final TileState tileState && tileState.getPersistentDataContainer().has(CHEST_SHOP)) {
+
+      event.setCancelled(true);
+      return;
+    }
+
+    if (!Util.canBeShop(block, state)) {
+      return;
+    }
+
+    final Shop shop = getShopPlayer(block.getLocation(), false);
+    if (shop == null) {
+      return;
+    }
+    event.setCancelled(true);
   }
 
   /*

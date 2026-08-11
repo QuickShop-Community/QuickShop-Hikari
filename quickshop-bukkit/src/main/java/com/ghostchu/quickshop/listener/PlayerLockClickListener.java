@@ -31,7 +31,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * NonLockClickListener
+ * PlayerLockClickListener
  *
  * @author creatorfromhell
  * @since 6.2.0.9

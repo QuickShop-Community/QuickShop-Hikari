@@ -11,5 +11,6 @@ softdepend:
   - ExcellentCrates
   - CrazyCrates
   - BreweryX
+  - Nexo
 authors: [ creatorfromhell ]
 description: Compatibility module for various special item plugins

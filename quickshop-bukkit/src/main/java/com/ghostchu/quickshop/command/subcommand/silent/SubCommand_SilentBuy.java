@@ -33,5 +33,4 @@ public class SubCommand_SilentBuy extends SubCommand_SilentBase {
     MsgUtil.sendControlPanelInfo(sender, shop);
     plugin.text().of(sender, "command.now-buying", Util.getItemStackName(shop.getItem())).send();
   }
-
 }

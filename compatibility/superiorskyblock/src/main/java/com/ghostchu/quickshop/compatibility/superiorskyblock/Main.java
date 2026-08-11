@@ -161,7 +161,7 @@ public final class Main extends CompatibilityModule implements Listener {
       return;
     }
 
-    final Location shopLoc = event.shop().get().getLocation();
+    final Location shopLoc = event.shop().get().bukkitLocation();
     final Island island = SuperiorSkyblockAPI.getIslandAt(shopLoc);
     if(island == null) {
       return;

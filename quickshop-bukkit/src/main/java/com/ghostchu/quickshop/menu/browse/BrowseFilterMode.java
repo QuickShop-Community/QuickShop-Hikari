@@ -28,25 +28,27 @@ public enum BrowseFilterMode {
   /**
    * Show all shops
    */
-  ALL("all", "gui.browse.filter.all"),
+  ALL("all", "gui.browse.filter.all", "gui.browse.filter.all-indicator"),
 
   /**
    * Show only buying shops (shops that buy from players)
    */
-  BUYING("buying", "gui.browse.filter.buying"),
+  BUYING("buying", "gui.browse.filter.buying", "gui.browse.filter.buying-indicator"),
 
   /**
    * Show only selling shops (shops that sell to players)
    */
-  SELLING("selling", "gui.browse.filter.selling");
+  SELLING("selling", "gui.browse.filter.selling", "gui.browse.filter.selling-indicator");
 
   private final String id;
   private final String translationKey;
+  private final String indicatorTranslationKey;
 
-  BrowseFilterMode(final String id, final String translationKey) {
+  BrowseFilterMode(final String id, final String translationKey, final String indicatorTranslationKey) {
 
     this.id = id;
     this.translationKey = translationKey;
+    this.indicatorTranslationKey = indicatorTranslationKey;
   }
 
   /**
@@ -74,6 +76,11 @@ public enum BrowseFilterMode {
   public String getTranslationKey() {
 
     return translationKey;
+  }
+
+  public String indicatorTranslationKey() {
+
+    return indicatorTranslationKey;
   }
 
   /**

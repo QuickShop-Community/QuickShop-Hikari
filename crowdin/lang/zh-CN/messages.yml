@@ -20,8 +20,19 @@ tabcomplete:
   price: '[价格]'
   name: '[名称]'
   range: '[范围]'
+  list: '列表'
+  page: '[页面 #]'
+  shop-id: '[商店id]'
   currency: '[货币名称]'
   percentage: '[百分比%]'
+  add: '添加'
+  remove: '移除'
+  clear: '清除'
+  clearall: '清除全部'
+  shops: '商店'
+  tagged: '已标记'
+  purge: '清除'
+  tag: '[标签]'
 taxaccount-unset: <green>该商店的税务账户现在变为服务器的全局设置。
 blacklisted-item: <red>这件物品已经被拉黑，你不能出售它
 command-type-mismatch: <red>此命令只能由 <aqua>{0} 执行。
@@ -98,6 +109,61 @@ shop-staff-empty: <yellow>此商店没有商店助手。
 shops-recovering: 正在从备份中恢复商店...
 virtual-player-component-hover: "<gray>这是虚拟玩家\n<gray>是指一个具有相同名称的系统帐户</gray>\n<green>UUID： <yellow>{0}</yellow></green>\n<green>用户名： <yellow>{1}</yellow></green>\n<green>显示为： <yellow>{2}</yellow></green>"
 real-player-component-hover: "<gray>这是一个真正存在的玩家\n<green>UUID： <yellow>{0}</yellow></green>\n<green>用户名： <yellow>{1}</yellow></green>\n<green>显示为： <yellow>{2}</yellow></green>\n<gray>如果您希望使用同名的虚拟系统帐户 将 <dark_gray>\"[]\"</dark_gray> 添加到用户名的两边： <dark_gray>[{1}]</dark_gray>"
+pagination:
+  header: "<green>{0}</green>："
+  footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>上一页\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>下一页\"><white>></white></hover></click>]</light_purple>"
+tags:
+  commands:
+    tag: "<yellow>管理您的商店标签。"
+    favorite: "<yellow>切换当前查看商店的收藏状态"
+    watch: "<yellow>切换当前查看商店的关注状态"
+    avoid: "<yellow>切换当前查看商店的屏蔽状态"
+  general:
+    database-error: "<red>执行标签操作时发生错误。"
+    list-entry: "<green>{0}。</green> <aqua>{1}</aqua> <light_purple>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>查看所有带有此标签的商店\">查看商店</hover></click>]</light_purple> <red>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>从此商店移除此标签\">移除</hover></click>]</red>"
+    invalid: "<red>无效标签。只允许使用字母、短横线（-）和下划线（_）。最大长度：<yellow>{0}</yellow"
+  avoid:
+    added: "<green>已将当前商店添加至您的屏蔽列表。"
+    removed: "<green>已将当前商店从您的屏蔽列表中移除。"
+    unable: "<red>无法切换当前商店的屏蔽状态。"
+    none: "<red>您尚未屏蔽任何商店。"
+    label: "<yellow>屏蔽"
+  favorite:
+    added: "<green>已将当前商店添加至您的收藏列表。"
+    removed: "<green>已将当前商店从您的收藏列表中移除。"
+    unable: "<red>无法切换当前商店的收藏状态。"
+    none: "<red>您尚未收藏任何商店。"
+    label: "<yellow>收藏"
+  watch:
+    added: "<green>您正在关注此商店。"
+    removed: "<green>您已不再关注此商店。"
+    unable: "<red>无法切换当前商店的关注状态。"
+    none: "<red>您尚未关注任何商店。"
+    label: "<yellow>正在关注"
+  tag:
+    title-avoided-shops: "<green>已屏蔽的商店</green> <gray>(共 <yellow>{0}</yellow>)</gray>"
+    title-favorited-shops: "<green>已收藏的商店</green> <gray>(共 <yellow>{0}</yellow>)</gray>"
+    title-watched-shops: "<green>已关注的商店</green> <gray>(共 <yellow>{0}</yellow>)</gray>"
+    list-player-shops-title: "<green>您的标签商店</green> <gray>(<yellow>{0}</yellow> 家商店，<yellow>{1}</yellow> 个标签)</gray>"
+    list-player-shop-title: "<green>商店标签</green> <gray>(共 <yellow>{0}</yellow>)</gray>"
+    list-tag-title: "<green>标签 <aqua>{0}</aqua> 使用情况</green> <gray>(<yellow>{1}</yellow> 家商店)</gray>"
+    shops-entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>价格 <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}。<aqua>{1}</hover> <gray>-</gray> <light_purple>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>查看此商店的所有标签\">查看 {10} 个标签</hover></click>]</light_purple>"
+    entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>价格 <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}。<aqua>{1}</hover> <gray>-</gray> <red>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>从此商店移除此标签\">移除标签</hover></click>]</red>"
+    list-tag-shop-entry-tp: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>传送到此商店\">传送</hover></click>]</light_purple>"
+    added: "<green>已为此商店添加标签 <aqua>{0}</aqua>。"
+    duplicate: "<red>此商店已拥有标签 <aqua>{0}</aqua>。"
+    failed-add: "<red>为此商店添加标签 <aqua>{0}</aqua> 时发生错误。"
+    failed-remove: "<red>从此商店移除标签 <aqua>{0}</aqua> 时发生错误。"
+    removed: "<green>已从此商店移除标签 <aqua>{0}</aqua>。"
+    does-not-exist: "<red>此商店没有标签 <aqua>{0}</aqua>。"
+    cleared: "<green>已清除此商店的所有标签。"
+    cleared-all: "<green>已清除所有商店的所有标签。"
+    cleared-tag: "<green>已从您所有带标签的商店中清除标签 <aqua>{0}</aqua>。"
+    no-tags-all: "<red>没有任何商店拥有标签。"
+    no-tags: "<red>此商店没有标签。"
+    no-tagged-shops-player: "<red>您在此商店上没有任何标签。"
+    no-tagged-shops: "<red>您没有任何带标签的商店。"
+    no-tagged-shops-tag: "<red>您没有任何带有标签 <aqua>{0}</aqua> 的商店。"
 menu:
   sell-tax: <green>你支付了<yellow>{0}<green>的税。
   owner: '<green>所有者：{0}'
@@ -114,21 +180,23 @@ menu:
   stored-enchants: <dark_purple>附魔
   item-holochat-error: <red>[错误]
   this-shop-is-selling: <green>这个商店现在正在<light_purple>出售<green>物品。
+  this-shop-is-buying: <green>这个商店现在正在<light_purple>收购<green>物品。
+  this-shop-is-frozen: <blue>冻结</blue>
+  this-shop-is-active: <aqua>激活</aqua>
+  this-shop-is-state: <green>此商店当前状态为 {0}<green>。
   shop-stack: '<green>每次交易物品数量：<yellow>{0}'
   space: '<green>空间: <yellow>{0}'
   effects: <green>效果
   damage-percent-remaining: <yellow>{0}% <green>剩余
   item-holochat-data-too-large: <red>[错误] 物品NBT太长，无法显示
   stock: '<green>库存:<yellow>{0}'
-  this-shop-is-buying: <green>这个商店现在正在<light_purple>收购<green>物品。
-  this-shop-is-frozen: <green>这个商店现在处于 <red>冻结模式<green>。
   successfully-sold: '<green>出售成功：'
   total-value-of-chest: '<green>共计商店数: <yellow>{0}'
 currency-not-exists: <red>无法找到您想要设置的货币，也许是拼写错误或该货币在这个世界不可用。
 no-nearby-shop: <red>附近没有匹配 {0} 的商店。
 translation-author: 'Ghost_chu, sandtechnology, Pemdow, YuanYuanOwO, RMSCA, 李馨雨'
 integrations-check-failed-trade: <red>集成模块 {0} 拒绝了商店交易操作。
-shop-transaction-failed: <red>抱歉，在处理您的购买时发生内部错误。购买已取消，任何交易操作都已被回滚。如果出现这种情况，请联系服务器管理员。
+shop-transaction-failed: "<red>抱歉，在处理您的购买过程中发生了一个内部错误。此次购买已被取消，所有其他操作均已回滚。原因：{0}"
 success-change-owner-to-server: <green>成功设置商店所有者为 服务器
 shop-name-not-found: <red>名称为 <yellow>{0} <red> 的商店不存在。
 shop-name-too-long: <red>此商店名称过长 (最大长度 {0})，请缩短名称后再试！
@@ -187,6 +255,14 @@ shop-type:
   selling: 出售
   buying: 收购
   frozen: 已冻结
+shop-state:
+  frozen: 冻结
+  unfrozen: 取消冻结
+  freeze: 冻结
+  unfreeze: 取消冻结
+shop-display:
+  enabled: 启用
+  disabled: 禁用
 language:
   qa-issues: '<yellow>质量问题：<aqua>{0}%'
   code: '<yellow>代码： <gold>{0}'
@@ -231,11 +307,11 @@ updatenotify:
     - 此版本已弃坑，你现在应该升级插件到新版本 {0} ！
     - 更新 {0} 发布了。现在就下载拯救更新吧！
     - 这里是升级指挥官，{0}版本刚刚发布了！
-    - 看看我的样式——{0} 发布了, 你为什么还在用 {1} 呢？
+    - 看我的Style——{0} 发布了, 你为什么还在用 {1} 呢？
     - 啊啊啊啊啊啊啊啊啊啊！更新 {0} 来了！快升级！
     - 你在想什么呢？{0}已经发布了！快更新！
-    - 博士，QuickShop有一个新的更新 {0}！你应该考虑一下更新了~
-    - Ko~ko~da~yo~QuickShop有一个新的更新 {0}~
+    - 刀客塔，QuickShop有一个新的更新 {0}！你应该考虑一下更新了~
+    - 在~这~里~哦~QuickShop有一个新的更新 {0}~
     - 派蒙想要告诉你QuickShop有新的更新 {0}！
   remote-disable-warning: '<red>这个版本的 QuickShop 被远程服务器标记为禁用，意味着这个版本可能存在严重的问题，可以在我们的 SpigotMC 插件页面获取详细信息。{0}. 此警告将继续出现，直到您切换到一个稳定的版本，但它不会影响您的服务器的性能。'
 purchase-out-of-stock: <red>这个商店已缺货，请联系商店所有者或助手补充库存
@@ -253,17 +329,17 @@ tableformat:
   left_begin: '<dark_purple>| '
 quickshop-gui-preview: QuickShop 物品预览界面
 translate-not-completed-yet-click: '{0} 的翻译完成度为 {1}，您想帮助我们改进翻译吗？来这里吧： '
-taxaccount-invalid: <red>目标帐户无效，请输入有效的玩家名称或uuid(带有破折号)。
+taxaccount-invalid: <red>目标帐户无效，请输入有效的玩家名称或UUID(含破折号)。
 player-bought-from-your-store: <red>{0} 从你的商店里购买了 {1} {2}，你因此赚得了 {3}
 reached-maximum-can-create: <red>你创建的商店数量达到上限：{0}/{1}
 translation-version: '支持版本: Hikari'
 no-double-chests: <red>你没有权限创建大箱子商店。
-price-too-cheap: <red>价格必须大于<yellow>${0}
+price-too-cheap: <red>价格必须高于<yellow>${0}
 shop-not-exist: <red>这里没有商店
 bad-command-usage: <red>错误的命令参数！
 cleanghost-warning: <yellow>这个命令将清理<red>所有</red>在不允许创建商店的世界的、出售/购买不允许的物品的，以及 <bold><red>所有在服务器没有加载的世界</red></bold>的商店， 请在确保您的商店数据备份完整后使用 <aqua>/quickshop cleanghost confirm </aqua>来继续。
 cleanghost-starting: <green>开始检查幽灵商店(缺少容器方块)。所有不存在的商店将被移除...
-cleanghost-deleting: <yellow>发现一个损坏的商店 <aqua>{0}</aqua> 因为 {1}, 标记它删除...
+cleanghost-deleting: <yellow>发现一个损坏的商店 <aqua>{0}</aqua> 因为 {1}, 标记它以删除...
 cleanghost-deleted: <green>总计 <yellow>{0}</yellow> 家商店已被删除。
 shop-purchase-cancelled: <red>您取消了交易操作。
 bypassing-lock: <red>你绕过了QuickShop的锁！
@@ -271,7 +347,7 @@ bungee-cross-server-msg: '<yellow>QuickShop跨服信息: <green>{0}'
 saved-to-path: 备份文件已保存到 {0}。
 shop-now-freezed: <green>你已经冻结了商店。现在没有人可以与这家商店交易！
 price-is-now: <green>商店的新价格是 <yellow>{0}
-shops-arent-locked: <red>注意，商店无法防盗，如果您想要防盗功能，请使用Lockette，LWC，等插件锁住商店。
+shops-arent-locked: <red>注意，商店无法防盗，如果您想要防盗功能，请使用Lockette、LWC等插件锁住商店。
 that-is-locked: <red>这个商店已上锁。
 shop-has-no-space: <red>这个商店只能装下 {0} 个 {1} 了。
 safe-mode-admin: '<red><bold>警告: <red>此服务器上的QuickShop正在安全模式下运行，任何功能都无法工作，请输入<yellow>/quickshop <red> 来检查错误。'
@@ -297,6 +373,8 @@ support-disable-reason:
 supertool-is-disabled: <red>超级工具已被禁用，现已不能使用超级工具破坏任何商店。
 unknown-owner: 未知所有者
 restricted-prices: '<red>物品 {0} 的价格限制为 {1}（包含）到{2}（包含）'
+restricted-price-max: '<red>物品 {0} 的价格最大限制为 {1}'
+restricted-price-min: '<red>物品 {0} 的价格最小限制为 {1}'
 nearby-shop-this-way: <green>商店距离你 {0} 格远
 owner-bypass-check: <yellow>已绕过所有检查并完成交易（因为你是商店所有者）！
 april-rick-and-roll-easter-egg: "<hover:show_text:'在浏览器中点击打开获取限时奖励!'><click:open_url:'https://www.bilibili.com/video/BV1GJ411x7h7'><green>点击此处可以获取由 QuickShop 开发者提供的限时奖励!</green></click></hover>"
@@ -318,6 +396,10 @@ signs:
   selling: 出售 {0}
   status-available: <green>
   item-left: ''
+  item-duration: '持续时间: {0}'
+  item-level: '等级：{0}'
+  splash-potion: "喷溅"
+  linger-potion: "滞留"
 negative-amount: <red>你输入的数字是负数。
 display-turn-on: <green>成功启用商店悬浮物显示
 display-turn-off: <green>成功关闭商店悬浮物显示
@@ -331,7 +413,7 @@ backup-failed: 无法备份数据库，请查看控制台以获取详细信息�
 shop-staff-cleared: <green>成功删除了该商店的所有助手。
 price-too-high: <red>商品的价格太高了！你不能创建价格高于 {0} 的商店。
 plugin-cancelled: '<red>操作被取消，原因： {0}'
-player-sold-to-your-store: <green>{0} 在你的商店出售了 {1} 个 {2} 。
+player-sold-to-your-store: <green>{0} 以 {3} 的价格向你的商店出售了 {1} 个 {2}。
 shop-out-of-stock: <dark_purple>你位于 {0}, {1}, {2}, 的商店的 {3} 脱销了。
 how-many-buy: <green>在聊天中输入您想要<aqua>购买<green>的数量。您可以购买<yellow>{0}<green>个，输入<aqua>{1}<green>以购买全部。
 language-info-panel:
@@ -464,6 +546,7 @@ command:
     lookup: <yellow>管理物品引用查找表
     database: <yellow>查看和维护 QuickShop 数据库
     benefit: <yellow>设置商店所有者和其他玩家之间的利益分配
+    benefitall: <yellow>Settings of divide benefits between shop owner and other players for all shops you own.
     browse: <yellow>浏览此服务器上存在的商店
     tag: <yellow>添加、 删除或查询商店标签
     suggestprice: <yellow>根据其他商店的情况, 为商店提出建议价格
@@ -689,19 +772,21 @@ importing-failed: <red>导入数据失败，请检查服务器控制台。
 imported-database: <green>数据从 <yellow>{0}</yellow> 导入。
 transfer-sent: <green>商店转移请求已发送到 <yellow>{0}</yellow>。
 transfer-request: <yellow>玩家 <aqua>{0}</aqua> 请求将他们的商店转移给您。您想接受这次来自 <aqua>{0}</aqua> 的商店吗？
-transfer-single-request: <yellow>玩家 <aqua>{0}</aqua> 想要将商店转让给您。您想要接受请求吗？
+transfer-single-request: <yellow>玩家 <aqua>{0}</aqua> 想要将商店转让给您。您想要接受请求吗？如果你不相信该玩家，请不要接受该请求
 transfer-ask: |-
-  <gold>输入 <red>/quickshop transfer accept</red> 来接受。</gold><gold>输入 <red>/quickshop transfer deny</red> 来拒绝.</gold><newline><gold>请求将在 <red>{0}</red> 秒后过期。
+  <gold>输入 <red>/quickshop transfer accept</red> 来接受。</gold><gold>输入 <red>/quickshop transfer deny</red> 来拒绝.</gold><newline><gold>请求将在 <red>{0}</red> 秒后过期。如果你不相信该玩家，请不要接受该请求
 transferall-ask: |-
-  <gold>输入 <red>/quickshop transferall accept</red> 来接受。</gold><gold>输入 <red>/quickshop transferall deny</red> 来拒绝.</gold><newline><gold>请求将在 <red>{0}</red> 秒后过期。
+  <gold>输入 <red>/quickshop transferall accept</red> 来接受。</gold><gold>输入 <red>/quickshop transferall deny</red> 来拒绝.</gold><newline><gold>请求将在 <red>{0}</red> 秒后过期。如果你不相信该玩家，请不要接受该请求
 transfer-single-ask: |-
-  <gold>输入 <red>/quickshop transferownership accept</red> 来接受。</gold><gold>输入 <red>/quickshop transferownership deny</red> 来拒绝.</gold><newline><gold>请求将在 <red>{0}</red> 秒后过期。
+  <gold>输入 <red>/quickshop transferownership accept</red> 来接受。</gold><gold>输入 <red>/quickshop transferownership deny</red> 来拒绝.</gold><newline><gold>请求将在 <red>{0}</red> 秒后过期。如果你不相信该玩家，请不要接受该请求
 transfer-accepted-fromside: <green>玩家 <aqua>{0}</aqua> 接受了您的商店转移请求。
 transfer-accepted-toside: <green>您接受了 <aqua>{0}</aqua> 的商店转移请求。
 transfer-rejected-fromside: <red>玩家 <aqua>{0}</aqua> 拒绝了您的商店转移请求。
 transfer-rejected-toside: <red>您拒绝了 <aqua>{0}</aqua> 的商店转移请求。
 transfer-no-pending-operation: <red>您没有待处理的商店转移请求。
 transfer-no-self: <red>您不能将商店转移给自己
+transfer-no-buy: <red>您不能转让收购商店
+transfer-failed-some: <red>无法转移某些商店，因为它们不符合条件。
 benefit-overflow: <red>所有利益的总和不能大于或等于100%
 benefit-exists: <red>目标玩家已经在此商店的利益分配列表中。
 benefit-removed: <red>目标玩家已被从商店的利益分配中移除。
@@ -709,17 +794,6 @@ benefit-added: <green>玩家 <aqua>{0}</aqua> 已被添加到商店的利益分�
 benefit-updated: <green>玩家 <aqua>{0}</aqua> 的利益分配已更新！
 benefit-query: <green>该商店在利益分配列表中有 <yellow>{0}</yellow> 名玩家！
 benefit-query-list: <yellow> - </yellow><white>玩家 <gold>{0}</gold>，利益分配 <gold>{1}%
-tag-added: '<green>成功将 <aqua>#{0}</aqua> 添加到该商店！'
-tag-add-duplicate: '<red>此商店已经存在标签 <aqua>#{0}</aqua>！'
-tag-removed: '<green>成功从该商店删除 <aqua>#{0}</aqua>！'
-tag-remove-not-exists: '该商店中不存在标签 <aqua>#{0}</aqua>！'
-tag-cleared: <green>成功清除了该商店的所有标签！
-tag-shops-cleared: '<green>成功地从您所有标记的商店中清除 <aqua>#{0}</aqua>！'
-tag-query: '<green>该商店有 <yellow>{0}</yellow> 标签：'
-tag-query-listing: '<yellow> - <aqua>#{0}'
-tag-query-no-tag: <red>此商店没有标签。
-tag-query-shops: '<green>此标签包含 <yellow>{0}</yellow> 商店：'
-tag-query-shops-listing: <yellow> - <aqua>{0}
 batch-operations-based-on-tags-no-failure: <green>成功批量处理 <yellow>{0}</yellow> 个商店
 batch-operations-based-on-tags-have-failure: <yellow>总 {0} 商店在批处理中成功完成，但是 <red>{1}</red> 请求未完成
 batch-operations-based-on-tags-have-failure-with-reason: '<yellow>总 {0} 商店在批处理中成功完成，但是 <red>{1}</red> 请求未完成。原因： <gold>{2}'
@@ -800,8 +874,8 @@ addon:
         {
          "embed":
            {
-             "title": ":inbox_tray: 有人向你的商店出售物品",
-             "description": "此玩家 %%purchase.name%% 出售 %%purchase.amount%% 个 %%shop.item.name%% 到你的商店.",
+             "title": ":inbox_tray: 有人向你的商店出售了商品",
+             "description": "玩家 %%purchase.name%% 向你的商店出售了 x%%purchase.amount%% %%shop.item.name%%。",
              "color": 52084,
              "author": {
                "name": "QuickShop-Hikari",
@@ -814,7 +888,7 @@ addon:
                "url": ""
              },
              "footer": {
-               "text": "QuickShop-Hikari Discord消息通知",
+               "text": "QuickShop-Hikari Discord 通知",
                "icon_url": ""
              },
              "fields": [
@@ -824,7 +898,7 @@ addon:
                  "inline": false
                },
                {
-                 "name": "玩家",
+                 "name": "购买者",
                  "value": "%%purchase.name%%",
                  "inline": true
                },
@@ -839,7 +913,7 @@ addon:
                  "inline": true
                },
                {
-                 "name": "您已支付",
+                 "name": "您已付款",
                  "value": "%%purchase.balance-formatted%%",
                  "inline": true
                },
@@ -1417,7 +1491,7 @@ addon:
       list: <yellow>列出自己或其他玩家拥有的所有商店
     table-prefix: '<yellow><green>{0}</green>的商店 <gray>(总计 {1})</gray>: '
     table-prefix-pageable: '<yellow><green>{0}</green>的商店 <gray>（页面 {1}/{2})</gray>: '
-    entry: <yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>价格 <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}'>{0}. <aqua>{1}
+    entry: "<yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>价格 <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}<br><green>{10}'>{0}。<aqua>{1}</hover>"
   shopitemonly:
     message: <red>您不能将非商店交易物品放入商店容器中，所有非商店交易的物品都会被扔到地上
   limited:
@@ -1568,6 +1642,8 @@ gui:
     custom-amount:
       display: "<bold><blue>自定义交易</blue></bold>"
     quantity-button:
+      display-buy: "<green>收购 x{0}</green>"
+      display-sell: "<gold>出售 x{0}</gold>"
       lore:
         - "<yellow>{0}</yellow>"
   keeper:
@@ -1578,6 +1654,16 @@ gui:
         - "<gray>当前价格：<white>{0}</white></gray>"
         - ""
         - "<yellow>点击更改价格</yellow>"
+    display-toggle:
+      display: "<bold><green>切换预览</green></bold>"
+      lore:
+        - "<gray>切换商店中的物品预览</gray>"
+        - "<gray>状态：<white>{0}</white>。点击切换。</gray>"
+    freeze-toggle:
+      display: "<bold><green>切换冻结状态</green></bold>"
+      lore:
+        - "<gray>当前 <white>{0}</white></gray>"
+        - "<gray>点击以 <white>{1}</white></gray>"
     mode-toggle:
       display: "<bold><green>更改模式</green></bold>"
       lore:
@@ -1619,6 +1705,30 @@ gui:
       display: "<white>返回商店</white>"
   browse:
     title: "<dark_aqua>商店浏览</dark_aqua>"
+    shop-list:
+      buying-label: "<#FFA500>收购</#FFA500>"
+      selling-label: "<green>出售</green>"
+      price-indicator:
+        average: "● 平均值"
+        selling:
+          great: "▼▼ 超值优惠！"
+          good: "▼ 低于平均值"
+          bad: "▲▲ 售价偏高"
+          worst: "▲ 售价过高"
+        buying:
+          great: "▲▲ 极佳收购价！"
+          good: "▲▲ 售价偏高"
+          bad: "▼▼ 收购价偏低"
+          worst: "▼▼ 低于平均值"
+      display: "<yellow>{0}</yellow>"
+      lore:
+        - "<gray>所有者: <white>{0}</white></gray>"
+        - "<gray>类型: {1}</gray>"
+        - "<gray>价格： {2}</gray>"
+        - "<gray><aqua>{3}</aqua></gray>"
+        - "<gray>位置： <white>{4}</white></gray>"
+        - "<dark_gray>{5}</dark_gray>"
+      teleport: "<newline><yellow>点击传送</yellow>"
     shop-item:
       lore:
         - "<green>所有者: </green>{0}<yellow></yellow>"
@@ -1648,6 +1758,12 @@ gui:
       lore:
         - "<gray>左键点击搜索玩家</gray>"
         - "<gray>右键单击清除搜索</gray>"
+    search-item:
+      display: "<yellow>{0}</yellow>"
+      lore:
+        - "<gray>正在显示： {0}</gray>"
+        - "<gray>商店: <white>{1}</white></gray>"
+        - "<gray>平均价格： <gold>{2}</gold></gray>"
     sort:
       display: "<green>排序： {0}</green>"
       lore:
@@ -1663,6 +1779,9 @@ gui:
       all: "全部"
       selling: "出售"
       buying: "收购"
+      all-indicator: "<white>所有商店</white>"
+      selling-indicator: "<green>出售商店</green>"
+      buying-indicator: "<#FFA500>▲ 收购商店</#FFA500>"
     stock-filter:
       display: "<gold>仅显示有货: {0}</gold>"
       lore:
@@ -1736,7 +1855,7 @@ history:
       - "<white>商店： <yellow>{0}</yellow></white>"
       - "<white>买家： <yellow>{1}</yellow></white>"
       - "<white>物品： <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
-      - "<white>数量: <yellow>{4}</yellow></white>"
+      - "<white>价格: <yellow>{4}</yellow></white>"
       - "<white>总计： <yellow>{5}</yellow></white>"
       - "<white>税： <yellow>{5}</yellow></white>"
       - "<white>实收： <yellow>{6}</yellow></white>"

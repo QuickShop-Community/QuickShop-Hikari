@@ -19,6 +19,8 @@ package com.ghostchu.quickshop.api.shop;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import org.bukkit.Location;
+
 /**
  * Locatable
  *
@@ -33,4 +35,11 @@ public interface Locatable<T> {
    * @return the location of type T associated with this object.
    */
   T getLocation();
+
+  /**
+   * Converts the location associated with this object to a Bukkit-compatible {@link Location}.
+   *
+   * @return the Bukkit {@link Location} representation of this object's location.
+   */
+  Location bukkitLocation();
 }

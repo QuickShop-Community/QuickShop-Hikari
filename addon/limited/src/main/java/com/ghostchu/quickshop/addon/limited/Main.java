@@ -15,7 +15,7 @@ import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -58,14 +58,13 @@ public final class Main extends JavaPlugin implements Listener {
   public void shopPurchase(final ShopPurchaseEvent event) {
 
     final Shop shop = event.getShop();
-    final ConfigurationSection storage = shop.getExtra(this);
-    if(storage.getInt("limit") < 1) {
+    final int limit = shop.getExtra(new NamespacedKey(this, "limit"), 0);
+    if (limit < 1) {
       return;
     }
-    final int limit = storage.getInt("limit");
     final UUID uuid = event.getPurchaser().getUniqueIdIfRealPlayer().orElse(null);
     if(uuid != null) {
-      final int playerUsedLimit = storage.getInt("data." + uuid, 0);
+      final int playerUsedLimit = shop.getExtra(new NamespacedKey(this, "data." + uuid), 0);
       if(playerUsedLimit + event.getAmount() > limit) {
         final Text text = plugin.text().of(event.getPurchaser(), "addon.limited.trade-limit-reached-cancel-reason");
         text.send();
@@ -80,13 +79,12 @@ public final class Main extends JavaPlugin implements Listener {
     if(event.isPhase(Phase.POST)) {
 
       final Shop shop = event.shop().get();
-      final ConfigurationSection storage = shop.getExtra(this);
-      if(storage.getInt("limit") < 1) {
+      final int limit = shop.getExtra(new NamespacedKey(this, "limit"), 0);
+      if(limit < 1) {
         Log.debug("Shop limit is not enabled on this shop.");
         return;
       }
-      final int limit = storage.getInt("limit");
-      final int playerUsedLimit = storage.getInt("data." + event.user().getUniqueId(), 0);
+      final int playerUsedLimit = shop.getExtra(new NamespacedKey(this, "data." + event.user().getUniqueId()), 0);
       plugin.text().of(event.user(), "addon.limited.remains-limits", limit - playerUsedLimit).send();
       Log.debug("Shop limit is enabled on this shop. Limit: " + limit + " Used: " + playerUsedLimit);
     }
@@ -96,17 +94,15 @@ public final class Main extends JavaPlugin implements Listener {
   public void shopPurchaseSuccess(final ShopSuccessPurchaseEvent event) {
 
     final Shop shop = event.getShop();
-    final ConfigurationSection storage = shop.getExtra(this);
-    if(storage.getInt("limit") < 1) {
+    final int limit = shop.getExtra(new NamespacedKey(this, "limit"), 0);
+    if(limit < 1) {
       return;
     }
     final UUID uuid = event.getPurchaser().getUniqueIdIfRealPlayer().orElse(null);
     if(uuid != null) {
-      final int limit = storage.getInt("limit");
-      int playerUsedLimit = storage.getInt("data." + uuid, 0);
+      int playerUsedLimit = shop.getExtra(new NamespacedKey(this, "data." + uuid), 0);
       playerUsedLimit += event.getAmount();
-      storage.set("data." + uuid, playerUsedLimit);
-      shop.setExtra(this, storage);
+      shop.setExtra(new NamespacedKey(this, "data." + uuid), playerUsedLimit);
       final Player player = Bukkit.getPlayer(uuid);
       if(player != null) {
         player.sendTitle(plugin.text().of(player, "addon.limited.titles.title").legacy(),
@@ -123,24 +119,21 @@ public final class Main extends JavaPlugin implements Listener {
       return;
     }
     Util.asyncThreadRun(()->plugin.getShopManager().getAllShops().forEach(shop->{
-      final ConfigurationSection manager = shop.getExtra(this);
-      final int limit = manager.getInt("limit");
+      final int limit = shop.getExtra(new NamespacedKey(this, "limit"), 0);
       if(limit < 1) {
         return;
       }
-      if(CommonUtil.isEmptyString(manager.getString("period"))) {
+      if(CommonUtil.isEmptyString(shop.getExtra(new NamespacedKey(this, "period"), ""))) {
         return;
       }
       try {
-        if(event.getCalendarTriggerType().ordinal() >= CalendarEvent.CalendarTriggerType.valueOf(manager.getString("period")).ordinal()) {
-          manager.set("data", null);
-          shop.setExtra(this, manager);
+        if(event.getCalendarTriggerType().ordinal() >= CalendarEvent.CalendarTriggerType.valueOf(shop.getExtra(new NamespacedKey(this, "period"), "")).ordinal()) {
+          shop.removeExtraPartial(new NamespacedKey(this, "data"));
           Log.debug("Limit data has been reset. Shop -> " + shop);
         }
       } catch(final IllegalArgumentException ignored) {
-        Log.debug("Limit data failed to reset. Shop -> " + shop + " type " + manager.getString("period") + " not exists.");
-        manager.set("period", null);
-        shop.setExtra(this, manager);
+        Log.debug("Limit data failed to reset. Shop -> " + shop + " type " + shop.getExtra(new NamespacedKey(this, "period"), "") + " not exists.");
+        shop.removeExtra(new NamespacedKey(this, "period"));
       }
     }));
 

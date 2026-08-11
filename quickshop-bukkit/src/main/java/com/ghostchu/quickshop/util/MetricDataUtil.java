@@ -77,7 +77,7 @@ public class MetricDataUtil {
       nameBuilder.append(ChatColor.stripColor(shopName));
     } else {
       if(shop != null) {
-        final Location location = shop.getLocation();
+        final Location location = shop.bukkitLocation();
         final String template = "%s %s,%s,%s";
         nameBuilder.append(String.format(template, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ()));
       } else {

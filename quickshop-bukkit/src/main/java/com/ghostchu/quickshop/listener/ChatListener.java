@@ -17,6 +17,8 @@ import java.time.temporal.ChronoUnit;
  */
 public class ChatListener extends AbstractQSListener {
 
+  private static final String LITEBANS_CANCELLED = "[event cancelled by LiteBans]";
+
   public ChatListener(final QuickShop plugin) {
 
     super(plugin);
@@ -33,9 +35,16 @@ public class ChatListener extends AbstractQSListener {
     if(!plugin.getShopManager().getInteractiveManager().containsKey(e.getPlayer().getUniqueId())) {
       return;
     }
+
+    String message = e.getMessage();
+    // Support for LiteBans muted players
+    if (message.startsWith(LITEBANS_CANCELLED)) {
+      message = message.substring(LITEBANS_CANCELLED.length());
+    }
+
     try(PerfMonitor ignored = new PerfMonitor("HandleChat", Duration.of(3, ChronoUnit.SECONDS))) {
       // Fix stupid chat plugin will add a weird space before or after the number we want.
-      plugin.getShopManager().handleChat(e.getPlayer(), e.getMessage().trim());
+      plugin.getShopManager().handleChat(e.getPlayer(), message.trim());
     }
     e.setCancelled(true);
   }

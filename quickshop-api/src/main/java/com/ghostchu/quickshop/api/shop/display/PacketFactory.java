@@ -17,6 +17,7 @@ package com.ghostchu.quickshop.api.shop.display;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.api.shop.Shop;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -51,6 +52,26 @@ public interface PacketFactory<T> {
    * @return the metadata packet of type T
    */
   T createMetaDataPacket(final int id, @NotNull ItemStack itemStack);
+
+  /**
+   * Creates a text display spawn packet for the specified entity ID and location.
+   *
+   * @param id        the unique identifier for the entity associated with the text display spawn packet
+   * @param location  the location where the text display will be spawned, cannot be null
+   * @return          the text display spawn packet of type T
+   */
+  T createTextDisplaySpawnPacket(final int id, @NotNull final Location location);
+
+  /**
+   * Creates a packet to toggle the visibility of a text display entity.
+   * This packet is associated with the specified entity ID, includes
+   * the provided item stack.
+   *
+   * @param id        the unique identifier of the entity whose visibility is being toggled
+   * @param itemStack the item stack associated with the text display, must not be null
+   * @return          a packet of type T that toggles the visibility of the text display
+   */
+  T createTextDisplayVisiblePacket(final int id, final @NotNull Shop shop, final @NotNull ItemStack itemStack);
 
   /**
    * Creates a velocity packet with the specified ID.

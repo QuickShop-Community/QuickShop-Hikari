@@ -82,7 +82,7 @@ public class SubCommand_SetOwner implements CommandHandler<Player> {
   public List<String> onTabComplete(
           @NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
-    return parser.getArgs().size() <= 1? getPlayerList() : Collections.emptyList();
+    return parser.getArgs().size() <= 1? getPlayerList(sender) : Collections.emptyList();
   }
 
 }

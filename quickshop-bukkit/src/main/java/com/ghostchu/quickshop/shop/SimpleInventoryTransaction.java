@@ -3,7 +3,10 @@ package com.ghostchu.quickshop.shop;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.inventory.InventoryTransactionEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
+import com.ghostchu.quickshop.api.inventory.ItemRemoveResult;
 import com.ghostchu.quickshop.api.operation.Operation;
+import com.ghostchu.quickshop.api.operation.OperationResult;
+import com.ghostchu.quickshop.api.operation.result.GenericOperationResult;
 import com.ghostchu.quickshop.api.shop.InventoryTransaction;
 import com.ghostchu.quickshop.shop.operation.AddItemOperation;
 import com.ghostchu.quickshop.shop.operation.RemoveItemOperation;
@@ -28,6 +31,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
   private InventoryWrapper from;
   private InventoryWrapper to;
   private ItemStack item;
+  private final String itemSerializeString;
   private int amount;
   private String lastError;
 
@@ -40,6 +44,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
     this.from = from;
     this.to = to;
     this.item = item.clone();
+    this.itemSerializeString = Util.serialize(item);
     this.amount = amount;
     new InventoryTransactionEvent(this).callEvent();
   }
@@ -52,7 +57,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
   @Override
   public boolean commit() {
 
-    try(PerfMonitor ignored = new PerfMonitor("Inventory Transaction - Commit")) {
+    try(final PerfMonitor ignored = new PerfMonitor("Inventory Transaction - Commit")) {
       return this.commit(new SimpleTransactionCallback() {
       });
     }
@@ -68,18 +73,38 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
   @Override
   public boolean commit(@NotNull final TransactionCallback callback) {
 
-    Log.transaction("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Item: " + Util.serialize(item));
+    Log.transaction("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Item: " + itemSerializeString);
     if(!callback.onCommit(this)) {
       this.lastError = "Plugin cancelled this transaction.";
       return false;
     }
-    if(from != null && !this.executeOperation(new RemoveItemOperation(item, amount, from))) {
-      this.lastError = "Failed to remove " + amount + "x " + Util.serialize(item) + " from " + from;
-      callback.onFailed(this);
-      return false;
+
+    OperationResult<?> removeResult = null;
+    if(from != null) {
+
+      removeResult = this.executeOperation(new RemoveItemOperation(item, amount, from));
+      if(!removeResult.success()) {
+
+        this.lastError = "Failed to remove " + amount + "x " + itemSerializeString + " from " + from;
+        callback.onFailed(this);
+        return false;
+      }
     }
-    if(to != null && !this.executeOperation(new AddItemOperation(item, amount, to))) {
-      this.lastError = "Failed to add " + amount + "x " + Util.serialize(item) + " to " + to;
+
+    if(to == null) {
+
+      callback.onSuccess(this);
+      return true;
+    }
+
+    //TODO: How to make this anti-abusable? Disable it for custom matcher? We can't really guarantee trades for that
+    final AddItemOperation addOperation = (removeResult != null && removeResult.result() instanceof ItemRemoveResult)?
+                                          new AddItemOperation(((ItemRemoveResult)removeResult.result()).removed().values().toArray(ItemStack[]::new), to) : new AddItemOperation(item, amount, to);
+    final OperationResult<?> addResult = this.executeOperation(new AddItemOperation(item, amount, to));
+
+    if(!addResult.success()) {
+
+      this.lastError = "Failed to add " + amount + "x " + itemSerializeString + " to " + to;
       callback.onFailed(this);
       return false;
     }
@@ -153,7 +178,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
   @Override
   public boolean failSafeCommit() {
 
-    Log.transaction("Transaction begin: FailSafe Commit --> " + from + " => " + to + "; Amount: " + amount + " Item: " + Util.serialize(item));
+    Log.transaction("Transaction begin: FailSafe Commit --> " + from + " => " + to + "; Amount: " + amount + " Item: " + itemSerializeString);
     final boolean result = commit();
     if(!result) {
       Log.transaction(Level.WARNING, "Fail-safe commit failed, starting rollback: " + lastError);
@@ -188,7 +213,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
   @Override
   public List<Operation> rollback(final boolean continueWhenFailed) {
 
-    try(PerfMonitor ignored = new PerfMonitor("Inventory Transaction - Rollback")) {
+    try(final PerfMonitor ignored = new PerfMonitor("Inventory Transaction - Rollback")) {
       final List<Operation> operations = new ArrayList<>();
       while(!processingStack.isEmpty()) {
         final Operation operation = processingStack.pop();
@@ -206,7 +231,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
             Log.transaction("Rollback successes: " + operation);
           }
           operations.add(operation);
-        } catch(Exception exception) {
+        } catch(final Exception exception) {
           if(continueWhenFailed) {
             operations.add(operation);
             plugin.logger().warn("Failed to rollback transaction: Operation: {}; Transaction: {}; Skipping...", operation, this);
@@ -220,15 +245,15 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
     }
   }
 
-  private boolean executeOperation(@NotNull final Operation operation) {
+  private OperationResult<?> executeOperation(@NotNull final Operation operation) {
 
     try {
       processingStack.push(operation); // Item is special, economy fail won't do anything but item does.
       return operation.commit();
-    } catch(Exception exception) {
+    } catch(final Exception exception) {
       plugin.logger().warn("Failed to execute operation: " + operation, exception);
       this.lastError = "Failed to execute operation: " + operation;
-      return false;
+      return new GenericOperationResult(false);
     }
   }
 

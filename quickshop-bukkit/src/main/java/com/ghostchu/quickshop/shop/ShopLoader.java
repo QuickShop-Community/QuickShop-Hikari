@@ -8,20 +8,23 @@ import com.ghostchu.quickshop.api.economy.benefit.BenefitProvider;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.IShopType;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.state.ShopState;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.Timer;
 import com.ghostchu.quickshop.economy.QSBenefitProvider;
-import com.ghostchu.quickshop.util.PackageUtil;
+import com.ghostchu.quickshop.shop.cache.SimpleShopInventoryCountCache;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.google.common.reflect.TypeToken;
 import lombok.Getter;
 import lombok.Setter;
+import net.kyori.adventure.key.Key;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -30,7 +33,6 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.lang.reflect.Type;
-import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +42,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static com.ghostchu.quickshop.api.CommonUtil.legacyYamlKeyToNamespacedKey;
+import static com.ghostchu.quickshop.api.shop.meta.ShopExtraHolder.EXTRA_VERSION_KEY;
 
 /**
  * A class allow plugin load shops fast and simply.
@@ -59,9 +64,9 @@ public class ShopLoader implements SubPasteItem {
   public ShopLoader(@NotNull final QuickShop plugin) {
 
     this.plugin = plugin;
-    this.executorService = Executors.newWorkStealingPool(PackageUtil
-                                                                 .parsePackageProperly("parallelism")
-                                                                 .asInteger(CommonUtil.multiProcessorThreadRecommended()));
+    int parallelism = plugin.getConfig().getInt("database.loader-threads", -1);
+    if(parallelism  <= 0) parallelism = CommonUtil.multiProcessorThreadRecommended();
+    this.executorService = Executors.newWorkStealingPool(parallelism);
   }
 
   public void loadShops() {
@@ -121,7 +126,7 @@ public class ShopLoader implements SubPasteItem {
       final InfoRecord infoRecord = shopRecord.getInfoRecord();
       final DataRecord dataRecord = shopRecord.getDataRecord();
       final Timer singleShopLoadingTimer = new Timer(true);
-      final ShopLoadResult result = loadSingleShop(infoRecord, dataRecord, worldName, shopsLoadInNextTick);
+      final ShopLoadResult result = loadSingleShop(shopRecord, worldName, shopsLoadInNextTick);
       switch(result) {
         case LOADED -> successCounter.incrementAndGet();
         case LOAD_AFTER_CHUNK_LOADED -> chunkNotLoaded.incrementAndGet();
@@ -141,7 +146,10 @@ public class ShopLoader implements SubPasteItem {
   }
 
 
-  private ShopLoadResult loadSingleShop(final InfoRecord infoRecord, final DataRecord dataRecord, @Nullable final String worldName, @NotNull final List<Shop> shopsLoadInNextTick) {
+  private ShopLoadResult loadSingleShop(final ShopRecord shopRecord, @Nullable final String worldName, @NotNull final List<Shop> shopsLoadInNextTick) {
+    final InfoRecord infoRecord = shopRecord.getInfoRecord();
+    final DataRecord dataRecord = shopRecord.getDataRecord();
+
     // World check
     if(worldName != null) {
       if(!worldName.equals(infoRecord.getWorld())) {
@@ -172,6 +180,10 @@ public class ShopLoader implements SubPasteItem {
     final DataRawDatabaseInfo rawInfo = new DataRawDatabaseInfo(dataRecord);
     final Location location = new Location(Bukkit.getWorld(infoRecord.getWorld()), x, y, z);
 
+    final SimpleShopInventoryCountCache countCache = shopRecord.getCachedSpace() == 0 && shopRecord.getCachedStock() == 0
+            ? new SimpleShopInventoryCountCache() // cached stock & space both being 0 means no external cache existed, create uninitialized cache
+            : new SimpleShopInventoryCountCache(shopRecord.getCachedStock(), shopRecord.getCachedSpace(), true);
+
     final ItemStack stack = (rawInfo.getNewItem() == null)? rawInfo.getItem() : rawInfo.getNewItem();
     try {
       shop = new ContainerShop(plugin,
@@ -182,7 +194,8 @@ public class ShopLoader implements SubPasteItem {
                                rawInfo.getOwner(),
                                rawInfo.isUnlimited(),
                                rawInfo.getType(),
-                               rawInfo.getExtra(),
+                               rawInfo.getState(),
+                               rawInfo.getExtraMap(),
                                rawInfo.getCurrency(),
                                rawInfo.isHologram(),
                                rawInfo.getTaxAccount(),
@@ -190,7 +203,9 @@ public class ShopLoader implements SubPasteItem {
                                rawInfo.getInvSymbolLink(),
                                rawInfo.getName(),
                                rawInfo.getPermissions(),
-                               rawInfo.getBenefits());
+                               rawInfo.getBenefits(),
+                               countCache
+      );
     } catch(final Exception e) {
       if(e instanceof IllegalStateException) {
         plugin.logger().warn("Failed to load the shop, skipping...", e);
@@ -265,7 +280,7 @@ public class ShopLoader implements SubPasteItem {
       Log.debug("Shop itemStack amount can't be 0");
       return true;
     }
-    if(shop.getLocation() == null) {
+    if(shop.bukkitLocation() == null) {
       Log.debug("Shop location is null");
       return true;
     }
@@ -302,13 +317,14 @@ public class ShopLoader implements SubPasteItem {
     private QUser owner;
     private String name;
     private IShopType type;
+    private ShopState state;
     private String currency;
     private double price;
     private boolean unlimited;
     private boolean hologram;
     private QUser taxAccount;
     private Map<UUID, String> permissions;
-    private YamlConfiguration extra;
+    private final Map<Key, String> extraMap = new HashMap<>();
     private String invWrapper;
     private String invSymbolLink;
     private long createTime;
@@ -317,6 +333,7 @@ public class ShopLoader implements SubPasteItem {
     private boolean needUpdate = false;
 
     private BenefitProvider benefits;
+    private SimpleShopInventoryCountCache inventoryCountCache;
 
 
     DataRawDatabaseInfo(@NotNull final DataRecord dataRecord) {
@@ -324,6 +341,7 @@ public class ShopLoader implements SubPasteItem {
       this.owner = dataRecord.getOwner();
       this.price = dataRecord.getPrice();
       this.type = QuickShop.getInstance().getShopManager().shopTypeOrDefault(dataRecord.getType());
+      this.state = QuickShop.getInstance().getShopManager().shopStateOrDefault(dataRecord.getState());
       this.unlimited = dataRecord.isUnlimited();
       final String extraStr = dataRecord.getExtra();
       this.name = dataRecord.getName();
@@ -369,7 +387,7 @@ public class ShopLoader implements SubPasteItem {
         needUpdate = true;
       }
 
-      this.extra = deserializeExtra(extraStr);
+      this.extraMap.putAll(deserializeExtraMap(extraStr));
     }
 
     private @Nullable ItemStack deserializeItem(@NotNull final String itemConfig) {
@@ -383,21 +401,44 @@ public class ShopLoader implements SubPasteItem {
       }
     }
 
-    private @Nullable YamlConfiguration deserializeExtra(@NotNull final String extraString) {
+    private @NotNull Map<Key, String> deserializeExtraMap(@NotNull final String extraString) {
 
-      if(CommonUtil.isEmptyString(extraString)) {
-        return null;
+      final Map<Key, String> map = new HashMap<>();
+      if (extraString.contains(EXTRA_VERSION_KEY.asString())) {
+
+        final Type type = new TypeToken<Map<String, String>>() {}.getType();
+
+        final Map<String, String> extraMap = new HashMap<>();
+        extraMap.putAll(JsonUtil.getGson().fromJson(extraString, type));
+
+        for (final Map.Entry<String, String> entry : extraMap.entrySet()) {
+
+          map.put(Key.key(entry.getKey()), entry.getValue());
+        }
+        return map;
       }
-      YamlConfiguration yamlConfiguration = new YamlConfiguration();
+
+      final YamlConfiguration yaml = new YamlConfiguration();
       try {
-        yamlConfiguration.loadFromString(extraString);
-      } catch(final InvalidConfigurationException e) {
-        yamlConfiguration = new YamlConfiguration();
-        needUpdate = true;
+        yaml.loadFromString(extraString);
+      } catch (final InvalidConfigurationException ignore) {
+        Log.debug("Failed to load extra data during conversion from YamlConfiguration: " + extraString);
+        return map;
       }
-      return yamlConfiguration;
-    }
 
+      yaml.getValues(true).forEach((key, value) -> {
+        if (value == null || value instanceof ConfigurationSection) {
+          return;
+        }
+
+        final String convertedKey = legacyYamlKeyToNamespacedKey(key);
+        final String stringValue = String.valueOf(value);
+
+        map.put(Key.key(convertedKey), stringValue);
+      });
+
+      return map;
+    }
 
     @Override
     public String toString() {
@@ -405,47 +446,4 @@ public class ShopLoader implements SubPasteItem {
       return JsonUtil.getGson().toJson(this);
     }
   }
-
-  @Getter
-  @Setter
-  public static class ShopDatabaseInfo {
-
-    private int shopId;
-    private int dataId;
-
-    ShopDatabaseInfo(final ResultSet origin) {
-
-      try {
-        this.shopId = origin.getInt("id");
-        this.dataId = origin.getInt("data");
-      } catch(final Exception ex) {
-        ex.printStackTrace();
-      }
-    }
-  }
-
-  @Getter
-  @Setter
-  public static class ShopMappingInfo {
-
-    private int shopId;
-    private String world;
-    private int x;
-    private int y;
-    private int z;
-
-    ShopMappingInfo(final ResultSet origin) {
-
-      try {
-        this.shopId = origin.getInt("shop");
-        this.x = origin.getInt("x");
-        this.y = origin.getInt("y");
-        this.z = origin.getInt("z");
-        this.world = origin.getString("world");
-      } catch(final Exception ex) {
-        ex.printStackTrace();
-      }
-    }
-  }
-
 }

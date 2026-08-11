@@ -17,13 +17,13 @@ package com.ghostchu.quickshop.hook;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.hook.Hook;
 import com.ghostchu.quickshop.hook.fworldedit.FWorldEditAdapter;
-import com.ghostchu.quickshop.hook.worldedit.WorldEditAdapter;
 import org.bukkit.Bukkit;
 
 /**
- * WorldEditHook
+ * FWorldEditHook
  *
  * @author creatorfromhell
  * @since 6.2.0.11
@@ -51,7 +51,8 @@ public class FWorldEditHook implements Hook {
   @Override
   public boolean canEnable() {
 
-    return Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit");
+    return Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit")
+           && QuickShop.getInstance().getConfig().getBoolean("plugin.WorldEdit", true);
   }
 
   /**

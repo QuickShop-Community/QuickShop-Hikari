@@ -7,17 +7,10 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
 import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.Util;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -43,9 +36,9 @@ public class SubCommand_List implements CommandHandler<Player> {
       lookupSelf(sender, page);
       return;
     }
-    if(!CommonUtil.isNumeric(parser.getArgs().getFirst())) {
+    if(!CommonUtil.isInteger(parser.getArgs().getFirst())) {
       if(parser.getArgs().size() >= 2) {
-        if(!CommonUtil.isNumeric(parser.getArgs().get(1))) {
+        if(!CommonUtil.isInteger(parser.getArgs().get(1))) {
           quickshop.text().of(sender, "not-a-number", parser.getArgs().get(1)).send();
           return;
         }
@@ -63,7 +56,7 @@ public class SubCommand_List implements CommandHandler<Player> {
 
     if(parser.getArgs().size() == 1) {
       if(quickshop.perm().hasPermission(sender, "quickshopaddon.list.other")) {
-        return getPlayerList();
+        return getPlayerList(sender);
       }
     }
     if(parser.getArgs().size() == 2) {
@@ -110,8 +103,8 @@ public class SubCommand_List implements CommandHandler<Player> {
       if(counter < startPos) {
         continue;
       }
-      String shopName = shop.getShopName();
-      final Location location = shop.getLocation();
+      /*String shopName = shop.getShopName();
+      final Location location = shop.bukkitLocation();
       final String combineLocation = location.getWorld().getName() + " " + location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ();
       if(CommonUtil.isEmptyString(shopName)) {
         shopName = combineLocation;
@@ -125,9 +118,11 @@ public class SubCommand_List implements CommandHandler<Player> {
       } else {
         shopTypeComponent = quickshop.text().of(sender, "menu.this-shop-is-frozen").forLocale();
       }
-      Component component = quickshop.text().of(sender, "addon.list.entry", counter, shopNameComponent, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), quickshop.getEconomyManager().provider().format(BigDecimal.valueOf(shop.getPrice()), shop.getLocation().getWorld().getName(), shop.getCurrency()), shop.getShopStackingAmount(), Util.getItemStackName(shop.getItem()), shopTypeComponent).forLocale();
-      component = component.clickEvent(ClickEvent.runCommand(MsgUtil.fillArgs("/{0} {1} {2}", quickshop.getMainCommand(), quickshop.getCommandPrefix("silentpreview"), shop.getRuntimeRandomUniqueId().toString())));
-      printer.printLine(component);
+      Component component = quickshop.text().of(sender, "addon.list.entry", counter, shopNameComponent, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), shop.format(shop.bukkitLocation().getWorld().getName(), shop.getCurrency()), shop.getShopStackingAmount(), Util.getItemStackName(shop.getItem()), shopTypeComponent).forLocale();
+      component = component.clickEvent(ClickEvent.runCommand(MsgUtil.fillArgs("/{0} {1} {2}", quickshop.getMainCommand(), quickshop.getCommandPrefix("silentpreview"), shop.getRuntimeRandomUniqueId().toString())));*/
+
+      printer.printLine(MsgUtil.buildShopHover(sender, shop, true, counter));
+
       loopCounter++;
       if(loopCounter >= pageSize) {
         break;

@@ -14,13 +14,14 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
+import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
@@ -129,6 +130,92 @@ public class MsgUtil {
     return decimalFormat.format(value);
   }
 
+  //todo:
+  public static Component buildShopHover(@NotNull final Player player, @NotNull final Shop shop,
+                                         final boolean clickPreview, final int counter) {
+
+    final Location location = shop.bukkitLocation();
+
+    Component component = QuickShop.getInstance().text().of(player, "addon.list.entry", counter, buildShopName(shop),
+                                              location.getWorld().getName(), location.getBlockX(),
+                                              location.getBlockY(), location.getBlockZ(),
+                                              shop.format(shop.bukkitLocation().getWorld().getName(), shop.getCurrency()),
+                                              shop.getShopStackingAmount(), Util.getItemStackName(shop.getItem()),
+                                              buildShopType(player, shop),
+                                              buildShopState(player, shop)).forLocale();
+
+    if(clickPreview) {
+      component = component.clickEvent(ClickEvent.runCommand(MsgUtil.fillArgs("/{0} {1} {2}",
+                                                                              QuickShop.getInstance().getMainCommand(),
+                                                                              QuickShop.getInstance().getCommandPrefix("silentpreview"),
+                                                                              shop.getRuntimeRandomUniqueId().toString())));
+    }
+    return component;
+  }
+
+  public static Component buildShopHoverTag(@NotNull final Player player, @NotNull final Shop shop,
+                                         final boolean clickPreview, final int counter, final String commandLabel) {
+
+    return buildShopHoverTag(player, shop, "tags.tag.entry", clickPreview, counter, commandLabel, 0);
+  }
+
+  public static Component buildShopHoverTag(@NotNull final Player player, @NotNull final Shop shop, final String languageString,
+                                            final boolean clickPreview, final int counter, final String commandLabel, final int tagAmount) {
+
+    final Location location = shop.bukkitLocation();
+
+    final String coords = location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ();
+
+    Component component = QuickShop.getInstance().text().of(player, languageString, counter, buildShopName(shop),
+                                                            location.getWorld().getName(), coords,
+                                                            shop.format(shop.bukkitLocation().getWorld().getName(), shop.getCurrency()),
+                                                            shop.getShopStackingAmount(), Util.getItemStackName(shop.getItem()),
+                                                            buildShopType(player, shop),
+                                                            buildShopState(player, shop), commandLabel, tagAmount).forLocale();
+
+    if(clickPreview) {
+      component = component.clickEvent(ClickEvent.runCommand(MsgUtil.fillArgs("/{0} {1} {2}",
+                                                                              QuickShop.getInstance().getMainCommand(),
+                                                                              QuickShop.getInstance().getCommandPrefix("silentpreview"),
+                                                                              shop.getRuntimeRandomUniqueId().toString())));
+    }
+    return component;
+  }
+
+  public static Component buildShopName(@NotNull final Shop shop) {
+
+    String shopName = shop.getShopName();
+    final Location location = shop.bukkitLocation();
+    final String combineLocation = location.getWorld().getName() + " " + location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ();
+    if(CommonUtil.isEmptyString(shopName)) {
+      shopName = combineLocation;
+    }
+
+    return LegacyComponentSerializer.legacySection().deserialize(shopName).append(Component.textOfChildren(Component.text(" (").append(Util.getItemStackName(shop.getItem())).append(Component.text(")"))).color(NamedTextColor.GRAY));
+  }
+
+  public static Component buildShopHoverTitle(@NotNull final Shop shop) {
+    String shopName = shop.getShopName();
+    final Location location = shop.bukkitLocation();
+    final String combineLocation = location.getWorld().getName() + " " + location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ();
+
+    if(CommonUtil.isEmptyString(shopName)) {
+      shopName = combineLocation;
+    }
+
+    return LegacyComponentSerializer.legacySection().deserialize(shopName);
+  }
+
+  public static Component buildShopType(@NotNull final Player player, @NotNull final Shop shop) {
+
+    return QuickShop.getInstance().text().of(player, shop.shopType().miniLoreTranslationKey()).forLocale();
+  }
+
+  public static Component buildShopState(@NotNull final Player player, @NotNull final Shop shop) {
+
+    return QuickShop.getInstance().text().of(player, "menu.this-shop-is-state", QuickShop.getInstance().text().of(player, shop.shopState().miniLoreTranslationKey()).forLocale()).forLocale();
+  }
+
   /**
    * Replace args in raw to args
    *
@@ -171,6 +258,7 @@ public class MsgUtil {
   public static Component fillArgs(@NotNull Component origin, @Nullable final Component... args) {
 
     for(int i = 0; i < args.length; i++) {
+
       origin = origin.replaceText(TextReplacementConfig.builder()
                                           .matchLiteral("{" + i + "}")
                                           .replacement(args[i] == null? Component.empty() : args[i])
@@ -547,10 +635,10 @@ public class MsgUtil {
     }
 
     if(PLUGIN == null) {
-      return Component.text(name).color(TextColor.color(NamedTextColor.AQUA))
-              .append(Component.text("(").color(TextColor.color(NamedTextColor.GOLD)))
-              .append(Component.text(uuid)).color(TextColor.color(NamedTextColor.YELLOW))
-              .append(Component.text(")").color(TextColor.color(NamedTextColor.GOLD)));
+      return Component.text(name).color(NamedTextColor.AQUA)
+              .append(Component.text("(").color(NamedTextColor.GOLD))
+              .append(Component.text(uuid)).color(NamedTextColor.YELLOW)
+              .append(Component.text(")").color(NamedTextColor.GOLD));
     } else {
       return PLUGIN.text().of(sender, "player-profile-format", name, uuid).forLocale();
     }

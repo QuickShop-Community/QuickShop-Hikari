@@ -20,8 +20,19 @@ tabcomplete:
   price: '[prijs]'
   name: '[name]'
   range: '[bereik]'
+  list: 'list'
+  page: '[page #]'
+  shop-id: '[shop id]'
   currency: '[valuta naam]'
   percentage: '[percentage%]'
+  add: 'add'
+  remove: 'remove'
+  clear: 'clear'
+  clearall: 'clearall'
+  shops: 'shops'
+  tagged: 'tagged'
+  purge: 'purge'
+  tag: '[tag]'
 taxaccount-unset: <green>De belastingrekening van deze winkel volgt nu de algemene serverinstelling.
 blacklisted-item: <red>Je kunt dit item niet verkopen omdat het op de zwarte lijst staat
 command-type-mismatch: <red>Dit commando kan alleen worden uitgevoerd door <aqua>{0}</aqua>.
@@ -98,6 +109,61 @@ shop-staff-empty: <yellow>Deze winkel heeft geen personeel.
 shops-recovering: Winkels herstellen van backup...
 virtual-player-component-hover: "<gray>Dit is een virtuele speler.\n<gray>Verwijst naar een systeemaccount met dezelfde naam.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Gebruikersnaam: <yellow>{1}</yellow></green>\n<green>Weergeven als: <yellow>{2}</yellow></green>"
 real-player-component-hover: "<gray>Dit is een echte speler.\n<green>UUID:<yellow>{0}</yellow></green>\n<green>Gebruikersnaam: <yellow>{1}</yellow></green>\n<green>Weergeven als: <yellow>{2}</yellow></green>\n<gray>Als je een virtueel systeemaccount met dezelfde naam wilt gebruiken, voeg dan <dark_gray>“[]”</dark_gray> toe aan beide kanten van de gebruikersnaam: <dark_gray>[{1}]</dark_gray>."
+pagination:
+  header: "<green>{0}</green>:"
+  footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Previous page\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Next page\"><white>></white></hover></click>]</light_purple>"
+tags:
+  commands:
+    tag: "<yellow>Manage your shop tags."
+    favorite: "<yellow>Toggle favorite on looked-at shop."
+    watch: "<yellow>Toggle watch on looked-at shop."
+    avoid: "<yellow>Toggle avoid on looked-at shop."
+  general:
+    database-error: "<red>An error occurred while executing a tag operation."
+    list-entry: "<green>{0}.</green> <aqua>{1}</aqua> <light_purple>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>View all shops with this tag\">View Shops</hover></click>]</light_purple> <red>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove</hover></click>]</red>"
+    invalid: "<red>Invalid tag. Only letters, dash (-), and underscore (_) are allowed. Max length: <yellow>{0}</yellow>"
+  avoid:
+    added: "<green>Added this shop to your avoid list."
+    removed: "<green>Removed this shop from your avoid list."
+    unable: "<red>Unable to toggle avoid on this shop."
+    none: "<red>You have no avoided shops."
+    label: "<yellow>Avoid"
+  favorite:
+    added: "<green>Added this shop to your favorite list."
+    removed: "<green>Removed this shop from your favorite list."
+    unable: "<red>Unable to toggle favorite on this shop."
+    none: "<red>You have no favorite shops."
+    label: "<yellow>Favorite"
+  watch:
+    added: "<green>You are now watching this shop."
+    removed: "<green>You are no longer watching this shop."
+    unable: "<red>Unable to toggle watch on this shop."
+    none: "<red>You are not watching any shops."
+    label: "<yellow>Watching"
+  tag:
+    title-avoided-shops: "<green>Avoided shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    title-favorited-shops: "<green>Favorited shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    title-watched-shops: "<green>Watched shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    list-player-shops-title: "<green>Your tagged shops</green> <gray>(<yellow>{0}</yellow> shops, <yellow>{1}</yellow> tags)</gray>"
+    list-player-shop-title: "<green>Shop tags</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    list-tag-title: "<green>Tag <aqua>{0}</aqua> usage</green> <gray>(<yellow>{1}</yellow> shops)</gray>"
+    shops-entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <light_purple>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>View all tags on this shop\">View {10} tags</hover></click>]</light_purple>"
+    entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <red>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove Tag</hover></click>]</red>"
+    list-tag-shop-entry-tp: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Teleport to this shop\">Teleport</hover></click>]</light_purple>"
+    added: "<green>Added tag <aqua>{0}</aqua> to this shop."
+    duplicate: "<red>This shop already has tag <aqua>{0}</aqua>."
+    failed-add: "<red>An error occurred while adding tag <aqua>{0}</aqua> to this shop."
+    failed-remove: "<red>An error occurred while removing tag <aqua>{0}</aqua> from this shop."
+    removed: "<green>Removed tag <aqua>{0}</aqua> from this shop."
+    does-not-exist: "<red>This shop does not have tag <aqua>{0}</aqua>."
+    cleared: "<green>Cleared all tags from this shop."
+    cleared-all: "<green>Cleared all tags from all shops."
+    cleared-tag: "<green>Cleared tag <aqua>{0}</aqua> from all your tagged shops."
+    no-tags-all: "<red>There are no tags on any shop."
+    no-tags: "<red>This shop has no tags."
+    no-tagged-shops-player: "<red>You have no tags on this shop."
+    no-tagged-shops: "<red>You have no tagged shops."
+    no-tagged-shops-tag: "<red>You have no shops with tag <aqua>{0}</aqua>."
 menu:
   sell-tax: <green>U heeft &<yellow>{0}</yellow> Btw betaald.
   owner: '<green>Eigenaar: {0}'
@@ -113,22 +179,24 @@ menu:
   price-per-stack: <green>Prijs per <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Opgeslagen Betoveringen
   item-holochat-error: <red>[Error]
-  this-shop-is-selling: <green>Deze winkel is <aqua>SELLING</aqua>en items.
+  this-shop-is-selling: <green>Deze winkel <aqua>VERKOOPT</aqua> items.
+  this-shop-is-buying: <green>Deze winkel <light_purple>koopt<green> items.
+  this-shop-is-frozen: <blue>FROZEN</blue>
+  this-shop-is-active: <aqua>ACTIVE</aqua>
+  this-shop-is-state: <green>This shop's current state is {0}<green>.
   shop-stack: '<green>Hoeveelheid bulk: <yellow>{0}'
   space: '<green>Spatie: <yellow>{0}'
   effects: <green>Effecten
   damage-percent-remaining: <yellow>{0}% <green>resterende.
   item-holochat-data-too-large: <red>[Fout] Item NBT is te groot om weer te geven
   stock: '<green>Voorraad <yellow>{0}'
-  this-shop-is-buying: <green>Deze winkel <light_purple>koopt<green> items.
-  this-shop-is-frozen: <green>De winkel is nu in <red>vriesmodus<green>.
   successfully-sold: '<green>Succesvol verkocht:'
   total-value-of-chest: '<green>Totale waarde van kist: <yellow>{0}'
 currency-not-exists: <red>Kan de valuta die u wilt instellen niet vinden. Misschien is de spelling verkeerd of is de valuta niet beschikbaar in deze wereld.
 no-nearby-shop: <red>Geen winkel in de buurt die overeenkomt met {0}.
 translation-author: 'Ghost_chu, Andre_601, Prutteltje'
 integrations-check-failed-trade: <red>Integratie {0} heeft de aanmaak van de winkel geweigerd
-shop-transaction-failed: <red>Sorry, er is een interne fout opgetreden tijdens het verwerken van uw aankoop. De aankoop is geannuleerd en alle andere bewerkingen zijn teruggedraaid. Neem contact op met de serverbeheerders als deze fout zich blijft voordoen.
+shop-transaction-failed: "<red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any other operations have been rolled back. Reason: {0}"
 success-change-owner-to-server: <green>Succesvol de winkeleigenaar ingesteld op Server.
 shop-name-not-found: <red>De winkel met de naam <yellow>{0}</yellow> bestaat niet.
 shop-name-too-long: <red>Deze winkelnaam is te lang (max. lengte {0}), kies een andere naam!
@@ -188,6 +256,14 @@ shop-type:
   selling: VERKOPEN
   buying: KOPEN
   frozen: BEVROREN
+shop-state:
+  frozen: FROZEN
+  unfrozen: UNFROZEN
+  freeze: Freeze
+  unfreeze: Unfreeze
+shop-display:
+  enabled: Enabled
+  disabled: Disabled
 language:
   qa-issues: '<yellow>Kwaliteit geruststelling problemen: <aqua>{0}%'
   code: '<yellow>Code: <gold>{0}'
@@ -298,6 +374,8 @@ support-disable-reason:
 supertool-is-disabled: <red>Supertool is uitgeschakeld. Kan geen winkels breken.
 unknown-owner: Onbekend
 restricted-prices: '<red>Beperkte prijs voor {0}: Min {1}, max {2}'
+restricted-price-max: '<red>Restricted price for {0}: Max {1}'
+restricted-price-min: '<red>Restricted price for {0}: Min {1}'
 nearby-shop-this-way: <green>Shop is {0} blok(ken) ver van je.
 owner-bypass-check: <yellow>Alle controles omzeild. Handel succesvol! (Je bent nu de eigenaar van de winkel!)
 april-rick-and-roll-easter-egg: "<hover:show_text:‘Klik om te openen in de browser voor tijdelijke beloningen!’><click:open_url:‘https://www.youtube.com/watch?v=dQw4w9WgXcQ’><green>Klik hier om je tijdelijke beloningen te ontvangen die worden aangeboden door QuickShop-Hikari-ontwikkelaar!</green></click></hover>"
@@ -305,20 +383,24 @@ signs:
   item-right: ''
   out-of-space: Te weinig ruimte
   unlimited: Onbeperkt
-  stack-selling: Verkopen {0}
+  stack-selling: Te koop {0}
   stack-price: '{0} per {1}x {2}'
   status-unavailable: <red>
   out-of-stock: Niet op voorraad
-  stack-buying: '{0} kopen'
+  stack-buying: '{0} in kopen'
   freeze: Ruilen uitgeschakeld
   price: '{0} per stuk'
-  buying: '{0} In koop'
+  buying: '{0} in kopen'
   header: '{1}{0}'
   header-available: <green>{0}
   header-unavailable: <red>{0}
-  selling: Te koop {0}
+  selling: '{0} Te Koop'
   status-available: <green>
   item-left: ''
+  item-duration: 'Dur: {0}'
+  item-level: 'Level: {0}'
+  splash-potion: "Splash"
+  linger-potion: "Lingering"
 negative-amount: <red>U kan geen negatieve bedragen verhandelen
 display-turn-on: <green>Schakel de winkeldisplay succesvol in.
 display-turn-off: <green>Winkeldisplay succesvol uitgeschakeld.
@@ -332,7 +414,7 @@ backup-failed: Kan de database niet back-uppen. Controleer de console voor detai
 shop-staff-cleared: <green>Succesvol alle medewerkers verwijderd uit uw winkel.
 price-too-high: <red>De prijs van de winkel is te hoog! U kunt er niet een maken met een prijs hoger dan {0}.
 plugin-cancelled: '<red>Operatie geannuleerd. Reden: {0}'
-player-sold-to-your-store: <green>{0} verkocht {1} {2} aan uw winkel.
+player-sold-to-your-store: <green>{0} sold {1} {2} to your shop for {3}.
 shop-out-of-stock: <dark_purple>Uw winkel op {0}, {1}, {2} heeft geen {3} meer!
 how-many-buy: <green>Typ in de chat hoeveel je wilt <aqua>KOPEN</aqua>. Je kunt er <yellow>{0}<green> kopen. Typ <aqua>{1}</aqua> om ze allemaal te kopen.
 language-info-panel:
@@ -379,7 +461,7 @@ controlpanel:
   lock-hover: <yellow>Het slot van de winkel in- of uitschakelen.
   item-hover: <yellow>Klik om winkel item te wijzigen
   infomation: '<green>Shop Control Panel:'
-  mode-selling-hover: <yellow>Klik om de winkel te wijzigen in de KOPIE modus.
+  mode-selling-hover: <yellow>Klik om de winkel te wijzigen in de VERKOOP modus.
   empty-hover: <yellow>Klik om de inventaris van de winkel te wissen.
   toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold></light_purple>]'
   history: '<green>Geschiedenis:<yellow>[<bold><light_purple>Bekijken</light_purple></bold>]</yellow>'
@@ -465,6 +547,7 @@ command:
     lookup: <yellow>Beheer tabel met opzoekbare items
     database: <yellow>View and maintain QuickShop database
     benefit: <yellow>Instellingen voor het verdelen van voordelen tussen winkeleigenaar en andere spelers
+    benefitall: <yellow>Settings of divide benefits between shop owner and other players for all shops you own.
     browse: <yellow>Blader door winkels die op deze server aanwezig zijn.
     tag: <yellow>Tags van een winkel toevoegen, verwijderen of opvragen
     suggestprice: <yellow>Stel een adviesprijs voor de winkel voor, op basis van andere winkels
@@ -708,6 +791,8 @@ transfer-rejected-fromside: <red>Speler <aqua>{0}</aqua> heeft je verzoek om een
 transfer-rejected-toside: <red>Je hebt het verzoek van <aqua>{0}</aqua> om de winkel over te dragen afgewezen.
 transfer-no-pending-operation: <red>Je hebt geen lopende transferverzoeken.
 transfer-no-self: <red>Je kunt je winkels niet aan jezelf overdragen.
+transfer-no-buy: <red>You can't transfer shops that are buy shops.
+transfer-failed-some: <red>Failed to transfer some of the shops as they're not eligible.
 benefit-overflow: <red>De som van alle voordelen kan niet groter of gelijk zijn aan 100%.
 benefit-exists: <red>De speler staat al op de voordelenlijst van deze winkel.
 benefit-removed: <red>De betreffende speler is verwijderd uit de winkelvoordelen.
@@ -715,17 +800,6 @@ benefit-added: <green>Speler <aqua>{0}</aqua> is toegevoegd aan de voordelen van
 benefit-updated: <green>Speler <aqua>{0}</aqua>'s voordelen zijn bijgewerkt!
 benefit-query: <green>Deze winkel heeft <yellow>{0}</yellow> spelers in de voordelenlijst!
 benefit-query-list: <yellow> - </yellow><white>Speler <gold>{0}</gold>, Voordeel <gold>{1}%
-tag-added: '<green>Succesvol toegevoegd <aqua>#{0}</aqua> aan deze winkel!'
-tag-add-duplicate: '<red>De tag <aqua>#{0}</aqua> bestaat al in deze winkel!'
-tag-removed: '<green>Succesvol verwijderd <aqua>#{0}</aqua> uit deze winkel!'
-tag-remove-not-exists: 'De tag <aqua>#{0}</aqua> bestaat niet in deze winkel!'
-tag-cleared: <green>Alle tags uit deze winkel zijn succesvol gewist!
-tag-shops-cleared: '<green>Succesvol verwijderd <aqua>#{0}</aqua> van al uw getagde winkels!'
-tag-query: '<green>Deze winkel heeft <yellow>{0}</yellow> tags:'
-tag-query-listing: '<yellow> - <aqua>#{0}'
-tag-query-no-tag: <red>Deze winkel heeft geen tags
-tag-query-shops: '<green>Deze tag bevat <yellow>{0}</yellow> winkels:'
-tag-query-shops-listing: <yellow> - <aqua>{0}
 batch-operations-based-on-tags-no-failure: <green>Succesvol batch verwerkt <yellow>{0}</yellow> winkels.
 batch-operations-based-on-tags-have-failure: <yellow>In totaal {0} winkels in batchverwerking succesvol voltooid, maar <red>{1}</red> verzoeken niet voltooid.
 batch-operations-based-on-tags-have-failure-with-reason: '<yellow>In totaal {0} winkels in batchverwerking succesvol voltooid, maar <red>{1}</red>verzoeken niet voltooid. Reden: <gold>{2}'
@@ -839,7 +913,6 @@ addon:
                  "value": "%%shop.item.name%%",
                  "inline": true
                },
-               {
                {
                  "name": "Amount",
                  "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
@@ -1424,7 +1497,7 @@ addon:
       list: <yellow>Alle winkels weergeven die eigendom zijn van jou of een specifieke speler
     table-prefix: '<yellow><green>{0}</green>''s shops <gray>(Totaal {1})</gray>: '
     table-prefix-pageable: '<yellow><green>{0}</green>''s shops <gray>(Pagina {1}/{2})</gray>: '
-    entry: <yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>Prijs<yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}'>{0}. <aqua>{1}
+    entry: "<yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>Price <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}<br><green>{10}'>{0}.<aqua>{1}</hover>"
   shopitemonly:
     message: <red>Je kunt geen niet-winkelartikelen in de winkelcontainer plaatsen, alle niet-winkelartikelen worden op je locatie achtergelaten.
   limited:
@@ -1575,6 +1648,8 @@ gui:
     custom-amount:
       display: "<bold><blue>Aangepaste Bestelling</blue></bold>"
     quantity-button:
+      display-buy: "<green>Buy x{0}</green>"
+      display-sell: "<gold>Sell x{0}</gold>"
       lore:
         - "<yellow>{0}</yellow>"
   keeper:
@@ -1585,6 +1660,16 @@ gui:
         - "<gray>Huidige prijs: <white>{0}</white></gray>"
         - ""
         - "<yellow>Klik om de prijs te veranderen</yellow> "
+    display-toggle:
+      display: "<bold><green>Toggle Preview</green></bold>"
+      lore:
+        - "<gray>Toggle item preview in shops</gray>"
+        - "<gray>Status: <white>{0}</white>. Click to toggle.</gray>"
+    freeze-toggle:
+      display: "<bold><green>Toggle Freeze</green></bold>"
+      lore:
+        - "<gray>Currently <white>{0}</white></gray>"
+        - "<gray>Click to <white>{1}</white></gray>"
     mode-toggle:
       display: "<bold><green>Wijzig Modus</green></bold>"
       lore:
@@ -1626,6 +1711,30 @@ gui:
       display: "<white>Terug naar Winkel</white>"
   browse:
     title: "<dark_aqua>Marktbrowser</dark_aqua>"
+    shop-list:
+      buying-label: "<#FFA500>Buying</#FFA500>"
+      selling-label: "<green>Selling</green>"
+      price-indicator:
+        average: "● Average"
+        selling:
+          great: "▼▼ Great Deal!"
+          good: "▼ Below Avg"
+          bad: "▲▲ Expensive"
+          worst: "▲ Above Avg"
+        buying:
+          great: "▲▲ Great Price!"
+          good: "▲ Above Avg"
+          bad: "▼▼ Low Offer"
+          worst: "▼▼ Below Avg"
+      display: "<yellow>{0}</yellow>"
+      lore:
+        - "<gray>Owner: <white>{0}</white></gray>"
+        - "<gray>Type: {1}</gray>"
+        - "<gray>Price: {2}</gray>"
+        - "<gray><aqua>{3}</aqua></gray>"
+        - "<gray>Location: <white>{4}</white></gray>"
+        - "<dark_gray>{5}</dark_gray>"
+      teleport: "<newline><yellow>Click to teleport</yellow>"
     shop-item:
       lore:
         - "<green>Eigenaar: </green>{0}<yellow></yellow>"
@@ -1655,6 +1764,12 @@ gui:
       lore:
         - "<gray>Linksklik om te zoeken naar items</gray>"
         - "<gray>Klik met de rechtermuisknop om zoekopdracht te wissen</gray>"
+    search-item:
+      display: "<yellow>{0}</yellow>"
+      lore:
+        - "<gray>Showing: {0}</gray>"
+        - "<gray>Shops: <white>{1}</white></gray>"
+        - "<gray>Average price: <gold>{2}</gold></gray>"
     sort:
       display: "<green>Sorteren: {0}</green>"
       lore:
@@ -1670,6 +1785,9 @@ gui:
       all: "Alle"
       selling: "Te koop"
       buying: "Kopen"
+      all-indicator: "<white>All Shops</white>"
+      selling-indicator: "<green>Selling Shops</green>"
+      buying-indicator: "<#FFA500>Buying Shops</#FFA500>"
     stock-filter:
       display: "<gold>Alleen op voorraad: {0}</gold>"
       lore:

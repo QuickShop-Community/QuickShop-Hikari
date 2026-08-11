@@ -141,23 +141,44 @@ public class CommonUtil {
     return str1.equals(str2);
   }
 
+  /**
+   * {@return whether the provided sequence consts of only digits}
+   * @param sequence The sequence to check
+   */
   public static boolean isNumeric(final CharSequence sequence) {
 
     if(sequence == null || sequence.isEmpty()) {
       return false;
     }
 
-    boolean numeric = true;
     for(int i = 0; i < sequence.length(); i++) {
 
       if(Character.isDigit(sequence.charAt(i))) {
         continue;
       }
 
-      numeric = false;
-      break;
+      return false;
     }
-    return numeric;
+    return true;
+  }
+
+  /**
+   * {@return whether the provided sequence is a valid non-negative integer}
+   * @param sequence The sequence to check
+   */
+  public static boolean isInteger(final CharSequence sequence) {
+
+    // isNumeric currently returns false for the '-' character, which ensures that this only returns true for non-negative ints.
+    if(!isNumeric(sequence)) {
+      return false;
+    }
+
+    try {
+      Integer.parseInt(sequence.toString());
+      return true;
+    } catch(NumberFormatException e) {
+      return false;
+    }
   }
 
   public static String subAfter(final String string, final @NotNull String separator) {

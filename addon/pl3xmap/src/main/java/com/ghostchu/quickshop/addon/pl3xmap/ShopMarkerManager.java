@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop.addon.pl3xmap;
 
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.menu.browse.MarketUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.pl3x.map.core.markers.Point;
@@ -54,11 +55,11 @@ public class ShopMarkerManager {
 
     removeMarker(shop);
 
-    this.shopMarkers.get(shop.getLocation().getWorld().getName()).add(icon);
+    this.shopMarkers.get(shop.bukkitLocation().getWorld().getName()).add(icon);
   }
 
   public void removeMarker(@NotNull final Shop shop) {
-    final String worldName = shop.getLocation().getWorld().getName();
+    final String worldName = shop.bukkitLocation().getWorld().getName();
 
     final String key = String.format("%s_%s_%s", Main.PL3X_KEY, worldName, shop.getShopId());
 
@@ -74,7 +75,7 @@ public class ShopMarkerManager {
   }
 
   public Icon getIcon(@NotNull final String key, @NotNull final Shop shop) {
-    return Marker.icon(key, point(shop.getLocation()), Main.instance().icon())
+    return Marker.icon(key, point(shop.bukkitLocation()), Main.PL3X_ICON_KEY)
         .setOptions(Options.builder()
             .tooltipDirection(Tooltip.Direction.TOP)
             .tooltipContent(fillPlaceholders(Main.instance().markerDetail(), shop))
@@ -89,14 +90,15 @@ public class ShopMarkerManager {
 
   private String fillPlaceholders(String s, final Shop shop) {
 
-    final Location loc = shop.getLocation();
+    final Location loc = shop.bukkitLocation();
     final String x = String.valueOf(loc.getX());
     final String y = String.valueOf(loc.getY());
     final String z = String.valueOf(loc.getZ());
     s = s.replace("%owner%", plain(shop.ownerName()));
     s = s.replace("%item%", shop.getItem().getType().name());
     s = s.replace("%price%", String.valueOf(shop.getPrice()));
-    s = s.replace("%stock%", String.valueOf(shop.getRemainingStock()));
+    final int stock = shop.shopType().isBuying() ? MarketUtils.getSpaceFromCache(shop) : MarketUtils.getStockFromCache(shop);
+    s = s.replace("%stock%", String.valueOf(stock == -1 ? "Unlimited" : stock));
     s = s.replace("%type%", shop.shopType().identifier());
     s = s.replace("%location%", x + "," + y + "," + z);
     return s;

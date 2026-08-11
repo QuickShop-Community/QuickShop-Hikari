@@ -7,7 +7,6 @@ import com.ghostchu.quickshop.database.DatabaseIOUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
-import com.ghostchu.quickshop.util.performance.BatchBukkitExecutor;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
@@ -15,6 +14,9 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class ShopPurger {
@@ -47,6 +49,7 @@ public class ShopPurger {
     final DatabaseIOUtil ioUtil = new DatabaseIOUtil((SimpleDatabaseHelperV2)plugin.getDatabaseHelper());
     if(!ioUtil.performBackup("shops-auto-purge")) {
       plugin.logger().warn("[Shop Purger] Purge progress declined due backup failure");
+      executing = false;
       return;
     }
     plugin.logger().info("[Shop Purger] Scanning and removing shops....");
@@ -88,14 +91,29 @@ public class ShopPurger {
       }
     }
 
-    final BatchBukkitExecutor<Shop> purgeExecutor = new BatchBukkitExecutor<>();
-    purgeExecutor.addTasks(pendingRemovalShops);
-    purgeExecutor.startHandle(plugin.getJavaPlugin(), (shop)->plugin.getShopManager().deleteShop(shop))
-            .whenComplete((a, b)->{
-              final long usedTime = purgeExecutor.getStartTime().until(Instant.now(), java.time.temporal.ChronoUnit.MILLIS);
+    final AtomicInteger purgedCount = new AtomicInteger(0);
+    final List<CompletableFuture<Void>> deletionFutures = new CopyOnWriteArrayList<>();
+    
+    for(final Shop shop : pendingRemovalShops) {
+      final CompletableFuture<Void> future = QuickShop.folia().getScheduler().runAtLocation(shop.bukkitLocation(), (loc) -> {
+        try {
+          plugin.getShopManager().deleteShop(shop);
+          purgedCount.incrementAndGet();
+        } catch(final Exception e) {
+          plugin.logger().warn("Failed to delete shop " + shop.getShopId(), e);
+        }
+      });
+      deletionFutures.add(future);
+    }
+
+    final long startTime = Instant.now().toEpochMilli();
+    CompletableFuture.allOf(deletionFutures.toArray(new CompletableFuture[0]))
+            .whenComplete((unused, throwable) -> {
+              final long usedTime = Instant.now().toEpochMilli() - startTime;
               plugin.logger().info("[Shop Purger] Total shop {} has been purged, used {}ms",
-                                   pendingRemovalShops.size(),
+                                   purgedCount.get(),
                                    usedTime);
+              executing = false;
             });
   }
 }

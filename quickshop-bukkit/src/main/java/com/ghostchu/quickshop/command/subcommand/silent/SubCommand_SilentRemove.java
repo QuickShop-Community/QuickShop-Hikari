@@ -5,7 +5,7 @@ import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.obj.QUserImpl;
-import com.ghostchu.quickshop.util.PackageUtil;
+import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -35,10 +35,12 @@ public class SubCommand_SilentRemove extends SubCommand_SilentBase {
       plugin.text().of(sender, "no-permission").send();
       return;
     }
-    final boolean skipConfirmation = PackageUtil.parsePackageProperly("skipConfirmation").asBoolean(false);
+    final boolean skipConfirmation = plugin.getConfig().getBoolean("shop.skip-command-confirmation", false);
     if(sender.getUniqueId().equals(deleteConfirmation.getIfPresent(shop.getRuntimeRandomUniqueId())) || skipConfirmation) {
+    Util.regionThread(shop.bukkitLocation(), () -> {
       plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(sender), "/quickshop silentremove command", shop.saveToInfoStorage()));
       plugin.getShopManager().deleteShop(shop);
+    });
     } else {
       deleteConfirmation.put(shop.getRuntimeRandomUniqueId(), sender.getUniqueId());
       plugin.text().of(sender, "delete-controlpanel-button-confirm", CONFIRM_TIMEOUT).send();

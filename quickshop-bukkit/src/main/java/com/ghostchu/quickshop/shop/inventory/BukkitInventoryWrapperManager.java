@@ -73,8 +73,7 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
       return holder;
     } catch(final NoSuchMethodError ignore) {
 
-      final BlockState block = world.getBlockAt(x, y, z).getState();
-      if(!(block instanceof final InventoryHolder holder)) {
+      if(!(world.getBlockAt(x, y, z).getState(false) instanceof final InventoryHolder holder)) {
         throw new IllegalArgumentException("Invalid symbol link: Target block not a Container (map changed/resetted?)");
       }
       return holder;

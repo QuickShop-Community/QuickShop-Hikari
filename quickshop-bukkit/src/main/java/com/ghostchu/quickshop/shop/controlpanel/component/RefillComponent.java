@@ -77,6 +77,6 @@ public class RefillComponent implements ControlComponent {
     final String clickCommand = MsgUtil.fillArgs("/{0} {1} ", ((QuickShop)plugin).getMainCommand(), ((QuickShop)plugin).getCommandPrefix("refill"));
 
     return text.hoverEvent(HoverEvent.showText(hoverText))
-            .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, clickCommand));
+            .clickEvent(ClickEvent.suggestCommand(clickCommand));
   }
 }

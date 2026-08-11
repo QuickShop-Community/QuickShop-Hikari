@@ -88,7 +88,7 @@ public class OwnerComponent implements ControlComponent {
       }
 
       return text.hoverEvent(HoverEvent.showText(((QuickShop)plugin).text().of(sender, "controlpanel.setowner-hover").forLocale()))
-              .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, MsgUtil.fillArgs("/{0} {1} ", ((QuickShop)plugin).getMainCommand(), ((QuickShop)plugin).getCommandPrefix("transferownership"))));
+              .clickEvent(ClickEvent.suggestCommand(MsgUtil.fillArgs("/{0} {1} ", ((QuickShop)plugin).getMainCommand(), ((QuickShop)plugin).getCommandPrefix("transferownership"))));
     }
   }
 }

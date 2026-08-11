@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>6.2.0.11</version>
+        <version>6.3.0.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>com.ghostchu.quickshop.compatibility</groupId>
@@ -36,11 +36,11 @@
     <repositories>
         <repository>
             <id>alex9849</id>
-            <url>https://nexus.alex9849.net/repository/maven-releases/</url>
+            <url>https://nexus.liggesmeyer.net/repository/maven-releases/</url>
         </repository>
         <repository>
             <id>alex9849-snapshots</id>
-            <url>https://nexus.alex9849.net/repository/maven-snapshots/</url>
+            <url>https://nexus.liggesmeyer.net/repository/maven-snapshots/</url>
         </repository>
         <repository>
             <id>jitpack</id>

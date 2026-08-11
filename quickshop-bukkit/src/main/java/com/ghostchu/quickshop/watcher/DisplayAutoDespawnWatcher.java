@@ -9,6 +9,7 @@ import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
 import com.tcoded.folialib.wrapper.task.WrappedTask;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -22,6 +23,8 @@ public class DisplayAutoDespawnWatcher implements Runnable, Reloadable, SubPaste
   private final QuickShop plugin;
   private int range;
   private WrappedTask task;
+  @Getter
+  private int taskPeriod;
 
   public DisplayAutoDespawnWatcher(@NotNull final QuickShop plugin) {
 
@@ -51,6 +54,9 @@ public class DisplayAutoDespawnWatcher implements Runnable, Reloadable, SubPaste
 
   public void start(final int delay, final int period) {
 
+    taskPeriod = period;
+    stop();
+
     task = QuickShop.folia().getScheduler().runTimer(this, delay, period);
   }
 
@@ -65,8 +71,8 @@ public class DisplayAutoDespawnWatcher implements Runnable, Reloadable, SubPaste
       if(shop.isDisableDisplay()) {
         continue;
       }
-      final Location location = shop.getLocation();
-      final World world = shop.getLocation().getWorld(); //Cache this, because it will took some time.
+      final Location location = shop.bukkitLocation();
+      final World world = shop.bukkitLocation().getWorld(); //Cache this, because it will took some time.
       final AbstractDisplayItem displayItem = ((ContainerShop)shop).getDisplayItem();
       if(displayItem != null) {
         // Check the range has player?
@@ -97,6 +103,10 @@ public class DisplayAutoDespawnWatcher implements Runnable, Reloadable, SubPaste
       }
     } catch(final IllegalStateException ignore) {
     }
+  }
+
+  public void unregister() {
+    stop();
     plugin.getReloadManager().unregister(this);
     plugin.getPasteManager().unregister(plugin.getJavaPlugin(), this);
   }

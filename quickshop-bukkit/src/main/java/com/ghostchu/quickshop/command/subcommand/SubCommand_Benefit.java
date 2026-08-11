@@ -15,7 +15,6 @@ import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -78,12 +77,12 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
         return;
       }
 
-      if(!PackageUtil.parsePackageProperly("allowOffline").asBoolean()) {
-        if(qUser.getBukkitPlayer().isEmpty()) {
-          plugin.text().of(sender, "player-offline", player).send();
-          return;
-        }
+      if(!plugin.getConfig().getBoolean("shop.allow-offline-benefit", false) && qUser.getBukkitPlayer().isEmpty()) {
+
+        plugin.text().of(sender, "player-offline", player).send();
+        return;
       }
+
       if(!parser.getArgs().get(2).endsWith("%")) {
         // Force player enter '%' to avoid player type something like 0.01 for 1%
         plugin.text().of(sender, "invalid-percentage", parser.getArgs().getFirst()).send();
@@ -104,8 +103,7 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
           event = event.clone(Phase.MAIN);
           if(event.callCancellableEvent()) {
 
-            plugin.logger().info("Plugin cancelled ShopBenefitAddEvent");
-            plugin.text().of(sender, "internal-error").send();
+            plugin.text().of(sender, "plugin-cancelled", event.getCancelReason()).send();
             return;
           }
 
@@ -166,8 +164,7 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
               event = event.clone(Phase.MAIN);
               if(event.callCancellableEvent()) {
 
-                plugin.logger().info("Plugin cancelled ShopBenefitRemoveEvent");
-                plugin.text().of(sender, "internal-error").send();
+                plugin.text().of(sender, "plugin-cancelled", event.getCancelReason()).send();
                 return;
               }
 

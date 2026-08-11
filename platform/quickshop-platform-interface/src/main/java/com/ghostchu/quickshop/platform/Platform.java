@@ -5,6 +5,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
@@ -121,7 +122,7 @@ public interface Platform {
 
   void sendMessage(@NotNull CommandSender sender, @NotNull Component component);
 
-  void sendSignTextChange(@NotNull Player player, @NotNull Sign sign, boolean glowing, @NotNull List<Component> components);
+  void sendSignTextChange(@NotNull Player player, @NotNull Sign sign, boolean glowing, @Nullable final DyeColor dyeColor, @NotNull List<Component> components);
 
   void setDisplayName(@NotNull ItemStack stack, @Nullable Component component);
 

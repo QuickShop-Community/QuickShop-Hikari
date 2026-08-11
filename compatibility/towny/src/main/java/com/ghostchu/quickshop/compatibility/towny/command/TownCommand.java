@@ -60,19 +60,31 @@ public class TownCommand implements CommandHandler<Player> {
       }
     }
     // Set as a town shop
-    final Town town = TownyAPI.getInstance().getTown(shop.getLocation());
+    final Town town = TownyAPI.getInstance().getTown(shop.bukkitLocation());
     if(town == null) {
       plugin.getApi().getTextManager().of(sender, "addon.towny.target-shop-not-in-town-region").send();
       return;
     }
     if(plugin.getConfig().getBoolean("bank-mode.bank-plot-only", false)) {
-      final TownBlock townBlock = TownyAPI.getInstance().getTownBlock(shop.getLocation());
+      final TownBlock townBlock = TownyAPI.getInstance().getTownBlock(shop.bukkitLocation());
       if(townBlock == null) {
         plugin.getApi().getTextManager().of(sender, "addon.towny.target-shop-not-in-town-region").send();
-        plugin.getLogger().warning("Failed to get townBlock at " + shop.getLocation() + " maybe a bug?");
+        plugin.getLogger().warning("Failed to get townBlock at " + shop.bukkitLocation() + " maybe a bug?");
         return;
       }
-      if(townBlock.getType() != TownBlockType.BANK) {
+      if(!townBlock.getType().getName().equalsIgnoreCase(TownBlockType.BANK.getName())) {
+        plugin.getApi().getTextManager().of(sender, "addon.towny.plot-type-disallowed").send();
+        return;
+      }
+    }
+    if(plugin.getConfig().getBoolean("bank-mode.shop-plot-only", false)) {
+      final TownBlock townBlock = TownyAPI.getInstance().getTownBlock(shop.bukkitLocation());
+      if(townBlock == null) {
+        plugin.getApi().getTextManager().of(sender, "addon.towny.target-shop-not-in-town-region").send();
+        plugin.getLogger().warning("Failed to get townBlock at " + shop.bukkitLocation() + " maybe a bug?");
+        return;
+      }
+      if(!townBlock.getType().getName().equalsIgnoreCase(TownBlockType.COMMERCIAL.getName())) {
         plugin.getApi().getTextManager().of(sender, "addon.towny.plot-type-disallowed").send();
         return;
       }

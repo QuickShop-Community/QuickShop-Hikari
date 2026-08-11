@@ -207,7 +207,7 @@ public final class Main extends JavaPlugin implements Listener {
 
     final MarkerSet markerSet = getMarkerSet();
     String shopName = shop.getShopName();
-    final String posStr = String.format("%s %s, %s, %s", shop.getLocation().getWorld().getName(), shop.getLocation().getBlockX(), shop.getLocation().getBlockY(), shop.getLocation().getBlockZ());
+    final String posStr = String.format("%s %s, %s, %s", shop.bukkitLocation().getWorld().getName(), shop.bukkitLocation().getBlockX(), shop.bukkitLocation().getBlockY(), shop.bukkitLocation().getBlockZ());
     if(shopName == null) {
       shopName = posStr;
     }
@@ -229,16 +229,16 @@ public final class Main extends JavaPlugin implements Listener {
     if(marker == null) {
       marker = markerSet.createMarker("quickshop-hikari-shop-" + shop.getShopId()
               , markerName
-              , shop.getLocation().getWorld().getName(),
-                                      shop.getLocation().getX(),
-                                      shop.getLocation().getY(),
-                                      shop.getLocation().getZ(),
+              , shop.bukkitLocation().getWorld().getName(),
+                                      shop.bukkitLocation().getX(),
+                                      shop.bukkitLocation().getY(),
+                                      shop.bukkitLocation().getZ(),
                                       getShopMarkerIcon(), false);
     } else {
-      marker.setLocation(shop.getLocation().getWorld().getName(),
-                         shop.getLocation().getX(),
-                         shop.getLocation().getY(),
-                         shop.getLocation().getZ());
+      marker.setLocation(shop.bukkitLocation().getWorld().getName(),
+                         shop.bukkitLocation().getX(),
+                         shop.bukkitLocation().getY(),
+                         shop.bukkitLocation().getZ());
     }
     final String desc = plain(text().of("addon.dynmap.marker-description",
                                         shopName,

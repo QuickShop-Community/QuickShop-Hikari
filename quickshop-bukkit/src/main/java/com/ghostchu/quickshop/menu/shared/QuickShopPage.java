@@ -46,6 +46,7 @@ public class QuickShopPage extends Page {
   public QuickShopPage(final int pageNumber) {
 
     super(pageNumber);
+    setLockEmptySlots(true);
   }
 
   public static Optional<OfflinePlayer> getPlayer(final UUID uuid) {
@@ -129,7 +130,7 @@ public class QuickShopPage extends Page {
   @NotNull
   public static Component getConfigDisplay(final UUID player, @Nullable final GuiConfig.IconConfig config, @NotNull final String defaultName) {
 
-    return getConfigDisplay(player, config, defaultName, null);
+    return getConfigLangEntry(player, config, "name", defaultName, null);
   }
 
   /**
@@ -145,14 +146,51 @@ public class QuickShopPage extends Page {
   @NotNull
   public static Component getConfigDisplay(final UUID player, @Nullable final GuiConfig.IconConfig config, @NotNull final String defaultName, @Nullable final Object... args) {
 
-    //check if this should be a lang-file lookup
-    final String name = (config != null && config.getName() != null)? config.getName() : defaultName;
+    return getConfigLangEntry(player, config, "name", defaultName, args);
+  }
 
-    if(config != null && name.startsWith("lang:")) {
-      return get(player, name.replaceAll("lang:", ""), args);
+  /**
+   * Retrieves a configuration language entry as a Component. This method resolves the text for the
+   * specified route and player, optionally translates the text if prefixed with "lang:", and uses
+   * MiniMessage formatting for components. If the configuration or route is unavailable, a default
+   * value is returned.
+   *
+   * @param player       The UUID of the player for whom the text entry is being retrieved.
+   * @param config       The icon configuration that may contain the desired route. Can be null.
+   * @param route        The route or path to the language entry in the configuration.
+   * @param defaultValue The default value to use if the route or configuration is not available.
+   * @return A parsed Component representing the resolved language entry.
+   */
+  @NotNull
+  public static Component getConfigLangEntry(final UUID player, @Nullable final GuiConfig.IconConfig config, final String route, @NotNull final String defaultValue) {
+
+    return getConfigLangEntry(player, config, route, defaultValue, null);
+  }
+
+  /**
+   * Retrieves a configuration language entry as a Component. The method resolves the text for the provided
+   * route and player, supports placeholder replacement, and optionally translates the text using the "lang:" prefix.
+   * If a "lang:" prefix is found, the method will attempt to retrieve the language file entry.
+   * Otherwise, it deserializes the value using MiniMessage formatting and replaces placeholders.
+   *
+   * @param player      The UUID of the player for whom the text is being retrieved.
+   * @param config      The icon configuration that may contain the route section. Can be null.
+   * @param route       The route or path to the desired language entry within the configuration.
+   * @param defaultValue The default value to use if the route or configuration is not available.
+   * @param args        Optional arguments to replace placeholders in the text (e.g., {0}, {1}, etc.). Can be null.
+   * @return A parsed Component representing the resolved language entry.
+   */
+  @NotNull
+  public static Component getConfigLangEntry(final UUID player, @Nullable final GuiConfig.IconConfig config, final String route, @NotNull final String defaultValue, @Nullable final Object... args) {
+
+    //check if this should be a lang-file lookup
+    final String value = (config != null && config.section() != null)? config.section().getString(route, defaultValue) : defaultValue;
+
+    if(config != null && value.startsWith("lang:")) {
+      return get(player, value.replaceAll("lang:", ""), args);
     }
 
-    return QuickShop.getInstance().platform().miniMessage().deserialize(replaceArguments(name, args));
+    return QuickShop.getInstance().platform().miniMessage().deserialize(replaceArguments(value, args));
   }
 
   /**
@@ -184,6 +222,19 @@ public class QuickShopPage extends Page {
       result.add(QuickShop.getInstance().platform().miniMessage().deserialize(replaceArguments(line, args)));
     }
     return result;
+  }
+
+  @NotNull
+  public static Component getConfigDisplay(final UUID player, @Nullable final GuiConfig.IconConfig config, @NotNull final String configName, @NotNull final String defaultName, @Nullable final Object... args) {
+
+    //check if this should be a lang-file lookup
+    final String name = (config != null && config.section() != null)? config.section().getString(configName, defaultName) : defaultName;
+
+    if(config != null && name.startsWith("lang:")) {
+      return get(player, name.replaceAll("lang:", ""), args);
+    }
+
+    return QuickShop.getInstance().platform().miniMessage().deserialize(replaceArguments(name, args));
   }
 
   /**

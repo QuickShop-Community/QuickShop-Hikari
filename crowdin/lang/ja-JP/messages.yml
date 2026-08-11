@@ -1,6 +1,6 @@
 break-shop-use-supertool: <yellow>SuperToolを使ってショップを壊すことができます。
 fee-charged-for-price-change: <green>価格変更のため <red>{0}<green> を支払いました
-not-allowed-to-create: <red>あなたはここでショップを作る事ができません
+not-allowed-to-create: <red>あなたはここではショップを作成できません。
 disabled-in-this-world: <red>このワールドではクイックショップが無効になっています
 how-much-to-trade-for: <green>チャットで<yellow>{1}個の {0}<green>をいくらで取引したいか入力してください。
 client-language-changed: <green>QuickShop はクライアントの言語設定が変更されていることを検出しました。現在 {0} ロケールを使用しています。
@@ -8,8 +8,8 @@ shops-backingup: データベースからショップのバックアップを作
 _comment: 翻訳者の皆さまへ。もしこれをGitHub上やソースコードから編集しているなら、代わりにhttps://crowdin.com/project/qs-hikari をご覧ください。
 unlimited-shop-owner-changed: <yellow>この無制限の店主は {0} に変更されました。
 bad-command-usage-detailed: '<red>コマンド引数が不正です! 次のパラメータを受け付けます: <gray>{0}'
-thats-not-a-number: <red>無効な番号です
-shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
+thats-not-a-number: <red>無効な数値です
+shop-name-disallowed: <red>ショップ名 <yellow>{0}</yellow> は使用できません。別の名前を選んでください！
 console-only-danger: <red>これは危険なコマンドなので、コンソールのみが実行できます。
 not-a-number: <red>数字しか入力出来ません。あなたの入力は {0} でした。
 not-looking-at-valid-shop-block: <red>ショップを作成できませんでした。対応するブロックの種類を確認して、再度お試しください。
@@ -20,8 +20,19 @@ tabcomplete:
   price: '[価格]'
   name: '[名称]'
   range: '[範囲]'
+  list: 'list'
+  page: '[page #]'
+  shop-id: '[shop id]'
   currency: '[通貨名]'
   percentage: '[百分率%]'
+  add: 'add'
+  remove: 'remove'
+  clear: 'clear'
+  clearall: 'clearall'
+  shops: 'shops'
+  tagged: 'tagged'
+  purge: 'purge'
+  tag: '[tag]'
 taxaccount-unset: <green>このショップの税金口座はサーバーのグローバル設定に従っています。
 blacklisted-item: <red>ブラックリストに載っているので、この商品を販売することはできません
 command-type-mismatch: <red>このコマンドは<aqua>{0} のみ実行できます。
@@ -79,7 +90,7 @@ shop-already-owned: <red>これはすでにショップです。
 backup-success: <green>バックアップに成功しました。
 not-looking-at-shop: <red>ショップが見つかりませんでした。<yellow>ショップを選択しているか確認してください。
 you-cant-afford-a-new-shop: <red>新しいショップを作成するには {0} かかります。
-success-created-shop: <red>ショップが作成されました。
+success-created-shop: <green>ショップが作成されました。
 shop-creation-cancelled: <red>ショップの作成がキャンセルされました。
 shop-owner-self-trade: <yellow>自分のショップと取引することで、残高を獲得できない可能性があります。
 shop-owner-self-trade-denied: <red>ご自身のショップでは取引できません。
@@ -97,6 +108,61 @@ shop-staff-empty: <yellow>このショップにはスタッフがいません。
 shops-recovering: バックアップからショップを復元しています...
 virtual-player-component-hover: "<gray>これは仮想プレイヤーです。\n<gray>同じ名前のシステムアカウントを参照します。</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>ユーザー名: <yellow>{1}</yellow></green>\n<green>表示名: <yellow>{2}</yellow></green>"
 real-player-component-hover: "<gray>これは実在のプレイヤーです。\n<green>UUID: <yellow>{0}</yellow></green>\n<green>ユーザー名: <yellow>{1}</yellow></green>\n<green>表示名: <yellow>{2}</yellow></green>\n<gray>同じ名前の仮想システムアカウントを使用する場合は、ユーザー名の両側に <dark_gray>\"[]\"</dark_gray> を追加してください: <dark_gray>[{1}]</dark_gray>"
+pagination:
+  header: "<green>{0}</green>:"
+  footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>前のページ\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>次のページ\"><white>></white></hover></click>]</light_purple>"
+tags:
+  commands:
+    tag: "<yellow>ショップのタグを管理します。"
+    favorite: "<yellow>見ているショップのお気に入りを切り替えます。"
+    watch: "<yellow>Toggle watch on looked-at shop."
+    avoid: "<yellow>Toggle avoid on looked-at shop."
+  general:
+    database-error: "<red>タグ操作の実行中にエラーが発生しました。"
+    list-entry: "<green>{0}.</green> <aqua>{1}</aqua> <light_purple>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>このタグのすべてのショップを表示\">ショップを表示</hover></click>]</light_purple> <red>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>このショップからタグを削除\">削除</hover></click>]</red>"
+    invalid: "<red>無効なタグです。英数字、ダッシュ (-)、アンダースコア (_) のみ許可されています。最大長: <yellow>{0}</yellow>"
+  avoid:
+    added: "<green>Added this shop to your avoid list."
+    removed: "<green>Removed this shop from your avoid list."
+    unable: "<red>Unable to toggle avoid on this shop."
+    none: "<red>You have no avoided shops."
+    label: "<yellow>Avoid"
+  favorite:
+    added: "<green>このショップをお気に入りに追加しました。"
+    removed: "<green>このショップをお気に入りから削除しました。"
+    unable: "<red>このショップのお気に入りを切り替えられませんでした。"
+    none: "<red>お気に入りのショップはありません。"
+    label: "<yellow>お気に入り"
+  watch:
+    added: "<green>You are now watching this shop."
+    removed: "<green>You are no longer watching this shop."
+    unable: "<red>Unable to toggle watch on this shop."
+    none: "<red>You are not watching any shops."
+    label: "<yellow>Watching"
+  tag:
+    title-avoided-shops: "<green>Avoided shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    title-favorited-shops: "<green>Favorited shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    title-watched-shops: "<green>Watched shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    list-player-shops-title: "<green>Your tagged shops</green> <gray>(<yellow>{0}</yellow> shops, <yellow>{1}</yellow> tags)</gray>"
+    list-player-shop-title: "<green>Shop tags</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    list-tag-title: "<green>Tag <aqua>{0}</aqua> usage</green> <gray>(<yellow>{1}</yellow> shops)</gray>"
+    shops-entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <light_purple>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>View all tags on this shop\">View {10} tags</hover></click>]</light_purple>"
+    entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <red>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove Tag</hover></click>]</red>"
+    list-tag-shop-entry-tp: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Teleport to this shop\">Teleport</hover></click>]</light_purple>"
+    added: "<green>タグ <aqua>{0}</aqua> をこのショップに追加しました。"
+    duplicate: "<red>このショップには既にタグ <aqua>{0}</aqua> が付いています。"
+    failed-add: "<red>このショップにタグ <aqua>{0}</aqua> を追加中にエラーが発生しました。"
+    failed-remove: "<red>このショップからタグ <aqua>{0}</aqua> を削除中にエラーが発生しました。"
+    removed: "<green>タグ <aqua>{0}</aqua> をこのショップから削除しました。"
+    does-not-exist: "<red>このショップにはタグ <aqua>{0}</aqua> がありません。"
+    cleared: "<green>このショップからすべてのタグを消去しました。"
+    cleared-all: "<green>すべてのショップからすべてのタグを消去しました。"
+    cleared-tag: "<green>Cleared tag <aqua>{0}</aqua> from all your tagged shops."
+    no-tags-all: "<red>There are no tags on any shop."
+    no-tags: "<red>This shop has no tags."
+    no-tagged-shops-player: "<red>You have no tags on this shop."
+    no-tagged-shops: "<red>You have no tagged shops."
+    no-tagged-shops-tag: "<red>You have no shops with tag <aqua>{0}</aqua>."
 menu:
   sell-tax: <green>消費税として <yellow>{0} <green>を支払いました
   owner: '<green>店主: {0}'
@@ -113,21 +179,23 @@ menu:
   stored-enchants: <dark_purple>エンチャント保管
   item-holochat-error: <red>[Error]
   this-shop-is-selling: <green>このショップは <aqua>販売<green> です
+  this-shop-is-buying: <green>このショップは <light_purple>買取<green> です
+  this-shop-is-frozen: <blue>FROZEN</blue>
+  this-shop-is-active: <aqua>ACTIVE</aqua>
+  this-shop-is-state: <green>This shop's current state is {0}<green>.
   shop-stack: '<green>1商品の内容量: <yellow>{0}'
   space: '<green>空き: <yellow>{0}'
   effects: <green>効果
   damage-percent-remaining: <green>残り耐久値 <yellow>{0}%
   item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
   stock: '<green>在庫: <yellow>{0}'
-  this-shop-is-buying: <green>このショップは <light_purple>買取<green> です
-  this-shop-is-frozen: <green>ショップは <red>フリーズモード<green> になりました。
   successfully-sold: '<green>売却成功:'
   total-value-of-chest: '<green>チェストの合計額: <yellow>{0}'
 currency-not-exists: <red>設定したい通貨が見当たりません。スペルが間違っているか、その通貨がこの世界では利用できないかもしれません。
 no-nearby-shop: <red> {0} に一致するショップは近所にありません。
 translation-author: 'Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red>{0} 統合がショップの取引を拒否しました
-shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
+shop-transaction-failed: "<red>申し訳ありません。購入処理中に内部エラーが発生しました。購入はキャンセルされ、関連する操作はすべてロールバックされました。理由: {0}"
 success-change-owner-to-server: <green>ショップの店主をサーバーに設定しました。
 shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
 shop-name-too-long: <red>このショップ名は長すぎます(最大長 {0})。別な名前を設定して下さい！
@@ -180,6 +248,14 @@ shop-type:
   selling: 販売
   buying: 買取
   frozen: 一時停止
+shop-state:
+  frozen: FROZEN
+  unfrozen: UNFROZEN
+  freeze: Freeze
+  unfreeze: Unfreeze
+shop-display:
+  enabled: 有効
+  disabled: 無効
 language:
   qa-issues: '<yellow>品質保証の問題: <aqua>{0}%'
   code: '<yellow>コード: <gold>{0}'
@@ -287,6 +363,8 @@ support-disable-reason:
 supertool-is-disabled: <red>スーパーツールが無効になっています。どのショップも破壊することはできません。
 unknown-owner: 不明
 restricted-prices: '<red>{0} の価格制限: 最低 {1}, 最高 {2}'
+restricted-price-max: '<red>Restricted price for {0}: Max {1}'
+restricted-price-min: '<red>Restricted price for {0}: Min {1}'
 nearby-shop-this-way: <green>ショップは {0} ブロック先にあります。
 owner-bypass-check: <yellow>全てのチェックをバイパスしました。取引成功！ (あなたがショップの店主になりました！)
 april-rick-and-roll-easter-egg: "<hover:show_text:'Click to open in browser for time limited rewards!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>QuickShop-Hikari 開発者が提供する時間限定報酬を獲得するには、ここをクリックしてください！</green></click></hover>"
@@ -308,6 +386,10 @@ signs:
   selling: 販売 {0}
   status-available: <green>
   item-left: ''
+  item-duration: 'Dur: {0}'
+  item-level: 'Level: {0}'
+  splash-potion: "Splash"
+  linger-potion: "Lingering"
 negative-amount: <red>マイナス量を取引できません
 display-turn-on: <green>ショップの表示をオンにしました。
 display-turn-off: <green>ショップの表示をオフにしました。
@@ -321,7 +403,7 @@ backup-failed: データベースをバックアップできません。詳細�
 shop-staff-cleared: <green>ショップのスタッフを全員削除しました。
 price-too-high: <red>ショップの価格が高すぎます！ {0} より高い価格のショップは作成できません。
 plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
-player-sold-to-your-store: <green>{0} があなたのショップに {2} を {1} 個 売却しました。
+player-sold-to-your-store: <green>{0} sold {1} {2} to your shop for {3}.
 shop-out-of-stock: <dark_purple>{0}、{1}、{2} のショップで {3} の在庫がなくなりました！
 how-many-buy: <green>チャットで<aqua>購入<green>したい個数を入力してください。<yellow>{0}個 <green> 購入できます。<aqua>{1} <green>で全て購入
 language-info-panel:
@@ -454,6 +536,7 @@ command:
     lookup: <yellow>参照可能な項目テーブルを管理
     database: <yellow>View and maintain QuickShop database
     benefit: <yellow>ショップオーナーと他のプレイヤー間の分割特典の設定
+    benefitall: <yellow>Settings of divide benefits between shop owner and other players for all shops you own.
     browse: <yellow>このサーバーに存在するショップを閲覧します。
     tag: <yellow>ショップのタグを追加、削除、またはクエリする
     suggestprice: <yellow>他のショップに基づいてショップを探すためのおすすめ価格を提案する
@@ -694,6 +777,8 @@ transfer-rejected-fromside: <red>Player <aqua>{0}</aqua> rejected your shop tran
 transfer-rejected-toside: <red>You rejected <aqua>{0}</aqua>'s shop transfer request.
 transfer-no-pending-operation: <red>You don't have pending transfer request yet.
 transfer-no-self: <red>ショップを自分自身に譲渡することはできません。
+transfer-no-buy: <red>You can't transfer shops that are buy shops.
+transfer-failed-some: <red>Failed to transfer some of the shops as they're not eligible.
 benefit-overflow: <red>すべての利益の合計は100%以上であることはできません。
 benefit-exists: <red>このショップではすでに利益リストに入っているターゲットプレーヤー。
 benefit-removed: <red>ターゲットプレイヤーはショップの特典から削除されました。
@@ -701,17 +786,6 @@ benefit-added: <green>プレイヤー <aqua>{0}</aqua> がショップ特典に�
 benefit-updated: <green>プレイヤー <aqua>{0}</aqua>の特典が更新されました！
 benefit-query: <green>このショップには、 <yellow>{0}</yellow> プレイヤーがベネフィットリストにいます！
 benefit-query-list: <yellow> - </yellow><white>Player <gold>{0}</gold>, Benefit <gold>{1}%</gold></white>
-tag-added: '<green> <aqua>#{0}</aqua> をこのショップに追加しました！'
-tag-add-duplicate: '<red>The tag <aqua>#{0}</aqua> already exists at this shop!'
-tag-removed: '<green>Successfully removed <aqua>#{0}</aqua> from this shop!'
-tag-remove-not-exists: 'The tag <aqua>#{0}</aqua> not exists at this shop!'
-tag-cleared: <green>Successfully cleared all tags from this shop!
-tag-shops-cleared: '<green>Successfully cleared <aqua>#{0}</aqua> from all your tagged shops!'
-tag-query: '<green>This shop have <yellow>{0}</yellow> tags:'
-tag-query-listing: '<yellow> - <aqua>#{0}</aqua>'
-tag-query-no-tag: <red>This shop have no tags.
-tag-query-shops: '<green>This tag contains <yellow>{0}</yellow> shops:'
-tag-query-shops-listing: <yellow> - <aqua>{0}</aqua>
 batch-operations-based-on-tags-no-failure: <green>Successfully batch processed <yellow>{0}</yellow> shops.
 batch-operations-based-on-tags-have-failure: <yellow>Total <yellow>{0}</yellow> shops in batch processing successfully completed, but <red>{1}</red> requests not completed.
 batch-operations-based-on-tags-have-failure-with-reason: '<yellow>Total <yellow>{0}</yellow> shops in batch processing successfully completed, but <red>{1}</red> requests not completed. Reason: <gold>{2}</gold>'
@@ -719,7 +793,7 @@ batch-operations-based-on-tags-have-failure-error-messages-may-appears-above: <g
 addon:
   towny:
     commands:
-      town: <yellow>Set or unset a shop to a Town shop
+      town: <yellow>町をショップを設定または解除する。
       nation: <yellow>Set or unset a shop to a Nation shop
     make-shop-owned-by-town: <green>You have made the shop owned by town <yellow>{0}</yellow>.
     make-shop-no-longer-owned-by-town: <green>You have reset shop ownership, it now transfer back to original shop owner.
@@ -734,8 +808,8 @@ addon:
     operation-disabled-due-shop-status: <red>This shop operation has been disabled due this already is a town/nation shop.
     plot-type-disallowed: <red>You can't create town/nation shop on this type of plot.
     flags:
-      own: <red>You can only create shops at your owned shop type towny plot.
-      modify: <red>You didn't have build permission on this towny plot.
+      own:
+      modify:
       shop-type: <red>You must create shop on a shop type towny plot.
   residence:
     creation-flag-denied: <red>You don't have permission to create shops in this residence.
@@ -776,9 +850,9 @@ addon:
     __to_translators: 'To translators: `addon.discord.discord-messages` use a special variable in strings, %%LANG_KEY%% instead of QuickShop''s style {LANG_INDEX}, do not translate anything inside double ''%'' section. BUT for any other section texts, it respect the normal QuickShop Text System syntax ({0},{1} etc.) This may be difficult to understand because two different variable forms are used in the same program at the same time, but trust me, it is reasonable. (you don''t need translate this string, it''s a comment)'
     __to_users: Like the QuickShop Text System, Discord addon will also auto-detect user language and use user's language to send Discord message, it following the QuickShop-Hikari's language system settings.
     __to_message_designer: 'GUIでDiscordメッセージをデザインしよう: https://glitchii.github.io/embedbuilder/ でJSONのコードをコピーして翻訳に貼り付ければ、はい完成！'
-    discord-enabled: <aqua>Successfully <green>enabled</green> your QuickShop discord messages, now you can receive the shop messages from Discord.
-    discord-disabled: <aqua>Successfully <red>disabled</red> your QuickShop discord messages, now you won't receive the shop messages from Discord anymore.
-    discord-not-integrated: <red>You hadn't link your Discord yet! Please link your Discord account first!
+    discord-enabled: <aqua>QuickShop の Discord 通知を<green>有効</green>にしました。Discord からショップ通知を受け取れます。
+    discord-disabled: <aqua>QuickShop の Discord 通知を<red>無効</red>にしました。これ以降 Discord からのショップ通知は受け取りません。
+    discord-not-integrated: <red>Discord が連携されていません。先にあなたの Discord アカウントをリンクしてください！
     feature-enabled-for-user: <aqua>You have <green>enabled</green> <gold>{0}</gold> notification.
     feature-disabled-for-user: <aqua>You have <red>disabled</red> <gold>{0}</gold> notification.
     link-help: <yellow>This server using <gold>{0}</gold> for Discord driver, please use <green>{0}</green> to link your Discord account.
@@ -786,7 +860,7 @@ addon:
     feature-status-changed: <green>Successfully set the notifaction <aqua>{0}</aqua> status to <gold>{1}</gold>
     commands:
       discord:
-        description: <yellow>Managing your QuickShop Discord settings
+        description: <yellow>QuickShop の Discord 設定を管理します
     discord-messages:
       sold-to-your-shop: |
         {
@@ -825,7 +899,6 @@ addon:
                  "value": "%%shop.item.name%%",
                  "inline": true
                },
-               {
                {
                  "name": "Amount",
                  "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
@@ -1308,14 +1381,14 @@ addon:
             }
         }
     field:
-      player: Player
-      item: Item
-      amount: Amount
-      balance: Balance
-      balance-after-tax: Balance (after tax)
-      account: Your account balance
-      taxes: Taxes
-      cost: Cost
+      player: プレイヤー
+      item: アイテム
+      amount: 個数
+      balance: 金額
+      balance-after-tax: 金額 (税引後)
+      account: あなたの残高
+      taxes: 税率
+      cost: 価格
   discount:
     commands:
       discount:
@@ -1410,7 +1483,7 @@ addon:
       list: <yellow>Listing all shops owned by your or specific player
     table-prefix: '<yellow><green>{0}</green>''s shops <gray>(Total {1})</gray>: '
     table-prefix-pageable: '<yellow><green>{0}</green>''s shops <gray>(Page {1}/{2})</gray>: '
-    entry: "<hover:show_text:'<yellow>{1}</yellow>\n<gray>{2} {3},{4},{5}</gray>\n<aqua>Price <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow>\n<green>{9}'><yellow>{0}. <aqua>{1}</aqua></hover>"
+    entry: "<yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>Price <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}<br><green>{10}'>{0}.<aqua>{1}</hover>"
   shopitemonly:
     message: <red>You can't put non-shop items into shop container, all non-shop items will dropped at your location.
   limited:
@@ -1537,7 +1610,7 @@ compatibility:
 internet-paste-forbidden-privacy-reason: "<red>Failed! According your privacy setting, QuickShop-Hikari are not allowed upload your paste to Internet, turn on DIAGNOSTIC permission in privacy setting in config.yml or use <aqua>/quickshop paste --file</aqua> instead."
 no-sign-type-given: "<red>You need give a sign material, the sign materials that available on this server: {0}"
 sign-type-invalid: "<red>The type <yellow>{0}</yellow> not a valid sign material."
-delete-controlpanel-button-confirm: "<red>Do you really want remove this shop? Click the <bold>[Remove Shop]</bold> button again in {0} seconds to confirm."
+delete-controlpanel-button-confirm: "<red>本当にこのショップを削除しますか？確認のため、{0}秒以内にもう一度<bold>[ショップ削除]</bold>ボタンをクリックしてください。"
 cannot-suggest-price: "<red>Sorry, For the time being, no more people are trading the same item as you and there is not enough data to generate a suggested price."
 price-suggest: "<green>Based on data from <aqua>{0}</aqua> stores, the highest priced store is priced at <light_purple>{1}</light_purple>, the lowest priced store is priced at <light_purple>{2}</light_purple>, the average price is <light_purple>{3}</light_purple>, and the median price is <light_purple>{4}</light_purple>. <newline><yellow>It's recommended that you set your price around <gold>{5}</gold>.</yellow>"
 price-suggest-multi: "<green>Suggestion for {0} type.</green>{1}"
@@ -1561,6 +1634,8 @@ gui:
     custom-amount:
       display: "<bold><blue>Custom Order</blue></bold>"
     quantity-button:
+      display-buy: "<green>Buy x{0}</green>"
+      display-sell: "<gold>Sell x{0}</gold>"
       lore:
         - "<yellow>{0}</yellow>"
   keeper:
@@ -1571,6 +1646,16 @@ gui:
         - "<gray>Current price: <white>{0}</white></gray>"
         - ""
         - "<yellow>Click to change price</yellow>"
+    display-toggle:
+      display: "<bold><green>Toggle Preview</green></bold>"
+      lore:
+        - "<gray>Toggle item preview in shops</gray>"
+        - "<gray>Status: <white>{0}</white>. Click to toggle.</gray>"
+    freeze-toggle:
+      display: "<bold><green>Toggle Freeze</green></bold>"
+      lore:
+        - "<gray>Currently <white>{0}</white></gray>"
+        - "<gray>Click to <white>{1}</white></gray>"
     mode-toggle:
       display: "<bold><green>Change Mode</green></bold>"
       lore:
@@ -1592,9 +1677,9 @@ gui:
         - "<gray>Click to view your</gray>"
         - "<gray>shop's transaction history.</gray>"
     remove:
-      display: "<bold><red>Delete Shop</red></bold>"
+      display: "<bold><red>ショップを削除</red></bold>"
       lore:
-        - "<gray>Click to delete your shop.</gray>"
+        - "<gray>クリックしてショップを削除します。</gray>"
         - "<dark_gray>You can also break the sign/chest.</dark_gray>"
   staff:
     title: "<dark_aqua>Staff Management</dark_aqua>"
@@ -1612,6 +1697,30 @@ gui:
       display: "<white>Back to Shop</white>"
   browse:
     title: "<dark_aqua>Market Browser</dark_aqua>"
+    shop-list:
+      buying-label: "<#FFA500>Buying</#FFA500>"
+      selling-label: "<green>Selling</green>"
+      price-indicator:
+        average: "● Average"
+        selling:
+          great: "▼▼ Great Deal!"
+          good: "▼ Below Avg"
+          bad: "▲▲ Expensive"
+          worst: "▲ Above Avg"
+        buying:
+          great: "▲▲ Great Price!"
+          good: "▲ Above Avg"
+          bad: "▼▼ Low Offer"
+          worst: "▼▼ Below Avg"
+      display: "<yellow>{0}</yellow>"
+      lore:
+        - "<gray>Owner: <white>{0}</white></gray>"
+        - "<gray>Type: {1}</gray>"
+        - "<gray>Price: {2}</gray>"
+        - "<gray><aqua>{3}</aqua></gray>"
+        - "<gray>Location: <white>{4}</white></gray>"
+        - "<dark_gray>{5}</dark_gray>"
+      teleport: "<newline><yellow>Click to teleport</yellow>"
     shop-item:
       lore:
         - "<green>Owner: </green><yellow>{0}</yellow>"
@@ -1641,6 +1750,12 @@ gui:
       lore:
         - "<gray>Left-click to search for items</gray>"
         - "<gray>Right-click to clear search</gray>"
+    search-item:
+      display: "<yellow>{0}</yellow>"
+      lore:
+        - "<gray>Showing: {0}</gray>"
+        - "<gray>Shops: <white>{1}</white></gray>"
+        - "<gray>Average price: <gold>{2}</gold></gray>"
     sort:
       display: "<green>Sort: {0}</green>"
       lore:
@@ -1656,6 +1771,9 @@ gui:
       all: "All"
       selling: "Selling"
       buying: "Buying"
+      all-indicator: "<white>All Shops</white>"
+      selling-indicator: "<green>Selling Shops</green>"
+      buying-indicator: "<#FFA500>Buying Shops</#FFA500>"
     stock-filter:
       display: "<gold>In Stock Only: {0}</gold>"
       lore:
@@ -1742,7 +1860,7 @@ history:
       - "<white>Recent <aqua>{2}</aqua> purchases: <yellow>{3}</yellow></white>"
       - "<white>Recent <aqua>{4}</aqua> purchases: <yellow>{5}</yellow></white>"
       - "<white>Recent <aqua>{6}</aqua> purchases: <yellow>{7}</yellow></white>"
-      - "<white>Recent <aqua>{8}</aqua> purchases: <yellow>{9}</yellow></white>"
+      - "<white>最近の <aqua>{8}</aqua> 購入: <yellow>{9}</yellow></white>"
       - "<white>Total purchases: <yellow>{10}</yellow></white>"
       - "<white>Recent <aqua>{11}</aqua> turnover: <yellow>{12}</yellow></white>"
       - "<white>Recent <aqua>{13}</aqua> turnover: <yellow>{14}</yellow></white>"

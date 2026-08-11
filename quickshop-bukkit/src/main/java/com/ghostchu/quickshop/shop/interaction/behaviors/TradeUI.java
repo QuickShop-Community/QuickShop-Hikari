@@ -30,10 +30,15 @@ import net.tnemc.menu.core.manager.MenuManager;
 import net.tnemc.menu.core.viewer.MenuViewer;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
  * TradeUI
@@ -90,17 +95,73 @@ public class TradeUI implements InteractionBehavior {
         return;
       }
 
-      final MenuViewer viewer = new MenuViewer(event.getPlayer().getUniqueId());
-      viewer.addData(ShopKeeperMenu.SHOP_DATA_ID, shop.getShopId());
-      MenuManager.instance().addViewer(viewer);
+      final CompletableFuture<Integer> remainingStockFuture = shop.shopType().remainingStockAsync(shop);
+      remainingStockFuture.thenAccept(remainingStock -> {
 
-      final MenuPlayer menuPlayer = QuickShop.getInstance().createMenuPlayer(event.getPlayer());
-      MenuManager.instance().open("qs:trade", 1, menuPlayer);
+
+        final MenuViewer viewer = new MenuViewer(event.getPlayer().getUniqueId());
+        viewer.addData(ShopKeeperMenu.SHOP_DATA_ID, shop.getShopId());
+        viewer.addData(ShopKeeperMenu.SHOP_STOCK_ID, remainingStock);
+        MenuManager.instance().addViewer(viewer);
+
+        final MenuPlayer menuPlayer = QuickShop.getInstance().createMenuPlayer(event.getPlayer());
+        MenuManager.instance().open("qs:trade", 1, menuPlayer);
+      });
 
       //cancel our item use
       event.setCancelled(true);
       event.setUseInteractedBlock(Event.Result.DENY);
       event.setUseItemInHand(Event.Result.DENY);
     }
+  }
+
+  @Override
+  public void handle(final @NotNull QuickShopAPI plugin, final @Nullable Shop shop, final @NotNull Player player, final @NotNull PlayerInteractEntityEvent event, final @NotNull InteractionClick clickType, final @Nullable InteractionType interaction) {
+    if(shop == null) return;
+
+    //send control panel
+    handle(plugin, event, shop, player);
+
+    //cancel event stuff
+    event.setCancelled(true);
+  }
+
+  @Override
+  public void handle(final @NotNull QuickShopAPI plugin, final @Nullable Shop shop, final @NotNull Player player, final @NotNull EntityDamageByEntityEvent event, final @NotNull InteractionClick clickType, final @Nullable InteractionType interaction) {
+    if(shop == null) return;
+
+    //send control panel
+    handle(plugin, event, shop, player);
+
+    //cancel event stuff
+    event.setCancelled(true);
+  }
+
+  private void handle(final @NotNull QuickShopAPI plugin, final Cancellable event, @NotNull final Shop shop, final @NotNull Player player) {
+
+    if(shop.isFrozen()) {
+      ((QuickShop)plugin).text().of(player, "shop-cannot-trade-when-freezing").send();
+      return;
+    }
+
+    //open our menus.
+    if(player.getInventory().getItemInMainHand().getType() == Material.GOLDEN_AXE) {
+      return;
+    }
+
+    final CompletableFuture<Integer> remainingStockFuture = shop.shopType().remainingStockAsync(shop);
+    remainingStockFuture.thenAccept(remainingStock ->{
+
+      final MenuViewer viewer = new MenuViewer(player.getUniqueId());
+      viewer.addData(ShopKeeperMenu.SHOP_DATA_ID, shop.getShopId());
+      viewer.addData(ShopKeeperMenu.SHOP_STOCK_ID, remainingStock);
+      MenuManager.instance().addViewer(viewer);
+
+      final MenuPlayer menuPlayer = QuickShop.getInstance().createMenuPlayer(player);
+      MenuManager.instance().open("qs:trade", 1, menuPlayer);
+    });
+
+    //cancel our item use
+    event.setCancelled(true);
   }
 }

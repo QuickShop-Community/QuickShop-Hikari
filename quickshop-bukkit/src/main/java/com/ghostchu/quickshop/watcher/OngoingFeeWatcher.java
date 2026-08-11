@@ -50,7 +50,7 @@ public class OngoingFeeWatcher implements Runnable {
     for(final Shop shop : plugin.getShopManager().getAllShops()) {
       if(!shop.isUnlimited() || !ignoreUnlimited) {
         final QUser shopOwner = shop.getOwner();
-        final Location location = shop.getLocation();
+        final Location location = shop.bukkitLocation();
         if(!location.isWorldLoaded()) {
           //ignore unloaded world
           continue;
@@ -121,7 +121,7 @@ public class OngoingFeeWatcher implements Runnable {
    */
   public void removeShop(@NotNull final Shop shop) {
 
-    final Location location = shop.getLocation();
+    final Location location = shop.bukkitLocation();
     Util.regionThread(location, ()->plugin.getShopManager().deleteShop(shop));
     MsgUtil.send(shop, shop.getOwner(), plugin.text().of("shop-removed-cause-ongoing-fee", LegacyComponentSerializer.legacySection().deserialize("World:"
                                                                                                                                                  + Objects.requireNonNull(location.getWorld()).getName()

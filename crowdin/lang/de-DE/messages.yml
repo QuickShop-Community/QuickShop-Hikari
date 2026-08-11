@@ -20,12 +20,23 @@ tabcomplete:
   price: '[Preis]'
   name: '[Name]'
   range: '[Reichweite]'
+  list: 'liste'
+  page: '[seite #]'
+  shop-id: '[shop id]'
   currency: '[Währungsname]'
   percentage: '[Prozentsatz%]'
+  add: 'add'
+  remove: 'remove'
+  clear: 'clear'
+  clearall: 'clearall'
+  shops: 'shops'
+  tagged: 'tagged'
+  purge: 'purge'
+  tag: '[tag]'
 taxaccount-unset: <green>Das Steuerkonto dieses Shops folgt nun den globalen Servereinstellungen.
 blacklisted-item: <red>Dieses Item kann nicht verkauft werden, da es auf der Schwarzen Liste steht
 command-type-mismatch: <red>Dieser Befehl kann nur von <aqua>{0}<red> ausgeführt werden.
-server-crash-warning: '<red>Server kann nach Ausführung des /qs Reload-Befehls abstürzen, wenn Sie während des Laufens des Servers QuickShop-Plugin-Jar-Datei ersetzen/löschen.'
+server-crash-warning: '<red>Server kann nach Ausführung des /quickshop reload Befehls abstürzen, wenn Sie während des Laufens des Servers QuickShop-Plugin-Jar-Datei ersetzen/löschen.'
 you-cant-afford-to-change-price: Es kostet {0} um den Preis deines Shops zu ändern.
 safe-mode: <red>QuickShop ist im Sicherheitsmodus. Du kannst diesen Shop-Container nicht öffnen. Kontaktiere den Server Administrator um dieses Problem zu beheben.
 forbidden-vanilla-behavior: <red>Die Operation ist verboten da Sie nicht mit dem Vanilla verhalten übereinstimmt
@@ -97,6 +108,61 @@ shop-staff-empty: <yellow>Dieser Shop hat keine Mitarbeiter.
 shops-recovering: Stelle Shops von Backups wieder her...
 virtual-player-component-hover: "<gray>Dies ist ein virtueller Spieler.\n<gray>Bezieht sich auf ein Systemkonto mit dem selben Namen.</gray>\n<green>UUID: <yellow>{0}</yellow>\n<green>Benutzername: <yellow>{1}</yellow>\n<green>Angezeigt als: <yellow>{2}</yellow>"
 real-player-component-hover: "<gray>Dies ist ein echter existierender Spieler.\n<green>UUID: <yellow>{0}</yellow>\n<green>Benutzername: <yellow>{1}</yellow>\n<green>Angezeigt als: <yellow>{2}</yellow>\n<gray>Wenn du ein virtuelles Systemkonto mit demselben Namen verwenden willst, füge <dark_gray>\"[]\"</dark_gray> an beiden enden des Namens hinzu: <dark_gray>[{1}]</dark_gray>."
+pagination:
+  header: "<green>{0}</green>:"
+  footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Vorherige Seite\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Nächste Seite\"><white>></white></hover></click>]</light_purple>"
+tags:
+  commands:
+    tag: "<yellow>Verwalte deine Shop-Tags."
+    favorite: "<yellow>Favorit am angesehenen Shop umschalten."
+    watch: "<yellow>Toggle watch on looked-at shop."
+    avoid: "<yellow>Toggle avoid on looked-at shop."
+  general:
+    database-error: "<red>Beim Ausführen einer Tag-Operation ist ein Fehler aufgetreten."
+    list-entry: "<green>{0}.</green> <aqua>{1}</aqua> <light_purple>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>Zeige alle Shops mit diesem Tag\">Zeige Shops</hover></click>]</light_purple> <red>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Entferne diesen Tag von diesem Shop\">Entfernen</hover></click>]</red>"
+    invalid: "<red>Ungültiger Tag. Nur Buchstaben, Bindestriche (-) und Unterstriche (_) sind erlaubt. Maximale Länge: <yellow>{0}</yellow>"
+  avoid:
+    added: "<green>Diesen Shop zu deiner Vermeidung-liste hinzugefügt."
+    removed: "<green>Removed this shop from your avoid list."
+    unable: "<red>Unable to toggle avoid on this shop."
+    none: "<red>You have no avoided shops."
+    label: "<yellow>Avoid"
+  favorite:
+    added: "<green>Added this shop to your favorite list."
+    removed: "<green>Removed this shop from your favorite list."
+    unable: "<red>Unable to toggle favorite on this shop."
+    none: "<red>You have no favorite shops."
+    label: "<yellow>Favorite"
+  watch:
+    added: "<green>You are now watching this shop."
+    removed: "<green>You are no longer watching this shop."
+    unable: "<red>Unable to toggle watch on this shop."
+    none: "<red>You are not watching any shops."
+    label: "<yellow>Watching"
+  tag:
+    title-avoided-shops: "<green>Avoided shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    title-favorited-shops: "<green>Favorited shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    title-watched-shops: "<green>Watched shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    list-player-shops-title: "<green>Your tagged shops</green> <gray>(<yellow>{0}</yellow> shops, <yellow>{1}</yellow> tags)</gray>"
+    list-player-shop-title: "<green>Shop tags</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    list-tag-title: "<green>Tag <aqua>{0}</aqua> usage</green> <gray>(<yellow>{1}</yellow> shops)</gray>"
+    shops-entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <light_purple>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>View all tags on this shop\">View {10} tags</hover></click>]</light_purple>"
+    entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <red>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove Tag</hover></click>]</red>"
+    list-tag-shop-entry-tp: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Teleport to this shop\">Teleport</hover></click>]</light_purple>"
+    added: "<green>Added tag <aqua>{0}</aqua> to this shop."
+    duplicate: "<red>This shop already has tag <aqua>{0}</aqua>."
+    failed-add: "<red>An error occurred while adding tag <aqua>{0}</aqua> to this shop."
+    failed-remove: "<red>An error occurred while removing tag <aqua>{0}</aqua> from this shop."
+    removed: "<green>Removed tag <aqua>{0}</aqua> from this shop."
+    does-not-exist: "<red>This shop does not have tag <aqua>{0}</aqua>."
+    cleared: "<green>Cleared all tags from this shop."
+    cleared-all: "<green>Cleared all tags from all shops."
+    cleared-tag: "<green>Cleared tag <aqua>{0}</aqua> from all your tagged shops."
+    no-tags-all: "<red>There are no tags on any shop."
+    no-tags: "<red>This shop has no tags."
+    no-tagged-shops-player: "<red>You have no tags on this shop."
+    no-tagged-shops: "<red>You have no tagged shops."
+    no-tagged-shops-tag: "<red>You have no shops with tag <aqua>{0}</aqua>."
 menu:
   sell-tax: <green>Du hast <yellow>{0} <green>an Steuern zahlen müssen.
   owner: '<green>Besitzer: {0}'
@@ -113,21 +179,23 @@ menu:
   stored-enchants: <dark_purple>Gespeicherte Verzauberungen
   item-holochat-error: <red>[Fehler]
   this-shop-is-selling: <green>Dieser Shop <aqua>VERKAUFT<green> Gegenstände.
+  this-shop-is-buying: <green>Dieser Shop <light_purple>KAUFT<green> Gegenstände an.
+  this-shop-is-frozen: <blue>FROZEN</blue>
+  this-shop-is-active: <aqua>AKTIVE</aqua>
+  this-shop-is-state: <green>This shop's current state is {0}<green>.
   shop-stack: '<green>Menge: <yellow>{0}'
   space: '<green>Kapazität: <yellow>{0}'
   effects: <green>Effekte
   damage-percent-remaining: <yellow>{0}% <green>verbleibend.
   item-holochat-data-too-large: <red>[Error] Item NBT ist zu gross zum Anzeigen
   stock: '<green>Lagerbestand: <yellow>{0}'
-  this-shop-is-buying: <green>Dieser Shop <light_purple>KAUFT<green> Gegenstände an.
-  this-shop-is-frozen: <green>Dieser Shop ist nun <red>eingefroren<green>.
   successfully-sold: '<green>Erfolgreich verkauft:'
   total-value-of-chest: '<green>Gesamtwert der Truhe: <yellow>{0}'
 currency-not-exists: <red>Kann die Währung, welche du setzen willst, nicht finden. Vielleicht ist die Schreibweise falsch oder diese Währung ist in dieser Welt nicht verfügbar.
 no-nearby-shop: <red>Keine nahegelegenen Shops welche {0} entsprechen.
 translation-author: 'Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red>Integrierung {0} hat das Shop-handeln verweigert
-shop-transaction-failed: <red>Sorry, aber ein interner Fehler ist während dem verarbeiten deines Kaufes aufgetreten. Der Kauf wurde abgebrochen und jegliche wirtschaftliche aktion wurde zurückgesetzt. Bitte kontaktiere einen Server-Administrator sollte dies weiterhin auftreten.
+shop-transaction-failed: "<red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any other operations have been rolled back. Reason: {0}"
 success-change-owner-to-server: <green>Der Shop wurde erfolgreich dem Server überschrieben.
 shop-name-not-found: <red>Ein Shop mit dem Namen <yellow>{0}</yellow> existiert nicht.
 shop-name-too-long: <red>Dieser Shopname ist zu lang (Maximal {0}). Bitte wähle einen anderen!
@@ -180,6 +248,14 @@ shop-type:
   selling: VERKAUFEN
   buying: KAUFEN
   frozen: EINGEFROREN
+shop-state:
+  frozen: FROZEN
+  unfrozen: UNFROZEN
+  freeze: Freeze
+  unfreeze: Unfreeze
+shop-display:
+  enabled: aktiviert
+  disabled: deaktiviert
 language:
   qa-issues: '<yellow>Qualitätssicherungs-Probleme: <aqua>{0}%'
   code: '<yellow>Code: <gold>{0}'
@@ -287,6 +363,8 @@ support-disable-reason:
 supertool-is-disabled: <red>Super-Tool ist deaktiviert. Kann keine Shops zerstören.
 unknown-owner: Unbekannt
 restricted-prices: '<red>Eingeschränkter Preis für {0}: Mindestens {1}, maximal {2}'
+restricted-price-max: '<red>Restricted price for {0}: Max {1}'
+restricted-price-min: '<red>Restricted price for {0}: Min {1}'
 nearby-shop-this-way: <green>Shop ist {0} Blöcke von dir entfernt.
 owner-bypass-check: <yellow>Alle Prüfungen wurden umgangen. Handel erfolgreich! (Sie sind jetzt der Besitzer des Ladens!)
 april-rick-and-roll-easter-egg: "<hover:show_text:'Anklicken um im Browser zu öffnen für eine limitierte Belohnung!'><click:open_url:'https://www.youtube.com/watch?v?dQw4w9WgXcQ'><green>Klicke hier um eine limitierte Belohnung von den QuickShop-Hikari Entwicklern zu erhalten!</green></click></hover>"
@@ -308,20 +386,24 @@ signs:
   selling: Verkauft {0}
   status-available: <green>
   item-left: ''
+  item-duration: 'Dur: {0}'
+  item-level: 'Level: {0}'
+  splash-potion: "Splash"
+  linger-potion: "Lingering"
 negative-amount: <red>Du kannst keine negative Anzahl handeln
 display-turn-on: <green>Shop-Display erfolgreich aktiviert.
 display-turn-off: <green>Shop-Display erfolgreich deaktiviert.
 display-turn-on-owned:
 display-turn-off-owned:
 display-turn-on-all: .
-display-turn-off-all: <green>Successfully turned off shop display for all server shops.
+display-turn-off-all: <green>Shop-Anzeige für alle Server-Shops erfolgreich deaktiviert.
 shop-staff-deleted: <green>{0} erfolgreich von deinem Shop als Shopmitarbeiter entfernt.
 nearby-shop-header: '<green>Shops in der nähe welche <aqua>{0}<green> entsprechen:'
 backup-failed: Kann Datenbank nicht sichern. Überprüfe die Konsole für Details.
 shop-staff-cleared: <green>Alle Shopmitarbeiter erfolgreich von deinem Shop entfernt.
 price-too-high: <red>Der Shoppreis ist zu hoch! Du kannst keinen Shop mit einem Preis über {0} erstellen.
 plugin-cancelled: '<red>Vorgang abgebrochen, Grund: {0}'
-player-sold-to-your-store: <green>{0} hat {1} {2} bei deinem Shop verkauft.
+player-sold-to-your-store: <green>{0} sold {1} {2} to your shop for {3}.
 shop-out-of-stock: <dark_purple>Dein Shop bei den Koordinaten {0}, {1}, {2}, verfügt über keine {3} mehr!
 how-many-buy: <green>Schreib im Chat, wie viele du gerne <aqua>KAUFEN</aqua> willst. Du kannst <yellow>{0}<green> kaufen. Schreibe <aqua>{1}<green> um alle zu kaufen.
 language-info-panel:
@@ -362,8 +444,8 @@ controlpanel:
   remove-hover: <yellow>Klicke um diesen Shop zu entfernen.
   toggledisplay-hover: <yellow>Ändere den Status des Display-Items für den Shop
   refill: '<green>Auffüllen: Füllt die Items auf <yellow>[<light_purple><bold>OK</bold></light_purple>]'
-  inventory: '<green>Inventory: </green><yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
-  inventory-hover: <yellow>Open the shop's inventory.
+  inventory: '<green>Inventar: </green><yellow>[<bold><light_purple>Inventar ansehen</light_purple></bold>]'
+  inventory-hover: <yellow>Shop Inventar öffnen.
   freeze-hover: <yellow>Ändere den Freeze-Status des Shops.
   lock-hover: <yellow>Aktiviere/Deaktiviere den Sperrschutz des Shops.
   item-hover: <yellow>Klicke um das Shop Item zu ändern
@@ -449,11 +531,12 @@ command:
     taxaccount: <yellow>Legt das Steuerkonto fest, welches der Shop verwenden soll
     name: <yellow>Ändert den Namen eines bestimmten Shops
     toggledisplay: <yellow>Ändere den Status des Display-Items für den Shop
-    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
+    toggledisplayall:
     permission: <yellow>Shop-Berechtigungsverwaltung
     lookup: <yellow>Tabelle der nachschlagbaren Gegenstände verwalten
     database: <yellow>Zeige und verwalte die QuickShop Datenbank
     benefit: <yellow>Einstellungen zum aufteilen von Vorteilen zwischen Schobeigentümer und anderen Spielern
+    benefitall: <yellow>Settings of divide benefits between shop owner and other players for all shops you own.
     browse: <yellow>Durchsuche Shops, die auf diesem Server existieren.
     tag: <yellow>Shop-Tags hinzufügen, entfernen oder abfragen
     suggestprice: <yellow>Empfiehlt einen Preis für den angesehenen Shop, basierend auf anderen Shops
@@ -692,6 +775,8 @@ transfer-rejected-fromside: <red>Spieler <aqua>{0}</aqua> hat deine Shop-Übertr
 transfer-rejected-toside: <red>Du hast <aqua>{0}</aqua>'s Shop-Übertragungsanfrage abgelehnt.
 transfer-no-pending-operation: <red>Du hast keine ausstehenden Transfer-Anfragen.
 transfer-no-self: <red>Du kannst deine Shops nicht an dich selbst übertragen.
+transfer-no-buy: <red>You can't transfer shops that are buy shops.
+transfer-failed-some: <red>Failed to transfer some of the shops as they're not eligible.
 benefit-overflow: <red>Die Summe aller Vorteile kann nicht grösser oder gleich 100% sein.
 benefit-exists: <red>Spieler ist bereits in der Vorteilsliste dieses Shops.
 benefit-removed: <red>Spieler wurde von Shop-Vorteilen entfernt.
@@ -699,17 +784,6 @@ benefit-added: <green>Spieler <aqua>{0}</aqua> wurde zu Shop-Vorteilen hinzugef�
 benefit-updated: <green>Spieler <aqua>{0}</aqua>'s Vorteile wurden aktualisiert!
 benefit-query: <green>Dieser Shop hat <yellow>{0}</yellow> Spieler in der Vorteilsliste!
 benefit-query-list: '<yellow> - </yellow><white>Spieler <gold>{0}</gold>. Vorteil: <gold>{1}%</gold>/white>'
-tag-added: '<green><aqua>#{0}</aqua> erfolgreich als Tag zu diesem Shop hinzugefügt!'
-tag-add-duplicate: '<red>Der Tag <aqua>#{0}</aqua> existiert bereits für diesen Shop!'
-tag-removed: '<green>Tag <aqua>#{0}</aqua> efolgreich von diesem Shop entfernt!'
-tag-remove-not-exists: '<red>Der Tag <aqua>#{0}</aqua> existiert für diesen Shop nicht!'
-tag-cleared: <green>Alle Tags erfolgreich von diesem Shop entfernt!
-tag-shops-cleared: '<green><aqua>#{0}</aqua> wurde erfolgreich von all deinen getaggten Shops entfernt!'
-tag-query: '<green>Dieser Shop hat <yellow>{0}</yellow> Tags:'
-tag-query-listing: '<yellow> - <aqua>#{0}</aqua>'
-tag-query-no-tag: <red>Dieser Shop hat keine Tags.
-tag-query-shops: '<green>Dieser Tag hat <yellow>{0}</yellow> Shops:'
-tag-query-shops-listing: <yellow> - <aqua>{0}</aqua>
 batch-operations-based-on-tags-no-failure: <green><yellow>{0}</yellow> Shops erfolgreich verarbeitet.
 batch-operations-based-on-tags-have-failure: <yellow>{0} Shops wurden erfolgreich in der Massenverarbeitung abgeschlossen, aber <red>{1}</red> konnten nicht abgeschlossen werden.
 batch-operations-based-on-tags-have-failure-with-reason: "<yellow>{0} Shops wurden erfolgreich in der Massenverarbeitung abgeschlossen, aber <red>{1}</red> konnten nicht abgeschlossen werden.\nGrund: <gold>{2}</gold>"
@@ -746,9 +820,9 @@ addon:
     world-not-enabled: <red>Du kannst keine Shops in dieser Welt kaufen oder erstellen.
     creation-denied: <red>Du hast keine Berechtigung einen Shop in dieser Landregion zu erstellen.
   quests:
-    create-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to create a shop.
-    sell-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to sell items to a shop.
-    buy-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to buy items from a shop.
+    create-quest-required: <red>Du musst die Quest abschließen <aqua>{0}</aqua> um einen Shop zu erstellen.
+    sell-quest-required: <red>Du musst die Quest abschließen <aqua>{0}</aqua> um Gegenstände an einen Shop zu verkaufen.
+    buy-quest-required: <red>Du musst die Quest abschließen <aqua>{0}</aqua> um Gegenstände von einem Shop zu kaufen.
   dominion:
     creation-denied: <red>Du hast keine Berechtigung einen Shop in dieser Dominion-Area zu erstellen.
     trade-denied: <red>Der Shop muss innerhalb eines Dominion sein, um mit ihm zu handeln.
@@ -787,61 +861,7 @@ addon:
         description: <yellow>Verwalte deine QuickShop Discord Einstellungen
     discord-messages:
       sold-to-your-shop: |
-        {
-         "embed":
-           {
-             "title": ":inbox_tray: Somebody sold items to your shop",
-             "description": "The player %%purchase.name%% sold x%%purchase.amount%% %%shop.item.name%% to your shop.",
-             "color": 52084,
-             "author": {
-               "name": "QuickShop-Hikari",
-               "icon_url": ""
-             },
-             "thumbnail": {
-               "url": ""
-             },
-             "image": {
-               "url": ""
-             },
-             "footer": {
-               "text": "QuickShop-Hikari Discord Notification",
-               "icon_url": ""
-             },
-             "fields": [
-               {
-                 "name": "Shop",
-                 "value": "%%shop.display-name%%",
-                 "inline": false
-               },
-               {
-                 "name": "Purchaser",
-                 "value": "%%purchase.name%%",
-                 "inline": true
-               },
-               {
-                 "name": "Item",
-                 "value": "%%shop.item.name%%",
-                 "inline": true
-               },
-               {
-               {
-                 "name": "Amount",
-                 "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
-                 "inline": true
-               },
-               {
-                 "name": "Your paid",
-                 "value": "%%purchase.balance-formatted%%",
-                 "inline": true
-               },
-               {
-                 "name": "Taxes",
-                 "value": "%%purchase.taxes-formatted%%",
-                 "inline": true
-               }
-             ]
-           }
-        }
+
       bought-from-your-shop: |
         {
            "embed":
@@ -1408,7 +1428,7 @@ addon:
       list: <yellow>Zeigt alle Shops welche dir oder einem bestimmten Spieler gehören
     table-prefix: '<yellow><green>{0}</green>''s Shops <gray>(Gesamt: {1})</gray>: '
     table-prefix-pageable: '<yellow><green>{0}</green>''s Shops <gray>(Seite {1}/{2})</gray>: '
-    entry: "<hover:show_text:'<yellow>{1}</yellow>\n<gray>{2} {3}, {4}, {5}</gray>\n<aqua>Preis <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow>\n<green>{9}'><yellow>{0}. <aqua>{1}</aqua></hover>"
+    entry: "<yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>Price <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}<br><green>{10}'>{0}.<aqua>{1}</hover>"
   shopitemonly:
     message: <red>Du kannst keine Nicht-Shop items in den Shop-Container legen. Alle Nicht-Shop items werden an deiner Position fallen gelassen.
   limited:
@@ -1544,77 +1564,113 @@ gui:
   trade:
     title: "<dark_aqua>Shop</dark_aqua>"
     info-stock:
-      display: "<yellow>Stock Information</yellow>"
+      display: "<yellow>Vorrats Information</yellow>"
       lore:
-        - "<gray>Available: <white>{0}</white></gray>"
+        - "<gray>Verfügbar: <white>{0}</white></gray>"
     info-price:
-      display: "<gold>Price Information</gold>"
+      display: "<gold>Preis Information</gold>"
       lore:
-        - "<gray>Price: <white>{0}</white></gray>"
-        - "<gray>Per: <white>{1} item(s)</white></gray>"
+        - "<gray>Preis: <white>{0}</white></gray>"
+        - "<gray>Pro: <white>{1} Gegenstand/stände</white></gray>"
     info-seller:
-      display: "<aqua>Seller Information</aqua>"
+      display: "<aqua>Verkäufer Information</aqua>"
       lore:
-        - "<gray>Owner: <white>{0}</white></gray>"
+        - "<gray>Besitzer: <white>{0}</white></gray>"
     custom-amount:
-      display: "<bold><blue>Custom Order</blue></bold>"
+      display: "<bold><blue>Benutzerdefinierte Bestellung</blue></bold>"
     quantity-button:
+      display-buy: "<green>Buy x{0}</green>"
+      display-sell: "<gold>Sell x{0}</gold>"
       lore:
         - "<yellow>{0}</yellow>"
   keeper:
-    title: "<dark_aqua>Shop Management</dark_aqua>"
+    title: "<dark_aqua>Shop-Verwaltung</dark_aqua>"
     change-price:
-      display: "<bold><green>Change Price</green></bold>"
+      display: "<bold><green>Preis ändern</green></bold>"
       lore:
-        - "<gray>Current price: <white>{0}</white></gray>"
+        - "<gray>Aktueller Preis: <white>{0}</white></gray>"
         - ""
-        - "<yellow>Click to change price</yellow>"
+        - "<yellow>Klicken, um Preis zu ändern</yellow>"
+    display-toggle:
+      display: "<bold><green>Toggle Preview</green></bold>"
+      lore:
+        - "<gray>Toggle item preview in shops</gray>"
+        - "<gray>Status: <white>{0}</white>. Click to toggle.</gray>"
+    freeze-toggle:
+      display: "<bold><green>Toggle Freeze</green></bold>"
+      lore:
+        - "<gray>Currently <white>{0}</white></gray>"
+        - "<gray>Click to <white>{1}</white></gray>"
     mode-toggle:
-      display: "<bold><green>Change Mode</green></bold>"
+      display: "<bold><green>Modus ändern</green></bold>"
       lore:
-        - "<gray>Current: <white>{0}</white></gray>"
-        - "<gray>Click to change to: <white>{1}</white></gray>"
+        - "<gray>Zurzeit: <white>{0}</white></gray>"
+        - "<gray>Klicken, um zu ändern: <white>{1}</white></gray>"
     inventory:
-      display: "<bold><green>View Inventory</green></bold>"
+      display: "<bold><green>Inventar ansehen</green></bold>"
       lore:
-        - "<gray>Click to view your</gray>"
-        - "<gray>shop's chest inventory.</gray>"
+        - "<gray>Klicke, um deine</gray>"
+        - "<gray>Shop-Truhen Inventar</gray>"
     staff:
-      display: "<bold><aqua>Shop Staff</aqua></bold>"
+      display: "<bold><aqua>Shop-Personal</aqua></bold>"
       lore:
-        - "<gray>Click to manage your</gray>"
-        - "<gray>shop's staff members.</gray>"
+        - "<gray>Klicke, um deine</gray>"
+        - "<gray>Shop-Personal.</gray>"
     history:
-      display: "<bold><light_purple>Transaction History</light_purple></bold>"
+      display: "<bold><light_purple>Transaktionsverlauf</light_purple></bold>"
       lore:
-        - "<gray>Click to view your</gray>"
-        - "<gray>shop's transaction history.</gray>"
+        - "<gray>Klicken, um deine</gray>"
+        - "<gray>Transaktionsverlauf deines Shops.</gray>"
     remove:
-      display: "<bold><red>Delete Shop</red></bold>"
+      display: "<bold><red>Shop löschen</red></bold>"
       lore:
-        - "<gray>Click to delete your shop.</gray>"
-        - "<dark_gray>You can also break the sign/chest.</dark_gray>"
+        - "<gray>Klicke, um dein Shop zu löschen.</gray>"
+        - "<dark_gray>Du kannst auch das Schild/die Truhe zerstören.</dark_gray>"
   staff:
-    title: "<dark_aqua>Staff Management</dark_aqua>"
+    title: "<dark_aqua>Staff Verwaltung</dark_aqua>"
     search:
-      display: "<yellow>Search: {0}</yellow>"
+      display: "<yellow>Suche: {0}</yellow>"
       lore:
-        - "<gray>Left-click to search for players</gray>"
-        - "<gray>Right-click to clear search</gray>"
+        - "<gray>Linksklick um Spieler zu suchen</gray>"
+        - "<gray>Rechtsklick um Suche zu löschen</gray>"
     add-staff:
       display: "<green>Add Staff Member</green>"
       lore:
-        - "<gray>Click to add a new</gray>"
+        - "<gray>Klicken, um einen neuen</gray>"
         - "<gray>staff member to your shop.</gray>"
     back:
-      display: "<white>Back to Shop</white>"
+      display: "<white>Zurück zum Shop</white>"
   browse:
-    title: "<dark_aqua>Market Browser</dark_aqua>"
+    title: "<dark_aqua>Markt-Browser</dark_aqua>"
+    shop-list:
+      buying-label: "<#FFA500>Buying</#FFA500>"
+      selling-label: "<green>Selling</green>"
+      price-indicator:
+        average: "● Average"
+        selling:
+          great: "▼▼ Great Deal!"
+          good: "▼ Below Avg"
+          bad: "▲▲ Expensive"
+          worst: "▲ Above Avg"
+        buying:
+          great: "▲▲ Great Price!"
+          good: "▲ Above Avg"
+          bad: "▼▼ Low Offer"
+          worst: "▼▼ Below Avg"
+      display: "<yellow>{0}</yellow>"
+      lore:
+        - "<gray>Owner: <white>{0}</white></gray>"
+        - "<gray>Type: {1}</gray>"
+        - "<gray>Price: {2}</gray>"
+        - "<gray><aqua>{3}</aqua></gray>"
+        - "<gray>Location: <white>{4}</white></gray>"
+        - "<dark_gray>{5}</dark_gray>"
+      teleport: "<newline><yellow>Click to teleport</yellow>"
     shop-item:
       lore:
-        - "<green>Owner: </green><yellow>{0}</yellow>"
-        - "<green>Location: </green><yellow>{1}</yellow>"
-        - "<green>Type: </green><yellow>{2}</yellow>"
+        - "<green>Besitzer: </green><yellow>{0}</yellow>"
+        - "<green>Standort: </green><yellow>{1}</yellow>"
+        - "<green>Typ: </green><yellow>{2}</yellow>"
         - "<green>Price: </green><yellow>{3}</yellow>"
         - "<green>Stock: </green><yellow>{4}</yellow>"
     grouped-item:
@@ -1639,6 +1695,12 @@ gui:
       lore:
         - "<gray>Left-click to search for items</gray>"
         - "<gray>Right-click to clear search</gray>"
+    search-item:
+      display: "<yellow>{0}</yellow>"
+      lore:
+        - "<gray>Showing: {0}</gray>"
+        - "<gray>Shops: <white>{1}</white></gray>"
+        - "<gray>Average price: <gold>{2}</gold></gray>"
     sort:
       display: "<green>Sort: {0}</green>"
       lore:
@@ -1654,6 +1716,9 @@ gui:
       all: "All"
       selling: "Selling"
       buying: "Buying"
+      all-indicator: "<white>All Shops</white>"
+      selling-indicator: "<green>Selling Shops</green>"
+      buying-indicator: "<#FFA500>Buying Shops</#FFA500>"
     stock-filter:
       display: "<gold>In Stock Only: {0}</gold>"
       lore:
@@ -1692,10 +1757,10 @@ gui:
     trade:
       #Shown when player clicks "Custom Order" button (buying)
       #{0} = item amount per purchase
-      enter-buy: "<yellow>Enter the quantity you want to buy. Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</yellow>"
+      enter-buy: "<yellow>Gebe die Menge ein, die du kaufen willst. Muss ein Vielfaches von <white>{0}</white> sein. <white>0</white> eingeben um abzubrechen.</yellow>"
       #Shown when player clicks "Custom Order" button (selling)
       #{0} = item amount per purchase
-      enter-sell: "<yellow>Enter the quantity you want to sell. Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</yellow>"
+      enter-sell: "<yellow>Gebe die Menge ein, die du verkaufen willst. Muss ein Vielfaches von <white>{0}</white> sein. <white>0</white> eingeben um abzubrechen.</yellow>"
       #Shown when player enters invalid quantity (not multiple of item amount)
       #{0} = item amount per purchase
       invalid-multiple: "<red>Invalid quantity! Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</red>"

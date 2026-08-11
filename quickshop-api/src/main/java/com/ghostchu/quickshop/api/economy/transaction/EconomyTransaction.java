@@ -128,25 +128,6 @@ public interface EconomyTransaction {
   void taxer(final @Nullable QUser user);
 
   /**
-   * Retrieves the tax amount associated with this transaction.
-   *
-   * @return a BigDecimal value representing the tax amount of the transaction
-   * @deprecated no longer apart of the enhanced tax system
-   */
-  @NotNull
-  @Deprecated(since = "6.2.0.11", forRemoval = true)
-  BigDecimal tax();
-
-  /**
-   * Sets the tax for the transaction.
-   *
-   * @param tax the amount of tax to be set for the transaction
-   * @deprecated no longer apart of the enhanced tax system
-   */
-  @Deprecated(since = "6.2.0.11", forRemoval = true)
-  void tax(final @NotNull BigDecimal tax);
-
-  /**
    * Calculates and retrieves the tax amount associated with this transaction
    * based on the defined tax rules or system configuration.
    *

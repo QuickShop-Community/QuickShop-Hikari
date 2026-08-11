@@ -18,7 +18,6 @@ package com.ghostchu.quickshop.menu.browse;
  */
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.economy.EconomyProvider;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.config.GuiConfig;
@@ -37,7 +36,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -92,6 +90,7 @@ public class MainPage {
       if(shopsData.isPresent() && player != null) {
 
         playerPage.getIcons(id).clear();
+        playerPage.setLockEmptySlots(true);
 
         // Load GUI configuration
         final GuiConfig.MenuConfig menuConfig = QuickShop.getInstance().getGuiConfig().getMenuConfig("browse");
@@ -134,14 +133,14 @@ public class MainPage {
         if(maxPages > 1) {
 
           playerPage.addIcon(id, new IconBuilder(QuickShop.getInstance().stack().of(prevPageMaterial, 1)
-                                                         .display(getConfigDisplay(id, prevPageConfig, "<white><< Previous Page</white>"))
+                                                         .customName(getConfigDisplay(id, prevPageConfig, "<white><< Previous Page</white>"))
                                                          .lore(getConfigLore(id, prevPageConfig, page)))
                   .withActions(new DataAction(staffPageID, prev), new SwitchPageAction(menuName, menuPage))
                   .withSlot(prevPageSlot)
                   .build());
 
           playerPage.addIcon(id, new IconBuilder(QuickShop.getInstance().stack().of(nextPageMaterial, 1)
-                                                         .display(getConfigDisplay(id, nextPageConfig, "<white>Next Page >></white>"))
+                                                         .customName(getConfigDisplay(id, nextPageConfig, "<white>Next Page >></white>"))
                                                          .lore(getConfigLore(id, nextPageConfig, page)))
                   .withActions(new DataAction(staffPageID, next), new SwitchPageAction(menuName, menuPage))
                   .withSlot(nextPageSlot)
@@ -149,12 +148,12 @@ public class MainPage {
         }
 
         playerPage.addIcon(id, new IconBuilder(QuickShop.getInstance().stack().of(pageInfoMaterial, 1)
-                                                       .display(getConfigDisplay(id, pageInfoConfig, "<yellow>Page {0}</yellow>", page)))
+                                                       .customName(getConfigDisplay(id, pageInfoConfig, "<yellow>Page {0}</yellow>", page)))
                 .withSlot(pageInfoSlot)
                 .build());
 
         int i = 0;
-        for(final Shop shop : shops) {
+        for(final Shop<?, ?> shop : shops) {
 
           //System.out.println("Menu add: id: " + shop.getShopId() + " slot: " + offset + (i - start) + "i: " + i);
 
@@ -167,18 +166,17 @@ public class MainPage {
 
           if(i >= (start + items)) break;
 
-          final String world = (shop.getLocation().getWorld() != null)? shop.getLocation().getWorld().getName() : "World";
-          final String location = world + " " + shop.getLocation().getBlockX() + ", " + shop.getLocation().getBlockY() + ", " + shop.getLocation().getBlockZ();
+          final String world = (shop.bukkitLocation().getWorld() != null)? shop.bukkitLocation().getWorld().getName() : "World";
+          final String location = world + " " + shop.bukkitLocation().getBlockX() + ", " + shop.bukkitLocation().getBlockY() + ", " + shop.bukkitLocation().getBlockZ();
           final QUser owner = shop.getOwner();
           SkullProfile ownerProfile = null;
           if(owner.isRealPlayer() && owner.getUniqueId() != null) {
 
             ownerProfile = new SkullProfile();
-            ownerProfile.setUuid(owner.getUniqueId());
+            ownerProfile.uuid(owner.getUniqueId());
           }
 
-          final EconomyProvider eco = QuickShop.getInstance().getEconomyManager().provider();
-          final String priceFormatted = eco.format(BigDecimal.valueOf(shop.getPrice()), shop.getLocation().getWorld().getName(), shop.getCurrency());
+          final String priceFormatted = shop.format(shop.bukkitLocation().getWorld().getName(), shop.getCurrency());
 
           final AbstractItemStack<ItemStack> stack = new BukkitItemStack().of(shop.getItem().getType().key().asString(), shop.getShopStackingAmount())
                   .lore(getConfigLore(id, shopItemConfig, shop.getOwner().getDisplay(), location,

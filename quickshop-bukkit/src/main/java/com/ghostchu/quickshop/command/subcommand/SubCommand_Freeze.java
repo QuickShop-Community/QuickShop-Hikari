@@ -12,8 +12,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 import java.util.List;
 
+import static com.ghostchu.quickshop.shop.SimpleShopManager.ACTIVE_STATE;
 import static com.ghostchu.quickshop.shop.SimpleShopManager.BUYING_TYPE;
-import static com.ghostchu.quickshop.shop.SimpleShopManager.FROZEN_TYPE;
+import static com.ghostchu.quickshop.shop.SimpleShopManager.FROZEN_STATE;
 
 public class SubCommand_Freeze implements CommandHandler<Player> {
 
@@ -29,17 +30,24 @@ public class SubCommand_Freeze implements CommandHandler<Player> {
 
     final Shop shop = getLookingShop(sender);
     if(shop != null) {
-      if(shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_SHOPTYPE)
+      if(shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_SHOP_STATE)
          || plugin.perm().hasPermission(sender, "quickshop.other.freeze")) {
 
-        if(shop.shopType().isTradingBlocked() && shop.shopType().identifier().equalsIgnoreCase("FROZEN")) {
+        if(!shop.shopState().isTradingAllowed() && shop.shopState().identifier().equalsIgnoreCase("FROZEN")) {
 
-          shop.shopType(BUYING_TYPE);
+          shop.shopState(ACTIVE_STATE);
           plugin.text().of(sender, "shop-nolonger-freezed", Util.getItemStackName(shop.getItem())).send();
-          plugin.text().of(sender, "command.now-buying", Util.getItemStackName(shop.getItem())).send();
+
+          if(shop.shopType().identifier().equalsIgnoreCase(BUYING_TYPE.identifier())) {
+
+            plugin.text().of(sender, "command.now-buying", Util.getItemStackName(shop.getItem())).send();
+          } else {
+
+            plugin.text().of(sender, "command.now-selling", Util.getItemStackName(shop.getItem())).send();
+          }
         } else {
 
-          shop.shopType(FROZEN_TYPE);
+          shop.shopState(FROZEN_STATE);
           plugin.text().of(sender, "shop-now-freezed", Util.getItemStackName(shop.getItem())).send();
         }
       } else {

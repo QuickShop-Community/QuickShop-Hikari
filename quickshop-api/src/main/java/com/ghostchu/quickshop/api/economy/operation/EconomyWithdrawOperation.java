@@ -21,11 +21,12 @@ import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.economy.EconomyProvider;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.operation.Operation;
+import com.ghostchu.quickshop.api.operation.result.EconomyOperationResult;
 
 import java.math.BigDecimal;
 
 /**
- * EconomyDepositOperation
+ * EconomyWithdrawOperation
  *
  * @author creatorfromhell
  * @since 6.2.0.11
@@ -61,18 +62,18 @@ public class EconomyWithdrawOperation implements Operation {
    * @return true if successes
    */
   @Override
-  public boolean commit() {
+  public EconomyOperationResult commit() {
 
     final EconomyProvider provider = QuickShopAPI.getInstance().getEconomyManager().provider();
     if(provider == null) {
-      return false;
+      return new EconomyOperationResult(false, BigDecimal.ZERO);
     }
 
     final boolean result = provider.withdraw(account, world, currency, amount);
     if(result) {
       this.commit = true;
     }
-    return result;
+    return new EconomyOperationResult(result, ((result)? amount : BigDecimal.ZERO));
   }
 
   /**

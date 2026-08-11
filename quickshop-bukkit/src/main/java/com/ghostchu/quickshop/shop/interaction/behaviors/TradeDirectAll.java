@@ -24,7 +24,10 @@ import com.ghostchu.quickshop.api.shop.interaction.InteractionBehavior;
 import com.ghostchu.quickshop.api.shop.interaction.InteractionClick;
 import com.ghostchu.quickshop.api.shop.interaction.InteractionType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -86,6 +89,49 @@ public class TradeDirectAll implements InteractionBehavior {
         event.setCancelled(true);
         event.setUseInteractedBlock(Event.Result.DENY);
         event.setUseItemInHand(Event.Result.DENY);
+      }
+    }
+  }
+
+  @Override
+  public void handle(final @NotNull QuickShopAPI plugin, final @Nullable Shop shop, final @NotNull Player player, final @NotNull PlayerInteractEntityEvent event, final @NotNull InteractionClick clickType, final @Nullable InteractionType interaction) {
+    if(shop == null) return;
+
+    //send control panel
+    handle(plugin, event, shop, player);
+
+    //cancel event stuff
+    event.setCancelled(true);
+  }
+
+  @Override
+  public void handle(final @NotNull QuickShopAPI plugin, final @Nullable Shop shop, final @NotNull Player player, final @NotNull EntityDamageByEntityEvent event, final @NotNull InteractionClick clickType, final @Nullable InteractionType interaction) {
+    if(shop == null) return;
+
+    //send control panel
+    handle(plugin, event, shop, player);
+
+    //cancel event stuff
+    event.setCancelled(true);
+  }
+
+  private void handle(final @NotNull QuickShopAPI plugin, final Cancellable event, @NotNull final Shop shop, final @NotNull Player player) {
+
+    if(shop.isFrozen()) {
+      ((QuickShop)plugin).text().of(player, "shop-cannot-trade-when-freezing").send();
+      return;
+    }
+
+    if(shop.isSelling()) {
+      if(buyFromShop(player, shop, true, true)) {
+        event.setCancelled(true);
+      }
+      return;
+    }
+
+    if(shop.isBuying()) {
+      if(sellToShop(player, shop, true, true)) {
+        event.setCancelled(true);
       }
     }
   }

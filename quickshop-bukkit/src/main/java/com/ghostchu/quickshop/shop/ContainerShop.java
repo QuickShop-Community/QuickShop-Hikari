@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.ServiceInjector;
+import com.ghostchu.quickshop.api.economy.EconomyProvider;
 import com.ghostchu.quickshop.api.economy.benefit.BenefitProvider;
 import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.general.ShopSignUpdateEvent;
@@ -19,6 +20,7 @@ import com.ghostchu.quickshop.api.event.settings.type.ShopItemEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopOwnerNameEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopPlayerGroupEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopSignLinesEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopStateEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopTaxAccountEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopTypeEnhancedEvent;
 import com.ghostchu.quickshop.api.event.settings.type.benefit.ShopBenefitEvent;
@@ -30,18 +32,21 @@ import com.ghostchu.quickshop.api.serialize.BlockPos;
 import com.ghostchu.quickshop.api.shop.IShopType;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopInfoStorage;
-import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
+import com.ghostchu.quickshop.api.shop.state.ShopState;
+import com.ghostchu.quickshop.api.shop.trading.TradeResult;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
 import com.ghostchu.quickshop.obj.QUserImpl;
+import com.ghostchu.quickshop.shop.cache.SimpleShopInventoryCountCache;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
+import com.ghostchu.quickshop.shop.display.display.DisplayEntityItemManager;
+import com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItemManager;
 import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
@@ -49,6 +54,7 @@ import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
 import lombok.EqualsAndHashCode;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
@@ -59,6 +65,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
+import org.bukkit.block.TileState;
+import org.bukkit.block.sign.Side;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -66,14 +74,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -84,20 +96,26 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.ghostchu.quickshop.shop.SimpleShopManager.CHEST_SHOP_OWNER;
 import static com.ghostchu.quickshop.util.Util.waitForFuture;
+import static java.math.BigDecimal.ZERO;
 
 /**
  * ChestShop core
  */
 @EqualsAndHashCode
-public class ContainerShop implements Shop, Reloadable {
+public class ContainerShop implements Shop<Double, Location>, Reloadable {
 
   // We use deprecated method to create a fake quickshop-reremake namespace to trick bukkit to access legacy data.
   private static final NamespacedKey LEGACY_SHOP_NAMESPACED_KEY = new NamespacedKey("quickshop", "shopsign");
   private static final String LEGACY_SHOP_SIGN_RECOGNIZE_PATTERN = "§d§o ";
+
+  private final Map<Key, String> extraMap = new ConcurrentHashMap<>();
+
   @NotNull
   private final Location location;
   @EqualsAndHashCode.Exclude
@@ -108,16 +126,17 @@ public class ContainerShop implements Shop, Reloadable {
   private final Map<UUID, String> playerGroup;
   @EqualsAndHashCode.Exclude
   private final boolean isDeleted = false;
-  private YamlConfiguration extra;
   private long shopId;
   private QUser owner;
   private double price;
   private IShopType shopType;
+  private ShopState shopState;
   private boolean unlimited;
   @NotNull
   private ItemStack item;
   @NotNull
   private ItemStack originalItem;
+  private String itemSerialize;
   @Nullable
   @EqualsAndHashCode.Exclude
   private AbstractDisplayItem displayItem = null;
@@ -125,8 +144,6 @@ public class ContainerShop implements Shop, Reloadable {
   private volatile boolean isLoaded = false;
   @EqualsAndHashCode.Exclude
   private volatile boolean createBackup = false;
-  @EqualsAndHashCode.Exclude
-  private InventoryPreview inventoryPreview = null;
   @EqualsAndHashCode.Exclude
   private boolean dirty;
   @EqualsAndHashCode.Exclude
@@ -144,6 +161,10 @@ public class ContainerShop implements Shop, Reloadable {
 
   @NotNull
   private BenefitProvider benefit;
+
+  @NotNull
+  @EqualsAndHashCode.Exclude
+  private final SimpleShopInventoryCountCache inventoryCountCache;
 
   //updating objects
   private final AtomicBoolean updatingAtomic = new AtomicBoolean(false);
@@ -172,7 +193,8 @@ public class ContainerShop implements Shop, Reloadable {
           @NotNull final QUser owner,
           final boolean unlimited,
           @NotNull final IShopType type,
-          @Nullable final YamlConfiguration extra,
+          @NotNull final ShopState state,
+          @Nullable final Map<Key, String> extra,
           @Nullable final String currency,
           final boolean disableDisplay,
           @Nullable final QUser taxAccount,
@@ -180,7 +202,8 @@ public class ContainerShop implements Shop, Reloadable {
           @NotNull final String symbolLink,
           @Nullable final String shopName,
           @NotNull final Map<UUID, String> playerGroup,
-          @NotNull final BenefitProvider shopBenefit) {
+          @NotNull final BenefitProvider shopBenefit,
+          @NotNull final SimpleShopInventoryCountCache inventoryCountCache) {
 
     this.shopId = shopId;
     this.shopName = shopName;
@@ -198,6 +221,8 @@ public class ContainerShop implements Shop, Reloadable {
 
     this.item = item.clone();
     this.originalItem = item.clone();
+    updateSerializeItem();
+
     this.plugin = plugin;
     this.playerGroup = new HashMap<>(playerGroup);
     if(!plugin.isAllowStack()) {
@@ -214,8 +239,14 @@ public class ContainerShop implements Shop, Reloadable {
       }
     }
     this.shopType = type;
+    this.shopState = state;
     this.unlimited = unlimited;
-    this.extra = extra;
+
+    if (extra != null) {
+
+      this.extraMap.putAll(extra);
+    }
+
     this.currency = currency;
     this.disableDisplay = disableDisplay;
     this.taxAccount = taxAccount;
@@ -228,6 +259,7 @@ public class ContainerShop implements Shop, Reloadable {
     }
     this.symbolLink = symbolLink;
     this.inventoryWrapperProvider = inventoryWrapperProvider;
+    this.inventoryCountCache = inventoryCountCache;
     updateShopData();
     // ContainerShop constructor is not allowed to write any persistent data to disk
     // ContainerShop constructor may run on both ServerThread and AsyncThread
@@ -235,14 +267,13 @@ public class ContainerShop implements Shop, Reloadable {
 
   private void updateShopData() {
 
-    final ConfigurationSection section = getExtra(plugin.getJavaPlugin());
-    if(section.getString("currency") != null) {
-      this.currency = section.getString("currency");
-      section.set("currency", null);
+    if (this.extraMap.containsKey("currency")) {
+
+      this.currency = this.extraMap.get("currency");
+      this.extraMap.remove("currency");
       Log.debug("Shop " + this + " currency data upgrade successful.");
       setDirty();
     }
-
   }
 
   /**
@@ -283,52 +314,12 @@ public class ContainerShop implements Shop, Reloadable {
    * @param amount         The amount to buy
    */
   @Override
-  public void buy(@NotNull final QUser buyer, @NotNull final InventoryWrapper buyerInventory,
-                  @NotNull final Location loc2Drop, int amount) throws Exception {
+  public TradeResult buy(@NotNull final QUser buyer,
+                  @NotNull final InventoryWrapper buyerInventory,
+                  @NotNull final Location loc2Drop,
+                  final int amount) {
 
-    Util.ensureThread(false);
-    amount = amount * item.getAmount();
-    if(amount < 0) {
-      this.sell(buyer, buyerInventory, loc2Drop, -amount);
-      return;
-    }
-    if(this.isUnlimited()) {
-      final SimpleInventoryTransaction transaction = SimpleInventoryTransaction
-              .builder()
-              .from(buyerInventory)
-              .to(null) // To void
-              .item(this.getItem())
-              .amount(amount)
-              .build();
-      if(!transaction.failSafeCommit()) {
-        if(plugin.getSentryErrorReporter() != null) {
-          plugin.getSentryErrorReporter().ignoreThrow();
-        }
-        throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transaction.getLastError());
-      }
-    } else {
-      final InventoryWrapper chestInv = this.getInventory();
-      if(chestInv == null) {
-        plugin.logger().warn("Failed to process buy, reason: {} x{} to shop {}: Inventory null.", item, amount, this);
-        Log.debug("Failed to process buy, reason: " + item + " x" + amount + " to shop " + this + ": Inventory null.");
-        return;
-      }
-      final SimpleInventoryTransaction transaction = SimpleInventoryTransaction
-              .builder()
-              .from(buyerInventory)
-              .to(chestInv)
-              .item(this.getItem())
-              .amount(amount)
-              .build();
-      if(!transaction.failSafeCommit()) {
-        if(plugin.getSentryErrorReporter() != null) {
-          plugin.getSentryErrorReporter().ignoreThrow();
-        }
-        throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transaction.getLastError());
-      }
-    }
-    //Update sign
-    this.setSignText(plugin.text().findRelativeLanguages(buyer, false));
+    return plugin.getShopManager().tradeService().executeSellToShop(this, buyer, buyerInventory, loc2Drop, amount);
   }
 
   @Override
@@ -346,7 +337,7 @@ public class ContainerShop implements Shop, Reloadable {
     if(this.displayItem == null) {
       try {
         final DisplayProvider provider = ServiceInjector.getInjectedService(DisplayProvider.class, null);
-        if(provider == null && AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && plugin.getVirtualDisplayItemManager() == null) {
+        if(provider == null && AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && plugin.getDisplayManager() == null) {
           plugin.logger().warn("Invalid display provider! " +
                                "No compatible display backend found. " +
                                "This may occur if ProtocolLib or PacketEvents is missing, outdated, or incompatible with your Minecraft version, " +
@@ -359,11 +350,12 @@ public class ContainerShop implements Shop, Reloadable {
           this.displayItem = provider.provide(this);
         } else {
 
-          if(AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
+          if(AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && plugin.getDisplayManager() instanceof final VirtualDisplayItemManager virtualManager) {
 
-            if(plugin.getVirtualDisplayItemManager() != null) {
-              this.displayItem = plugin.getVirtualDisplayItemManager().createVirtualDisplayItem(this);
-            }
+            this.displayItem = virtualManager.create(this);
+          } else if(AbstractDisplayItem.getNowUsing() == DisplayType.DISPLAY_ENTITY && plugin.getDisplayManager() instanceof final DisplayEntityItemManager displayManager) {
+
+            this.displayItem = displayManager.create(this);
           }
         }
 
@@ -380,6 +372,7 @@ public class ContainerShop implements Shop, Reloadable {
         return;
       }
     }
+
     if(this.displayItem != null) {
       if(!this.displayItem.isSpawned()) {
         /* Not spawned yet. */
@@ -456,17 +449,26 @@ public class ContainerShop implements Shop, Reloadable {
    *
    * @return The data table
    */
+  @Deprecated(forRemoval = true)
+  @ApiStatus.ScheduledForRemoval(inVersion = "6.4.0.0")
   @Override
   public @NotNull ConfigurationSection getExtra(@NotNull final Plugin plugin) {
 
-    if(this.extra == null) {
-      this.extra = new YamlConfiguration();
+    final YamlConfiguration yaml = new YamlConfiguration();
+
+    if (this.extraMap.isEmpty()) {
+      return yaml;
     }
-    ConfigurationSection section = extra.getConfigurationSection(plugin.getName());
-    if(section == null) {
-      section = extra.createSection(plugin.getName());
-    }
-    return section;
+
+    final String prefix = plugin.getName().toLowerCase(Locale.ROOT) + ":";
+
+    this.extraMap.forEach((key, value) -> {
+      if (key.asString().startsWith(prefix)) {
+        yaml.set(key.asString().substring(prefix.length()), value);
+      }
+    });
+
+    return yaml;
   }
 
   /**
@@ -476,6 +478,13 @@ public class ContainerShop implements Shop, Reloadable {
   public @Nullable InventoryWrapper getInventory() {
 
     Util.ensureThread(false);
+    final int chunkX = location.getBlockX() >> 4;
+    final int chunkZ = location.getBlockZ() >> 4;
+
+    if(!this.location.getWorld().isChunkLoaded(chunkX, chunkZ)) {
+      return null;
+    }
+
     try {
       final InventoryWrapper inventoryWrapper = locateInventory(symbolLink);
       if(inventoryWrapper.isValid()) {
@@ -521,7 +530,7 @@ public class ContainerShop implements Shop, Reloadable {
     Util.ensureThread(false);
 
     //Create our shop event with Pre Phase and call
-    ShopItemEvent event = new ShopItemEvent(Phase.PRE, this, this.item, item);
+    ShopItemEvent event = new ShopItemEvent(Phase.PRE, this, this.item.clone(), item);
     event.callEvent();
 
     //Call our Main Phase
@@ -535,6 +544,7 @@ public class ContainerShop implements Shop, Reloadable {
 
     this.item = event.updated();
     this.originalItem = item;
+    updateSerializeItem();
 
     //call our Post Phase
     event.clone(Phase.POST).callEvent();
@@ -550,10 +560,53 @@ public class ContainerShop implements Shop, Reloadable {
   }
 
   /**
+   * Serializes the shop item into a string representation.
+   *
+   * @return A string representing the serialized shop item.
+   *
+   * @since 6.3.0.0
+   */
+  @Override
+  public String itemSerializeString() {
+
+    return itemSerialize;
+  }
+
+  /**
+   * Updates the serialized representation of the shop item. This method recalculates and refreshes
+   * the serialized string associated with the shop's item, ensuring it reflects the most up-to-date
+   * state of the shop item. This is typically used to sync internal representations with the
+   * current state of the shop item.
+   */
+  @Override
+  public void updateSerializeItem() {
+
+    final YamlConfiguration cfg = new YamlConfiguration();
+    cfg.set("item", item);
+    this.itemSerialize = cfg.saveToString();
+  }
+
+  @Override
+  public @NotNull Block getShopBlock() {
+    return this.location.getBlock();
+  }
+
+  /**
    * @return The location of the shops chest
    */
   @Override
   public @NotNull Location getLocation() {
+
+    return this.location;
+  }
+
+  /**
+   * Converts the location associated with this object to a Bukkit-compatible {@link Location}.
+   *
+   * @return the Bukkit {@link Location} representation of this object's location.
+   */
+  @Override
+  public Location bukkitLocation() {
 
     return this.location;
   }
@@ -580,6 +633,17 @@ public class ContainerShop implements Shop, Reloadable {
       return;
     }
     this.owner = owner;
+
+    //Setup PDC with new owner
+    if (owner.getUniqueId() != null) {
+      final Block block = this.location.getBlock();
+      if(block.getState(false) instanceof final TileState tileState) {
+
+        tileState.getPersistentDataContainer().set(CHEST_SHOP_OWNER, PersistentDataType.STRING, owner.getUniqueId().toString());
+        tileState.update(true);
+      }
+    }
+
     setDirty();
     setSignText(plugin.getTextManager().findRelativeLanguages(owner, false));
   }
@@ -628,6 +692,7 @@ public class ContainerShop implements Shop, Reloadable {
   /**
    * @return The price per item this shop is selling
    */
+  @SuppressWarnings("removal")
   @Override
   public double getPrice() {
 
@@ -639,6 +704,7 @@ public class ContainerShop implements Shop, Reloadable {
    *
    * @param price The new price of the shop.
    */
+  @SuppressWarnings("removal")
   @Override
   public void setPrice(final double price) {
 
@@ -646,6 +712,146 @@ public class ContainerShop implements Shop, Reloadable {
     this.price = price;
     setDirty();
     setSignText();
+  }
+
+  /**
+   * Retrieves the price of the shop.
+   *
+   * @return the price of the shop as an instance of type U, where U represents a generic type.
+   */
+  @Override
+  public Double price() {
+
+    return price;
+  }
+
+  /**
+   * Sets the price for a shop.
+   *
+   * @param price the price to set for the shop; must be of type U and should not be null
+   */
+  @Override
+  public void price(final Double price) {
+    this.price = price;
+  }
+
+  /**
+   * Formats a string representation based on the provided world and optional currency.
+   *
+   * @param world    the name of the world for which the string is being formatted; must not be
+   *                 null
+   * @param currency the optional currency to include in the formatted string; can be null
+   *
+   * @return a formatted string combining the world and currency information; never null
+   */
+  @Override
+  public @NotNull String format(final @NotNull String world, final @Nullable String currency) {
+
+    return plugin.getEconomyManager().provider().format(BigDecimal.valueOf(price()), world, currency);
+  }
+
+  /**
+   * Formats a string representation based on the provided world, optional currency, and quantity.
+   *
+   * @param world    the name of the world for which the string is being formatted; must not be
+   *                 null
+   * @param currency the optional currency to include in the formatted string; can be null
+   * @param quantity the quantity to include in the formatted string; represents a non-negative
+   *                 integer
+   *
+   * @return a formatted string combining the world, currency, and quantity information; never null
+   */
+  @Override
+  public @NotNull String format(final @NotNull String world, final @Nullable String currency, final int quantity) {
+
+    return plugin.getEconomyManager().provider().format(BigDecimal.valueOf(price() * quantity), world, currency);
+  }
+
+  /**
+   * Provides a comparator for comparing instances of the generic type U used in the shop's
+   * pricing.
+   *
+   * @return a {@link Comparator} for comparing values of type U
+   */
+  @Override
+  public Comparator<Double> priceComparator() {
+
+    return Comparator.comparingDouble(Double::doubleValue);
+  }
+
+  /**
+   * Retrieves the maximum number of items that can currently be purchased or acquired based on the
+   * shop's available balance and the price of the items.
+   *
+   * @return the maximum number of items that can be afforded; always a non-negative integer.
+   */
+  @Override
+  public int getMaxAffordable() {
+    if(this.isUnlimited() || this.isFreeShop()) {
+      return Integer.MAX_VALUE;
+    }
+
+    final BigDecimal unitPrice = BigDecimal.valueOf(this.price());
+    if(unitPrice == null || unitPrice.compareTo(ZERO) <= 0) {
+
+      return 0;
+    }
+
+    final EconomyProvider eco = QuickShop.getInstance().getEconomyManager().provider();
+    if(eco == null) {
+
+      return 0;
+    }
+
+    final BigDecimal balance = eco.balance(owner, location.getWorld().getName(), currency);
+
+    if(balance == null || balance.compareTo(ZERO) <= 0) {
+
+      return 0;
+    }
+
+    final BigDecimal affordable = balance.divideToIntegralValue(unitPrice);
+    if(affordable.compareTo(BigDecimal.valueOf(Integer.MAX_VALUE)) > 0) {
+      return Integer.MAX_VALUE;
+    }
+    return Math.max(0, affordable.intValue());
+  }
+
+  /**
+   * Determines whether the current shop can afford the transaction of a specified quantity of
+   * items.
+   *
+   * @param itemAmount the number of items involved in the transaction; must be a non-negative
+   *                   integer
+   *
+   * @return true if the shop can afford the specified number of items, false otherwise
+   */
+  @Override
+  public boolean canAfford(final int itemAmount) {
+    if(itemAmount <= 0) {
+      return false;
+    }
+    if(this.isUnlimited() || this.isFreeShop()) {
+      return true;
+    }
+
+    final BigDecimal unitPrice = BigDecimal.valueOf(this.price());
+    if(unitPrice == null || unitPrice.compareTo(ZERO) <= 0) {
+      return false;
+    }
+
+    final EconomyProvider eco = QuickShop.getInstance().getEconomyManager().provider();
+    if(eco == null) {
+      return false;
+    }
+
+    final BigDecimal balance = eco.balance(owner, location.getWorld().getName(), currency);
+    if(balance == null || balance.compareTo(ZERO) <= 0) {
+      return false;
+    }
+
+    final BigDecimal total = unitPrice.multiply(BigDecimal.valueOf(itemAmount));
+    return balance.compareTo(total) >= 0;
   }
 
   /**
@@ -661,20 +867,21 @@ public class ContainerShop implements Shop, Reloadable {
       return -1;
     }
 
-    if(Bukkit.isPrimaryThread()) {
+    if(plugin.getJavaPlugin().getServer().isOwnedByCurrentRegion(location) ) {
 
-      if(this.getInventory() == null) {
+      final InventoryWrapper inv = this.getInventory();
+      if(inv == null) {
         Log.debug("Failed to calc RemainingSpace for shop " + this + ": Inventory null.");
         return 0;
       }
 
-      final int space = Util.countSpace(this.getInventory(), this);
+      final int space = Util.countSpace(inv, this);
       new ShopInventoryCalculateEvent(this, space, -1).callEvent();
       Log.debug("Space count is: " + space);
       return space;
     } else {
 
-      return plugin.getShopManager().queryShopInventoryCacheInDatabase(this).join().getSpace();
+      return Math.max(inventoryCountCache.getSpace(), 0);
     }
   }
 
@@ -686,20 +893,49 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public int getRemainingStock() {
 
+    return getRemainingStockAsync()
+            .orTimeout(5, TimeUnit.SECONDS)
+            .exceptionally(ex -> 0)
+            .join();
+  }
+
+  public CompletableFuture<Integer> getRemainingStockAsync() {
     if(this.unlimited) {
-      return -1;
+      return CompletableFuture.completedFuture(-1);
     }
-    if(Bukkit.isPrimaryThread()) {
-      if(this.getInventory() == null) {
-        Log.debug("Failed to calc RemainingStock for shop " + this + ": Inventory null.");
-        return 0;
-      }
-      final int stock = Util.countItems(this.getInventory(), this);
-      new ShopInventoryCalculateEvent(this, -1, stock).callEvent();
-      return stock;
-    } else {
-      return plugin.getShopManager().queryShopInventoryCacheInDatabase(this).join().getStock();
+
+    if(Bukkit.getServer().isOwnedByCurrentRegion(location)) {
+
+      return CompletableFuture.completedFuture(calculateRemainingStock());
     }
+
+    final CompletableFuture<Integer> future = new CompletableFuture<>();
+
+    try {
+      QuickShop.folia().getScheduler().runAtLocation(this.location, task->{
+        try {
+          future.complete(calculateRemainingStock());
+        } catch(final Throwable throwable) {
+          future.completeExceptionally(throwable);
+        }
+      });
+    } catch(final Throwable throwable) {
+      future.completeExceptionally(throwable);
+    }
+
+    return future;
+  }
+
+  private int calculateRemainingStock() {
+
+    final InventoryWrapper inventoryWrapper = getInventory();
+    if(inventoryWrapper == null) {
+      return 0;
+    }
+
+    final int stock = Util.countItems(inventoryWrapper, this);
+    new ShopInventoryCalculateEvent(this, -1, stock).callEvent();
+    return stock;
   }
 
   /**
@@ -727,6 +963,70 @@ public class ContainerShop implements Shop, Reloadable {
       throw new IllegalStateException("Cannot set shop id once it fully created.");
     }
     this.shopId = newId;
+    setDirty();
+  }
+
+  /**
+   * Retrieves additional data associated with the shop in the form of key-value pairs.
+   *
+   * @return A non-null map containing extra shop data. The map keys and values represent custom
+   * data associated with the shop, where both keys and values are strings.
+   */
+  @Override
+  public @NotNull Map<Key, String> getExtra() {
+
+    return Collections.unmodifiableMap(this.extraMap);
+  }
+
+  @Override
+  public String getExtra(@NotNull final NamespacedKey key) {
+    return this.extraMap.get(key);
+  }
+
+  @Override
+  public String getExtra(@NotNull final NamespacedKey key, @Nullable final String defaultValue) {
+    return this.extraMap.getOrDefault(key, defaultValue);
+  }
+
+  @Override
+  public void setExtra(@NotNull final Plugin plugin, @Nullable final Map<String, String> data) {
+    if (data == null) {
+      return;
+    }
+
+    data.forEach((k, v) -> {
+
+      this.extraMap.put(new NamespacedKey(plugin, k), v);
+    });
+    setDirty();
+  }
+
+  @Override
+  public void setExtra(@NotNull final NamespacedKey key, @NotNull final String data) {
+
+    this.extraMap.put(key, data);
+    setDirty();
+  }
+
+  @Override
+  public void removeExtra(@NotNull final NamespacedKey key) {
+    this.extraMap.remove(key);
+    setDirty();
+  }
+
+  @Override
+  public void removeExtraPartial(final @NotNull NamespacedKey key) {
+
+    this.extraMap.keySet().removeIf(mapKey -> mapKey.asString().contains(key.asString()));
+    setDirty();
+  }
+
+
+  @Override
+  public void removeAll(@NotNull final Plugin plugin) {
+    final String prefix = plugin.getName().toLowerCase(Locale.ROOT) + ":";
+
+    this.extraMap.keySet().removeIf(key -> key.asString().startsWith(prefix));
     setDirty();
   }
 
@@ -770,11 +1070,71 @@ public class ContainerShop implements Shop, Reloadable {
     return 1;
   }
 
-  @SuppressWarnings("removal")
+  /**
+   * Retrieves the current state of the shop.
+   *
+   * @return the current state of the shop as a ShopState object
+   */
   @Override
-  public @NotNull ShopType getShopType() {
+  public ShopState shopState() {
 
-    return ShopType.fromID(shopType.id());
+    final ShopStateEvent event = new ShopStateEvent(Phase.RETRIEVE, this, this.shopState);
+    event.callEvent();
+
+    return event.updated();
+  }
+
+  /**
+   * Updates the current state of the shop based on the provided {@code ShopState}.
+   *
+   * @param newState the new state to set for the shop; must not be null
+   */
+  @Override
+  public void shopState(@NotNull final ShopState newState) {
+
+    Util.ensureThread(false);
+
+    if(this.shopState.identifier().equalsIgnoreCase(newState.identifier())) {
+
+      return;
+    }
+
+    ShopStateEvent event = new ShopStateEvent(Phase.PRE, this, this.shopState, newState);
+    event.callEvent();
+
+    event = event.clone(Phase.MAIN);
+
+    if(event.callCancellableEvent()) {
+
+      Log.debug("Some addon cancelled shop state changes, target shop: " + this);
+      return;
+    }
+
+    this.shopState = event.updated();
+
+    event = event.clone(Phase.POST);
+    event.callEvent();
+
+    if(this.displayItem != null) {
+
+      this.displayItem.remove(false);
+    }
+    this.displayItem = null;
+    checkDisplay();
+    setSignText();
+    setDirty();
+  }
+
+  /**
+   * Updates or processes the state of a shop based on the provided identifier.
+   *
+   * @param shopStateIdentifier a non-null string representing the unique identifier for the shop
+   *                            state to be updated or processed.
+   */
+  @Override
+  public void shopState(@NotNull final String shopStateIdentifier) {
+
+    shopState(QuickShop.getInstance().getShopManager().shopStateOrDefault(shopStateIdentifier));
   }
 
   /**
@@ -822,7 +1182,13 @@ public class ContainerShop implements Shop, Reloadable {
     event = event.clone(Phase.POST);
     event.callEvent();
 
-    this.setSignText();
+    if(this.displayItem != null) {
+
+      this.displayItem.remove(false);
+    }
+    this.displayItem = null;
+    checkDisplay();
+    setSignText();
     setDirty();
   }
 
@@ -835,18 +1201,6 @@ public class ContainerShop implements Shop, Reloadable {
   public void shopType(@NotNull final String shopTypeIdentifier) {
 
     shopType(QuickShop.getInstance().getShopManager().shopTypeOrDefault(shopTypeIdentifier));
-  }
-
-  /**
-   * Changes a shop type to Buying or Selling. Also updates the signs nearby.
-   *
-   * @param newShopType The new type (ShopType.BUYING or ShopType.SELLING)
-   */
-  @SuppressWarnings("removal")
-  @Override
-  public void setShopType(@NotNull final ShopType newShopType) {
-
-    shopType(QuickShop.getInstance().getShopManager().shopTypeOrDefault(newShopType.name()));
   }
 
   @Override
@@ -863,6 +1217,55 @@ public class ContainerShop implements Shop, Reloadable {
   }
 
   /**
+   * Retrieves the text to be displayed on the shop's sign asynchronously.
+   *
+   * @param locale The locale configuration used to generate the sign text.
+   *
+   * @return A CompletableFuture containing a list of {@link Component} objects that represent the
+   * text for each line of the shop's sign.
+   */
+  @Override
+  public CompletableFuture<List<Component>> getSignTextAsync(final @NotNull ProxiedLocale locale) {
+
+    final Location loc = this.location.clone();
+    final CompletableFuture<List<Component>> result = new CompletableFuture<>();
+
+    QuickShop.folia().getScheduler().runAtLocation(loc, task -> {
+      if (!this.isValid()) {
+        result.complete(List.of());
+        return;
+      }
+
+      plugin.getShopManager()
+              .shopLayoutProvider()
+              .createSignSnapshot(this, locale)
+              .thenApply(snapshot ->plugin.getShopManager().shopLayoutProvider().renderSnapshot(snapshot, locale))
+              .whenComplete((lines, throwable) -> {
+                QuickShop.folia().getScheduler().runAtLocation(loc, task2 -> {
+                  if (throwable != null) {
+
+                    result.completeExceptionally(throwable);
+                    return;
+                  }
+
+                  if (!this.isValid()) {
+
+                    result.complete(List.of());
+                    return;
+                  }
+
+                  final ShopSignLinesEvent event = new ShopSignLinesEvent(Phase.RETRIEVE, this, new LinkedList<>(lines));
+
+                  event.callEvent();
+                  result.complete(event.updated());
+                });
+              });
+    });
+
+    return result;
+  }
+
+  /**
    * Returns a list of signs that are attached to this shop (QuickShop and blank signs only)
    *
    * @return a list of signs that are attached to this shop (QuickShop and blank signs only)
@@ -872,7 +1275,7 @@ public class ContainerShop implements Shop, Reloadable {
 
     Util.ensureThread(false);
     final List<Sign> signs = new ArrayList<>(4);
-    if(this.getLocation().getWorld() == null) {
+    if(this.bukkitLocation().getWorld() == null) {
       return Collections.emptyList();
     }
     final Block[] blocks = new Block[4];
@@ -970,11 +1373,37 @@ public class ContainerShop implements Shop, Reloadable {
     return true;
   }
 
+  /**
+   * Asynchronously determines whether the shop's inventory is available, indicating that it is
+   * neither out of space nor out of stock.
+   *
+   * @return A CompletionStage that completes with a Boolean value indicating whether the inventory
+   * is available (true) or not (false).
+   */
+  @Override
+  public CompletableFuture<Boolean> inventoryAvailableAsync() {
+
+    if(isUnlimited()) {
+      return CompletableFuture.completedFuture(true);
+    }
+    if(isSelling()) {
+
+      return getRemainingStockAsync().thenApply(stock -> stock > 0);
+    }
+    if(isBuying()) {
+      return CompletableFuture.completedFuture(getRemainingSpace() > 0);
+    }
+    if(isFrozen()) {
+      return CompletableFuture.completedFuture(false);
+    }
+    return CompletableFuture.completedFuture(true);
+  }
+
   @Override
   public boolean isAttached(@NotNull final Block b) {
 
     Util.ensureThread(false);
-    return this.getLocation().getBlock().equals(Util.getAttached(b));
+    return this.bukkitLocation().getBlock().equals(Util.getAttached(b));
   }
 
   @Override
@@ -986,7 +1415,7 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public boolean isFrozen() {
 
-    return this.shopType.isTradingBlocked();
+    return this.shopType.isTradingBlocked() || !this.shopState.isTradingAllowed();
   }
 
   private boolean isDeleted() {
@@ -1137,7 +1566,7 @@ public class ContainerShop implements Shop, Reloadable {
       }
     }
     if(shopSignStorage != null) {
-      return shopSignStorage.equals(getLocation().getWorld().getName(), getLocation().getBlockX(), getLocation().getBlockY(), getLocation().getBlockZ());
+      return shopSignStorage.equals(this.bukkitLocation().getWorld().getName(), this.bukkitLocation().getBlockX(), this.bukkitLocation().getBlockY(), this.bukkitLocation().getBlockZ());
     }
     return false;
   }
@@ -1183,7 +1612,7 @@ public class ContainerShop implements Shop, Reloadable {
     if(this.isDeleted) {
       return false;
     }
-    return Util.canBeShop(this.getLocation().getBlock());
+    return Util.canBeShop(this.bukkitLocation().getBlock());
   }
 
   /**
@@ -1241,7 +1670,7 @@ public class ContainerShop implements Shop, Reloadable {
         plugin.logger().warn("Failed to load shop: {}: {}: {}", symbolLink, this.getClass().getName(), "Inventory is null");
         if(plugin.getConfig().getBoolean("debug.delete-corrupt-shops")) {
           plugin.logger().warn("Deleting corrupt shop...");
-          plugin.getShopManager().deleteShop(this);
+          Util.regionThread(location, () -> plugin.getShopManager().deleteShop(this));
         } else {
           plugin.logger().warn("Unloading shops from memory, set `debug.delete-corrupt-shops` to true to delete corrupted shops.");
           plugin.getShopManager().unloadShop(this);
@@ -1258,7 +1687,7 @@ public class ContainerShop implements Shop, Reloadable {
     try(final PerfMonitor ignored = new PerfMonitor("Shop Display Check", Duration.of(1, ChronoUnit.SECONDS))) {
       checkDisplay();
     }
-    if(PackageUtil.parsePackageProperly("updateShopSignOnLoad").asBoolean(false)) {
+    if(plugin.getConfig().getBoolean("shop.update-sign-on-load", false)) {
       Log.debug("Scheduled sign update for shop " + this + " because updateShopSignOnLoad has been enabled.");
       plugin.getSignUpdateWatcher().scheduleSignUpdate(this);
     }
@@ -1275,9 +1704,6 @@ public class ContainerShop implements Shop, Reloadable {
       Log.debug("Dupe unload request, canceled.");
       return;
     }
-    if(inventoryPreview != null) {
-      inventoryPreview.close();
-    }
     if(this.displayItem != null) {
       this.displayItem.remove(dontTouchWorld);
     }
@@ -1289,10 +1715,7 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public void openPreview(@NotNull final Player player) {
 
-    if(inventoryPreview == null) {
-      inventoryPreview = new InventoryPreview(plugin, getItem().clone(), player.getLocale());
-    }
-    inventoryPreview.show(player);
+    InventoryPreview.show(player, getItem());
 
   }
 
@@ -1445,19 +1868,13 @@ public class ContainerShop implements Shop, Reloadable {
   }
 
   @Override
-  public @NotNull String saveExtraToYaml() {
-
-    return extra == null? "" : extra.saveToString();
-  }
-
-  @Override
   public ShopInfoStorage saveToInfoStorage() {
 
-    return new ShopInfoStorage(getLocation().getWorld().getName(),
-                               new BlockPos(getLocation()), this.owner, this.price,
-                               QuickShop.getInstance().platform().encodeStack(this.originalItem), isUnlimited()? 1 : 0
-            , shopType().id(),
-                               saveExtraToYaml(), this.currency, this.disableDisplay,
+    return new ShopInfoStorage(this.bukkitLocation().getWorld().getName(),
+                               new BlockPos(this.bukkitLocation()), this.owner, this.price,
+                               QuickShop.getInstance().platform().encodeStack(this.originalItem),
+                               (isUnlimited())? 1 : 0, shopType().id(),
+                               serializeExtra(), this.currency, this.disableDisplay,
                                this.taxAccount, inventoryWrapperProvider,
                                saveToSymbolLink(), this.playerGroup);
   }
@@ -1478,90 +1895,17 @@ public class ContainerShop implements Shop, Reloadable {
    * @param amount          The amount to sell
    */
   @Override
-  public void sell(@NotNull final QUser seller, @NotNull final InventoryWrapper sellerInventory,
-                   @NotNull final Location loc2Drop, int amount) throws Exception {
-
-    Util.ensureThread(false);
-    amount = item.getAmount() * amount;
-    if(amount < 0) {
-      this.buy(seller, sellerInventory, loc2Drop, -amount);
-      return;
-    }
-    // Items to drop on floor
-    if(this.isUnlimited()) {
-      final SimpleInventoryTransaction transaction = SimpleInventoryTransaction
-              .builder()
-              .from(null)
-              .to(sellerInventory) // To void
-              .item(this.getItem())
-              .amount(amount)
-              .build();
-      if(!transaction.failSafeCommit()) {
-        if(plugin.getSentryErrorReporter() != null) {
-          plugin.getSentryErrorReporter().ignoreThrow();
-        }
-        throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transaction.getLastError());
-      }
-    } else {
-      final InventoryWrapper chestInv = this.getInventory();
-      if(chestInv == null) {
-        plugin.logger().warn("Failed to process sell, reason: {} to shop {}: Inventory null.", item, amount);
-        return;
-      }
-      final SimpleInventoryTransaction transactionTake = SimpleInventoryTransaction
-              .builder()
-              .from(chestInv)
-              .to(sellerInventory) // To void
-              .item(this.getItem())
-              .amount(amount)
-              .build();
-      if(!transactionTake.failSafeCommit()) {
-        if(plugin.getSentryErrorReporter() != null) {
-          plugin.getSentryErrorReporter().ignoreThrow();
-        }
-        throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transactionTake.getLastError());
-      }
-      this.setSignText(plugin.getTextManager().findRelativeLanguages(seller, false));
-    }
+  public TradeResult sell(@NotNull final QUser seller,
+                   @NotNull final InventoryWrapper sellerInventory,
+                   @NotNull final Location loc2Drop,
+                   final int amount) {
+    return plugin.getShopManager().tradeService().executeBuyFromShop(this, seller, sellerInventory, loc2Drop, amount);
   }
 
   @Override
   public void setDirty() {
 
     this.dirty = true;
-  }
-
-  /**
-   * Save the extra data to the shop.
-   *
-   * @param plugin Plugin instace
-   * @param data   The data table
-   */
-  @Override
-  public void setExtra(@NotNull final Plugin plugin, @NotNull final ConfigurationSection data) {
-
-    if(this.extra == null) {
-      this.extra = new YamlConfiguration();
-    }
-    extra.set(plugin.getName(), data);
-    // compress extra to null if possible
-    boolean anyValid = false;
-    for(final String key : extra.getKeys(false)) {
-      if(!extra.isConfigurationSection(key)) {
-        anyValid = true;
-        break;
-      }
-      final ConfigurationSection section = extra.getConfigurationSection(key);
-      if(section == null) continue;
-      if(!section.getKeys(false).isEmpty()) {
-        anyValid = true;
-        break;
-      }
-    }
-    if(!anyValid) {
-      this.extra = null;
-    }
-    setDirty();
   }
 
   @Override
@@ -1633,8 +1977,17 @@ public class ContainerShop implements Shop, Reloadable {
     if(!Util.isLoaded(this.location)) {
       return;
     }
-    QuickShop.folia().getScheduler().runAtLocation(this.location, (consumer)->{
-      this.setSignText(getSignText(plugin.getTextManager().findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode())));
+
+    final Location loc = this.location.clone();
+    final CompletableFuture<List<Component>> textCompletable = getSignTextAsync(plugin.getTextManager().findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode()));
+
+    textCompletable.thenAccept(lines -> {
+      QuickShop.folia().getScheduler().runAtLocation(loc, (consumer)->{
+        if(!isValid()) {
+          return;
+        }
+        this.setSignText(lines);
+      });
     });
   }
 
@@ -1654,24 +2007,24 @@ public class ContainerShop implements Shop, Reloadable {
     event.callEvent();
 
     for(final Sign sign : signs) {
+      final boolean isGlowing = plugin.getConfig().getBoolean("shop.sign-glowing", false);
+      final boolean isWaxed = plugin.getConfig().getBoolean("shop.sign-wax", false);
+      plugin.platform().setLines(sign, event.updated());
+
+      sign.getSide(Side.FRONT).setGlowingText(isGlowing);
 
       final DyeColor dyeColor = Util.getDyeColor();
       if(dyeColor != null) {
-        sign.setColor(dyeColor);
+        sign.getSide(Side.FRONT).setColor(dyeColor);
       }
-      final boolean isGlowing = plugin.getConfig().getBoolean("shop.sign-glowing", false);
-      final boolean isWaxed = plugin.getConfig().getBoolean("shop.sign-wax", false);
-
-      sign.setGlowingText(isGlowing);
       sign.setWaxed(isWaxed);
-      sign.update(true);
-      plugin.platform().setLines(sign, event.updated());
 
       new ShopSignUpdateEvent(this, sign).callEvent();
+      sign.update(true);
     }
     if(plugin.getSignHooker() != null) {
       Log.debug("Start sign broadcast...");
-      plugin.getSignHooker().updatePerPlayerShopSignBroadcast(getLocation(), this);
+      plugin.getSignHooker().updatePerPlayerShopSignBroadcast(this.bukkitLocation(), this);
       Log.debug("Sign broadcast completed.");
     }
   }
@@ -1689,9 +2042,17 @@ public class ContainerShop implements Shop, Reloadable {
       return;
     }
 
-    QuickShop.folia().getScheduler().runAtLocation(this.location, (consumer)->{
-      this.setSignText(getSignText(locale));
-    });
+    final Location loc = this.location.clone();
+    final CompletableFuture<List<Component>> textCompletable = getSignTextAsync(locale);
+
+    textCompletable.thenAccept(lines ->QuickShop.folia().getScheduler().runAtLocation(loc, (consumer)->{
+
+      if(!isValid()) {
+
+        return;
+      }
+      this.setSignText(lines);
+    }));
   }
 
   /**
@@ -1773,13 +2134,14 @@ public class ContainerShop implements Shop, Reloadable {
             plugin.platform().encodeStack(getItem()),
             getShopName(),
             shopType().id(),
+            shopState().identifier(),
             getCurrency(),
             getPrice(),
             isUnlimited(),
             isDisableDisplay(),
             getTaxAccount(),
             JsonUtil.getGson().toJson(getPermissionAudiences()),
-            saveExtraToYaml(),
+            serializeExtra(),
             getInventoryWrapperProvider(),
             saveToSymbolLink(),
             new Date(),
@@ -1807,6 +2169,12 @@ public class ContainerShop implements Shop, Reloadable {
       return Objects.requireNonNull(this.item.getItemMeta()).getEnchants();
     }
     return Collections.emptyMap();
+  }
+
+  @ApiStatus.Internal
+  public @NotNull SimpleShopInventoryCountCache getInventoryCountCache() {
+
+    return inventoryCountCache;
   }
 
   /**
@@ -1847,7 +2215,7 @@ public class ContainerShop implements Shop, Reloadable {
 
   private ShopSignStorage saveToShopSignStorage() {
 
-    return new ShopSignStorage(getLocation().getWorld().getName(), getLocation().getBlockX(), getLocation().getBlockY(), getLocation().getBlockZ());
+    return new ShopSignStorage(this.bukkitLocation().getWorld().getName(), this.bukkitLocation().getBlockX(), this.bukkitLocation().getBlockY(), this.bukkitLocation().getBlockZ());
   }
 
   @Override
@@ -1859,18 +2227,16 @@ public class ContainerShop implements Shop, Reloadable {
            ", runtimeRandomUniqueId=" + runtimeRandomUniqueId +
            ", playerGroup=" + playerGroup +
            ", isDeleted=" + isDeleted +
-           ", extra=" + extra +
+           ", extra=" + serializeExtra() +
            ", shopId=" + shopId +
            ", owner=" + owner +
            ", price=" + price +
            ", shopType=" + shopType +
            ", unlimited=" + unlimited +
            ", item=" + item +
-           ", originalItem=" + originalItem +
            ", displayItem=" + displayItem +
            ", isLoaded=" + isLoaded +
            ", createBackup=" + createBackup +
-           ", inventoryPreview=" + inventoryPreview +
            ", dirty=" + dirty +
            ", updating=" + updating +
            ", currency='" + currency + '\'' +

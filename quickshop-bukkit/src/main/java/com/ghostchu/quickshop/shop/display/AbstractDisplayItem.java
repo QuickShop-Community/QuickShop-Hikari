@@ -94,6 +94,10 @@ public abstract class AbstractDisplayItem implements Reloadable {
       return false;
     }
 
+    if(getNowUsing() == DisplayType.DISPLAY_ENTITY) {
+      return false;
+    }
+
     Util.ensureThread(false);
     if(itemStack == null) {
       return false;
@@ -149,7 +153,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
   public static ShopProtectionFlag createShopProtectionFlag(
           @NotNull final ItemStack itemStack, @NotNull final Shop shop) {
 
-    return new ShopProtectionFlag(shop.getLocation().toString(), Util.serialize(itemStack));
+    return new ShopProtectionFlag(shop.bukkitLocation().toString(), shop.itemSerializeString());
   }
 
   public static boolean isVirtualDisplayDoesntWork() {
@@ -226,7 +230,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
     final double y = PLUGIN.getConfig().getDouble("shop.display-coords.y", 0.8);
     final double z = PLUGIN.getConfig().getDouble("shop.display-coords.z", 0.5);
 
-    return this.shop.getLocation().clone().add(x, y, z);
+    return this.shop.bukkitLocation().clone().add(x, y, z);
   }
 
   /**

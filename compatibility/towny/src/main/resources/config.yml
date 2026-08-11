@@ -63,6 +63,8 @@ trade: [ ]
 bank-mode:
   #Only allow shop transform to bank mode when shop at bank plot
   bank-plot-only: true
+  #Only allow shop transform to bank mode when shop at shop plot
+  shop-plot-only: true
   #Enforce the bank mode shops to use price that specified in the config.
   #The items not included will deny to be turned a bank mode shop
   enable: true

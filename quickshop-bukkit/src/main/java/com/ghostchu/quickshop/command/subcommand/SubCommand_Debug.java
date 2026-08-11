@@ -135,8 +135,8 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
       return;
     }
     if(player.getInventory().getItemInMainHand().getType().isAir()) {
-        plugin.text().of(sender, "no-anythings-in-your-hand").send();
-        return;
+      plugin.text().of(sender, "no-anythings-in-your-hand").send();
+      return;
     }
     final String hand = player.getInventory().getItemInMainHand().getItemMeta().getAsString();
     plugin.text().of(sender, "debug.item-info-hand-as-string", hand, Hashing.crc32().hashString(hand, StandardCharsets.UTF_8).toString()).send();
@@ -186,7 +186,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
   private void handleStopDbQueries(final CommandSender sender, final List<String> subParams) {
 
-    final long stopped = plugin.getSqlManager().getActiveQuery().values().size();
+    final long stopped = plugin.getSqlManager().getActiveQuery().size();
     plugin.getSqlManager().getActiveQuery().values().forEach(SQLQuery::close);
     plugin.text().of(sender, "debug.queries-stopped", stopped).send();
   }
@@ -324,12 +324,14 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
   private void handleShopsLoaderReload(final CommandSender sender, final List<String> remove) {
 
     plugin.text().of(sender, "debug.force-shop-loader-reload").send();
-    final List<Shop> allShops = plugin.getShopManager().getAllShops();
+    final List<Shop> allShops = new ArrayList<>(plugin.getShopManager().getAllShops());
     plugin.text().of(sender, "debug.force-shop-loader-reload-unloading-shops-from-memory", allShops.size()).send();
-    plugin.getShopManager().getAllShops().forEach(shop->plugin.getShopManager().unloadShop(shop));
+    allShops.forEach(shop->plugin.getShopManager().unloadShop(shop));
     plugin.text().of(sender, "debug.force-shop-loader-reload-reloading-shop-loader").send();
-    plugin.getShopLoader().loadShops();
-    plugin.text().of(sender, "debug.force-shop-loader-reload-complete").send();
+    Util.asyncThreadRun(()->{
+      plugin.getShopLoader().loadShops();
+      plugin.text().of(sender, "debug.force-shop-loader-reload-complete").send();
+    });
   }
 
   private void handleShopsReload(final CommandSender sender, final List<String> remove) {

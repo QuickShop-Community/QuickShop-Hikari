@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.api.database.DatabaseHelper;
 import com.ghostchu.quickshop.api.economy.EconomyManager;
 import com.ghostchu.quickshop.api.hook.Hook;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperRegistry;
+import com.ghostchu.quickshop.api.inventory.SkullProvider;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
 import com.ghostchu.quickshop.api.registry.RegistryManager;
 import com.ghostchu.quickshop.api.shop.ItemMatcher;
@@ -12,12 +13,16 @@ import com.ghostchu.quickshop.api.shop.PlayerFinder;
 import com.ghostchu.quickshop.api.shop.ShopControlPanelManager;
 import com.ghostchu.quickshop.api.shop.ShopItemBlackList;
 import com.ghostchu.quickshop.api.shop.ShopManager;
+import com.ghostchu.quickshop.api.shop.display.DisplayManager;
 import com.ghostchu.quickshop.api.shop.interaction.InteractionManager;
+import com.ghostchu.quickshop.api.shop.tag.TagManager;
 import com.vdurmont.semver4j.Semver;
+import dev.dejvokep.boostedyaml.YamlDocument;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 import java.util.Map;
@@ -105,6 +110,21 @@ public interface QuickShopAPI {
   }
 
   /**
+   * Retrieves the main configuration object of the QuickShop system.
+   *
+   * This method provides access to the QSConfig instance, which is responsible
+   * for managing the configuration settings of the plugin. The returned object
+   * allows for reading, updating, and saving configuration options crucial for
+   * the proper functioning of the system.
+   *
+   * @since 6.3.0.0
+   *
+   * @return The QSConfig instance representing the main configuration of QuickShop.
+   */
+  @NotNull
+  YamlDocument getConfig();
+
+  /**
    * Getting command manager that allow addon direct access QuickShop sub-command system
    *
    * @return The command manager
@@ -134,6 +154,20 @@ public interface QuickShopAPI {
   InventoryWrapperRegistry getInventoryWrapperRegistry();
 
   /**
+   * Retrieves the instance of the {@code SkullProvider}, which is responsible for
+   * providing methods to asynchronously generate player skulls or skull profiles.
+   *
+   * The {@code SkullProvider} interface offers functionality to retrieve player
+   * skulls (as {@code ItemStack} objects) or skull profile information (via
+   * {@code SkullProfile}), using identifiers such as UUID or player name.
+   *
+   * @return The {@code SkullProvider} instance for accessing skull-related utilities.
+   *
+   * @since 6.3.0.0
+   */
+  SkullProvider getSkullProvider();
+
+  /**
    * Getting current using ItemMatcher impl
    *
    * @return The item matcher
@@ -147,6 +181,16 @@ public interface QuickShopAPI {
    * @return The EconomyManager instance.
    */
   EconomyManager getEconomyManager();
+
+  /**
+   * Retrieves the TagManager associated with the QuickShop system. The TagManager
+   * is responsible for handling operations related to managing tags, which may
+   * include inventory item metadata and custom item tags used by the system.
+   *
+   * @return The TagManager instance that provides functionality for tag-related
+   *         operations within the QuickShop system.
+   */
+  TagManager tagManager();
 
   /**
    * Getting the control panel manager
@@ -168,6 +212,14 @@ public interface QuickShopAPI {
    * @return Shop manager
    */
   ShopManager getShopManager();
+
+  /**
+   * Retrieves the instance of the DisplayManager responsible for managing display functionalities.
+   *
+   * @return The DisplayManager instance, which handles operations related to displays for various types of entities.
+   */
+  @Nullable
+  DisplayManager<?> getDisplayManager();
 
   /**
    * Getting text manager that allow addon to create a user language locale based message
