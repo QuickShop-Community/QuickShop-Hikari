@@ -107,6 +107,6 @@ run/
 .${rootDir}/
 /.paper-nms/
 build/
-
+target/
 .gradle/
 !gradle/wrapper/gradle-wrapper.jar
