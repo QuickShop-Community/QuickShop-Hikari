@@ -18,8 +18,6 @@ import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.google.common.reflect.TypeToken;
-import lombok.Getter;
-import lombok.Setter;
 import net.kyori.adventure.key.Key;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -145,8 +143,8 @@ public class ShopLoader implements SubPasteItem {
     }, this.executorService);
   }
 
-
   private ShopLoadResult loadSingleShop(final ShopRecord shopRecord, @Nullable final String worldName, @NotNull final List<Shop> shopsLoadInNextTick) {
+
     final InfoRecord infoRecord = shopRecord.getInfoRecord();
     final DataRecord dataRecord = shopRecord.getDataRecord();
 
@@ -166,9 +164,7 @@ public class ShopLoader implements SubPasteItem {
     if(dataRecord.getInventoryWrapper() == null) {
       return ShopLoadResult.FAILED;
     }
-    if(dataRecord.getInventorySymbolLink() != null
-       && !dataRecord.getInventoryWrapper().isEmpty()
-       && plugin.getInventoryWrapperRegistry().get(dataRecord.getInventoryWrapper()) == null) {
+    if(dataRecord.getInventorySymbolLink() != null && !dataRecord.getInventoryWrapper().isEmpty() && plugin.getInventoryWrapperRegistry().get(dataRecord.getInventoryWrapper()) == null) {
       Log.debug("InventoryWrapperProvider not exists! Shop won't be loaded!");
       return ShopLoadResult.FAILED;
     }
@@ -292,26 +288,23 @@ public class ShopLoader implements SubPasteItem {
   }
 
   @Override
-  public @NotNull String genBody() {
+  @NotNull
+  public String genBody() {
 
     return "<p>Errors: " + errors + "</p>";
   }
 
   @Override
-  public @NotNull String getTitle() {
+  @NotNull
+  public String getTitle() {
 
     return "Shop Loader";
   }
 
   public enum ShopLoadResult {
-    LOADED,
-    LOAD_AFTER_CHUNK_LOADED,
-    WORLD_NOT_MATCH_SKIPPED,
-    FAILED
+    LOADED, LOAD_AFTER_CHUNK_LOADED, WORLD_NOT_MATCH_SKIPPED, FAILED;
   }
 
-  @Getter
-  @Setter
   public static class DataRawDatabaseInfo {
 
     private QUser owner;
@@ -366,7 +359,7 @@ public class ShopLoader implements SubPasteItem {
       }
 
       if(dataRecord.getEncoded() == null) {
-        Log.debug("Shop :" +  name + " doesn't have encoded item. Cannot load.");
+        Log.debug("Shop :" + name + " doesn't have encoded item. Cannot load.");
       }
 
       boolean encodedLoaded = false;
@@ -390,7 +383,8 @@ public class ShopLoader implements SubPasteItem {
       this.extraMap.putAll(deserializeExtraMap(extraStr));
     }
 
-    private @Nullable ItemStack deserializeItem(@NotNull final String itemConfig) {
+    @Nullable
+    private ItemStack deserializeItem(@NotNull final String itemConfig) {
 
       try {
         return Util.deserialize(itemConfig);
@@ -401,7 +395,8 @@ public class ShopLoader implements SubPasteItem {
       }
     }
 
-    private @NotNull Map<Key, String> deserializeExtraMap(@NotNull final String extraString) {
+    @NotNull
+    private Map<Key, String> deserializeExtraMap(@NotNull final String extraString) {
 
       final Map<Key, String> map = new HashMap<>();
       if (extraString.contains(EXTRA_VERSION_KEY.asString())) {
@@ -445,5 +440,190 @@ public class ShopLoader implements SubPasteItem {
 
       return JsonUtil.getGson().toJson(this);
     }
+
+    public QUser getOwner() {
+
+      return this.owner;
+    }
+
+    public String getName() {
+
+      return this.name;
+    }
+
+    public IShopType getType() {
+
+      return this.type;
+    }
+
+    public ShopState getState() {
+
+      return this.state;
+    }
+
+    public String getCurrency() {
+
+      return this.currency;
+    }
+
+    public double getPrice() {
+
+      return this.price;
+    }
+
+    public boolean isUnlimited() {
+
+      return this.unlimited;
+    }
+
+    public boolean isHologram() {
+
+      return this.hologram;
+    }
+
+    public QUser getTaxAccount() {
+
+      return this.taxAccount;
+    }
+
+    public Map<UUID, String> getPermissions() {
+
+      return this.permissions;
+    }
+
+    public Map<Key, String> getExtraMap() {
+
+      return this.extraMap;
+    }
+
+    public String getInvWrapper() {
+
+      return this.invWrapper;
+    }
+
+    public String getInvSymbolLink() {
+
+      return this.invSymbolLink;
+    }
+
+    public long getCreateTime() {
+
+      return this.createTime;
+    }
+
+    public ItemStack getItem() {
+
+      return this.item;
+    }
+
+    public ItemStack getNewItem() {
+
+      return this.newItem;
+    }
+
+    public boolean isNeedUpdate() {
+
+      return this.needUpdate;
+    }
+
+    public BenefitProvider getBenefits() {
+
+      return this.benefits;
+    }
+
+    public SimpleShopInventoryCountCache getInventoryCountCache() {
+
+      return this.inventoryCountCache;
+    }
+
+    public void setOwner(final QUser owner) {
+
+      this.owner = owner;
+    }
+
+    public void setName(final String name) {
+
+      this.name = name;
+    }
+
+    public void setType(final IShopType type) {
+
+      this.type = type;
+    }
+
+    public void setState(final ShopState state) {
+
+      this.state = state;
+    }
+
+    public void setCurrency(final String currency) {
+
+      this.currency = currency;
+    }
+
+    public void setPrice(final double price) {
+
+      this.price = price;
+    }
+
+    public void setUnlimited(final boolean unlimited) {
+
+      this.unlimited = unlimited;
+    }
+
+    public void setHologram(final boolean hologram) {
+
+      this.hologram = hologram;
+    }
+
+    public void setTaxAccount(final QUser taxAccount) {
+
+      this.taxAccount = taxAccount;
+    }
+
+    public void setPermissions(final Map<UUID, String> permissions) {
+
+      this.permissions = permissions;
+    }
+
+    public void setInvWrapper(final String invWrapper) {
+
+      this.invWrapper = invWrapper;
+    }
+
+    public void setInvSymbolLink(final String invSymbolLink) {
+
+      this.invSymbolLink = invSymbolLink;
+    }
+
+    public void setCreateTime(final long createTime) {
+
+      this.createTime = createTime;
+    }
+
+    public void setItem(final ItemStack item) {
+
+      this.item = item;
+    }
+
+    public void setNewItem(final ItemStack newItem) {
+
+      this.newItem = newItem;
+    }
+
+    public void setNeedUpdate(final boolean needUpdate) {
+
+      this.needUpdate = needUpdate;
+    }
+
+    public void setBenefits(final BenefitProvider benefits) {
+
+      this.benefits = benefits;
+    }
+
+    public void setInventoryCountCache(final SimpleShopInventoryCountCache inventoryCountCache) {
+
+      this.inventoryCountCache = inventoryCountCache;
+  }
   }
 }

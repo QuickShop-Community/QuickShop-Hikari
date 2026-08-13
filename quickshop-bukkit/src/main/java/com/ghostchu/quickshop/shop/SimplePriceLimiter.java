@@ -14,7 +14,6 @@ import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
-import lombok.Data;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -33,6 +32,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.StringJoiner;
 import java.util.function.Function;
 import java.util.regex.Pattern;
@@ -117,7 +117,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
     }
     if(configuration.getInt("version") == 2) {
       if(configuration.getDouble("undefined.max") == -1) {
-        configuration.set("undefined.max", 99999999999999999999999999999.99d); // DECIMAL (32,2) MAX
+        configuration.set("undefined.max", 1.0E29); // DECIMAL (32,2) MAX
       }
       configuration.set("version", 3);
       anyChanges = true;
@@ -134,7 +134,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
     }
     final String bypassPermission = "quickshop.price.restriction.bypass." + ruleName;
     final List<Function<ItemStack, Boolean>> items = new ArrayList<>();
-    final double min = section.getDouble("min", 0d);
+    final double min = section.getDouble("min", 0.0);
     final double max = section.getDouble("max", Double.MAX_VALUE);
     final ItemExpressionRegistry itemExpressionRegistry = (ItemExpressionRegistry)plugin.getRegistry().getRegistry(BuiltInRegistry.ITEM_EXPRESSION);
     for(final String item : section.getStringList("items")) {
@@ -296,7 +296,8 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
   }
 
   @Override
-  public @NotNull String genBody() {
+  @NotNull
+  public String genBody() {
 
     final StringJoiner joiner = new StringJoiner("<br/>");
     joiner.add("<h5>Metadata</h5>");
@@ -322,12 +323,12 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
   }
 
   @Override
-  public @NotNull String getTitle() {
+  @NotNull
+  public String getTitle() {
 
     return "Price Limiter";
   }
 
-  @Data
   static class RuleSet {
 
     private final List<Function<ItemStack, Boolean>> items;
@@ -487,5 +488,54 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
       return false;
     }
 
+    public List<Function<ItemStack, Boolean>> getItems() {
+
+      return this.items;
+    }
+
+    public String getBypassPermission() {
+
+      return this.bypassPermission;
+    }
+
+    public List<Pattern> getCurrency() {
+
+      return this.currency;
+    }
+
+    public double getMin() {
+
+      return this.min;
+    }
+
+    public double getMax() {
+
+      return this.max;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+
+      if(o == this) return true;
+      if(!(o instanceof SimplePriceLimiter.RuleSet)) return false;
+      final SimplePriceLimiter.RuleSet other = (SimplePriceLimiter.RuleSet)o;
+      return Double.compare(this.getMin(), other.getMin()) == 0
+             && Double.compare(this.getMax(), other.getMax()) == 0
+             && Objects.equals(this.getItems(), other.getItems())
+             && Objects.equals(this.getBypassPermission(), other.getBypassPermission())
+             && Objects.equals(this.getCurrency(), other.getCurrency());
+    }
+
+    @Override
+    public int hashCode() {
+
+      return Objects.hash(this.getMin(), this.getMax(), this.getItems(), this.getBypassPermission(), this.getCurrency());
+    }
+
+    @Override
+    public String toString() {
+
+      return "SimplePriceLimiter.RuleSet(items=" + this.getItems() + ", bypassPermission=" + this.getBypassPermission() + ", currency=" + this.getCurrency() + ", min=" + this.getMin() + ", max=" + this.getMax() + ")";
+    }
   }
 }

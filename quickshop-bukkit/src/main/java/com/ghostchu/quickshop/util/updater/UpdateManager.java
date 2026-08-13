@@ -25,7 +25,6 @@ import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import com.vdurmont.semver4j.Semver;
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -48,7 +47,6 @@ public class UpdateManager implements SubPasteItem {
 
   private final Map<String, UpdateProvider> providers = new HashMap<>();
 
-  @Getter
   private UpdateProvider activeProvider;
 
   private UpdateMetadata cachedMetadata;
@@ -58,6 +56,7 @@ public class UpdateManager implements SubPasteItem {
   private static final long CACHE_MS = TimeUnit.HOURS.toMillis(1);
 
   public UpdateManager(final QuickShop plugin) {
+
     this.plugin = plugin;
 
     // built-ins
@@ -75,20 +74,24 @@ public class UpdateManager implements SubPasteItem {
   }
 
   public void registerProvider(@NotNull final UpdateProvider provider) {
+
     providers.put(provider.id().toLowerCase(Locale.ROOT), provider);
   }
 
   public void reloadActiveProvider() {
+
     final String configured = plugin.getConfig().getString("updater-source", "modrinth");
     this.activeProvider = providers.getOrDefault((configured == null)? "modrinth" : configured.toLowerCase(Locale.ROOT), providers.get("nexus"));
   }
 
   public boolean isEnabled() {
+
     return plugin.getConfig().getBoolean("updater", false);
   }
 
   @NotNull
   public String getLatestVersion() {
+
     if(!isEnabled() || cachedMetadata == null) {
       return plugin.getVersion();
     }
@@ -97,10 +100,12 @@ public class UpdateManager implements SubPasteItem {
 
   @NotNull
   public String getUpdateUrl() {
+
     return activeProvider.updateUrl();
   }
 
   public boolean isLatest() {
+
     if(Bukkit.isPrimaryThread()) {
       Log.debug(Level.WARNING, "Warning: isLatest shouldn't be called on PrimaryThread", Log.Caller.create());
       return cachedResult;
@@ -129,6 +134,7 @@ public class UpdateManager implements SubPasteItem {
   }
 
   private void updateCacheIfRequired() {
+
     if((lastCheck + CACHE_MS) < System.currentTimeMillis()) {
       lastCheck = System.currentTimeMillis();
       cachedMetadata = activeProvider.fetchMetadata();
@@ -136,7 +142,9 @@ public class UpdateManager implements SubPasteItem {
   }
 
   @Override
-  public @NotNull String genBody() {
+  @NotNull
+  public String genBody() {
+
     if(cachedMetadata == null) {
       return "<p>No metadata found.</p>";
     }
@@ -153,12 +161,20 @@ public class UpdateManager implements SubPasteItem {
   }
 
   @Override
-  public @NotNull String getTitle() {
+  @NotNull
+  public String getTitle() {
+
     return "UpdateManager (updater)";
   }
 
   @Nullable
   public UpdateMetadata getCachedMetadata() {
+
     return cachedMetadata;
+  }
+
+  public UpdateProvider getActiveProvider() {
+
+    return this.activeProvider;
   }
 }

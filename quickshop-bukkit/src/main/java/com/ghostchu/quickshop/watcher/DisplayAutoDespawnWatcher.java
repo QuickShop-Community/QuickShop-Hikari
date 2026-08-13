@@ -9,7 +9,6 @@ import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
 import com.tcoded.folialib.wrapper.task.WrappedTask;
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -23,7 +22,6 @@ public class DisplayAutoDespawnWatcher implements Runnable, Reloadable, SubPaste
   private final QuickShop plugin;
   private int range;
   private WrappedTask task;
-  @Getter
   private int taskPeriod;
 
   public DisplayAutoDespawnWatcher(@NotNull final QuickShop plugin) {
@@ -106,13 +104,15 @@ public class DisplayAutoDespawnWatcher implements Runnable, Reloadable, SubPaste
   }
 
   public void unregister() {
+
     stop();
     plugin.getReloadManager().unregister(this);
     plugin.getPasteManager().unregister(plugin.getJavaPlugin(), this);
   }
 
   @Override
-  public @NotNull String genBody() {
+  @NotNull
+  public String genBody() {
 
     final StringJoiner joiner = new StringJoiner("<br/>");
     joiner.add("<b>Warning: DisplayAutoDespawnWatcher has been enabled, this may cause lag. This feature is not recommended</b>");
@@ -121,8 +121,14 @@ public class DisplayAutoDespawnWatcher implements Runnable, Reloadable, SubPaste
   }
 
   @Override
-  public @NotNull String getTitle() {
+  @NotNull
+  public String getTitle() {
 
     return "Display Auto Despawn Watcher";
+  }
+
+  public int getTaskPeriod() {
+
+    return this.taskPeriod;
   }
 }

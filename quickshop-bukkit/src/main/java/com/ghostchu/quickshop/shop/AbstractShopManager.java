@@ -23,7 +23,6 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import lombok.Getter;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Chunk;
@@ -68,7 +67,6 @@ public abstract class AbstractShopManager implements ShopManager {
   protected final EconomyFormatter formatter;
   protected final Map<String, Map<ShopChunk, Map<Location, Shop>>> shops = Maps.newConcurrentMap();
   protected final Set<Shop> loadedShops = Sets.newConcurrentHashSet(); // Handle it by collection to reduce
-  @Getter
   protected ShopCache shopCache;
 
 
@@ -130,7 +128,8 @@ public abstract class AbstractShopManager implements ShopManager {
    * @return formatted price
    */
   @Override
-  public @NotNull String format(final double d, @NotNull final World world, @Nullable final String currency) {
+  @NotNull
+  public String format(final double d, @NotNull final World world, @Nullable final String currency) {
 
     return formatter.format(d, world, currency);
   }
@@ -143,7 +142,8 @@ public abstract class AbstractShopManager implements ShopManager {
    * @return formatted price
    */
   @Override
-  public @NotNull String format(final double d, @NotNull final Shop shop) {
+  @NotNull
+  public String format(final double d, @NotNull final Shop shop) {
 
     return formatter.format(d, shop);
   }
@@ -278,9 +278,10 @@ public abstract class AbstractShopManager implements ShopManager {
    * @return All shop in the database
    */
   @Override
-  public @NotNull List<Shop> getAllShops() {
+  @NotNull
+  public List<Shop> getAllShops() {
 
-    try(final PerfMonitor ignored = new PerfMonitor("Getting all shops")) {
+    try(PerfMonitor ignored = new PerfMonitor("Getting all shops")) {
       final List<Shop> shopsCollected = new ArrayList<>();
       for(final Map<ShopChunk, Map<Location, Shop>> shopMapData : getShops().values()) {
         for(final Map<Location, Shop> shopData : shopMapData.values()) {
@@ -297,7 +298,8 @@ public abstract class AbstractShopManager implements ShopManager {
    * @return All loaded shops.
    */
   @Override
-  public @NotNull Set<Shop> getLoadedShops() {
+  @NotNull
+  public Set<Shop> getLoadedShops() {
 
     return this.loadedShops;
   }
@@ -312,7 +314,8 @@ public abstract class AbstractShopManager implements ShopManager {
    * @return The list have this player's all shops.
    */
   @Override
-  public @NotNull List<Shop> getAllShops(@NotNull final QUser playerUUID) {
+  @NotNull
+  public List<Shop> getAllShops(@NotNull final QUser playerUUID) {
 
     final List<Shop> playerShops = new ArrayList<>(10);
     for(final Shop shop : getAllShops()) {
@@ -324,7 +327,8 @@ public abstract class AbstractShopManager implements ShopManager {
   }
 
   @Override
-  public @NotNull List<Shop> getAllShops(@NotNull final UUID playerUUID) {
+  @NotNull
+  public List<Shop> getAllShops(@NotNull final UUID playerUUID) {
 
     final List<Shop> playerShops = new ArrayList<>(10);
     for(final Shop shop : getAllShops()) {
@@ -345,7 +349,8 @@ public abstract class AbstractShopManager implements ShopManager {
    * @return The shop object
    */
   @Override
-  public @Nullable Shop getShop(final long shopId) {
+  @Nullable
+  public Shop getShop(final long shopId) {
 
     for(final Shop shop : getAllShops()) {
       if(shop.getShopId() == shopId) {
@@ -364,7 +369,8 @@ public abstract class AbstractShopManager implements ShopManager {
    * @return The shop at that location
    */
   @Override
-  public @Nullable Shop getShop(@NotNull Location loc, final boolean skipShopableChecking) {
+  @Nullable
+  public Shop getShop(@NotNull Location loc, final boolean skipShopableChecking) {
 
     if(!skipShopableChecking && !Util.isShoppables(loc.getBlock().getType())) {
       return null;
@@ -458,7 +464,8 @@ public abstract class AbstractShopManager implements ShopManager {
    * @return The shop at that location
    */
   @Override
-  public @Nullable Shop getShopIncludeAttached(@Nullable final Location loc) {
+  @Nullable
+  public Shop getShopIncludeAttached(@Nullable final Location loc) {
 
     if(loc == null) {
       Log.debug("Location is null.");
@@ -498,7 +505,8 @@ public abstract class AbstractShopManager implements ShopManager {
    * @return a map of World - Chunk - Shop
    */
   @Override
-  public @NotNull Map<String, Map<ShopChunk, Map<Location, Shop>>> getShops() {
+  @NotNull
+  public Map<String, Map<ShopChunk, Map<Location, Shop>>> getShops() {
 
     return this.shops;
   }
@@ -511,13 +519,15 @@ public abstract class AbstractShopManager implements ShopManager {
    * @return Shops
    */
   @Override
-  public @NotNull Map<Location, Shop> getShops(@NotNull final Chunk c) {
+  @NotNull
+  public Map<Location, Shop> getShops(@NotNull final Chunk c) {
 
     return getShops(c.getWorld().getName(), c.getX(), c.getZ());
   }
 
   @Override
-  public @NotNull Map<Location, Shop> getShops(@NotNull final String world, final int chunkX, final int chunkZ) {
+  @NotNull
+  public Map<Location, Shop> getShops(@NotNull final String world, final int chunkX, final int chunkZ) {
 
     final Map<ShopChunk, Map<Location, Shop>> inWorld = this.getShops(world);
     if(inWorld.isEmpty()) {
@@ -530,7 +540,8 @@ public abstract class AbstractShopManager implements ShopManager {
   }
 
   @Override
-  public @NotNull Map<Location, Shop> getShops(@NotNull final ShopChunk shopChunk) {
+  @NotNull
+  public Map<Location, Shop> getShops(@NotNull final ShopChunk shopChunk) {
 
     return getShops(shopChunk.getWorld(), shopChunk.getX(), shopChunk.getZ());
   }
@@ -543,7 +554,8 @@ public abstract class AbstractShopManager implements ShopManager {
    * @return a map of Chunk - Shop
    */
   @Override
-  public @NotNull Map<ShopChunk, Map<Location, Shop>> getShops(@NotNull final String world) {
+  @NotNull
+  public Map<ShopChunk, Map<Location, Shop>> getShops(@NotNull final String world) {
 
     final Map<ShopChunk, Map<Location, Shop>> shopsInWorld = this.shops.get(world);
     if(shopsInWorld == null) {
@@ -561,7 +573,8 @@ public abstract class AbstractShopManager implements ShopManager {
    * @return The list have this world all shops
    */
   @Override
-  public @NotNull List<Shop> getShopsInWorld(@NotNull final World world) {
+  @NotNull
+  public List<Shop> getShopsInWorld(@NotNull final World world) {
 
     final List<Shop> worldShops = new ArrayList<>();
     for(final Shop shop : getAllShops()) {
@@ -574,7 +587,8 @@ public abstract class AbstractShopManager implements ShopManager {
   }
 
   @Override
-  public @NotNull List<Shop> getShopsInWorld(@NotNull final String worldName) {
+  @NotNull
+  public List<Shop> getShopsInWorld(@NotNull final String worldName) {
 
     final List<Shop> worldShops = new ArrayList<>();
     for(final Shop shop : getAllShops()) {
@@ -602,8 +616,14 @@ public abstract class AbstractShopManager implements ShopManager {
    * previewing trade operations such as buying from and selling to shops.
    */
   @Override
-  public @NotNull TradeService tradeService() {
+  @NotNull
+  public TradeService tradeService() {
 
     return tradeService;
+  }
+
+  public ShopCache getShopCache() {
+
+    return this.shopCache;
   }
 }

@@ -18,7 +18,8 @@ package com.ghostchu.quickshop.api.updater;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import lombok.Data;
+import java.util.Objects;
+
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -27,23 +28,90 @@ import org.jetbrains.annotations.NotNull;
  * @author creatorfromhell
  * @since 6.3.0.0
  */
-@Data
 public class UpdateMetadata {
 
   /**
    * Epoch millis of last update/publish time if known, else 0.
    */
   private final long lastUpdate;
-
   /**
    * Highest semver across all versions (including beta/alpha if you publish them).
    */
   @NotNull
   private final String latestVersion;
-
   /**
    * Highest semver among release versions.
    */
   @NotNull
   private final String releaseVersion;
+
+  /**
+   * Creates a new {@code UpdateMetadata} instance.
+   *
+   * @param lastUpdate     Epoch millis of last update/publish time if known, else 0.
+   * @param latestVersion  Highest semver across all versions (including beta/alpha if you publish
+   *                       them).
+   * @param releaseVersion Highest semver among release versions.
+   */
+  public UpdateMetadata(final long lastUpdate, @NotNull final String latestVersion, @NotNull final String releaseVersion) {
+
+    if(latestVersion == null) {
+      throw new NullPointerException("latestVersion is marked non-null but is null");
+    }
+    if(releaseVersion == null) {
+      throw new NullPointerException("releaseVersion is marked non-null but is null");
+    }
+    this.lastUpdate = lastUpdate;
+    this.latestVersion = latestVersion;
+    this.releaseVersion = releaseVersion;
+  }
+
+  /**
+   * Epoch millis of last update/publish time if known, else 0.
+   */
+  public long getLastUpdate() {
+
+    return this.lastUpdate;
+  }
+
+  /**
+   * Highest semver across all versions (including beta/alpha if you publish them).
+   */
+  @NotNull
+  public String getLatestVersion() {
+
+    return this.latestVersion;
+  }
+
+  /**
+   * Highest semver among release versions.
+   */
+  @NotNull
+  public String getReleaseVersion() {
+
+    return this.releaseVersion;
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+
+    if(o == this) return true;
+    if(!(o instanceof UpdateMetadata)) return false;
+    final UpdateMetadata other = (UpdateMetadata)o;
+    return this.getLastUpdate() == other.getLastUpdate()
+           && Objects.equals(this.getLatestVersion(), other.getLatestVersion())
+           && Objects.equals(this.getReleaseVersion(), other.getReleaseVersion());
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(this.getLastUpdate(), this.getLatestVersion(), this.getReleaseVersion());
+  }
+
+  @Override
+  public String toString() {
+
+    return "UpdateMetadata(lastUpdate=" + this.getLastUpdate() + ", latestVersion=" + this.getLatestVersion() + ", releaseVersion=" + this.getReleaseVersion() + ")";
+  }
 }

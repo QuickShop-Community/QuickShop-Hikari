@@ -5,7 +5,6 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
-import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 import org.relique.jdbc.csv.CsvDriver;
 
@@ -21,10 +20,10 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-@Data
 public class DatabaseIOUtil {
 
   private final SimpleDatabaseHelperV2 helper;
@@ -73,12 +72,12 @@ public class DatabaseIOUtil {
   public void exportTables(@NotNull final File zipFile) throws SQLException, IOException {
     // zipFile.getParentFile().mkdirs();
     zipFile.createNewFile();
-    try(final ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFile))) {
+    try(ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFile))) {
       for(final DataTables table : DataTables.values()) {
         Log.debug("Exporting table " + table.name());
         final File tableCsv = new File(Util.getCacheFolder(), table.getName() + ".csv");
         tableCsv.deleteOnExit();
-        try(final SQLQuery query = table.createQuery().build().execute()) {
+        try(SQLQuery query = table.createQuery().build().execute()) {
           final ResultSet result = query.getResultSet();
           writeToCSV(result, tableCsv);
           Log.debug("Exported table " + table.name() + " to " + tableCsv.getAbsolutePath());
@@ -107,11 +106,10 @@ public class DatabaseIOUtil {
 
     Log.debug("Loading CsvDriver...");
     Class.forName("org.relique.jdbc.csv.CsvDriver");
-    try(final Connection conn = DriverManager.getConnection("jdbc:relique:csv:zip:" + zipFile);
-      final Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
-                                                    ResultSet.CONCUR_READ_ONLY);
-      final ResultSet results = stmt.executeQuery("SELECT * FROM " + table.logicalName())) {
-
+    try(
+            Connection conn = DriverManager.getConnection("jdbc:relique:csv:zip:" + zipFile);
+            Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            ResultSet results = stmt.executeQuery("SELECT * FROM " + table.logicalName())) {
       final ResultSetMetaData metaData = results.getMetaData();
       final String[] columns = new String[metaData.getColumnCount()];
       for(int i = 0; i < columns.length; i++) {
@@ -143,10 +141,35 @@ public class DatabaseIOUtil {
     if(!csvFile.exists()) {
       csvFile.createNewFile();
     }
-    try(final PrintStream stream = new PrintStream(csvFile)) {
+    try(PrintStream stream = new PrintStream(csvFile)) {
       Log.debug("Writing to CSV file: " + csvFile.getAbsolutePath());
       CsvDriver.writeToCsv(set, stream, true);
     }
   }
 
+  public SimpleDatabaseHelperV2 getHelper() {
+
+    return this.helper;
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+
+    if(o == this) return true;
+    if(!(o instanceof DatabaseIOUtil)) return false;
+    final DatabaseIOUtil other = (DatabaseIOUtil)o;
+    return Objects.equals(this.getHelper(), other.getHelper());
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(this.getHelper());
+  }
+
+  @Override
+  public String toString() {
+
+    return "DatabaseIOUtil(helper=" + this.getHelper() + ")";
+  }
 }
