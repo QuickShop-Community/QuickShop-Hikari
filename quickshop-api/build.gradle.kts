@@ -4,14 +4,18 @@ plugins {
 
 dependencies {
     api(project(":quickshop-common"))
+
     compileOnly(libs.paper.api)
-    api("dev.dejvokep:boosted-yaml:1.3.7") {
+
+    api(libs.boosted.yaml) {
         exclude("org.jetbrains", "annotations-java5")
     }
-    api("net.tnemc:TNIL-Bukkit:0.2.0.2-SNAPSHOT-1") {
+
+    api(libs.tnil.bukkit) {
         exclude("net.kyori")
     }
-    api("net.tnemc:TNIL-Paper:0.2.0.2-SNAPSHOT-1") {
+
+    api(libs.tnil.paper) {
         exclude("net.kyori")
     }
 }
