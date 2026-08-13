@@ -19,10 +19,12 @@ jobs:
         with:
           java-version: "21"
           distribution: temurin
-          cache: maven
+          cache: gradle
+
+      - uses: gradle/actions/setup-gradle@v4
 
       - name: Build release artifacts
-        run: mvn -B clean package -T 1.5C --file pom.xml
+        run: ./gradlew build
 
       - name: Publish to Hangar
         uses: Kir-Antipov/mc-publish@v3.3
@@ -31,7 +33,7 @@ jobs:
           hangar-token: ${{ secrets.HANGAR_TOKEN }}
 
           files: |
-            quickshop-bukkit/target/QuickShop-Hikari-*.jar
+            quickshop-bukkit/build/libs/QuickShop-Hikari-*.jar
 
           loaders: |
             folia
