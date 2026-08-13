@@ -20,7 +20,7 @@
 # Common tags: <bold>, <italic>, <red>, <green>, <yellow>, <aqua>, <gradient:color1:color2>
 # If you wish to use a value from the language file for display names or lore, start your value with "lang:"
 
-version: 6
+version: 7
 
 # ===================
 # GLOBAL STYLE SETTINGS
@@ -187,6 +187,7 @@ keeper:
       - "lang:gui.keeper.staff.lore"
     custom-model-data: 0
     slot: 23
+    disable: false
   
   # History button
   history:

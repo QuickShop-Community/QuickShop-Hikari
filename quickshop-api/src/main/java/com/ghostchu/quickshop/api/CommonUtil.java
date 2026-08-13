@@ -4,6 +4,8 @@ import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Locale;
+
 public class CommonUtil {
 
   private CommonUtil() {
@@ -22,12 +24,13 @@ public class CommonUtil {
   }
 
   public static String legacyYamlKeyToNamespacedKey(@NotNull final String key) {
-    final int index = key.indexOf('.');
+    final String normalized = key.toLowerCase(Locale.ROOT);
+    final int index = normalized.indexOf('.');
 
     if (index == -1) {
-      return key;
+      return normalized;
     }
 
-    return key.substring(0, index) + ":" + key.substring(index + 1);
+    return normalized.substring(0, index) + ":" + normalized.substring(index + 1);
   }
 }

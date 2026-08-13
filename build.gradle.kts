@@ -3,7 +3,7 @@ plugins {
 }
 
 allprojects {
-    version = "6.3.0.0-SNAPSHOT-12"
+    version = "6.3.0.0"
 
     plugins.withId("java") {
         configurations.all {

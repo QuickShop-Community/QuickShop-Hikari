@@ -24,6 +24,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -35,6 +36,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public final class Main extends CompatibilityModule implements Listener {
 
@@ -217,36 +220,69 @@ public final class Main extends CompatibilityModule implements Listener {
       return;
     }
 
-    for(final Chunk chunk : claim.getChunks()) {
+    final String identifier = event.getIdentifier();
+    final Player changer = event.getChanger();
+    final UUID claimOwner = claim.getOwnerID();
 
-      final Map<Location, Shop> shops = getApi().getShopManager().getShops(chunk);
+    overrideTheCrappyDefaultGPGetChunksMethod(claim).thenAccept(chunks ->{
+      for(final Chunk chunk : chunks) {
 
-      if(shops.isEmpty()) {
+        final Map<Location, Shop> shops = getApi().getShopManager().getShops(chunk);
 
-        continue;
-      }
-
-      for(final Shop shop : shops.values()) {
-
-        if(claim.getOwnerID().equals(shop.getOwner().getUniqueId())) {
+        if(shops.isEmpty()) {
 
           continue;
         }
-        if(event.getIdentifier().equals(shop.getOwner().getUniqueIdIfRealPlayer().orElse(CommonUtil.getNilUniqueId()).toString())) {
 
-          getApi().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(event.getChanger()), String.format("[%s Integration]Shop %s deleted caused by [Single] Claim/SubClaim Trust Changed", this.getName(), shop), shop.saveToInfoStorage()));
-          getApi().getShopManager().deleteShop(shop);
-        } else if(event.getIdentifier().contains(shop.getOwner().getUniqueIdIfRealPlayer().orElse(CommonUtil.getNilUniqueId()).toString())) {
+        for(final Shop shop : shops.values()) {
 
-          getApi().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(event.getChanger()), String.format("[%s Integration]Shop %s deleted caused by [Group] Claim/SubClaim Trust Changed", this.getName(), shop), shop.saveToInfoStorage()));
-          getApi().getShopManager().deleteShop(shop);
-        } else if("all".equals(event.getIdentifier()) || "public".equals(event.getIdentifier())) {
+          if(claimOwner.equals(shop.getOwner().getUniqueId())) {
 
-          getApi().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(event.getChanger()), String.format("[%s Integration]Shop %s deleted caused by [All/Public] Claim/SubClaim Trust Changed", this.getName(), shop), shop.saveToInfoStorage()));
-          getApi().getShopManager().deleteShop(shop);
+            continue;
+          }
+          if(identifier.equals(shop.getOwner().getUniqueIdIfRealPlayer().orElse(CommonUtil.getNilUniqueId()).toString())) {
+
+            getApi().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(changer), String.format("[%s Integration]Shop %s deleted caused by [Single] Claim/SubClaim Trust Changed", this.getName(), shop), shop.saveToInfoStorage()));
+            QuickShop.folia().getScheduler().runAtLocation(shop.bukkitLocation(), (task)->getApi().getShopManager().deleteShop(shop));
+          } else if(identifier.contains(shop.getOwner().getUniqueIdIfRealPlayer().orElse(CommonUtil.getNilUniqueId()).toString())) {
+
+            getApi().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(changer), String.format("[%s Integration]Shop %s deleted caused by [Group] Claim/SubClaim Trust Changed", this.getName(), shop), shop.saveToInfoStorage()));
+            QuickShop.folia().getScheduler().runAtLocation(shop.bukkitLocation(), (task)->getApi().getShopManager().deleteShop(shop));
+          } else if("all".equals(identifier) || "public".equals(identifier)) {
+
+            getApi().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(changer), String.format("[%s Integration]Shop %s deleted caused by [All/Public] Claim/SubClaim Trust Changed", this.getName(), shop), shop.saveToInfoStorage()));
+
+            QuickShop.folia().getScheduler().runAtLocation(shop.bukkitLocation(), (task)->getApi().getShopManager().deleteShop(shop));
+          }
         }
       }
+    });
+  }
+
+  private CompletableFuture<ArrayList<Chunk>> overrideTheCrappyDefaultGPGetChunksMethod(final Claim claim) {
+
+    final World world = claim.getLesserBoundaryCorner().getWorld();
+    final Chunk lesserChunk = claim.getLesserBoundaryCorner().getChunk();
+    final Chunk greaterChunk = claim.getGreaterBoundaryCorner().getChunk();
+
+    final ArrayList<CompletableFuture<Chunk>> futures = new ArrayList<>();
+
+    for(int x = lesserChunk.getX(); x <= greaterChunk.getX(); ++x) {
+      for(int z = lesserChunk.getZ(); z <= greaterChunk.getZ(); ++z) {
+        futures.add(world.getChunkAtAsync(x, z));
+      }
     }
+
+    return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new)).thenApply(ignored -> {
+
+      final ArrayList<Chunk> chunks = new ArrayList<>(futures.size());
+
+      for(final CompletableFuture<Chunk> future : futures) {
+        chunks.add(future.join());
+      }
+
+      return chunks;
+    });
   }
 
   // Player can unclaim the main claim or the subclaim.

@@ -346,6 +346,13 @@ public class ConfigCollectorItem implements SubPasteItem {
             .replaceAll("rcon\\.password=.*", "rcon.password=******")
             .replaceAll("token:.*", "token: ******")
             .replaceAll("key:.*", "key: ******")
+            .replaceAll("management-server-host:.*", "management-server-host: ******")
+            .replaceAll("management-server-port:.*", "management-server-port: ******")
+            .replaceAll("management-server-secret:.*", "management-server-secret: ******")
+            .replaceAll("resource-pack:.*", "resource-pack: ******")
+            .replaceAll("resource-pack-id:.*", "resource-pack-id: ******")
+            .replaceAll("resource-pack-prompt:.*", "resource-pack-prompt: ******")
+            .replaceAll("resource-pack-sha1:.*", "resource-pack-sha1: ******")
             .replaceAll("seed=.*", "seed=******")
             .replaceAll("port=.*", "port=******");
     for(final String paperSeedType : seedType) {

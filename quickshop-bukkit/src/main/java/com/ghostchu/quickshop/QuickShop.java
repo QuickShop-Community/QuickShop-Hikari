@@ -16,6 +16,7 @@ import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
 import com.ghostchu.quickshop.api.hook.Hook;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperRegistry;
+import com.ghostchu.quickshop.api.inventory.SkullProvider;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
 import com.ghostchu.quickshop.api.registry.BuiltInRegistry;
 import com.ghostchu.quickshop.api.registry.RegistryManager;
@@ -106,6 +107,7 @@ import com.ghostchu.quickshop.util.paste.PasteManager;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.ghostchu.quickshop.util.privacy.PrivacyController;
 import com.ghostchu.quickshop.util.reporter.error.RollbarErrorReporter;
+import com.ghostchu.quickshop.util.skin.PaperSkullProvider;
 import com.ghostchu.quickshop.util.updater.UpdateManager;
 import com.ghostchu.quickshop.watcher.CalendarWatcher;
 import com.ghostchu.quickshop.watcher.DisplayAutoDespawnWatcher;
@@ -165,6 +167,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
+import java.awt.print.Paper;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -240,6 +243,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   private volatile SimpleDatabaseHelperV2 databaseHelper;
   private SimpleCommandManager commandManager;
   private ItemMatcher itemMatcher;
+  private SkullProvider skullProvider;
   private SimpleShopManager shopManager;
   private SimpleTextManager textManager;
   @Getter
@@ -621,6 +625,24 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     return inventoryWrapperRegistry;
   }
 
+  /**
+   * Retrieves the instance of the {@code SkullProvider}, which is responsible for providing
+   * methods to asynchronously generate player skulls or skull profiles.
+   *
+   * The {@code SkullProvider} interface offers functionality to retrieve player skulls (as
+   * {@code ItemStack} objects) or skull profile information (via {@code SkullProfile}), using
+   * identifiers such as UUID or player name.
+   *
+   * @return The {@code SkullProvider} instance for accessing skull-related utilities.
+   *
+   * @since 6.3.0.0
+   */
+  @Override
+  public SkullProvider getSkullProvider() {
+
+    return skullProvider;
+  }
+
   @Override
   public ItemMatcher getItemMatcher() {
 
@@ -788,6 +810,8 @@ public class QuickShop implements QuickShopAPI, Reloadable {
       Bukkit.getPluginManager().registerEvents(new BukkitInventoryCloseListener(javaPlugin), javaPlugin);
       this.menuHandler = new BukkitMenuHandler(javaPlugin, false);
     }
+
+    this.skullProvider = new PaperSkullProvider();
 
     // Initialize GuiConfig before menus that depend on it
     this.guiConfig = new GuiConfig(this);

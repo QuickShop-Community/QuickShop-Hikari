@@ -547,6 +547,7 @@ command:
     lookup: <yellow>Gerenciar tabela de itens pesquisáveis
     database: <yellow>Ver e manter o banco de dados da Loja Rápida
     benefit: <yellow>Configurações de divisão de benefícios entre o dono da loja e outros jogadores
+    benefitall: <yellow>Settings of divide benefits between shop owner and other players for all shops you own.
     browse: <yellow>Navegar lojas que existem neste servidor.
     tag: <yellow>Adicione, remove ou procure tags de uma loja
     suggestprice: <yellow>Sugerir um preço recomendado para a loja, baseado em outras lojas

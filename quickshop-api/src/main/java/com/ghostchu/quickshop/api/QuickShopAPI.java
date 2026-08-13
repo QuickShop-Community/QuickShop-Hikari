@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.api.database.DatabaseHelper;
 import com.ghostchu.quickshop.api.economy.EconomyManager;
 import com.ghostchu.quickshop.api.hook.Hook;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperRegistry;
+import com.ghostchu.quickshop.api.inventory.SkullProvider;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
 import com.ghostchu.quickshop.api.registry.RegistryManager;
 import com.ghostchu.quickshop.api.shop.ItemMatcher;
@@ -151,6 +152,20 @@ public interface QuickShopAPI {
    */
   @NotNull
   InventoryWrapperRegistry getInventoryWrapperRegistry();
+
+  /**
+   * Retrieves the instance of the {@code SkullProvider}, which is responsible for
+   * providing methods to asynchronously generate player skulls or skull profiles.
+   *
+   * The {@code SkullProvider} interface offers functionality to retrieve player
+   * skulls (as {@code ItemStack} objects) or skull profile information (via
+   * {@code SkullProfile}), using identifiers such as UUID or player name.
+   *
+   * @return The {@code SkullProvider} instance for accessing skull-related utilities.
+   *
+   * @since 6.3.0.0
+   */
+  SkullProvider getSkullProvider();
 
   /**
    * Getting current using ItemMatcher impl
