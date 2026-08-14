@@ -603,15 +603,15 @@ public interface ShopManager {
   BlockState makeShopSign(@NotNull Block container, @NotNull Block signBlock, @Nullable Material signMaterial);
 
   @NotNull
-  CompletableFuture<@NotNull List<Shop>> queryTaggedShops(@NotNull UUID tagger, @NotNull String tag);
+  CompletableFuture<List<Shop>> queryTaggedShops(@NotNull UUID tagger, @NotNull String tag);
 
-  CompletableFuture<@Nullable Integer> clearShopTags(@NotNull UUID tagger, @NotNull Shop shop);
+  CompletableFuture<Integer> clearShopTags(@NotNull UUID tagger, @NotNull Shop shop);
 
-  CompletableFuture<@Nullable Integer> clearTagFromShops(@NotNull UUID tagger, @NotNull String tag);
+  CompletableFuture<Integer> clearTagFromShops(@NotNull UUID tagger, @NotNull String tag);
 
-  CompletableFuture<@Nullable Integer> removeTag(@NotNull UUID tagger, @NotNull Shop shop, @NotNull String tag);
+  CompletableFuture<Integer> removeTag(@NotNull UUID tagger, @NotNull Shop shop, @NotNull String tag);
 
-  CompletableFuture<@Nullable Integer> tagShop(@NotNull UUID tagger, @NotNull Shop shop, @NotNull String tag);
+  CompletableFuture<Integer> tagShop(@NotNull UUID tagger, @NotNull Shop shop, @NotNull String tag);
 
   @NotNull
   List<String> listTags(@NotNull UUID tagger);
@@ -619,7 +619,7 @@ public interface ShopManager {
   void deleteShop(@NotNull Shop shop);
 
   @NotNull
-  CompletableFuture<@NotNull ShopInventoryCountCache> queryShopInventoryCacheInDatabase(@NotNull Shop shop);
+  CompletableFuture<ShopInventoryCountCache> queryShopInventoryCacheInDatabase(@NotNull Shop shop);
 
   /**
    * An getActions() alternative.
