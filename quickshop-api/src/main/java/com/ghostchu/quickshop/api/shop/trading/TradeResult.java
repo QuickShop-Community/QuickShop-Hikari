@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.api.shop.trading;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.api.shop.InventoryTransaction;
 import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
@@ -28,7 +29,7 @@ import java.math.BigDecimal;
  * @author creatorfromhell
  * @since 6.3.0.0
  */
-public record TradeResult(boolean success, TradeType tradeType, int requestedAmount, int tradedAmount,
+public record TradeResult(boolean success, TradeType tradeType, @Nullable InventoryTransaction transaction, int requestedAmount, int tradedAmount,
                           BigDecimal unitPrice, BigDecimal totalPrice, BigDecimal actorTax,
                           BigDecimal ownerTax, @Nullable TradeFailureReason failureReason,
                           @Nullable String messageKey, @Nullable String debugMessage) {

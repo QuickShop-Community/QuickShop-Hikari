@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.menu.staff;
  */
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.inventory.SkullProvider;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
@@ -67,11 +68,12 @@ public class StaffSelectionPage {
   protected final String staffPageID;
   protected final int menuRows;
   protected final String iconLore;
+  protected final SkullProvider skullProvider;
   protected final IconAction[] actions;
 
   public StaffSelectionPage(final String returnMenu, final String menuName,
                             final int menuPage, final int returnPage, final String staffPageID,
-                            final int menuRows, final String iconLore, final IconAction... actions) {
+                            final int menuRows, final String iconLore, final SkullProvider skullProvider, final IconAction... actions) {
 
     this.returnMenu = returnMenu;
     this.menuName = menuName;
@@ -79,6 +81,7 @@ public class StaffSelectionPage {
     this.returnPage = returnPage;
     this.staffPageID = staffPageID;
     this.iconLore = iconLore;
+    this.skullProvider = skullProvider;
     this.actions = actions;
 
     //we need a controller row and then at least one row for items.
@@ -150,7 +153,7 @@ public class StaffSelectionPage {
           final Long capturedShopId = shop.get().getShopId();
 
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(searchMaterial, 1)
-                                                             .customName(getConfigDisplay(id, searchConfig, "<yellow>Search: {0}</yellow>", currentSearchDisplay))
+                                                             .customName(getConfigDisplay(id, searchConfig, "name", "<yellow>Search: {0}</yellow>", currentSearchDisplay))
                                                              .lore(getConfigLore(id, searchConfig, currentSearchDisplay)))
                                              .withSlot(searchSlot)
                                              .withActions(new GuiChatAction((message)->{
@@ -235,16 +238,7 @@ public class StaffSelectionPage {
             }
             if(i >= (start + items)) break;
 
-            SkullProfile profile = null;
-            try {
-
-              if(player.isPresent() && player.get().hasPlayedBefore()) {
-                profile = new SkullProfile();
-
-                profile.uuid(uuid);
-              }
-
-            } catch(final Exception ignore) { }
+            final SkullProfile profile = getOrLoadProfile(uuid);
 
             final String name = (player.isPresent() && player.get().getName() != null)? player.get().getName() : uuid.toString();
             callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("PLAYER_HEAD", 1)
@@ -286,6 +280,20 @@ public class StaffSelectionPage {
         }
       }
     }
+  }
+
+  private SkullProfile getOrLoadProfile(final UUID uuid) {
+
+    final SkullProfile cached = skullProvider.getCachedProfile(uuid);
+    if(cached != null) {
+      return cached;
+    }
+
+    skullProvider.provideProfile(uuid);
+
+    final SkullProfile fallback = new SkullProfile();
+    fallback.uuid(uuid);
+    return fallback;
   }
 
   /**

@@ -19,10 +19,11 @@ jobs:
         with:
           java-version: "21"
           distribution: temurin
-          cache: maven
+
+      - uses: gradle/actions/setup-gradle@v4
 
       - name: Build release artifacts
-        run: mvn -B clean package -T 1.5C --file pom.xml
+        run: ./gradlew build
 
       - name: Publish to Modrinth
         uses: Kir-Antipov/mc-publish@v3.3
@@ -32,9 +33,9 @@ jobs:
           modrinth-featured: true
 
           files: |
-            quickshop-bukkit/target/QuickShop-Hikari-*.jar
-            **/target/Compat*.jar
-            **/target/Addon*.jar
+            quickshop-bukkit/build/libs/QuickShop-Hikari-*.jar
+            **/build/libs/Compat*.jar
+            **/build/libs/Addon*.jar
 
           loaders: |
             folia

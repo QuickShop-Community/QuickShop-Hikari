@@ -459,6 +459,11 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     }
 
     if(!transaction.safeCommit()) {
+
+      if(result.transaction() != null) {
+
+        result.transaction().rollback(true);
+      }
       plugin.text().of(buyer, "economy-transaction-failed", transaction.lastError()).send();
       plugin.logger().error("EconomyTransaction Failed, last error: {}", transaction.lastError());
       plugin.logger().error("Tips: If you see any economy plugin name appears above, please don't ask QuickShop support. Contact with developer of economy plugin. QuickShop didn't process the transaction, we only receive the transaction result from your economy plugin.");
@@ -690,6 +695,11 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     }
 
     if(!transaction.safeCommit()) {
+
+      if(result.transaction() != null) {
+
+        result.transaction().rollback(true);
+      }
       plugin.text().of(seller, "economy-transaction-failed", transaction.lastError()).send();
       plugin.logger().error("EconomyTransaction Failed, last error: {}", transaction.lastError());
       return false;
@@ -1489,6 +1499,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         }
       }
       actionBuying(p, new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
+
     } else if(shop.isSelling()) {
       if(CommonUtil.isInteger(message)) {
         amount = Integer.parseInt(message);

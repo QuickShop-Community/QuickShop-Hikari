@@ -8,6 +8,7 @@ import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.shop.history.ShopHistory;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
+import net.kyori.adventure.text.Component;
 import net.tnemc.menu.core.compatibility.MenuPlayer;
 import net.tnemc.menu.core.manager.MenuManager;
 import net.tnemc.menu.core.viewer.MenuViewer;
@@ -15,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -24,6 +26,7 @@ import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_DATA_RECORDS;
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_RECORDS;
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_SUMMARY;
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.SHOPS_DATA;
+import static com.ghostchu.quickshop.menu.ShopHistoryMenu.SHOPS_HEADERS;
 
 public class SubCommand_SilentHistory extends SubCommand_SilentBase {
 
@@ -50,6 +53,16 @@ public class SubCommand_SilentHistory extends SubCommand_SilentBase {
     shops.add(shop);
     Util.asyncThreadRun(()->{
       final ShopHistory shopHistory = new ShopHistory(QuickShop.getInstance(), shops);
+
+      final Map<Long, Component> shopHeader = HashMap.newHashMap(shops.size());
+      for (final Shop shopObject : shops) {
+
+        if (shopObject.getShopName() != null) {
+          shopHeader.put(shopObject.getShopId(), QuickShop.getInstance().text().of("history.shop.header-icon-shop-name", shopObject.getShopName()).forLocale());
+          continue;
+        }
+        shopHeader.put(shopObject.getShopId(), QuickShop.getInstance().text().of("history.shop.header-icon-shop-empty-name", shopObject.bukkitLocation().getWorld().getName(), shopObject.bukkitLocation().getBlockX(), shopObject.bukkitLocation().getBlockY(), shopObject.bukkitLocation().getBlockZ()).forLocale());
+      }
 
       try {
         final List<ShopHistory.ShopHistoryRecord> queryResult = shopHistory.query();
@@ -88,6 +101,7 @@ public class SubCommand_SilentHistory extends SubCommand_SilentBase {
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
 
         viewer.addData(SHOPS_DATA, shops);
+        viewer.addData(SHOPS_HEADERS, shopHeader);
         viewer.addData(HISTORY_RECORDS, queryResult);
         viewer.addData(HISTORY_DATA_RECORDS, dataRecords);
         viewer.addData(HISTORY_SUMMARY, summary);

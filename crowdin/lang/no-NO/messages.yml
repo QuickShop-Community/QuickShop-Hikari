@@ -547,6 +547,7 @@ command:
     lookup: <yellow>Administrer oppslagsverket for gjenstander
     database: <yellow>Vis og vedlikehold QuickShop-databasen
     benefit: <yellow>Innstillinger for å dele fordeler mellom butikkeier og andre spillere
+    benefitall: <yellow>Settings of divide benefits between shop owner and other players for all shops you own.
     browse: <yellow>Browse shops that exist in this server.
     tag: <yellow>Legg til, fjern eller spørr etter tagger for en butikk
     suggestprice: <yellow>Foreslå en anbefalt pris for en butikk som undersøkes, basert på andre butikker

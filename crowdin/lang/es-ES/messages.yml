@@ -536,6 +536,7 @@ command:
     lookup: <yellow>Administrar tabla de elementos consultables
     database: <yellow>Ver y mantener la base de datos del sistema de tiendas de empresas
     benefit: <yellow>Configuración de dividir el porcentaje de beneficios (ingresos) entre el dueño de la tienda de empresa y otros jugadores
+    benefitall: <yellow>Settings of divide benefits between shop owner and other players for all shops you own.
     browse: <yellow>Explorar tiendas de empresa que existen en este servidor.
     tag: <yellow>Añadir, eliminar o consultar etiquetas de una tienda de empresa
     suggestprice: <yellow>Sugerir un precio recomendado para la tienda de empresa, basado en otras tiendas
