@@ -134,8 +134,6 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   private boolean unlimited;
   @NotNull
   private ItemStack item;
-  @NotNull
-  private ItemStack originalItem;
   private String itemSerialize;
   @Nullable
   @EqualsAndHashCode.Exclude
@@ -220,7 +218,6 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     }
 
     this.item = item.clone();
-    this.originalItem = item.clone();
     updateSerializeItem();
 
     this.plugin = plugin;
@@ -543,7 +540,6 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
 
 
     this.item = event.updated();
-    this.originalItem = item;
     updateSerializeItem();
 
     //call our Post Phase
@@ -1872,7 +1868,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
 
     return new ShopInfoStorage(this.bukkitLocation().getWorld().getName(),
                                new BlockPos(this.bukkitLocation()), this.owner, this.price,
-                               QuickShop.getInstance().platform().encodeStack(this.originalItem),
+                               QuickShop.getInstance().platform().encodeStack(this.item),
                                (isUnlimited())? 1 : 0, shopType().id(),
                                serializeExtra(), this.currency, this.disableDisplay,
                                this.taxAccount, inventoryWrapperProvider,
@@ -2208,7 +2204,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     if(!plugin.isAllowStack()) {
       this.item.setAmount(1);
     } else {
-      this.item.setAmount(this.originalItem.getAmount());
+      this.item.setAmount(this.item.getAmount());
     }
     return Reloadable.super.reloadModule();
   }

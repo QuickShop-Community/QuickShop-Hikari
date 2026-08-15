@@ -91,16 +91,16 @@ public class ShopListPage {
 
     // Load GUI configuration
     final GuiConfig.MenuConfig menuConfig = QuickShop.getInstance().getGuiConfig().getMenuConfig("browse");
-    final GuiConfig.IconConfig borderConfig = menuConfig != null? menuConfig.getIcon("border") : null;
-    final GuiConfig.IconConfig backConfig = menuConfig != null? menuConfig.getIcon("back") : null;
-    final GuiConfig.IconConfig itemInfoConfig = menuConfig != null? menuConfig.getIcon("item-info") : null;
-    final GuiConfig.IconConfig sortConfig = menuConfig != null? menuConfig.getIcon("sort") : null;
-    final GuiConfig.IconConfig closeConfig = menuConfig != null? menuConfig.getIcon("close") : null;
-    final GuiConfig.IconConfig prevPageConfig = menuConfig != null? menuConfig.getIcon("previous-page") : null;
-    final GuiConfig.IconConfig nextPageConfig = menuConfig != null? menuConfig.getIcon("next-page") : null;
-    final GuiConfig.IconConfig pageInfoConfig = menuConfig != null? menuConfig.getIcon("page-info") : null;
+    final GuiConfig.IconConfig borderConfig = (menuConfig != null)? menuConfig.getIcon("border") : null;
+    final GuiConfig.IconConfig backConfig = (menuConfig != null)? menuConfig.getIcon("back") : null;
+    final GuiConfig.IconConfig itemInfoConfig = (menuConfig != null)? menuConfig.getIcon("item-info") : null;
+    final GuiConfig.IconConfig sortConfig = (menuConfig != null)? menuConfig.getIcon("sort") : null;
+    final GuiConfig.IconConfig closeConfig = (menuConfig != null)? menuConfig.getIcon("close") : null;
+    final GuiConfig.IconConfig prevPageConfig = (menuConfig != null)? menuConfig.getIcon("previous-page") : null;
+    final GuiConfig.IconConfig nextPageConfig = (menuConfig != null)? menuConfig.getIcon("next-page") : null;
+    final GuiConfig.IconConfig pageInfoConfig = (menuConfig != null)? menuConfig.getIcon("page-info") : null;
 
-    final int listStartSlot = menuConfig != null? menuConfig.getSection().getInt("list-start-slot", 9) : 9;
+    final int listStartSlot = (menuConfig != null)? menuConfig.getSection().getInt("list-start-slot", 9) : 9;
 
     // Get current state
     final BrowseSortMode sortMode = (BrowseSortMode)viewer.dataOrDefault(BROWSE_SORT, BrowseSortMode.PRICE_ASC);
@@ -117,8 +117,7 @@ public class ShopListPage {
     final List<Shop> sortedShops = MarketUtils.sortShops(filteredShops, sortMode);
 
     // Calculate average price for comparison indicators
-    final double avgPrice = sortedShops.isEmpty()? 0 :
-                            CommonUtil.avg(sortedShops.stream().map(Shop::getPrice).toList());
+    final double avgPrice = (sortedShops.isEmpty())? 0 : CommonUtil.avg(sortedShops.stream().map(Shop::getPrice).toList());
 
     // Calculate pagination (same pattern as MainPage)
     final int offset = 9;
@@ -141,10 +140,10 @@ public class ShopListPage {
     // Uses same slot positions as GroupedItemPage for consistency
 
     // Item info - shows what item we're viewing (slot 0 - top left)
-    final GuiConfig.IconConfig searchConfig = menuConfig != null? menuConfig.getIcon("search") : null;
+    final GuiConfig.IconConfig searchConfig = (menuConfig != null)? menuConfig.getIcon("search") : null;
     final int itemInfoSlot = searchConfig != null? searchConfig.getSlot() : 0;
     if(!allShops.isEmpty()) {
-      final GuiConfig.IconConfig searchItemConfig = menuConfig != null? menuConfig.getIcon("search-item") : null;
+      final GuiConfig.IconConfig searchItemConfig = (menuConfig != null)? menuConfig.getIcon("search-item") : null;
       final Shop firstShop = allShops.getFirst();
       final Component filterIndicator = QuickShop.getInstance().text().of(id, filterMode.indicatorTranslationKey()).forLocale();
       final AbstractItemStack<ItemStack> infoStack = new BukkitItemStack()
@@ -170,7 +169,7 @@ public class ShopListPage {
                              .build());
 
     // Filter button (slot 4)
-    final GuiConfig.IconConfig filterConfig = menuConfig != null? menuConfig.getIcon("filter") : null;
+    final GuiConfig.IconConfig filterConfig = (menuConfig != null)? menuConfig.getIcon("filter") : null;
     final String filterMaterial = filterConfig != null? filterConfig.getMaterial() : "NAME_TAG";
     final int filterSlot = filterConfig != null? filterConfig.getSlot() : 4;
 
@@ -186,13 +185,13 @@ public class ShopListPage {
                              .build());
 
     // Stock filter toggle button (slot 6)
-    final GuiConfig.IconConfig stockConfig = menuConfig != null? menuConfig.getIcon("stock-filter") : null;
+    final GuiConfig.IconConfig stockConfig = (menuConfig != null)? menuConfig.getIcon("stock-filter") : null;
     final String stockMaterial = stockConfig != null? stockConfig.getMaterial() : "CHEST";
     final int stockSlot = stockConfig != null? stockConfig.getSlot() : 6;
     final String stockStatus = stockOnly? "ON" : "OFF";
 
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(stockMaterial, 1)
-                                             .customName(getConfigDisplay(id, stockConfig, "<gold>In Stock Only: {0}</gold>", stockStatus))
+                                             .customName(getConfigDisplay(id, stockConfig, "name", "<gold>In Stock Only: {0}</gold>", stockStatus))
                                              .lore(getConfigLore(id, stockConfig)))
                              .withSlot(stockSlot)
                              .withActions(
@@ -255,7 +254,7 @@ public class ShopListPage {
       }
       if(i >= (start + items)) break;
 
-      final GuiConfig.IconConfig listConfig = menuConfig != null? menuConfig.getIcon("shop-list") : null;
+      final GuiConfig.IconConfig listConfig = (menuConfig != null)? menuConfig.getIcon("shop-list") : null;
 
       // Build shop lore with price indicator and click instruction
       final List<Component> lore = buildShopLore(shop, id, listConfig, avgPrice, canTeleport);

@@ -153,7 +153,7 @@ public class StaffSelectionPage {
           final Long capturedShopId = shop.get().getShopId();
 
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(searchMaterial, 1)
-                                                             .customName(getConfigDisplay(id, searchConfig, "<yellow>Search: {0}</yellow>", currentSearchDisplay))
+                                                             .customName(getConfigDisplay(id, searchConfig, "name", "<yellow>Search: {0}</yellow>", currentSearchDisplay))
                                                              .lore(getConfigLore(id, searchConfig, currentSearchDisplay)))
                                              .withSlot(searchSlot)
                                              .withActions(new GuiChatAction((message)->{
