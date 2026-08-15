@@ -15,7 +15,7 @@ dependencies {
     compileOnly(project(":quickshop-bukkit"))
     compileOnly("io.vavr:vavr:0.10.7")
     compileOnly("org.maxgamer:QuickShop:5.1.2.5-SNAPSHOT") { isTransitive = false }
-    implementation("de.themoep:minedown-adventure:1.7.4-SNAPSHOT")
+    implementation("de.themoep:minedown-adventure:1.7.6-SNAPSHOT")
     implementation("com.ghostchu.thirdparty:JsonConfiguration:1.2-20230922.165143-1")
     implementation("net.minidev:json-smart:1.1.1")
 }
