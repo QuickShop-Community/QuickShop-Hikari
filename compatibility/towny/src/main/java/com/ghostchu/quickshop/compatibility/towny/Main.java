@@ -44,7 +44,6 @@ import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.WorldCoord;
 import com.palmergames.bukkit.towny.utils.ShopPlotUtil;
-import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
@@ -70,14 +69,11 @@ import java.util.UUID;
 
 public final class Main extends CompatibilityModule implements Listener {
 
-  @Getter
   private QuickShopAPI api;
   private List<TownyFlags> createFlags;
   private List<TownyFlags> tradeFlags;
   private boolean whiteList;
-  @Getter
   private TownyMaterialPriceLimiter priceLimiter;
-  @Getter
   private UuidConversion uuidConversion;
 
   private static Main instance;
@@ -266,6 +262,7 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   public void purgeShops(@NotNull final WorldCoord worldCoord, @Nullable final UUID owner, @Nullable final UUID deleter, @NotNull final String reason, final boolean overrideOwner) {
+
     purgeShops(Set.of(worldCoord), owner, deleter, reason, overrideOwner);
   }
 
@@ -560,6 +557,22 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   public static Main getInstance() {
+
     return instance;
+  }
+
+  public QuickShopAPI getApi() {
+
+    return this.api;
+  }
+
+  public TownyMaterialPriceLimiter getPriceLimiter() {
+
+    return this.priceLimiter;
+  }
+
+  public UuidConversion getUuidConversion() {
+
+    return this.uuidConversion;
   }
 }

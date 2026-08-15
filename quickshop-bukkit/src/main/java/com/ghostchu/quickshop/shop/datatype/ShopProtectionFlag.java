@@ -1,15 +1,9 @@
 package com.ghostchu.quickshop.shop.datatype;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
+import java.util.Objects;
+
 public class ShopProtectionFlag {
 
   private static final String MARK = "QuickShop DisplayItem";
@@ -30,5 +24,37 @@ public class ShopProtectionFlag {
   public static String getDefaultMark() {
 
     return MARK;
+  }
+
+  public String getItemStackString() {
+
+    return this.itemStackString;
+  }
+
+  public String getShopLocation() {
+
+    return this.shopLocation;
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+
+    if(o == this) return true;
+    if(!(o instanceof ShopProtectionFlag)) return false;
+    final ShopProtectionFlag other = (ShopProtectionFlag)o;
+    return Objects.equals(this.getItemStackString(), other.getItemStackString())
+           && Objects.equals(this.getShopLocation(), other.getShopLocation());
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(this.getItemStackString(), this.getShopLocation());
+  }
+
+  @Override
+  public String toString() {
+
+    return "ShopProtectionFlag(itemStackString=" + this.getItemStackString() + ", shopLocation=" + this.getShopLocation() + ")";
   }
 }

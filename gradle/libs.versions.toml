@@ -1,5 +1,4 @@
 [versions]
-lombok = "1.18.46"
 jetbrainsAnnotations = "26.0.2-1"
 slf4jApi = "2.0.17"
 slf4jSimple = "2.0.17"
@@ -10,7 +9,6 @@ shadow = "9.6.1"
 versionsPlugin = "0.51.0"
 
 [libraries]
-lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
 jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrainsAnnotations" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4jApi" }
 slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4jSimple" }

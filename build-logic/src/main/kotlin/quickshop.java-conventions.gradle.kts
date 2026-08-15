@@ -30,7 +30,5 @@ tasks.withType<JavaCompile>().configureEach {
 }
 
 dependencies {
-    compileOnly("org.projectlombok:lombok:1.18.46")
-    annotationProcessor("org.projectlombok:lombok:1.18.46")
     compileOnly("org.jetbrains:annotations:26.0.2-1")
 }

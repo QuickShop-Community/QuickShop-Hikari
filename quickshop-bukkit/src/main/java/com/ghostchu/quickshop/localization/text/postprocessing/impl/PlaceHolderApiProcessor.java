@@ -1,17 +1,18 @@
 package com.ghostchu.quickshop.localization.text.postprocessing.impl;
 
 import com.ghostchu.quickshop.api.localization.text.postprocessor.PostProcessor;
-import lombok.EqualsAndHashCode;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-@EqualsAndHashCode
+import java.util.Objects;
+
 public class PlaceHolderApiProcessor implements PostProcessor {
 
   @Override
-  public @NotNull Component process(@NotNull final Component text, @Nullable final CommandSender sender, final Component... args) {
+  @NotNull
+  public Component process(@NotNull final Component text, @Nullable final CommandSender sender, final Component... args) {
         /*if (sender instanceof OfflinePlayer offlinePlayer) {
             if (Bukkit.getPluginManager().isPluginEnabled("PlaceHolderAPI")) {
                 String json = GsonComponentSerializer.gson().serialize(text);
@@ -22,4 +23,18 @@ public class PlaceHolderApiProcessor implements PostProcessor {
     return text;
   }
 
+  @Override
+  public boolean equals(final Object o) {
+
+    if(o == this) return true;
+    if(!(o instanceof PlaceHolderApiProcessor)) return false;
+    final PlaceHolderApiProcessor other = (PlaceHolderApiProcessor)o;
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash();
+  }
 }

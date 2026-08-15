@@ -9,7 +9,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
-import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,7 +50,6 @@ public class MojangAPI {
   }
 
 
-  @Data
   public static class AssetsFileData {
 
     private String content;
@@ -64,9 +62,61 @@ public class MojangAPI {
       this.sha1 = sha1;
       this.id = id;
     }
+
+    public String getContent() {
+
+      return this.content;
   }
 
-  @Data
+    public String getSha1() {
+
+      return this.sha1;
+    }
+
+    public String getId() {
+
+      return this.id;
+    }
+
+    public void setContent(final String content) {
+
+      this.content = content;
+    }
+
+    public void setSha1(final String sha1) {
+
+      this.sha1 = sha1;
+    }
+
+    public void setId(final String id) {
+
+      this.id = id;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+
+      if(o == this) return true;
+      if(!(o instanceof MojangAPI.AssetsFileData)) return false;
+      final MojangAPI.AssetsFileData other = (MojangAPI.AssetsFileData)o;
+      return Objects.equals(this.getContent(), other.getContent())
+             && Objects.equals(this.getSha1(), other.getSha1())
+             && Objects.equals(this.getId(), other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+
+      return Objects.hash(this.getContent(), this.getSha1(), this.getId());
+    }
+
+    @Override
+    public String toString() {
+
+      return "MojangAPI.AssetsFileData(content=" + this.getContent() + ", sha1=" + this.getSha1() + ", id=" + this.getId() + ")";
+    }
+  }
+
   public static class ResourcesAPI {
 
     protected final Cache<String, String> requestCachePool = CacheBuilder.newBuilder()
@@ -87,6 +137,38 @@ public class MojangAPI {
         return Optional.empty();
       }
       return Optional.ofNullable(response.getBody());
+    }
+
+    public Cache<String, String> getRequestCachePool() {
+
+      return this.requestCachePool;
+    }
+
+    public MojangApiMirror getApiMirror() {
+
+      return this.apiMirror;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+
+      if(o == this) return true;
+      if(!(o instanceof MojangAPI.ResourcesAPI)) return false;
+      final MojangAPI.ResourcesAPI other = (MojangAPI.ResourcesAPI)o;
+      return Objects.equals(this.getRequestCachePool(), other.getRequestCachePool())
+             && Objects.equals(this.getApiMirror(), other.getApiMirror());
+    }
+
+    @Override
+    public int hashCode() {
+
+      return Objects.hash(this.getRequestCachePool(), this.getApiMirror());
+    }
+
+    @Override
+    public String toString() {
+
+      return "MojangAPI.ResourcesAPI(requestCachePool=" + this.getRequestCachePool() + ", apiMirror=" + this.getApiMirror() + ")";
     }
   }
 
@@ -139,7 +221,6 @@ public class MojangAPI {
 
   }
 
-  @Data
   public static class GameInfoAPI {
 
     protected final Cache<String, String> requestCachePool = CacheBuilder.newBuilder()
@@ -159,7 +240,6 @@ public class MojangAPI {
       return gson.fromJson(json, DataBean.class);
     }
 
-    @Data
     static class DataBean {
 
       @Nullable
@@ -167,7 +247,6 @@ public class MojangAPI {
       @Nullable
       private String assets;
 
-      @Data
       public static class AssetIndexBean {
 
         /**
@@ -181,10 +260,164 @@ public class MojangAPI {
         private String sha1;
         @Nullable
         private String url;
-      }
+
+        public AssetIndexBean() {
 
     }
 
+        /**
+         * id : 1.16 sha1 : 3a5d110a6ab102c7083bae4296d2de4b8fcf92eb size : 295421 totalSize :
+         * 330604420 url : <a
+         * href="https://launchermeta.mojang.com/v1/packages/3a5d110a6ab102c7083bae4296d2de4b8fcf92eb/1.16.json">https://launchermeta.mojang.com/v1/packages/3a5d110a6ab102c7083bae4296d2de4b8fcf92eb/1.16.json</a>
+         */
+        @Nullable
+        public String getId() {
+
+          return this.id;
+        }
+
+        @Nullable
+        public String getSha1() {
+
+          return this.sha1;
+        }
+
+        @Nullable
+        public String getUrl() {
+
+          return this.url;
+        }
+
+        /**
+         * id : 1.16 sha1 : 3a5d110a6ab102c7083bae4296d2de4b8fcf92eb size : 295421 totalSize :
+         * 330604420 url : <a
+         * href="https://launchermeta.mojang.com/v1/packages/3a5d110a6ab102c7083bae4296d2de4b8fcf92eb/1.16.json">https://launchermeta.mojang.com/v1/packages/3a5d110a6ab102c7083bae4296d2de4b8fcf92eb/1.16.json</a>
+         */
+        public void setId(@Nullable final String id) {
+
+          this.id = id;
+        }
+
+        public void setSha1(@Nullable final String sha1) {
+
+          this.sha1 = sha1;
+        }
+
+        public void setUrl(@Nullable final String url) {
+
+          this.url = url;
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+
+          if(o == this) return true;
+          if(!(o instanceof MojangAPI.GameInfoAPI.DataBean.AssetIndexBean)) return false;
+          final MojangAPI.GameInfoAPI.DataBean.AssetIndexBean other = (MojangAPI.GameInfoAPI.DataBean.AssetIndexBean)o;
+          return Objects.equals(this.getId(), other.getId())
+                 && Objects.equals(this.getSha1(), other.getSha1())
+                 && Objects.equals(this.getUrl(), other.getUrl());
+        }
+
+        @Override
+        public int hashCode() {
+
+          return Objects.hash(this.getId(), this.getSha1(), this.getUrl());
+        }
+
+        @Override
+        public String toString() {
+
+          return "MojangAPI.GameInfoAPI.DataBean.AssetIndexBean(id=" + this.getId() + ", sha1=" + this.getSha1() + ", url=" + this.getUrl() + ")";
+        }
+      }
+
+      public DataBean() {
+
+      }
+
+      @Nullable
+      public AssetIndexBean getAssetIndex() {
+
+        return this.assetIndex;
+      }
+
+      @Nullable
+      public String getAssets() {
+
+        return this.assets;
+      }
+
+      public void setAssetIndex(@Nullable final AssetIndexBean assetIndex) {
+
+        this.assetIndex = assetIndex;
+      }
+
+      public void setAssets(@Nullable final String assets) {
+
+        this.assets = assets;
+      }
+
+      @Override
+      public boolean equals(final Object o) {
+
+        if(o == this) return true;
+        if(!(o instanceof MojangAPI.GameInfoAPI.DataBean)) return false;
+        final MojangAPI.GameInfoAPI.DataBean other = (MojangAPI.GameInfoAPI.DataBean)o;
+        return Objects.equals(this.getAssetIndex(), other.getAssetIndex())
+               && Objects.equals(this.getAssets(), other.getAssets());
+      }
+
+      @Override
+      public int hashCode() {
+
+        return Objects.hash(this.getAssetIndex(), this.getAssets());
+      }
+
+      @Override
+      public String toString() {
+
+        return "MojangAPI.GameInfoAPI.DataBean(assetIndex=" + this.getAssetIndex() + ", assets=" + this.getAssets() + ")";
+      }
+    }
+
+    public Cache<String, String> getRequestCachePool() {
+
+      return this.requestCachePool;
+    }
+
+    public String getJson() {
+
+      return this.json;
+    }
+
+    public Gson getGson() {
+
+      return this.gson;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+
+      if(o == this) return true;
+      if(!(o instanceof MojangAPI.GameInfoAPI)) return false;
+      final MojangAPI.GameInfoAPI other = (MojangAPI.GameInfoAPI)o;
+      return Objects.equals(this.getRequestCachePool(), other.getRequestCachePool())
+             && Objects.equals(this.getJson(), other.getJson())
+             && Objects.equals(this.getGson(), other.getGson());
+    }
+
+    @Override
+    public int hashCode() {
+
+      return Objects.hash(this.getRequestCachePool(), this.getJson(), this.getGson());
+    }
+
+    @Override
+    public String toString() {
+
+      return "MojangAPI.GameInfoAPI(requestCachePool=" + this.getRequestCachePool() + ", json=" + this.getJson() + ", gson=" + this.getGson() + ")";
+    }
   }
 
   public static class MetaAPI {

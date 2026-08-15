@@ -7,7 +7,6 @@ import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.database.DataTables;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
-import lombok.Cleanup;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -82,11 +81,17 @@ public class ShopHistory {
         ps.setTimestamp(2, new Timestamp(to.toEpochMilli()));
         mappingPreparedStatement(ps, 3);
         perfMonitor.setContext("shopIds=" + shopsMapping.keySet() + ", n=" + n + ", from=" + from + ", to=" + to);
-        @Cleanup final ResultSet set = ps.executeQuery();
+        final ResultSet set = ps.executeQuery();
+        try {
         while(set.next()) {
           orderedMap.put(UUID.fromString(set.getString("buyer")), set.getLong("count"));
         }
         return orderedMap;
+        } finally {
+          if(java.util.Collections.singletonList(set).get(0) != null) {
+            set.close();
+          }
+        }
       } catch(final SQLException exception) {
         plugin.logger().warn("Failed to summary valuable customers", exception);
         return orderedMap;
@@ -107,11 +112,17 @@ public class ShopHistory {
         ps.setTimestamp(2, new Timestamp(to.toEpochMilli()));
         mappingPreparedStatement(ps, 3);
         perfMonitor.setContext("shopId=" + shopsMapping.keySet() + ", from=" + from + ", to=" + to);
-        @Cleanup final ResultSet set = ps.executeQuery();
+        final ResultSet set = ps.executeQuery();
+        try {
         if(set.next()) {
           return set.getLong(1);
         }
         return 0L;
+        } finally {
+          if(java.util.Collections.singletonList(set).get(0) != null) {
+            set.close();
+          }
+        }
       } catch(final SQLException exception) {
         plugin.logger().warn("Failed to summary unique purchasers", exception);
         return 0L;
@@ -130,11 +141,17 @@ public class ShopHistory {
           final Connection connection = plugin.getSqlManager().getConnection();
           final PreparedStatement ps = connection.prepareStatement(SQL)) {
         mappingPreparedStatement(ps, 1);
-        @Cleanup final ResultSet set = ps.executeQuery();
+        final ResultSet set = ps.executeQuery();
+        try {
         while(set.next()) {
           orderedMap.put(UUID.fromString(set.getString("buyer")), set.getLong("count"));
         }
         return orderedMap;
+        } finally {
+          if(java.util.Collections.singletonList(set).get(0) != null) {
+            set.close();
+          }
+        }
       } catch(final SQLException exception) {
         plugin.logger().warn("Failed to summary valuable customers", exception);
         return orderedMap;
@@ -153,11 +170,17 @@ public class ShopHistory {
           final PreparedStatement ps = connection.prepareStatement(SQL)) {
         perfMonitor.setContext("shopIds=" + shopsMapping.keySet());
         mappingPreparedStatement(ps, 1);
-        @Cleanup final ResultSet set = ps.executeQuery();
+        final ResultSet set = ps.executeQuery();
+        try {
         if(set.next()) {
           return set.getLong(1);
         }
         return 0L;
+        } finally {
+          if(java.util.Collections.singletonList(set).get(0) != null) {
+            set.close();
+          }
+        }
       } catch(final SQLException exception) {
         plugin.logger().warn("Failed to summary unique purchasers", exception);
         return 0L;
@@ -178,14 +201,20 @@ public class ShopHistory {
         ps.setTimestamp(2, new Timestamp(to.toEpochMilli()));
         mappingPreparedStatement(ps, 3);
         perfMonitor.setContext("shopIds=" + shopsMapping.keySet() + ", from=" + from + ", to=" + to);
-        @Cleanup final ResultSet set = ps.executeQuery();
+        final ResultSet set = ps.executeQuery();
+        try {
         if(set.next()) {
           return set.getDouble(1);
         }
-        return 0.0d;
+          return 0.0;
+        } finally {
+          if(java.util.Collections.singletonList(set).get(0) != null) {
+            set.close();
+          }
+        }
       } catch(final SQLException exception) {
         plugin.logger().warn("Failed to summary unique purchasers", exception);
-        return 0d;
+        return 0.0;
       }
     }, QuickExecutor.getShopHistoryQueryExecutor());
   }
@@ -201,14 +230,20 @@ public class ShopHistory {
           final PreparedStatement ps = connection.prepareStatement(SQL)) {
         perfMonitor.setContext("shopIds=" + shopsMapping.keySet());
         mappingPreparedStatement(ps, 1);
-        @Cleanup final ResultSet set = ps.executeQuery();
+        final ResultSet set = ps.executeQuery();
+        try {
         if(set.next()) {
           return set.getDouble(1);
         }
-        return 0.0d;
+          return 0.0;
+        } finally {
+          if(java.util.Collections.singletonList(set).get(0) != null) {
+            set.close();
+          }
+        }
       } catch(final SQLException exception) {
         plugin.logger().warn("Failed to summary unique purchasers", exception);
-        return 0d;
+        return 0.0;
       }
     }, QuickExecutor.getShopHistoryQueryExecutor());
   }
@@ -229,11 +264,17 @@ public class ShopHistory {
         ps.setTimestamp(2, new Timestamp(to.toEpochMilli()));
         mappingPreparedStatement(ps, 3);
         perfMonitor.setContext("shopId=" + shopsMapping.keySet() + ", from=" + from + ", to=" + to);
-        @Cleanup final ResultSet set = ps.executeQuery();
+        final ResultSet set = ps.executeQuery();
+        try {
         if(set.next()) {
           return set.getLong(1);
         }
         return 0L;
+        } finally {
+          if(java.util.Collections.singletonList(set).get(0) != null) {
+            set.close();
+          }
+        }
       } catch(final SQLException exception) {
         plugin.logger().warn("Failed to summary unique purchasers", exception);
         return 0L;
@@ -252,11 +293,17 @@ public class ShopHistory {
           final PreparedStatement ps = connection.prepareStatement(SQL)) {
         mappingPreparedStatement(ps, 1);
         perfMonitor.setContext("shopIds=" + shopsMapping.keySet());
-        @Cleanup final ResultSet set = ps.executeQuery();
+        final ResultSet set = ps.executeQuery();
+        try {
         if(set.next()) {
           return set.getLong(1);
         }
         return 0L;
+        } finally {
+          if(java.util.Collections.singletonList(set).get(0) != null) {
+            set.close();
+          }
+        }
       } catch(final SQLException exception) {
         plugin.logger().warn("Failed to summary unique purchasers", exception);
         return 0L;
@@ -304,12 +351,13 @@ public class ShopHistory {
     //String SQL = "SELECT * FROM %s WHERE `shop` IN (" + shopIdsPlaceHolders + ") ORDER BY `time` DESC LIMIT " + (page - 1) * pageSize + "," + pageSize;
     String SQL = "SELECT * FROM %s WHERE `shop` IN (" + shopIdsPlaceHolders + ") ORDER BY `time` DESC";
     SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
-    try(final PerfMonitor perfMonitor = new PerfMonitor("historyPageableQuery");
-        final Connection connection = plugin.getSqlManager().getConnection();
-        final PreparedStatement ps = connection.prepareStatement(SQL)) {
+    try(
+            PerfMonitor perfMonitor = new PerfMonitor("historyPageableQuery");
+            Connection connection = plugin.getSqlManager().getConnection();
+            PreparedStatement ps = connection.prepareStatement(SQL)) {
       mappingPreparedStatement(ps, 1);
       perfMonitor.setContext("shopIds=" + shopsMapping.keySet());
-      try(final ResultSet set = ps.executeQuery()) {
+      try(ResultSet set = ps.executeQuery()) {
         while(set.next()) {
           if(!isValidSummaryRecordType(set.getString("type"))) {
             continue;

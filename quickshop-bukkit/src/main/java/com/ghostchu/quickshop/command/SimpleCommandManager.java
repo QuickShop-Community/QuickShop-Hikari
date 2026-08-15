@@ -76,8 +76,6 @@ import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
 import com.google.common.collect.ImmutableList;
-import lombok.Data;
-import lombok.Getter;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -95,10 +93,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 
-@Data
 @SuppressWarnings("unchecked")
 public class SimpleCommandManager implements CommandManager, TabCompleter, CommandExecutor, SubPasteItem, Reloadable {
 
@@ -607,7 +605,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
         return true;
       }
     }
-    if(sender instanceof final Player player && playSoundOnCommand) {
+    if(sender instanceof Player player && playSoundOnCommand) {
       player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 80.0F, 1.0F);
     }
     if(cmdArg.length == 0) {
@@ -640,7 +638,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
           return true;
         }
         Log.debug("Execute container: " + container.getPrefix() + " - " + cmdArg[0]);
-        try(final PerfMonitor ignored = new PerfMonitor("Execute command " + container.getPrefix() + " " + CommonUtil.array2String(passThroughArgs), Duration.of(2, ChronoUnit.SECONDS))) {
+        try(PerfMonitor ignored = new PerfMonitor("Execute command " + container.getPrefix() + " " + CommonUtil.array2String(passThroughArgs), Duration.of(2, ChronoUnit.SECONDS))) {
           container.getExecutor().onCommand_Internal(capture(sender), commandLabel, passThroughArgs);
         }
         return true;
@@ -710,16 +708,13 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
   }
 
   @Override
-  public @Nullable List<String> onTabComplete(
-          @NotNull final CommandSender sender,
-          @NotNull final Command command,
-          @NotNull final String commandLabel,
-          @NotNull final String[] cmdArg) {
+  @Nullable
+  public List<String> onTabComplete(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String commandLabel, @NotNull final String[] cmdArg) {
     // No args, it shouldn't happened
     if(plugin.getBootError() != null) {
       return Collections.emptyList();
     }
-    if(sender instanceof final Player player && playSoundOnTabComplete) {
+    if(sender instanceof Player player && playSoundOnTabComplete) {
       player.playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.0F, 1.0F);
     }
     if(cmdArg.length <= 1) {
@@ -809,7 +804,8 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
   }
 
   @Override
-  public @NotNull String genBody() {
+  @NotNull
+  public String genBody() {
 
     final HTMLTable table = new HTMLTable(2);
     table.setTableTitle("Prefix", "Permissions", "Selective Permissions", "Executor Type", "Binding");
@@ -820,7 +816,8 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
   }
 
   @Override
-  public @NotNull String getTitle() {
+  @NotNull
+  public String getTitle() {
 
     return "Command Manager";
   }
@@ -832,7 +829,6 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
     return Reloadable.super.reloadModule();
   }
 
-  @Getter
   private enum Action {
     EXECUTE("execute"),
     TAB_COMPLETE("tab-complete");
@@ -850,7 +846,66 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
   }
 
   private enum PermissionType {
-    REQUIRE,
-    SELECTIVE
+    REQUIRE, SELECTIVE;
+  }
+
+  public List<CommandContainer> getCmds() {
+
+    return this.cmds;
+  }
+
+  public QuickShop getPlugin() {
+
+    return this.plugin;
+  }
+
+  public CommandContainer getRootContainer() {
+
+    return this.rootContainer;
+  }
+
+  public boolean isPlaySoundOnTabComplete() {
+
+    return this.playSoundOnTabComplete;
+  }
+
+  public boolean isPlaySoundOnCommand() {
+
+    return this.playSoundOnCommand;
+  }
+
+  public void setPlaySoundOnTabComplete(final boolean playSoundOnTabComplete) {
+
+    this.playSoundOnTabComplete = playSoundOnTabComplete;
+  }
+
+  public void setPlaySoundOnCommand(final boolean playSoundOnCommand) {
+
+    this.playSoundOnCommand = playSoundOnCommand;
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+
+    if(o == this) return true;
+    if(!(o instanceof SimpleCommandManager)) return false;
+    final SimpleCommandManager other = (SimpleCommandManager)o;
+    return this.isPlaySoundOnTabComplete() == other.isPlaySoundOnTabComplete()
+           && this.isPlaySoundOnCommand() == other.isPlaySoundOnCommand()
+           && Objects.equals(this.getCmds(), other.getCmds())
+           && Objects.equals(this.getPlugin(), other.getPlugin())
+           && Objects.equals(this.getRootContainer(), other.getRootContainer());
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(this.isPlaySoundOnTabComplete(), this.isPlaySoundOnCommand(), this.getCmds(), this.getPlugin(), this.getRootContainer());
+  }
+
+  @Override
+  public String toString() {
+
+    return "SimpleCommandManager(cmds=" + this.getCmds() + ", plugin=" + this.getPlugin() + ", rootContainer=" + this.getRootContainer() + ", playSoundOnTabComplete=" + this.isPlaySoundOnTabComplete() + ", playSoundOnCommand=" + this.isPlaySoundOnCommand() + ")";
   }
 }

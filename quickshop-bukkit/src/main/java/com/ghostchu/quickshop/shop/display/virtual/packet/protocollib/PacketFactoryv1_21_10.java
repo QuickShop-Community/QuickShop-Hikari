@@ -1,4 +1,5 @@
 package com.ghostchu.quickshop.shop.display.virtual.packet.protocollib;
+
 /*
  * QuickShop-Hikari
  * Copyright (C) 2025 Daniel "creatorfromhell" Vidmar
@@ -36,7 +37,6 @@ import com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItem;
 import com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItemManager;
 import com.ghostchu.quickshop.shop.display.virtual.packet.ProtocolLibHandler;
 import com.ghostchu.quickshop.util.Util;
-import lombok.Getter;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -63,10 +63,8 @@ public class PacketFactoryv1_21_10 implements PacketFactory<PacketContainer> {
 
   private static final WrappedDataWatcher.Serializer serializer = WrappedDataWatcher.Registry.getItemStackSerializer(false);
 
-  @Getter
   private PacketAdapter chunkSendingPacketAdapter;
 
-  @Getter
   private PacketAdapter chunkUnloadingPacketAdapter;
 
 
@@ -184,25 +182,19 @@ public class PacketFactoryv1_21_10 implements PacketFactory<PacketContainer> {
    * @return the name visibility packet of type T
    */
   @Override
-  public PacketContainer createTextDisplayVisiblePacket(final int id,
-                                                        final @NotNull Shop shop,
-                                                        final @NotNull ItemStack itemStack) {
+  public PacketContainer createTextDisplayVisiblePacket(final int id, @NotNull final Shop shop, @NotNull final ItemStack itemStack) {
 
     final PacketContainer packet = new PacketContainer(PacketType.Play.Server.ENTITY_METADATA);
     packet.getIntegers().write(0, id);
 
     final int blockDistance = QuickShop.getInstance().getConfig().getInt("shop.text-display.range-blocks", 8);
-
-    final Vector3f scaleVector = new Vector3f(QuickShop.getInstance().getConfig().getFloat("shop.text-display.scale.x", 1.0f),
-                                              QuickShop.getInstance().getConfig().getFloat("shop.text-display.scale.y", 1.0f),
-                                              QuickShop.getInstance().getConfig().getFloat("shop.text-display.scale.z", 1.0f));
-
+    final Vector3f scaleVector = new Vector3f(QuickShop.getInstance().getConfig().getFloat("shop.text-display.scale.x", 1.0F), QuickShop.getInstance().getConfig().getFloat("shop.text-display.scale.y", 1.0F), QuickShop.getInstance().getConfig().getFloat("shop.text-display.scale.z", 1.0F));
     final WrappedChatComponent component = WrappedChatComponent.fromJson(GsonComponentSerializer.gson().serialize(Util.getTextDisplay(shop, itemStack)));
 
     final List<WrappedDataValue> data = new ArrayList<>();
     //data.add(new WrappedDataValue(12, WrappedDataWatcher.Registry.get(Vector3f.class), scaleVector));
     data.add(new WrappedDataValue(15, WrappedDataWatcher.Registry.get(Byte.class), (byte)3));
-    data.add(new WrappedDataValue(17, WrappedDataWatcher.Registry.get(Float.class), blockDistance * 0.0125f));
+    data.add(new WrappedDataValue(17, WrappedDataWatcher.Registry.get(Float.class), blockDistance * 0.0125F));
     data.add(new WrappedDataValue(23, WrappedDataWatcher.Registry.getChatComponentSerializer(), component.getHandle()));
     data.add(new WrappedDataValue(24, WrappedDataWatcher.Registry.get(Integer.class),
                                   QuickShop.getInstance().getConfig().getInt("shop.text-display.line-width", 200)));
@@ -371,5 +363,14 @@ public class PacketFactoryv1_21_10 implements PacketFactory<PacketContainer> {
 
       ProtocolLibHandler.instance().internal().removePacketListener(chunkUnloadingPacketAdapter);
     }
+  }
+
+  public PacketAdapter getChunkSendingPacketAdapter() {
+
+    return this.chunkSendingPacketAdapter;
+  }
+  public PacketAdapter getChunkUnloadingPacketAdapter() {
+
+    return this.chunkUnloadingPacketAdapter;
   }
 }

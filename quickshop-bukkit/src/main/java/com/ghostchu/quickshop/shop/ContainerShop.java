@@ -53,7 +53,6 @@ import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
-import lombok.EqualsAndHashCode;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -107,7 +106,6 @@ import static java.math.BigDecimal.ZERO;
 /**
  * ChestShop core
  */
-@EqualsAndHashCode
 public class ContainerShop implements Shop<Double, Location>, Reloadable {
 
   // We use deprecated method to create a fake quickshop-reremake namespace to trick bukkit to access legacy data.
@@ -118,13 +116,10 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
 
   @NotNull
   private final Location location;
-  @EqualsAndHashCode.Exclude
   private final QuickShop plugin;
-  @EqualsAndHashCode.Exclude
   private final UUID runtimeRandomUniqueId = UUID.randomUUID();
   @NotNull
   private final Map<UUID, String> playerGroup;
-  @EqualsAndHashCode.Exclude
   private final boolean isDeleted = false;
   private long shopId;
   private QUser owner;
@@ -136,15 +131,10 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   private ItemStack item;
   private String itemSerialize;
   @Nullable
-  @EqualsAndHashCode.Exclude
   private AbstractDisplayItem displayItem = null;
-  @EqualsAndHashCode.Exclude
   private volatile boolean isLoaded = false;
-  @EqualsAndHashCode.Exclude
   private volatile boolean createBackup = false;
-  @EqualsAndHashCode.Exclude
   private boolean dirty;
-  @EqualsAndHashCode.Exclude
   private boolean updating = false;
   @Nullable
   private String currency;
@@ -161,7 +151,6 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   private BenefitProvider benefit;
 
   @NotNull
-  @EqualsAndHashCode.Exclude
   private final SimpleShopInventoryCountCache inventoryCountCache;
 
   //updating objects
@@ -346,12 +335,9 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
         if(provider != null) {
           this.displayItem = provider.provide(this);
         } else {
-
-          if(AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && plugin.getDisplayManager() instanceof final VirtualDisplayItemManager virtualManager) {
-
+          if(AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && plugin.getDisplayManager() instanceof VirtualDisplayItemManager virtualManager) {
             this.displayItem = virtualManager.create(this);
-          } else if(AbstractDisplayItem.getNowUsing() == DisplayType.DISPLAY_ENTITY && plugin.getDisplayManager() instanceof final DisplayEntityItemManager displayManager) {
-
+          } else if(AbstractDisplayItem.getNowUsing() == DisplayType.DISPLAY_ENTITY && plugin.getDisplayManager() instanceof DisplayEntityItemManager displayManager) {
             this.displayItem = displayManager.create(this);
           }
         }
@@ -405,7 +391,8 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
    * @return The currency name
    */
   @Override
-  public @Nullable String getCurrency() {
+  @Nullable
+  public String getCurrency() {
 
     final ShopCurrencyEvent event = ShopCurrencyEvent.RETRIEVE(this, this.currency);
     event.callEvent();
@@ -449,7 +436,8 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   @Deprecated(forRemoval = true)
   @ApiStatus.ScheduledForRemoval(inVersion = "6.4.0.0")
   @Override
-  public @NotNull ConfigurationSection getExtra(@NotNull final Plugin plugin) {
+  @NotNull
+  public ConfigurationSection getExtra(@NotNull final Plugin plugin) {
 
     final YamlConfiguration yaml = new YamlConfiguration();
 
@@ -472,7 +460,8 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
    * @return The chest this shop is based on.
    */
   @Override
-  public @Nullable InventoryWrapper getInventory() {
+  @Nullable
+  public InventoryWrapper getInventory() {
 
     Util.ensureThread(false);
     final int chunkX = location.getBlockX() >> 4;
@@ -505,7 +494,8 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   }
 
   @Override
-  public @NotNull String getInventoryWrapperProvider() {
+  @NotNull
+  public String getInventoryWrapperProvider() {
 
     return inventoryWrapperProvider;
   }
@@ -514,7 +504,8 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
    * @return Returns a dummy itemstack of the item this shop is selling.
    */
   @Override
-  public @NotNull ItemStack getItem() {
+  @NotNull
+  public ItemStack getItem() {
 
     final ShopItemEvent event = new ShopItemEvent(Phase.RETRIEVE, this, this.item.clone());
 
@@ -583,7 +574,9 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   }
 
   @Override
-  public @NotNull Block getShopBlock() {
+  @NotNull
+  public Block getShopBlock() {
+
     return this.location.getBlock();
   }
 
@@ -591,7 +584,8 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
    * @return The location of the shops chest
    */
   @Override
-  public @NotNull Location getLocation() {
+  @NotNull
+  public Location getLocation() {
 
     return this.location;
   }
@@ -611,7 +605,8 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
    * @return The name of the player who owns the shop.
    */
   @Override
-  public @NotNull QUser getOwner() {
+  @NotNull
+  public QUser getOwner() {
 
     return this.owner;
   }
@@ -633,8 +628,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     //Setup PDC with new owner
     if (owner.getUniqueId() != null) {
       final Block block = this.location.getBlock();
-      if(block.getState(false) instanceof final TileState tileState) {
-
+      if(block.getState(false) instanceof TileState tileState) {
         tileState.getPersistentDataContainer().set(CHEST_SHOP_OWNER, PersistentDataType.STRING, owner.getUniqueId().toString());
         tileState.update(true);
       }
@@ -650,7 +644,8 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
    * @return registered audiences
    */
   @Override
-  public @NotNull Map<UUID, String> getPermissionAudiences() {
+  @NotNull
+  public Map<UUID, String> getPermissionAudiences() {
 
     final Map<UUID, String> clonedPlayerGroup = new HashMap<>(playerGroup);
     final Optional<UUID> uuid = getOwner().getUniqueIdOptional();
@@ -668,7 +663,8 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
    * @return the group
    */
   @Override
-  public @NotNull String getPlayerGroup(@NotNull final UUID player) {
+  @NotNull
+  public String getPlayerGroup(@NotNull final UUID player) {
 
     if(player.equals(getOwner().getUniqueId())) {
       return BuiltInShopPermissionGroup.ADMINISTRATOR.getNamespacedNode();
@@ -728,6 +724,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
    */
   @Override
   public void price(final Double price) {
+
     this.price = price;
   }
 
@@ -741,7 +738,8 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
    * @return a formatted string combining the world and currency information; never null
    */
   @Override
-  public @NotNull String format(final @NotNull String world, final @Nullable String currency) {
+  @NotNull
+  public String format(@NotNull final String world, @Nullable final String currency) {
 
     return plugin.getEconomyManager().provider().format(BigDecimal.valueOf(price()), world, currency);
   }
@@ -758,7 +756,8 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
    * @return a formatted string combining the world, currency, and quantity information; never null
    */
   @Override
-  public @NotNull String format(final @NotNull String world, final @Nullable String currency, final int quantity) {
+  @NotNull
+  public String format(@NotNull final String world, @Nullable final String currency, final int quantity) {
 
     return plugin.getEconomyManager().provider().format(BigDecimal.valueOf(price() * quantity), world, currency);
   }
@@ -783,6 +782,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
    */
   @Override
   public int getMaxAffordable() {
+
     if(this.isUnlimited() || this.isFreeShop()) {
       return Integer.MAX_VALUE;
     }
@@ -824,6 +824,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
    */
   @Override
   public boolean canAfford(final int itemAmount) {
+
     if(itemAmount <= 0) {
       return false;
     }
@@ -896,6 +897,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   }
 
   public CompletableFuture<Integer> getRemainingStockAsync() {
+
     if(this.unlimited) {
       return CompletableFuture.completedFuture(-1);
     }
@@ -935,13 +937,14 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   }
 
   /**
-   * Retrieves the runtime-generated random unique identifier for the current instance. DO NOT USE FOR
-   * DATA STORAGE.
+   * Retrieves the runtime-generated random unique identifier for the current instance. DO NOT USE
+   * FOR DATA STORAGE.
    *
    * @return a non-null {@link UUID} representing a unique identifier that was generated at runtime.
    */
   @Override
-  public @NotNull UUID getRuntimeRandomUniqueId() {
+  @NotNull
+  public UUID getRuntimeRandomUniqueId() {
 
     return this.runtimeRandomUniqueId;
   }
@@ -969,18 +972,21 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
    * data associated with the shop, where both keys and values are strings.
    */
   @Override
-  public @NotNull Map<Key, String> getExtra() {
+  @NotNull
+  public Map<Key, String> getExtra() {
 
     return Collections.unmodifiableMap(this.extraMap);
   }
 
   @Override
   public String getExtra(@NotNull final NamespacedKey key) {
+
     return this.extraMap.get(key);
   }
 
   @Override
   public String getExtra(@NotNull final NamespacedKey key, @Nullable final String defaultValue) {
+
     return this.extraMap.getOrDefault(key, defaultValue);
   }
 
@@ -1006,12 +1012,13 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
 
   @Override
   public void removeExtra(@NotNull final NamespacedKey key) {
+
     this.extraMap.remove(key);
     setDirty();
   }
 
   @Override
-  public void removeExtraPartial(final @NotNull NamespacedKey key) {
+  public void removeExtraPartial(@NotNull final NamespacedKey key) {
 
     this.extraMap.keySet().removeIf(mapKey -> mapKey.asString().contains(key.asString()));
     setDirty();
@@ -1020,6 +1027,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
 
   @Override
   public void removeAll(@NotNull final Plugin plugin) {
+
     final String prefix = plugin.getName().toLowerCase(Locale.ROOT) + ":";
 
     this.extraMap.keySet().removeIf(key -> key.asString().startsWith(prefix));
@@ -1032,7 +1040,8 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
    * @return Shop name, or null if not set
    */
   @Override
-  public @Nullable String getShopName() {
+  @Nullable
+  public String getShopName() {
 
     return this.shopName;
   }
@@ -1221,7 +1230,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
    * text for each line of the shop's sign.
    */
   @Override
-  public CompletableFuture<List<Component>> getSignTextAsync(final @NotNull ProxiedLocale locale) {
+  public CompletableFuture<List<Component>> getSignTextAsync(@NotNull final ProxiedLocale locale) {
 
     final Location loc = this.location.clone();
     final CompletableFuture<List<Component>> result = new CompletableFuture<>();
@@ -1267,7 +1276,8 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
    * @return a list of signs that are attached to this shop (QuickShop and blank signs only)
    */
   @Override
-  public @NotNull List<Sign> getSigns() {
+  @NotNull
+  public List<Sign> getSigns() {
 
     Util.ensureThread(false);
     final List<Sign> signs = new ArrayList<>(4);
@@ -1284,7 +1294,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
         continue;
       }
       final BlockState state = b.getState(false);
-      if(!(state instanceof final Sign sign)) {
+      if(!(state instanceof Sign sign)) {
         continue;
       }
       if(!location.getBlock().equals(Util.getAttached(b))) {
@@ -1506,7 +1516,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   @Override
   public boolean isFreeShop() {
 
-    return this.price == 0.0d;
+    return this.price == 0.0;
   }
 
   @Override
@@ -1661,7 +1671,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
       Log.debug("Dupe load request, canceled.");
       return;
     }
-    try(final PerfMonitor ignored = new PerfMonitor("Shop Inventory Locate", Duration.of(1, ChronoUnit.SECONDS))) {
+    try(PerfMonitor ignored = new PerfMonitor("Shop Inventory Locate", Duration.of(1, ChronoUnit.SECONDS))) {
       if(getInventory() == null) {
         plugin.logger().warn("Failed to load shop: {}: {}: {}", symbolLink, this.getClass().getName(), "Inventory is null");
         if(plugin.getConfig().getBoolean("debug.delete-corrupt-shops")) {
@@ -1680,7 +1690,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     this.isLoaded = true;
     //disable schedule check due to performance issue
     //plugin.getShopContainerWatcher().scheduleCheck(this);
-    try(final PerfMonitor ignored = new PerfMonitor("Shop Display Check", Duration.of(1, ChronoUnit.SECONDS))) {
+    try(PerfMonitor ignored = new PerfMonitor("Shop Display Check", Duration.of(1, ChronoUnit.SECONDS))) {
       checkDisplay();
     }
     if(plugin.getConfig().getBoolean("shop.update-sign-on-load", false)) {
@@ -1716,7 +1726,8 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   }
 
   @Override
-  public @NotNull Component ownerName(final boolean forceUsername, @NotNull final ProxiedLocale locale) {
+  @NotNull
+  public Component ownerName(final boolean forceUsername, @NotNull final ProxiedLocale locale) {
 
     Component name;
     if(!forceUsername && isUnlimited()) {
@@ -1748,13 +1759,15 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   }
 
   @Override
-  public @NotNull Component ownerName(@NotNull final ProxiedLocale locale) {
+  @NotNull
+  public Component ownerName(@NotNull final ProxiedLocale locale) {
 
     return ownerName(false, locale);
   }
 
   @Override
-  public @NotNull Component ownerName() {
+  @NotNull
+  public Component ownerName() {
 
     return ownerName(false, MsgUtil.getDefaultGameLanguageLocale());
   }
@@ -2101,13 +2114,15 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
 
   @Override
   public void updateSync() throws RuntimeException {
+
     final CompletableFuture<Void> future = update();
 
     waitForFuture(future, 15, TimeUnit.SECONDS, "updateShop(" + shopId + ")");
   }
 
   @Override
-  public @NotNull BenefitProvider getShopBenefit() {
+  @NotNull
+  public BenefitProvider getShopBenefit() {
 
     final ShopBenefitEvent event = ShopBenefitEvent.RETRIEVE(this, this.benefit);
     event.callEvent();
@@ -2122,7 +2137,8 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     setDirty();
   }
 
-  public @NotNull SimpleDataRecord createDataRecord() {
+  @NotNull
+  public SimpleDataRecord createDataRecord() {
 
     return new SimpleDataRecord(
             getOwner(),
@@ -2159,7 +2175,8 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   /**
    * @return The enchantments the shop has on its items.
    */
-  public @NotNull Map<Enchantment, Integer> getEnchants() {
+  @NotNull
+  public Map<Enchantment, Integer> getEnchants() {
 
     if(this.item.hasItemMeta() && this.item.getItemMeta().hasEnchants()) {
       return Objects.requireNonNull(this.item.getItemMeta()).getEnchants();
@@ -2168,7 +2185,8 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   }
 
   @ApiStatus.Internal
-  public @NotNull SimpleShopInventoryCountCache getInventoryCountCache() {
+  @NotNull
+  public SimpleShopInventoryCountCache getInventoryCountCache() {
 
     return inventoryCountCache;
   }
@@ -2176,12 +2194,14 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   /**
    * @return The ItemStack type of this shop
    */
-  public @NotNull Material getMaterial() {
+  @NotNull
+  public Material getMaterial() {
 
     return this.item.getType();
   }
 
-  private @NotNull InventoryWrapper locateInventory(@Nullable final String symbolLink) {
+  @NotNull
+  private InventoryWrapper locateInventory(@Nullable final String symbolLink) {
 
     if(symbolLink == null || symbolLink.isEmpty()) {
       throw new IllegalStateException("Symbol link is empty, that's not right bro.");
@@ -2217,31 +2237,41 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   @Override
   public String toString() {
 
-    return "ContainerShop{" +
-           "location=" + location +
-           ", plugin=" + plugin +
-           ", runtimeRandomUniqueId=" + runtimeRandomUniqueId +
-           ", playerGroup=" + playerGroup +
-           ", isDeleted=" + isDeleted +
-           ", extra=" + serializeExtra() +
-           ", shopId=" + shopId +
-           ", owner=" + owner +
-           ", price=" + price +
-           ", shopType=" + shopType +
-           ", unlimited=" + unlimited +
-           ", item=" + item +
-           ", displayItem=" + displayItem +
-           ", isLoaded=" + isLoaded +
-           ", createBackup=" + createBackup +
-           ", dirty=" + dirty +
-           ", updating=" + updating +
-           ", currency='" + currency + '\'' +
-           ", disableDisplay=" + disableDisplay +
-           ", taxAccount=" + taxAccount +
-           ", inventoryWrapperProvider='" + inventoryWrapperProvider + '\'' +
-           ", symbolLink='" + symbolLink + '\'' +
-           ", shopName='" + shopName + '\'' +
-           ", benefit=" + benefit +
-           '}';
+    return "ContainerShop{" + "location=" + location + ", plugin=" + plugin + ", runtimeRandomUniqueId=" + runtimeRandomUniqueId + ", playerGroup=" + playerGroup + ", isDeleted=" + isDeleted + ", extra=" + serializeExtra() + ", shopId=" + shopId + ", owner=" + owner + ", price=" + price + ", shopType=" + shopType + ", unlimited=" + unlimited + ", item=" + item + ", displayItem=" + displayItem + ", isLoaded=" + isLoaded + ", createBackup=" + createBackup + ", dirty=" + dirty + ", updating=" + updating + ", currency='" + currency + '\'' + ", disableDisplay=" + disableDisplay + ", taxAccount=" + taxAccount + ", inventoryWrapperProvider='" + inventoryWrapperProvider + '\'' + ", symbolLink='" + symbolLink + '\'' + ", shopName='" + shopName + '\'' + ", benefit=" + benefit + '}';
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+
+    if(o == this) return true;
+    if(!(o instanceof ContainerShop)) return false;
+    final ContainerShop other = (ContainerShop)o;
+    return this.getShopId() == other.getShopId()
+           && Double.compare(this.getPrice(), other.getPrice()) == 0
+           && this.isUnlimited() == other.isUnlimited()
+           && this.isDisableDisplay() == other.isDisableDisplay()
+           && Objects.equals(this.extraMap, other.extraMap)
+           && Objects.equals(this.getLocation(), other.getLocation())
+           && Objects.equals(this.playerGroup, other.playerGroup)
+           && Objects.equals(this.getOwner(), other.getOwner())
+           && Objects.equals(this.shopType, other.shopType)
+           && Objects.equals(this.shopState, other.shopState)
+           && Objects.equals(this.getItem(), other.getItem())
+           && Objects.equals(this.originalItem, other.originalItem)
+           && Objects.equals(this.itemSerialize, other.itemSerialize)
+           && Objects.equals(this.getCurrency(), other.getCurrency())
+           && Objects.equals(this.getTaxAccount(), other.getTaxAccount())
+           && Objects.equals(this.getInventoryWrapperProvider(), other.getInventoryWrapperProvider())
+           && Objects.equals(this.symbolLink, other.symbolLink)
+           && Objects.equals(this.getShopName(), other.getShopName())
+           && Objects.equals(this.benefit, other.benefit)
+           && Objects.equals(this.updatingAtomic, other.updatingAtomic)
+           && Objects.equals(this.inFlightUpdate, other.inFlightUpdate);
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(this.getShopId(), this.getPrice(), this.isUnlimited(), this.isDisableDisplay(), this.extraMap, this.getLocation(), this.playerGroup, this.getOwner(), this.shopType, this.shopState, this.getItem(), this.originalItem, this.itemSerialize, this.getCurrency(), this.getTaxAccount(), this.getInventoryWrapperProvider(), this.symbolLink, this.getShopName(), this.benefit, this.updatingAtomic, this.inFlightUpdate);
   }
 }

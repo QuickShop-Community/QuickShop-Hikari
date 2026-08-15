@@ -1,10 +1,8 @@
 package com.ghostchu.quickshop.shop.datatype;
 
 import com.google.gson.annotations.Expose;
-import lombok.Getter;
 
 //TODO
-@Getter
 public class ShopPersistentData {
 
   @Expose
@@ -24,5 +22,30 @@ public class ShopPersistentData {
     this.z = z;
     this.world = world;
     this.setup = setup;
+  }
+
+  public String getWorld() {
+
+    return this.world;
+  }
+
+  public int getX() {
+
+    return this.x;
+  }
+
+  public int getY() {
+
+    return this.y;
+  }
+
+  public int getZ() {
+
+    return this.z;
+  }
+
+  public boolean isSetup() {
+
+    return this.setup;
   }
 }

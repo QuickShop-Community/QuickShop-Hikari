@@ -1,8 +1,9 @@
 package com.ghostchu.quickshop.util;
 
 import com.ghostchu.quickshop.util.logger.Log;
-import lombok.Data;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class PackageUtil {
 
@@ -22,7 +23,6 @@ public class PackageUtil {
     return new SysPropertiesParseResult(str, value);
   }
 
-  @Data
   public static class SysPropertiesParseResult {
 
     private final String key;
@@ -126,5 +126,37 @@ public class PackageUtil {
 
       return value != null;
     }
+
+    public String getKey() {
+
+      return this.key;
+    }
+
+    public String getValue() {
+
+      return this.value;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+
+      if(o == this) return true;
+      if(!(o instanceof PackageUtil.SysPropertiesParseResult)) return false;
+      final PackageUtil.SysPropertiesParseResult other = (PackageUtil.SysPropertiesParseResult)o;
+      return Objects.equals(this.getKey(), other.getKey())
+             && Objects.equals(this.getValue(), other.getValue());
+    }
+
+    @Override
+    public int hashCode() {
+
+      return Objects.hash(this.getKey(), this.getValue());
+    }
+
+    @Override
+    public String toString() {
+
+      return "PackageUtil.SysPropertiesParseResult(key=" + this.getKey() + ", value=" + this.getValue() + ")";
+  }
   }
 }

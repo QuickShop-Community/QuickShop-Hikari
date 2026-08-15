@@ -14,7 +14,6 @@ import com.ghostchu.quickshop.util.logger.Log;
 import com.vdurmont.semver4j.Semver;
 import io.papermc.lib.PaperLib;
 import kong.unirest.Unirest;
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -34,7 +33,6 @@ import java.util.logging.Level;
 
 public class QuickShopBukkit extends JavaPlugin {
 
-  @Getter
   private final java.util.logging.Logger bootstrapLogger = java.util.logging.Logger.getLogger("QuickShop-Hikari/Bootstrap");
   private Platform platform;
   private Logger logger;
@@ -164,7 +162,7 @@ public class QuickShopBukkit extends JavaPlugin {
 
   private void loadLibraries(final LibraryManager manager) {
 
-    try(final InputStream stream = getResource("libraries.maven")) {
+    try(InputStream stream = getResource("libraries.maven")) {
       if(stream == null) {
         throw new IllegalStateException("Jar file doesn't include a valid libraries.maven file");
       }
@@ -335,5 +333,10 @@ public class QuickShopBukkit extends JavaPlugin {
         Unirest.config().proxy(PackageUtil.parsePackageProperly("proxyHost").asString("127.0.0.1"), PackageUtil.parsePackageProperly("proxyPort").asInteger(1080), PackageUtil.parsePackageProperly("proxyUsername").asString(""), PackageUtil.parsePackageProperly("proxyPassword").asString(""));
       }
     }
+  }
+
+  public java.util.logging.Logger getBootstrapLogger() {
+
+    return this.bootstrapLogger;
   }
 }

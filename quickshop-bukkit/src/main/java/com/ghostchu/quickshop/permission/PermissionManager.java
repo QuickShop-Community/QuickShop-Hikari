@@ -6,11 +6,9 @@ import com.ghostchu.quickshop.api.permission.PermissionProvider;
 import com.ghostchu.quickshop.permission.impl.BukkitPermsProvider;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
-import lombok.Getter;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
-@Getter
 public class PermissionManager {
 
   private final QuickShop plugin;
@@ -71,4 +69,13 @@ public class PermissionManager {
     }
   }
 
+  public QuickShop getPlugin() {
+
+    return this.plugin;
+  }
+
+  public PermissionProvider getProvider() {
+
+    return this.provider;
+  }
 }
