@@ -616,15 +616,15 @@
 <span class="source-line-no">603</span><span id="line-603">  BlockState makeShopSign(@NotNull Block container, @NotNull Block signBlock, @Nullable Material signMaterial);</span>
 <span class="source-line-no">604</span><span id="line-604"></span>
 <span class="source-line-no">605</span><span id="line-605">  @NotNull</span>
-<span class="source-line-no">606</span><span id="line-606">  CompletableFuture&lt;@NotNull List&lt;Shop&gt;&gt; queryTaggedShops(@NotNull UUID tagger, @NotNull String tag);</span>
+<span class="source-line-no">606</span><span id="line-606">  CompletableFuture&lt;List&lt;Shop&gt;&gt; queryTaggedShops(@NotNull UUID tagger, @NotNull String tag);</span>
 <span class="source-line-no">607</span><span id="line-607"></span>
-<span class="source-line-no">608</span><span id="line-608">  CompletableFuture&lt;@Nullable Integer&gt; clearShopTags(@NotNull UUID tagger, @NotNull Shop shop);</span>
+<span class="source-line-no">608</span><span id="line-608">  CompletableFuture&lt;Integer&gt; clearShopTags(@NotNull UUID tagger, @NotNull Shop shop);</span>
 <span class="source-line-no">609</span><span id="line-609"></span>
-<span class="source-line-no">610</span><span id="line-610">  CompletableFuture&lt;@Nullable Integer&gt; clearTagFromShops(@NotNull UUID tagger, @NotNull String tag);</span>
+<span class="source-line-no">610</span><span id="line-610">  CompletableFuture&lt;Integer&gt; clearTagFromShops(@NotNull UUID tagger, @NotNull String tag);</span>
 <span class="source-line-no">611</span><span id="line-611"></span>
-<span class="source-line-no">612</span><span id="line-612">  CompletableFuture&lt;@Nullable Integer&gt; removeTag(@NotNull UUID tagger, @NotNull Shop shop, @NotNull String tag);</span>
+<span class="source-line-no">612</span><span id="line-612">  CompletableFuture&lt;Integer&gt; removeTag(@NotNull UUID tagger, @NotNull Shop shop, @NotNull String tag);</span>
 <span class="source-line-no">613</span><span id="line-613"></span>
-<span class="source-line-no">614</span><span id="line-614">  CompletableFuture&lt;@Nullable Integer&gt; tagShop(@NotNull UUID tagger, @NotNull Shop shop, @NotNull String tag);</span>
+<span class="source-line-no">614</span><span id="line-614">  CompletableFuture&lt;Integer&gt; tagShop(@NotNull UUID tagger, @NotNull Shop shop, @NotNull String tag);</span>
 <span class="source-line-no">615</span><span id="line-615"></span>
 <span class="source-line-no">616</span><span id="line-616">  @NotNull</span>
 <span class="source-line-no">617</span><span id="line-617">  List&lt;String&gt; listTags(@NotNull UUID tagger);</span>
@@ -632,7 +632,7 @@
 <span class="source-line-no">619</span><span id="line-619">  void deleteShop(@NotNull Shop shop);</span>
 <span class="source-line-no">620</span><span id="line-620"></span>
 <span class="source-line-no">621</span><span id="line-621">  @NotNull</span>
-<span class="source-line-no">622</span><span id="line-622">  CompletableFuture&lt;@NotNull ShopInventoryCountCache&gt; queryShopInventoryCacheInDatabase(@NotNull Shop shop);</span>
+<span class="source-line-no">622</span><span id="line-622">  CompletableFuture&lt;ShopInventoryCountCache&gt; queryShopInventoryCacheInDatabase(@NotNull Shop shop);</span>
 <span class="source-line-no">623</span><span id="line-623"></span>
 <span class="source-line-no">624</span><span id="line-624">  /**</span>
 <span class="source-line-no">625</span><span id="line-625">   * An getActions() alternative.</span>

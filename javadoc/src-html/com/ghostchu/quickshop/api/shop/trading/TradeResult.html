@@ -31,21 +31,22 @@
 <span class="source-line-no">018</span><span id="line-18"> * along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 <span class="source-line-no">019</span><span id="line-19"> */</span>
 <span class="source-line-no">020</span><span id="line-20"></span>
-<span class="source-line-no">021</span><span id="line-21">import org.jetbrains.annotations.Nullable;</span>
-<span class="source-line-no">022</span><span id="line-22"></span>
-<span class="source-line-no">023</span><span id="line-23">import java.math.BigDecimal;</span>
-<span class="source-line-no">024</span><span id="line-24"></span>
-<span class="source-line-no">025</span><span id="line-25">/**</span>
-<span class="source-line-no">026</span><span id="line-26"> * TradeResult</span>
-<span class="source-line-no">027</span><span id="line-27"> *</span>
-<span class="source-line-no">028</span><span id="line-28"> * @author creatorfromhell</span>
-<span class="source-line-no">029</span><span id="line-29"> * @since 6.3.0.0</span>
-<span class="source-line-no">030</span><span id="line-30"> */</span>
-<span class="source-line-no">031</span><span id="line-31">public record TradeResult(boolean success, TradeType tradeType, int requestedAmount, int tradedAmount,</span>
-<span class="source-line-no">032</span><span id="line-32">                          BigDecimal unitPrice, BigDecimal totalPrice, BigDecimal actorTax,</span>
-<span class="source-line-no">033</span><span id="line-33">                          BigDecimal ownerTax, @Nullable TradeFailureReason failureReason,</span>
-<span class="source-line-no">034</span><span id="line-34">                          @Nullable String messageKey, @Nullable String debugMessage) {</span>
-<span class="source-line-no">035</span><span id="line-35">}</span>
+<span class="source-line-no">021</span><span id="line-21">import com.ghostchu.quickshop.api.shop.InventoryTransaction;</span>
+<span class="source-line-no">022</span><span id="line-22">import org.jetbrains.annotations.Nullable;</span>
+<span class="source-line-no">023</span><span id="line-23"></span>
+<span class="source-line-no">024</span><span id="line-24">import java.math.BigDecimal;</span>
+<span class="source-line-no">025</span><span id="line-25"></span>
+<span class="source-line-no">026</span><span id="line-26">/**</span>
+<span class="source-line-no">027</span><span id="line-27"> * TradeResult</span>
+<span class="source-line-no">028</span><span id="line-28"> *</span>
+<span class="source-line-no">029</span><span id="line-29"> * @author creatorfromhell</span>
+<span class="source-line-no">030</span><span id="line-30"> * @since 6.3.0.0</span>
+<span class="source-line-no">031</span><span id="line-31"> */</span>
+<span class="source-line-no">032</span><span id="line-32">public record TradeResult(boolean success, TradeType tradeType, @Nullable InventoryTransaction transaction, int requestedAmount, int tradedAmount,</span>
+<span class="source-line-no">033</span><span id="line-33">                          BigDecimal unitPrice, BigDecimal totalPrice, BigDecimal actorTax,</span>
+<span class="source-line-no">034</span><span id="line-34">                          BigDecimal ownerTax, @Nullable TradeFailureReason failureReason,</span>
+<span class="source-line-no">035</span><span id="line-35">                          @Nullable String messageKey, @Nullable String debugMessage) {</span>
+<span class="source-line-no">036</span><span id="line-36">}</span>
 
 
 

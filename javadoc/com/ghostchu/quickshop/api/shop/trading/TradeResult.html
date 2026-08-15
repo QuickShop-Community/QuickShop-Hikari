@@ -92,7 +92,7 @@ loadScripts(document, 'script');</script>
 </div>
 <section class="class-description" id="class-description">
 <hr>
-<div class="type-signature"><span class="modifiers">public record </span><span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-31">TradeResult</a></span>(boolean&nbsp;success, <a href="TradeType.html" title="enum class in com.ghostchu.quickshop.api.shop.trading">TradeType</a>&nbsp;tradeType, int&nbsp;requestedAmount, int&nbsp;tradedAmount, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html" title="class or interface in java.math" class="external-link">BigDecimal</a>&nbsp;unitPrice, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html" title="class or interface in java.math" class="external-link">BigDecimal</a>&nbsp;totalPrice, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html" title="class or interface in java.math" class="external-link">BigDecimal</a>&nbsp;actorTax, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html" title="class or interface in java.math" class="external-link">BigDecimal</a>&nbsp;ownerTax, @Nullable <a href="TradeFailureReason.html" title="enum class in com.ghostchu.quickshop.api.shop.trading">TradeFailureReason</a>&nbsp;failureReason, @Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;messageKey, @Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;debugMessage)
+<div class="type-signature"><span class="modifiers">public record </span><span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-32">TradeResult</a></span>(boolean&nbsp;success, <a href="TradeType.html" title="enum class in com.ghostchu.quickshop.api.shop.trading">TradeType</a>&nbsp;tradeType, @Nullable <a href="../InventoryTransaction.html" title="interface in com.ghostchu.quickshop.api.shop">InventoryTransaction</a>&nbsp;transaction, int&nbsp;requestedAmount, int&nbsp;tradedAmount, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html" title="class or interface in java.math" class="external-link">BigDecimal</a>&nbsp;unitPrice, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html" title="class or interface in java.math" class="external-link">BigDecimal</a>&nbsp;totalPrice, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html" title="class or interface in java.math" class="external-link">BigDecimal</a>&nbsp;actorTax, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html" title="class or interface in java.math" class="external-link">BigDecimal</a>&nbsp;ownerTax, @Nullable <a href="TradeFailureReason.html" title="enum class in com.ghostchu.quickshop.api.shop.trading">TradeFailureReason</a>&nbsp;failureReason, @Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;messageKey, @Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;debugMessage)
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Record.html" title="class or interface in java.lang" class="external-link">Record</a></span></div>
 <div class="block">TradeResult</div>
 <dl class="notes">
@@ -112,8 +112,9 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(boolean,com.ghostchu.quickshop.api.shop.trading.TradeType,int,int,java.math.BigDecimal,java.math.BigDecimal,java.math.BigDecimal,java.math.BigDecimal,com.ghostchu.quickshop.api.shop.trading.TradeFailureReason,java.lang.String,java.lang.String)" class="member-name-link">TradeResult</a><wbr>(boolean&nbsp;success,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(boolean,com.ghostchu.quickshop.api.shop.trading.TradeType,com.ghostchu.quickshop.api.shop.InventoryTransaction,int,int,java.math.BigDecimal,java.math.BigDecimal,java.math.BigDecimal,java.math.BigDecimal,com.ghostchu.quickshop.api.shop.trading.TradeFailureReason,java.lang.String,java.lang.String)" class="member-name-link">TradeResult</a><wbr>(boolean&nbsp;success,
  <a href="TradeType.html" title="enum class in com.ghostchu.quickshop.api.shop.trading">TradeType</a>&nbsp;tradeType,
+ @Nullable <a href="../InventoryTransaction.html" title="interface in com.ghostchu.quickshop.api.shop">InventoryTransaction</a>&nbsp;transaction,
  int&nbsp;requestedAmount,
  int&nbsp;tradedAmount,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html" title="class or interface in java.math" class="external-link">BigDecimal</a>&nbsp;unitPrice,
@@ -205,9 +206,14 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the value of the <code>tradeType</code> record component.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html" title="class or interface in java.math" class="external-link">BigDecimal</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unitPrice()" class="member-name-link">unitPrice</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>@Nullable <a href="../InventoryTransaction.html" title="interface in com.ghostchu.quickshop.api.shop">InventoryTransaction</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#transaction()" class="member-name-link">transaction</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the value of the <code>transaction</code> record component.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html" title="class or interface in java.math" class="external-link">BigDecimal</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unitPrice()" class="member-name-link">unitPrice</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the value of the <code>unitPrice</code> record component.</div>
 </div>
 </div>
@@ -228,10 +234,12 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(boolean,com.ghostchu.quickshop.api.shop.trading.TradeType,int,int,java.math.BigDecimal,java.math.BigDecimal,java.math.BigDecimal,java.math.BigDecimal,com.ghostchu.quickshop.api.shop.trading.TradeFailureReason,java.lang.String,java.lang.String)">
+<section class="detail" id="&lt;init&gt;(boolean,com.ghostchu.quickshop.api.shop.trading.TradeType,com.ghostchu.quickshop.api.shop.InventoryTransaction,int,int,java.math.BigDecimal,java.math.BigDecimal,java.math.BigDecimal,java.math.BigDecimal,com.ghostchu.quickshop.api.shop.trading.TradeFailureReason,java.lang.String,java.lang.String)">
 <h3>TradeResult</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-31">TradeResult</a></span><wbr><span class="parameters">(boolean&nbsp;success,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-32">TradeResult</a></span><wbr><span class="parameters">(boolean&nbsp;success,
  <a href="TradeType.html" title="enum class in com.ghostchu.quickshop.api.shop.trading">TradeType</a>&nbsp;tradeType,
+ @Nullable
+ @Nullable <a href="../InventoryTransaction.html" title="interface in com.ghostchu.quickshop.api.shop">InventoryTransaction</a>&nbsp;transaction,
  int&nbsp;requestedAmount,
  int&nbsp;tradedAmount,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html" title="class or interface in java.math" class="external-link">BigDecimal</a>&nbsp;unitPrice,
@@ -249,6 +257,7 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>success</code> - the value for the <code>success</code> record component</dd>
 <dd><code>tradeType</code> - the value for the <code>tradeType</code> record component</dd>
+<dd><code>transaction</code> - the value for the <code>transaction</code> record component</dd>
 <dd><code>requestedAmount</code> - the value for the <code>requestedAmount</code> record component</dd>
 <dd><code>tradedAmount</code> - the value for the <code>tradedAmount</code> record component</dd>
 <dd><code>unitPrice</code> - the value for the <code>unitPrice</code> record component</dd>
@@ -272,7 +281,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="toString()">
 <h3>toString</h3>
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-31">toString</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-32">toString</a></span>()</div>
 <div class="block">Returns a string representation of this record class. The representation contains the name of the class, followed by the name and value of each of the record components.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -285,7 +294,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="hashCode()">
 <h3>hashCode</h3>
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-31">hashCode</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-32">hashCode</a></span>()</div>
 <div class="block">Returns a hash code value for this object. The value is derived from the hash code of each of the record components.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -298,7 +307,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="equals(java.lang.Object)">
 <h3>equals</h3>
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-31">equals</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;o)</span></div>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-32">equals</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;o)</span></div>
 <div class="block">Indicates whether some other object is "equal to" this one. The objects are equal if the other object is of the same class and if all the record components are equal. Reference components are compared with <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Objects.html#equals(java.lang.Object,java.lang.Object)" title="class or interface in java.util" class="external-link"><code>Objects::equals(Object,Object)</code></a>; primitive components are compared with '=='.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -313,7 +322,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="success()">
 <h3>success</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-31">success</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-32">success</a></span>()</div>
 <div class="block">Returns the value of the <code>success</code> record component.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -324,7 +333,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="tradeType()">
 <h3>tradeType</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="TradeType.html" title="enum class in com.ghostchu.quickshop.api.shop.trading">TradeType</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-31">tradeType</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="TradeType.html" title="enum class in com.ghostchu.quickshop.api.shop.trading">TradeType</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-32">tradeType</a></span>()</div>
 <div class="block">Returns the value of the <code>tradeType</code> record component.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -333,9 +342,21 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="transaction()">
+<h3>transaction</h3>
+<div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">@Nullable <a href="../InventoryTransaction.html" title="interface in com.ghostchu.quickshop.api.shop">InventoryTransaction</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-32">transaction</a></span>()</div>
+<div class="block">Returns the value of the <code>transaction</code> record component.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the value of the <code>transaction</code> record component</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="requestedAmount()">
 <h3>requestedAmount</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-31">requestedAmount</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-32">requestedAmount</a></span>()</div>
 <div class="block">Returns the value of the <code>requestedAmount</code> record component.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -346,7 +367,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="tradedAmount()">
 <h3>tradedAmount</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-31">tradedAmount</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-32">tradedAmount</a></span>()</div>
 <div class="block">Returns the value of the <code>tradedAmount</code> record component.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -357,7 +378,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="unitPrice()">
 <h3>unitPrice</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html" title="class or interface in java.math" class="external-link">BigDecimal</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-31">unitPrice</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html" title="class or interface in java.math" class="external-link">BigDecimal</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-32">unitPrice</a></span>()</div>
 <div class="block">Returns the value of the <code>unitPrice</code> record component.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -368,7 +389,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="totalPrice()">
 <h3>totalPrice</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html" title="class or interface in java.math" class="external-link">BigDecimal</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-31">totalPrice</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html" title="class or interface in java.math" class="external-link">BigDecimal</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-32">totalPrice</a></span>()</div>
 <div class="block">Returns the value of the <code>totalPrice</code> record component.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -379,7 +400,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="actorTax()">
 <h3>actorTax</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html" title="class or interface in java.math" class="external-link">BigDecimal</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-31">actorTax</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html" title="class or interface in java.math" class="external-link">BigDecimal</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-32">actorTax</a></span>()</div>
 <div class="block">Returns the value of the <code>actorTax</code> record component.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -390,7 +411,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="ownerTax()">
 <h3>ownerTax</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html" title="class or interface in java.math" class="external-link">BigDecimal</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-31">ownerTax</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html" title="class or interface in java.math" class="external-link">BigDecimal</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-32">ownerTax</a></span>()</div>
 <div class="block">Returns the value of the <code>ownerTax</code> record component.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -402,7 +423,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="failureReason()">
 <h3>failureReason</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type">@Nullable <a href="TradeFailureReason.html" title="enum class in com.ghostchu.quickshop.api.shop.trading">TradeFailureReason</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-31">failureReason</a></span>()</div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">@Nullable <a href="TradeFailureReason.html" title="enum class in com.ghostchu.quickshop.api.shop.trading">TradeFailureReason</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-32">failureReason</a></span>()</div>
 <div class="block">Returns the value of the <code>failureReason</code> record component.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -414,7 +435,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="messageKey()">
 <h3>messageKey</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type">@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-31">messageKey</a></span>()</div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-32">messageKey</a></span>()</div>
 <div class="block">Returns the value of the <code>messageKey</code> record component.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -426,7 +447,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="debugMessage()">
 <h3>debugMessage</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type">@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-31">debugMessage</a></span>()</div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/trading/TradeResult.html#line-32">debugMessage</a></span>()</div>
 <div class="block">Returns the value of the <code>debugMessage</code> record component.</div>
 <dl class="notes">
 <dt>Returns:</dt>
