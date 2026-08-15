@@ -13,29 +13,71 @@
 <div class="source-container">
 <pre><span class="source-line-no">001</span><span id="line-1">package com.ghostchu.quickshop.api.event;</span>
 <span class="source-line-no">002</span><span id="line-2"></span>
-<span class="source-line-no">003</span><span id="line-3">import lombok.Data;</span>
-<span class="source-line-no">004</span><span id="line-4">import lombok.EqualsAndHashCode;</span>
-<span class="source-line-no">005</span><span id="line-5"></span>
-<span class="source-line-no">006</span><span id="line-6">/**</span>
-<span class="source-line-no">007</span><span id="line-7"> * Trigger while a calendar data was changed by Calendar Watcher. Useful for quickshop simple</span>
-<span class="source-line-no">008</span><span id="line-8"> * scheduler.</span>
-<span class="source-line-no">009</span><span id="line-9"> */</span>
-<span class="source-line-no">010</span><span id="line-10">@EqualsAndHashCode(callSuper = true)</span>
-<span class="source-line-no">011</span><span id="line-11">@Data</span>
-<span class="source-line-no">012</span><span id="line-12"></span>
-<span class="source-line-no">013</span><span id="line-13">public class CalendarEvent extends AbstractQSEvent {</span>
-<span class="source-line-no">014</span><span id="line-14"></span>
-<span class="source-line-no">015</span><span id="line-15">  private CalendarTriggerType calendarTriggerType;</span>
+<span class="source-line-no">003</span><span id="line-3">/**</span>
+<span class="source-line-no">004</span><span id="line-4"> * Trigger while a calendar data was changed by Calendar Watcher. Useful for quickshop simple</span>
+<span class="source-line-no">005</span><span id="line-5"> * scheduler.</span>
+<span class="source-line-no">006</span><span id="line-6"> */</span>
+<span class="source-line-no">007</span><span id="line-7"></span>
+<span class="source-line-no">008</span><span id="line-8">public class CalendarEvent extends AbstractQSEvent {</span>
+<span class="source-line-no">009</span><span id="line-9"></span>
+<span class="source-line-no">010</span><span id="line-10">  private CalendarTriggerType calendarTriggerType;</span>
+<span class="source-line-no">011</span><span id="line-11"></span>
+<span class="source-line-no">012</span><span id="line-12">  public CalendarEvent(final CalendarTriggerType calendarTriggerType) {</span>
+<span class="source-line-no">013</span><span id="line-13"></span>
+<span class="source-line-no">014</span><span id="line-14">    this.calendarTriggerType = calendarTriggerType;</span>
+<span class="source-line-no">015</span><span id="line-15">  }</span>
 <span class="source-line-no">016</span><span id="line-16"></span>
-<span class="source-line-no">017</span><span id="line-17">  public CalendarEvent(final CalendarTriggerType calendarTriggerType) {</span>
-<span class="source-line-no">018</span><span id="line-18"></span>
-<span class="source-line-no">019</span><span id="line-19">    this.calendarTriggerType = calendarTriggerType;</span>
-<span class="source-line-no">020</span><span id="line-20">  }</span>
-<span class="source-line-no">021</span><span id="line-21"></span>
-<span class="source-line-no">022</span><span id="line-22">  public enum CalendarTriggerType {</span>
-<span class="source-line-no">023</span><span id="line-23">    NOTHING_CHANGED, SECOND, MINUTE, HOUR, DAY, WEEK, MONTH, YEAR</span>
-<span class="source-line-no">024</span><span id="line-24">  }</span>
-<span class="source-line-no">025</span><span id="line-25">}</span>
+<span class="source-line-no">017</span><span id="line-17">  public enum CalendarTriggerType {</span>
+<span class="source-line-no">018</span><span id="line-18">    NOTHING_CHANGED, SECOND, MINUTE, HOUR, DAY, WEEK, MONTH, YEAR;</span>
+<span class="source-line-no">019</span><span id="line-19">  }</span>
+<span class="source-line-no">020</span><span id="line-20"></span>
+<span class="source-line-no">021</span><span id="line-21">  @Override</span>
+<span class="source-line-no">022</span><span id="line-22">  public boolean equals(final Object o) {</span>
+<span class="source-line-no">023</span><span id="line-23"></span>
+<span class="source-line-no">024</span><span id="line-24">    if(o == this) return true;</span>
+<span class="source-line-no">025</span><span id="line-25">    if(!(o instanceof CalendarEvent)) return false;</span>
+<span class="source-line-no">026</span><span id="line-26">    final CalendarEvent other = (CalendarEvent)o;</span>
+<span class="source-line-no">027</span><span id="line-27">    if(!other.canEqual((Object)this)) return false;</span>
+<span class="source-line-no">028</span><span id="line-28">    if(!super.equals(o)) return false;</span>
+<span class="source-line-no">029</span><span id="line-29">    final Object thisCalendarTriggerType = this.getCalendarTriggerType();</span>
+<span class="source-line-no">030</span><span id="line-30">    final Object otherCalendarTriggerType = other.getCalendarTriggerType();</span>
+<span class="source-line-no">031</span><span id="line-31">    if(thisCalendarTriggerType == null? otherCalendarTriggerType != null : !thisCalendarTriggerType.equals(otherCalendarTriggerType)) {</span>
+<span class="source-line-no">032</span><span id="line-32">      return false;</span>
+<span class="source-line-no">033</span><span id="line-33">    }</span>
+<span class="source-line-no">034</span><span id="line-34">    return true;</span>
+<span class="source-line-no">035</span><span id="line-35">  }</span>
+<span class="source-line-no">036</span><span id="line-36"></span>
+<span class="source-line-no">037</span><span id="line-37">  protected boolean canEqual(final Object other) {</span>
+<span class="source-line-no">038</span><span id="line-38"></span>
+<span class="source-line-no">039</span><span id="line-39">    return other instanceof CalendarEvent;</span>
+<span class="source-line-no">040</span><span id="line-40">  }</span>
+<span class="source-line-no">041</span><span id="line-41"></span>
+<span class="source-line-no">042</span><span id="line-42">  @Override</span>
+<span class="source-line-no">043</span><span id="line-43">  public int hashCode() {</span>
+<span class="source-line-no">044</span><span id="line-44"></span>
+<span class="source-line-no">045</span><span id="line-45">    final int PRIME = 59;</span>
+<span class="source-line-no">046</span><span id="line-46">    int result = super.hashCode();</span>
+<span class="source-line-no">047</span><span id="line-47">    final Object calendarTriggerTypeValue = this.getCalendarTriggerType();</span>
+<span class="source-line-no">048</span><span id="line-48">    result = result * PRIME + (calendarTriggerTypeValue == null? 43 : calendarTriggerTypeValue.hashCode());</span>
+<span class="source-line-no">049</span><span id="line-49">    return result;</span>
+<span class="source-line-no">050</span><span id="line-50">  }</span>
+<span class="source-line-no">051</span><span id="line-51"></span>
+<span class="source-line-no">052</span><span id="line-52">  public CalendarTriggerType getCalendarTriggerType() {</span>
+<span class="source-line-no">053</span><span id="line-53"></span>
+<span class="source-line-no">054</span><span id="line-54">    return this.calendarTriggerType;</span>
+<span class="source-line-no">055</span><span id="line-55">  }</span>
+<span class="source-line-no">056</span><span id="line-56"></span>
+<span class="source-line-no">057</span><span id="line-57">  public void setCalendarTriggerType(final CalendarTriggerType calendarTriggerType) {</span>
+<span class="source-line-no">058</span><span id="line-58"></span>
+<span class="source-line-no">059</span><span id="line-59">    this.calendarTriggerType = calendarTriggerType;</span>
+<span class="source-line-no">060</span><span id="line-60">  }</span>
+<span class="source-line-no">061</span><span id="line-61"></span>
+<span class="source-line-no">062</span><span id="line-62">  @Override</span>
+<span class="source-line-no">063</span><span id="line-63">  public String toString() {</span>
+<span class="source-line-no">064</span><span id="line-64"></span>
+<span class="source-line-no">065</span><span id="line-65">    return "CalendarEvent(calendarTriggerType=" + this.getCalendarTriggerType() + ")";</span>
+<span class="source-line-no">066</span><span id="line-66">  }</span>
+<span class="source-line-no">067</span><span id="line-67">}</span>
 
 
 

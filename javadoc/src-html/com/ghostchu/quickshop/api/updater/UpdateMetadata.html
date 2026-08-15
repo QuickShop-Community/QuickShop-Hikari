@@ -31,35 +31,103 @@
 <span class="source-line-no">018</span><span id="line-18"> * along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 <span class="source-line-no">019</span><span id="line-19"> */</span>
 <span class="source-line-no">020</span><span id="line-20"></span>
-<span class="source-line-no">021</span><span id="line-21">import lombok.Data;</span>
-<span class="source-line-no">022</span><span id="line-22">import org.jetbrains.annotations.NotNull;</span>
-<span class="source-line-no">023</span><span id="line-23"></span>
-<span class="source-line-no">024</span><span id="line-24">/**</span>
-<span class="source-line-no">025</span><span id="line-25"> * UpdateMetadata</span>
-<span class="source-line-no">026</span><span id="line-26"> *</span>
-<span class="source-line-no">027</span><span id="line-27"> * @author creatorfromhell</span>
-<span class="source-line-no">028</span><span id="line-28"> * @since 6.3.0.0</span>
-<span class="source-line-no">029</span><span id="line-29"> */</span>
-<span class="source-line-no">030</span><span id="line-30">@Data</span>
+<span class="source-line-no">021</span><span id="line-21">import java.util.Objects;</span>
+<span class="source-line-no">022</span><span id="line-22"></span>
+<span class="source-line-no">023</span><span id="line-23">import org.jetbrains.annotations.NotNull;</span>
+<span class="source-line-no">024</span><span id="line-24"></span>
+<span class="source-line-no">025</span><span id="line-25">/**</span>
+<span class="source-line-no">026</span><span id="line-26"> * UpdateMetadata</span>
+<span class="source-line-no">027</span><span id="line-27"> *</span>
+<span class="source-line-no">028</span><span id="line-28"> * @author creatorfromhell</span>
+<span class="source-line-no">029</span><span id="line-29"> * @since 6.3.0.0</span>
+<span class="source-line-no">030</span><span id="line-30"> */</span>
 <span class="source-line-no">031</span><span id="line-31">public class UpdateMetadata {</span>
 <span class="source-line-no">032</span><span id="line-32"></span>
 <span class="source-line-no">033</span><span id="line-33">  /**</span>
 <span class="source-line-no">034</span><span id="line-34">   * Epoch millis of last update/publish time if known, else 0.</span>
 <span class="source-line-no">035</span><span id="line-35">   */</span>
 <span class="source-line-no">036</span><span id="line-36">  private final long lastUpdate;</span>
-<span class="source-line-no">037</span><span id="line-37"></span>
-<span class="source-line-no">038</span><span id="line-38">  /**</span>
-<span class="source-line-no">039</span><span id="line-39">   * Highest semver across all versions (including beta/alpha if you publish them).</span>
-<span class="source-line-no">040</span><span id="line-40">   */</span>
-<span class="source-line-no">041</span><span id="line-41">  @NotNull</span>
-<span class="source-line-no">042</span><span id="line-42">  private final String latestVersion;</span>
-<span class="source-line-no">043</span><span id="line-43"></span>
-<span class="source-line-no">044</span><span id="line-44">  /**</span>
-<span class="source-line-no">045</span><span id="line-45">   * Highest semver among release versions.</span>
-<span class="source-line-no">046</span><span id="line-46">   */</span>
-<span class="source-line-no">047</span><span id="line-47">  @NotNull</span>
-<span class="source-line-no">048</span><span id="line-48">  private final String releaseVersion;</span>
-<span class="source-line-no">049</span><span id="line-49">}</span>
+<span class="source-line-no">037</span><span id="line-37">  /**</span>
+<span class="source-line-no">038</span><span id="line-38">   * Highest semver across all versions (including beta/alpha if you publish them).</span>
+<span class="source-line-no">039</span><span id="line-39">   */</span>
+<span class="source-line-no">040</span><span id="line-40">  @NotNull</span>
+<span class="source-line-no">041</span><span id="line-41">  private final String latestVersion;</span>
+<span class="source-line-no">042</span><span id="line-42">  /**</span>
+<span class="source-line-no">043</span><span id="line-43">   * Highest semver among release versions.</span>
+<span class="source-line-no">044</span><span id="line-44">   */</span>
+<span class="source-line-no">045</span><span id="line-45">  @NotNull</span>
+<span class="source-line-no">046</span><span id="line-46">  private final String releaseVersion;</span>
+<span class="source-line-no">047</span><span id="line-47"></span>
+<span class="source-line-no">048</span><span id="line-48">  /**</span>
+<span class="source-line-no">049</span><span id="line-49">   * Creates a new {@code UpdateMetadata} instance.</span>
+<span class="source-line-no">050</span><span id="line-50">   *</span>
+<span class="source-line-no">051</span><span id="line-51">   * @param lastUpdate     Epoch millis of last update/publish time if known, else 0.</span>
+<span class="source-line-no">052</span><span id="line-52">   * @param latestVersion  Highest semver across all versions (including beta/alpha if you publish</span>
+<span class="source-line-no">053</span><span id="line-53">   *                       them).</span>
+<span class="source-line-no">054</span><span id="line-54">   * @param releaseVersion Highest semver among release versions.</span>
+<span class="source-line-no">055</span><span id="line-55">   */</span>
+<span class="source-line-no">056</span><span id="line-56">  public UpdateMetadata(final long lastUpdate, @NotNull final String latestVersion, @NotNull final String releaseVersion) {</span>
+<span class="source-line-no">057</span><span id="line-57"></span>
+<span class="source-line-no">058</span><span id="line-58">    if(latestVersion == null) {</span>
+<span class="source-line-no">059</span><span id="line-59">      throw new NullPointerException("latestVersion is marked non-null but is null");</span>
+<span class="source-line-no">060</span><span id="line-60">    }</span>
+<span class="source-line-no">061</span><span id="line-61">    if(releaseVersion == null) {</span>
+<span class="source-line-no">062</span><span id="line-62">      throw new NullPointerException("releaseVersion is marked non-null but is null");</span>
+<span class="source-line-no">063</span><span id="line-63">    }</span>
+<span class="source-line-no">064</span><span id="line-64">    this.lastUpdate = lastUpdate;</span>
+<span class="source-line-no">065</span><span id="line-65">    this.latestVersion = latestVersion;</span>
+<span class="source-line-no">066</span><span id="line-66">    this.releaseVersion = releaseVersion;</span>
+<span class="source-line-no">067</span><span id="line-67">  }</span>
+<span class="source-line-no">068</span><span id="line-68"></span>
+<span class="source-line-no">069</span><span id="line-69">  /**</span>
+<span class="source-line-no">070</span><span id="line-70">   * Epoch millis of last update/publish time if known, else 0.</span>
+<span class="source-line-no">071</span><span id="line-71">   */</span>
+<span class="source-line-no">072</span><span id="line-72">  public long getLastUpdate() {</span>
+<span class="source-line-no">073</span><span id="line-73"></span>
+<span class="source-line-no">074</span><span id="line-74">    return this.lastUpdate;</span>
+<span class="source-line-no">075</span><span id="line-75">  }</span>
+<span class="source-line-no">076</span><span id="line-76"></span>
+<span class="source-line-no">077</span><span id="line-77">  /**</span>
+<span class="source-line-no">078</span><span id="line-78">   * Highest semver across all versions (including beta/alpha if you publish them).</span>
+<span class="source-line-no">079</span><span id="line-79">   */</span>
+<span class="source-line-no">080</span><span id="line-80">  @NotNull</span>
+<span class="source-line-no">081</span><span id="line-81">  public String getLatestVersion() {</span>
+<span class="source-line-no">082</span><span id="line-82"></span>
+<span class="source-line-no">083</span><span id="line-83">    return this.latestVersion;</span>
+<span class="source-line-no">084</span><span id="line-84">  }</span>
+<span class="source-line-no">085</span><span id="line-85"></span>
+<span class="source-line-no">086</span><span id="line-86">  /**</span>
+<span class="source-line-no">087</span><span id="line-87">   * Highest semver among release versions.</span>
+<span class="source-line-no">088</span><span id="line-88">   */</span>
+<span class="source-line-no">089</span><span id="line-89">  @NotNull</span>
+<span class="source-line-no">090</span><span id="line-90">  public String getReleaseVersion() {</span>
+<span class="source-line-no">091</span><span id="line-91"></span>
+<span class="source-line-no">092</span><span id="line-92">    return this.releaseVersion;</span>
+<span class="source-line-no">093</span><span id="line-93">  }</span>
+<span class="source-line-no">094</span><span id="line-94"></span>
+<span class="source-line-no">095</span><span id="line-95">  @Override</span>
+<span class="source-line-no">096</span><span id="line-96">  public boolean equals(final Object o) {</span>
+<span class="source-line-no">097</span><span id="line-97"></span>
+<span class="source-line-no">098</span><span id="line-98">    if(o == this) return true;</span>
+<span class="source-line-no">099</span><span id="line-99">    if(!(o instanceof UpdateMetadata)) return false;</span>
+<span class="source-line-no">100</span><span id="line-100">    final UpdateMetadata other = (UpdateMetadata)o;</span>
+<span class="source-line-no">101</span><span id="line-101">    return this.getLastUpdate() == other.getLastUpdate()</span>
+<span class="source-line-no">102</span><span id="line-102">           &amp;&amp; Objects.equals(this.getLatestVersion(), other.getLatestVersion())</span>
+<span class="source-line-no">103</span><span id="line-103">           &amp;&amp; Objects.equals(this.getReleaseVersion(), other.getReleaseVersion());</span>
+<span class="source-line-no">104</span><span id="line-104">  }</span>
+<span class="source-line-no">105</span><span id="line-105"></span>
+<span class="source-line-no">106</span><span id="line-106">  @Override</span>
+<span class="source-line-no">107</span><span id="line-107">  public int hashCode() {</span>
+<span class="source-line-no">108</span><span id="line-108"></span>
+<span class="source-line-no">109</span><span id="line-109">    return Objects.hash(this.getLastUpdate(), this.getLatestVersion(), this.getReleaseVersion());</span>
+<span class="source-line-no">110</span><span id="line-110">  }</span>
+<span class="source-line-no">111</span><span id="line-111"></span>
+<span class="source-line-no">112</span><span id="line-112">  @Override</span>
+<span class="source-line-no">113</span><span id="line-113">  public String toString() {</span>
+<span class="source-line-no">114</span><span id="line-114"></span>
+<span class="source-line-no">115</span><span id="line-115">    return "UpdateMetadata(lastUpdate=" + this.getLastUpdate() + ", latestVersion=" + this.getLatestVersion() + ", releaseVersion=" + this.getReleaseVersion() + ")";</span>
+<span class="source-line-no">116</span><span id="line-116">  }</span>
+<span class="source-line-no">117</span><span id="line-117">}</span>
 
 
 

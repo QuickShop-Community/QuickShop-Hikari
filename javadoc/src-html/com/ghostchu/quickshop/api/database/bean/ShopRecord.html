@@ -13,20 +13,89 @@
 <div class="source-container">
 <pre><span class="source-line-no">001</span><span id="line-1">package com.ghostchu.quickshop.api.database.bean;</span>
 <span class="source-line-no">002</span><span id="line-2"></span>
-<span class="source-line-no">003</span><span id="line-3">import lombok.AllArgsConstructor;</span>
-<span class="source-line-no">004</span><span id="line-4">import lombok.Data;</span>
-<span class="source-line-no">005</span><span id="line-5"></span>
-<span class="source-line-no">006</span><span id="line-6">@AllArgsConstructor</span>
-<span class="source-line-no">007</span><span id="line-7">@Data</span>
-<span class="source-line-no">008</span><span id="line-8">public class ShopRecord {</span>
+<span class="source-line-no">003</span><span id="line-3">import java.util.Objects;</span>
+<span class="source-line-no">004</span><span id="line-4"></span>
+<span class="source-line-no">005</span><span id="line-5">public class ShopRecord {</span>
+<span class="source-line-no">006</span><span id="line-6"></span>
+<span class="source-line-no">007</span><span id="line-7">  private DataRecord dataRecord;</span>
+<span class="source-line-no">008</span><span id="line-8">  private InfoRecord infoRecord;</span>
 <span class="source-line-no">009</span><span id="line-9"></span>
-<span class="source-line-no">010</span><span id="line-10">  private DataRecord dataRecord;</span>
-<span class="source-line-no">011</span><span id="line-11">  private InfoRecord infoRecord;</span>
-<span class="source-line-no">012</span><span id="line-12"></span>
-<span class="source-line-no">013</span><span id="line-13">  // Extra fields</span>
-<span class="source-line-no">014</span><span id="line-14">  private int cachedStock;</span>
-<span class="source-line-no">015</span><span id="line-15">  private int cachedSpace;</span>
-<span class="source-line-no">016</span><span id="line-16">}</span>
+<span class="source-line-no">010</span><span id="line-10">  // Extra fields</span>
+<span class="source-line-no">011</span><span id="line-11">  private int cachedStock;</span>
+<span class="source-line-no">012</span><span id="line-12">  private int cachedSpace;</span>
+<span class="source-line-no">013</span><span id="line-13"></span>
+<span class="source-line-no">014</span><span id="line-14">  public ShopRecord(final DataRecord dataRecord, final InfoRecord infoRecord, final int cachedStock, final int cachedSpace) {</span>
+<span class="source-line-no">015</span><span id="line-15"></span>
+<span class="source-line-no">016</span><span id="line-16">    this.dataRecord = dataRecord;</span>
+<span class="source-line-no">017</span><span id="line-17">    this.infoRecord = infoRecord;</span>
+<span class="source-line-no">018</span><span id="line-18">    this.cachedStock = cachedStock;</span>
+<span class="source-line-no">019</span><span id="line-19">    this.cachedSpace = cachedSpace;</span>
+<span class="source-line-no">020</span><span id="line-20">  }</span>
+<span class="source-line-no">021</span><span id="line-21"></span>
+<span class="source-line-no">022</span><span id="line-22">  public DataRecord getDataRecord() {</span>
+<span class="source-line-no">023</span><span id="line-23"></span>
+<span class="source-line-no">024</span><span id="line-24">    return this.dataRecord;</span>
+<span class="source-line-no">025</span><span id="line-25">  }</span>
+<span class="source-line-no">026</span><span id="line-26"></span>
+<span class="source-line-no">027</span><span id="line-27">  public InfoRecord getInfoRecord() {</span>
+<span class="source-line-no">028</span><span id="line-28"></span>
+<span class="source-line-no">029</span><span id="line-29">    return this.infoRecord;</span>
+<span class="source-line-no">030</span><span id="line-30">  }</span>
+<span class="source-line-no">031</span><span id="line-31"></span>
+<span class="source-line-no">032</span><span id="line-32">  public int getCachedStock() {</span>
+<span class="source-line-no">033</span><span id="line-33"></span>
+<span class="source-line-no">034</span><span id="line-34">    return this.cachedStock;</span>
+<span class="source-line-no">035</span><span id="line-35">  }</span>
+<span class="source-line-no">036</span><span id="line-36"></span>
+<span class="source-line-no">037</span><span id="line-37">  public int getCachedSpace() {</span>
+<span class="source-line-no">038</span><span id="line-38"></span>
+<span class="source-line-no">039</span><span id="line-39">    return this.cachedSpace;</span>
+<span class="source-line-no">040</span><span id="line-40">  }</span>
+<span class="source-line-no">041</span><span id="line-41"></span>
+<span class="source-line-no">042</span><span id="line-42">  public void setDataRecord(final DataRecord dataRecord) {</span>
+<span class="source-line-no">043</span><span id="line-43"></span>
+<span class="source-line-no">044</span><span id="line-44">    this.dataRecord = dataRecord;</span>
+<span class="source-line-no">045</span><span id="line-45">  }</span>
+<span class="source-line-no">046</span><span id="line-46"></span>
+<span class="source-line-no">047</span><span id="line-47">  public void setInfoRecord(final InfoRecord infoRecord) {</span>
+<span class="source-line-no">048</span><span id="line-48"></span>
+<span class="source-line-no">049</span><span id="line-49">    this.infoRecord = infoRecord;</span>
+<span class="source-line-no">050</span><span id="line-50">  }</span>
+<span class="source-line-no">051</span><span id="line-51"></span>
+<span class="source-line-no">052</span><span id="line-52">  public void setCachedStock(final int cachedStock) {</span>
+<span class="source-line-no">053</span><span id="line-53"></span>
+<span class="source-line-no">054</span><span id="line-54">    this.cachedStock = cachedStock;</span>
+<span class="source-line-no">055</span><span id="line-55">  }</span>
+<span class="source-line-no">056</span><span id="line-56"></span>
+<span class="source-line-no">057</span><span id="line-57">  public void setCachedSpace(final int cachedSpace) {</span>
+<span class="source-line-no">058</span><span id="line-58"></span>
+<span class="source-line-no">059</span><span id="line-59">    this.cachedSpace = cachedSpace;</span>
+<span class="source-line-no">060</span><span id="line-60">  }</span>
+<span class="source-line-no">061</span><span id="line-61"></span>
+<span class="source-line-no">062</span><span id="line-62">  @Override</span>
+<span class="source-line-no">063</span><span id="line-63">  public boolean equals(final Object o) {</span>
+<span class="source-line-no">064</span><span id="line-64"></span>
+<span class="source-line-no">065</span><span id="line-65">    if(o == this) return true;</span>
+<span class="source-line-no">066</span><span id="line-66">    if(!(o instanceof ShopRecord)) return false;</span>
+<span class="source-line-no">067</span><span id="line-67">    final ShopRecord other = (ShopRecord)o;</span>
+<span class="source-line-no">068</span><span id="line-68">    return this.getCachedStock() == other.getCachedStock()</span>
+<span class="source-line-no">069</span><span id="line-69">           &amp;&amp; this.getCachedSpace() == other.getCachedSpace()</span>
+<span class="source-line-no">070</span><span id="line-70">           &amp;&amp; Objects.equals(this.getDataRecord(), other.getDataRecord())</span>
+<span class="source-line-no">071</span><span id="line-71">           &amp;&amp; Objects.equals(this.getInfoRecord(), other.getInfoRecord());</span>
+<span class="source-line-no">072</span><span id="line-72">  }</span>
+<span class="source-line-no">073</span><span id="line-73"></span>
+<span class="source-line-no">074</span><span id="line-74">  @Override</span>
+<span class="source-line-no">075</span><span id="line-75">  public int hashCode() {</span>
+<span class="source-line-no">076</span><span id="line-76"></span>
+<span class="source-line-no">077</span><span id="line-77">    return Objects.hash(this.getCachedStock(), this.getCachedSpace(), this.getDataRecord(), this.getInfoRecord());</span>
+<span class="source-line-no">078</span><span id="line-78">  }</span>
+<span class="source-line-no">079</span><span id="line-79"></span>
+<span class="source-line-no">080</span><span id="line-80">  @Override</span>
+<span class="source-line-no">081</span><span id="line-81">  public String toString() {</span>
+<span class="source-line-no">082</span><span id="line-82"></span>
+<span class="source-line-no">083</span><span id="line-83">    return "ShopRecord(dataRecord=" + this.getDataRecord() + ", infoRecord=" + this.getInfoRecord() + ", cachedStock=" + this.getCachedStock() + ", cachedSpace=" + this.getCachedSpace() + ")";</span>
+<span class="source-line-no">084</span><span id="line-84">  }</span>
+<span class="source-line-no">085</span><span id="line-85">}</span>
 
 
 
