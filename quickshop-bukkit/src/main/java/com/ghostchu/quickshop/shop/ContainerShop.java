@@ -2257,7 +2257,6 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
            && Objects.equals(this.shopType, other.shopType)
            && Objects.equals(this.shopState, other.shopState)
            && Objects.equals(this.getItem(), other.getItem())
-           && Objects.equals(this.originalItem, other.originalItem)
            && Objects.equals(this.itemSerialize, other.itemSerialize)
            && Objects.equals(this.getCurrency(), other.getCurrency())
            && Objects.equals(this.getTaxAccount(), other.getTaxAccount())
@@ -2272,6 +2271,6 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   @Override
   public int hashCode() {
 
-    return Objects.hash(this.getShopId(), this.getPrice(), this.isUnlimited(), this.isDisableDisplay(), this.extraMap, this.getLocation(), this.playerGroup, this.getOwner(), this.shopType, this.shopState, this.getItem(), this.originalItem, this.itemSerialize, this.getCurrency(), this.getTaxAccount(), this.getInventoryWrapperProvider(), this.symbolLink, this.getShopName(), this.benefit, this.updatingAtomic, this.inFlightUpdate);
+    return Objects.hash(this.getShopId(), this.getPrice(), this.isUnlimited(), this.isDisableDisplay(), this.extraMap, this.getLocation(), this.playerGroup, this.getOwner(), this.shopType, this.shopState, this.getItem(), this.itemSerialize, this.getCurrency(), this.getTaxAccount(), this.getInventoryWrapperProvider(), this.symbolLink, this.getShopName(), this.benefit, this.updatingAtomic, this.inFlightUpdate);
   }
 }
