@@ -834,8 +834,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
           return Collections.singletonList(LegacyComponentSerializer.legacySection().deserialize(path));
         }
         final List<Component> components = str.stream()
-                .map(s -> MiniMessageFiller.fillRaw(s, args))
-                .map(s -> manager.plugin.platform().miniMessage().deserialize(s, tagResolvers))
+                .map(s -> MiniMessageFiller.fill(s, manager.plugin.platform().miniMessage(), tagResolvers, args))
                 .toList();
         return postProcess(components);
       }
@@ -998,9 +997,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
           return LegacyComponentSerializer.legacySection().deserialize(path);
         }
 
-        final String filled = MiniMessageFiller.fillRaw(str, args);
-        final Component component = manager.plugin.platform().miniMessage().deserialize(filled, tagResolvers);
-        //final Component component = MiniMessageFiller.fill(str, manager.plugin.platform().miniMessage(), tagResolvers, args);
+        final Component component = MiniMessageFiller.fill(str, manager.plugin.platform().miniMessage(), tagResolvers, args);
         return postProcess(component);
       }
     }
