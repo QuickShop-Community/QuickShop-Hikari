@@ -29,19 +29,6 @@ We recommend using the **Final Obsession** plugin to ensure that all applicable 
 
 By using this plugin, you ensure that your code adheres to immutability standards when necessary.
 
-#### 2. Lombok Plugin
-
-We also recommend using the **Lombok** plugin to reduce boilerplate code, such as getters, setters, and constructors. Lombok helps make the code cleaner and easier to maintain.
-
-##### Installation:
-
-1. In IntelliJ, go to `File` -> `Settings` -> `Plugins`.
-2. Search for the plugin [Lombok](https://plugins.jetbrains.com/plugin/6317-lombok).
-3. Click `Install`.
-4. Restart IntelliJ to activate the plugin.
-
-Using Lombok will keep the codebase clean and reduce the amount of boilerplate.
-
 ## Contributor License Agreement (CLA)
 
 Before submitting your first pull request, you must sign our Contributor License Agreement (CLA). This is required to ensure that we can freely use your contributions while maintaining the integrity of the project's licensing. This will pop up for your PR automatically.

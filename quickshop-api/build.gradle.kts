@@ -8,10 +8,10 @@ dependencies {
     api("dev.dejvokep:boosted-yaml:1.3.7") {
         exclude("org.jetbrains", "annotations-java5")
     }
-    api("net.tnemc:TNIL-Bukkit:0.2.0.2-SNAPSHOT-1") {
+    api("net.tnemc:TNIL-Bukkit:0.2.0.3-SNAPSHOT-1") {
         exclude("net.kyori")
     }
-    api("net.tnemc:TNIL-Paper:0.2.0.2-SNAPSHOT-1") {
+    api("net.tnemc:TNIL-Paper:0.2.0.3-SNAPSHOT-1") {
         exclude("net.kyori")
     }
 }

@@ -1,8 +1,6 @@
 package com.ghostchu.quickshop;
 
 import com.ghostchu.quickshop.util.logger.Log;
-import lombok.Data;
-import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,14 +13,14 @@ import java.util.Properties;
  *
  * @author Ghost_chu
  */
-@Data
 public class BuildInfo {
 
   private final GitInfo gitInfo;
   private final JenkinsInfo ciInfo;
 
-  @SneakyThrows
   public BuildInfo(@Nullable final InputStream inputStream) {
+
+    try {
     // Read InputStream to String as UTF-8 encoding with Reader
     if(inputStream == null) {
       gitInfo = new GitInfo(new Properties());
@@ -33,6 +31,9 @@ public class BuildInfo {
     properties.load(inputStream);
     this.gitInfo = new GitInfo(properties);
     this.ciInfo = new JenkinsInfo(properties);
+    } catch(final Throwable ex) {
+      throw new RuntimeException(ex);
+    }
   }
 
   public static class GitInfo {
@@ -288,4 +289,35 @@ public class BuildInfo {
     }
   }
 
+  public GitInfo getGitInfo() {
+
+    return this.gitInfo;
+  }
+
+  public JenkinsInfo getCiInfo() {
+
+    return this.ciInfo;
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+
+    if(o == this) return true;
+    if(!(o instanceof BuildInfo)) return false;
+    final BuildInfo other = (BuildInfo)o;
+    return Objects.equals(this.getGitInfo(), other.getGitInfo())
+           && Objects.equals(this.getCiInfo(), other.getCiInfo());
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(this.getGitInfo(), this.getCiInfo());
+  }
+
+  @Override
+  public String toString() {
+
+    return "BuildInfo(gitInfo=" + this.getGitInfo() + ", ciInfo=" + this.getCiInfo() + ")";
+  }
 }

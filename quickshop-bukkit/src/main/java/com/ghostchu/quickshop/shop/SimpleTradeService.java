@@ -21,6 +21,7 @@ package com.ghostchu.quickshop.shop;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.obj.QUser;
+import com.ghostchu.quickshop.api.shop.InventoryTransaction;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.trading.TradeFailureReason;
 import com.ghostchu.quickshop.api.shop.trading.TradeOptions;
@@ -32,6 +33,7 @@ import com.ghostchu.quickshop.util.Util;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 
@@ -78,6 +80,7 @@ public class SimpleTradeService implements TradeService {
     if(!preview.allowed()) {
       return failedResult(
               TradeType.BUY_FROM_SHOP,
+              null,
               amount,
               preview.allowedAmount(),
               preview.unitPrice(),
@@ -86,9 +89,9 @@ public class SimpleTradeService implements TradeService {
               preview.debugMessage());
     }
 
+    final ItemStack item = shop.getItem();
+    SimpleInventoryTransaction transaction = null;
     try {
-      final ItemStack item = shop.getItem();
-      final SimpleInventoryTransaction transaction;
 
       if(shop.isUnlimited()) {
         transaction = SimpleInventoryTransaction.builder()
@@ -102,6 +105,7 @@ public class SimpleTradeService implements TradeService {
         if(chestInv == null) {
           return failedResult(
                   TradeType.BUY_FROM_SHOP,
+                  transaction,
                   amount,
                   0,
                   unitPrice(shop),
@@ -124,6 +128,7 @@ public class SimpleTradeService implements TradeService {
         }
         return failedResult(
                 TradeType.BUY_FROM_SHOP,
+                transaction,
                 amount,
                 0,
                 unitPrice(shop),
@@ -138,12 +143,14 @@ public class SimpleTradeService implements TradeService {
 
       return successResult(
               TradeType.BUY_FROM_SHOP,
+              transaction,
               amount,
               amount,
               unitPrice(shop));
     } catch(final Exception e) {
       return failedResult(
               TradeType.BUY_FROM_SHOP,
+              transaction,
               amount,
               0,
               unitPrice(shop),
@@ -180,6 +187,7 @@ public class SimpleTradeService implements TradeService {
     if(!preview.allowed()) {
       return failedResult(
               TradeType.SELL_TO_SHOP,
+              null,
               amount,
               preview.allowedAmount(),
               preview.unitPrice(),
@@ -188,9 +196,9 @@ public class SimpleTradeService implements TradeService {
               preview.debugMessage());
     }
 
+    final ItemStack item = shop.getItem();
+    SimpleInventoryTransaction transaction = null;
     try {
-      final ItemStack item = shop.getItem();
-      final SimpleInventoryTransaction transaction;
 
       if(shop.isUnlimited()) {
         transaction = SimpleInventoryTransaction.builder()
@@ -204,6 +212,7 @@ public class SimpleTradeService implements TradeService {
         if(chestInv == null) {
           return failedResult(
                   TradeType.SELL_TO_SHOP,
+                  transaction,
                   amount,
                   0,
                   unitPrice(shop),
@@ -226,6 +235,7 @@ public class SimpleTradeService implements TradeService {
         }
         return failedResult(
                 TradeType.SELL_TO_SHOP,
+                transaction,
                 amount,
                 0,
                 unitPrice(shop),
@@ -240,12 +250,14 @@ public class SimpleTradeService implements TradeService {
 
       return successResult(
               TradeType.SELL_TO_SHOP,
+              transaction,
               amount,
               amount,
               unitPrice(shop));
     } catch(final Exception e) {
       return failedResult(
               TradeType.SELL_TO_SHOP,
+              transaction,
               amount,
               0,
               unitPrice(shop),
@@ -436,12 +448,14 @@ public class SimpleTradeService implements TradeService {
   }
 
   private TradeResult successResult(@NotNull final TradeType type,
+                                    @Nullable final InventoryTransaction transaction,
                                     final int requestedAmount,
                                     final int tradedAmount,
                                     @NotNull final BigDecimal unitPrice) {
     return new TradeResult(
             true,
             type,
+            transaction,
             requestedAmount,
             tradedAmount,
             unitPrice,
@@ -455,6 +469,7 @@ public class SimpleTradeService implements TradeService {
   }
 
   private TradeResult failedResult(@NotNull final TradeType type,
+                                   @Nullable final InventoryTransaction transaction,
                                    final int requestedAmount,
                                    final int tradedAmount,
                                    @NotNull final BigDecimal unitPrice,
@@ -464,6 +479,7 @@ public class SimpleTradeService implements TradeService {
     return new TradeResult(
             false,
             type,
+            transaction,
             requestedAmount,
             tradedAmount,
             unitPrice,

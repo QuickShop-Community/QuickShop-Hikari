@@ -26,17 +26,17 @@ dependencies {
         exclude("net.tnemc", "TNIL-CORE")
         exclude("net.kyori")
     }
-    api("net.tnemc:TNIL-Bukkit:0.2.0.2-SNAPSHOT-1") {
+    api("net.tnemc:TNIL-Bukkit:0.2.0.3-SNAPSHOT-1") {
         exclude("net.kyori")
     }
-    api("net.tnemc:TNIL-Paper:0.2.0.2-SNAPSHOT-1") {
+    api("net.tnemc:TNIL-Paper:0.2.0.3-SNAPSHOT-1") {
         exclude("net.kyori")
     }
     api("net.tnemc:TNML-CORE:1.7.0.1-SNAPSHOT-5") {
         exclude("net.tnemc", "TNIL-Core")
         exclude("net.kyori")
     }
-    api("net.tnemc:TNIL-Core:0.2.0.2-SNAPSHOT-1") {
+    api("net.tnemc:TNIL-Core:0.2.0.3-SNAPSHOT-1") {
         exclude("net.kyori")
     }
 

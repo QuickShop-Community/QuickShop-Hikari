@@ -1,4 +1,5 @@
 package com.ghostchu.quickshop.util;
+
 /*
  * QuickShop-Hikari
  * Copyright (C) 2024 Daniel "creatorfromhell" Vidmar
@@ -37,7 +38,6 @@ import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.SimpleInfo;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.util.logger.Log;
-import lombok.Data;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -78,10 +78,7 @@ public class ShopUtil {
 
   public static boolean allowed(final Block shopBlock, final ItemStack itemStack) {
 
-    if(shopBlock.getState(false) instanceof ShulkerBox
-       && itemStack.getItemMeta() instanceof final BlockStateMeta blockMeta
-       && blockMeta.getBlockState() instanceof ShulkerBox) {
-
+    if(shopBlock.getState(false) instanceof ShulkerBox && itemStack.getItemMeta() instanceof BlockStateMeta blockMeta && blockMeta.getBlockState() instanceof ShulkerBox) {
       return false;
     }
 
@@ -118,10 +115,10 @@ public class ShopUtil {
   /**
    * Initiates a transfer request for a single shop from a sender user to a receiver user.
    *
-   * @param senderQUser The sending user initiating the transfer. Must not be null.
-   *                    The user must have a valid unique ID.
-   * @param receiverQUser The receiving user for the transfer. Must not be null.
-   *                      The user must have a valid unique ID. Cannot be the same user as the sender.
+   * @param senderQUser   The sending user initiating the transfer. Must not be null. The user must
+   *                      have a valid unique ID.
+   * @param receiverQUser The receiving user for the transfer. Must not be null. The user must have
+   *                      a valid unique ID. Cannot be the same user as the sender.
    * @param name The string name of the receiving player. Must not be null.
    * @param shop The shop to be transferred as part of the request. Must not be null.
    */
@@ -133,13 +130,13 @@ public class ShopUtil {
   /**
    * Initiates a transfer request of shops from a sender user to a receiver user.
    *
-   * @param senderQUser The sending user initiating the transfer. Must not be null.
-   *                    The user must have a valid unique ID.
-   * @param receiverQUser The receiving user for the transfer. Must not be null.
-   *                      The user must have a valid unique ID. Cannot be the same user as the sender.
+   * @param senderQUser     The sending user initiating the transfer. Must not be null. The user
+   *                        must have a valid unique ID.
+   * @param receiverQUser   The receiving user for the transfer. Must not be null. The user must
+   *                        have a valid unique ID. Cannot be the same user as the sender.
    * @param name The string name of the receiving player. Must not be null.
-   * @param shopsToTransfer A list of shops to be transferred. Must not be null.
-   *                        The provided list should contain valid shop entries.
+   * @param shopsToTransfer A list of shops to be transferred. Must not be null. The provided list
+   *                        should contain valid shop entries.
    */
   public static void transferRequest(@NotNull final QUser senderQUser, @NotNull final QUser receiverQUser, @NotNull final String name, @NotNull final List<Shop> shopsToTransfer) {
 
@@ -554,7 +551,6 @@ public class ShopUtil {
     return amount;
   }
 
-  @Data
   public static class PendingTransferTask {
 
     private final QUser from;
@@ -599,5 +595,43 @@ public class ShopUtil {
         }
       }
     }
+
+    public QUser getFrom() {
+
+      return this.from;
+    }
+
+    public QUser getTo() {
+
+      return this.to;
+    }
+
+    public List<Shop> getShops() {
+
+      return this.shops;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+
+      if(o == this) return true;
+      if(!(o instanceof ShopUtil.PendingTransferTask)) return false;
+      final ShopUtil.PendingTransferTask other = (ShopUtil.PendingTransferTask)o;
+      return Objects.equals(this.getFrom(), other.getFrom())
+             && Objects.equals(this.getTo(), other.getTo())
+             && Objects.equals(this.getShops(), other.getShops());
+    }
+
+    @Override
+    public int hashCode() {
+
+      return Objects.hash(this.getFrom(), this.getTo(), this.getShops());
+    }
+
+    @Override
+    public String toString() {
+
+      return "ShopUtil.PendingTransferTask(from=" + this.getFrom() + ", to=" + this.getTo() + ", shops=" + this.getShops() + ")";
+  }
   }
 }

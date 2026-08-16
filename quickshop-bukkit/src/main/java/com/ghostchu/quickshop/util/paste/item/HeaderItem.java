@@ -1,12 +1,11 @@
 package com.ghostchu.quickshop.util.paste.item;
 
 import com.ghostchu.quickshop.QuickShop;
-import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
+import java.util.Objects;
 
-@Data
 public class HeaderItem implements PasteItem {
 
   private static final String TEMPLATE = """
@@ -43,7 +42,8 @@ public class HeaderItem implements PasteItem {
   }
 
   @Override
-  public @NotNull String toHTML() {
+  @NotNull
+  public String toHTML() {
 
     String base = TEMPLATE
             .replace("{title}", "QuickShop-" + QuickShop.getInstance().getFork() + " // Paste (" + QuickShop.getInstance().getVersion() + ")")
@@ -63,5 +63,37 @@ public class HeaderItem implements PasteItem {
       builder.append("</tr>");
     }
     return builder.toString();
+  }
+
+  public long getTimestamp() {
+
+    return this.timestamp;
+  }
+
+  public Map<String, String> getItems() {
+
+    return this.items;
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+
+    if(o == this) return true;
+    if(!(o instanceof HeaderItem)) return false;
+    final HeaderItem other = (HeaderItem)o;
+    return this.getTimestamp() == other.getTimestamp()
+           && Objects.equals(this.getItems(), other.getItems());
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(this.getTimestamp(), this.getItems());
+  }
+
+  @Override
+  public String toString() {
+
+    return "HeaderItem(timestamp=" + this.getTimestamp() + ", items=" + this.getItems() + ")";
   }
 }

@@ -5,7 +5,6 @@ import com.ghostchu.quickshop.api.event.CalendarEvent;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.tcoded.folialib.wrapper.task.WrappedTask;
-import lombok.Getter;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -19,9 +18,7 @@ import java.util.Calendar;
  */
 public class CalendarWatcher implements Runnable {
 
-  @Getter
   private final File calendarFile = new File(Util.getCacheFolder(), "calendar.cache");
-  @Getter
   private final YamlConfiguration configuration;
   private final QuickShop plugin;
   private WrappedTask task;
@@ -137,5 +134,15 @@ public class CalendarWatcher implements Runnable {
     } catch(final IllegalStateException ex) {
       Log.debug("Calendar watcher task already cancelled: " + ex.getMessage());
     }
+  }
+
+  public File getCalendarFile() {
+
+    return this.calendarFile;
+  }
+
+  public YamlConfiguration getConfiguration() {
+
+    return this.configuration;
   }
 }

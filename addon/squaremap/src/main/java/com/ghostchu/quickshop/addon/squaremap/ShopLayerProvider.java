@@ -6,7 +6,6 @@ import com.ghostchu.quickshop.api.shop.query.Filters;
 import com.ghostchu.quickshop.api.shop.query.ShopQuery;
 import com.ghostchu.quickshop.api.shop.query.filters.WorldUUIDFilter;
 import com.ghostchu.quickshop.menu.browse.MarketUtils;
-import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
@@ -43,10 +42,12 @@ public class ShopLayerProvider {
 
   @Nullable
   public SimpleLayerProvider getWorldProvider(@NotNull final World world) {
+
     return providers.get(world.getName());
   }
 
   public void clearWorld(@NotNull final World world) {
+
     final SimpleLayerProvider provider = providers.remove(world.getName());
 
     if(provider != null) {
@@ -74,6 +75,7 @@ public class ShopLayerProvider {
   }
 
   public void updateShopMarker(@NotNull final Shop shop) {
+
     final Location location = shop.bukkitLocation();
     final World world = location.getWorld();
 
@@ -94,6 +96,7 @@ public class ShopLayerProvider {
   }
 
   public void removeShopMarker(@NotNull final Shop shop) {
+
     final World world = shop.bukkitLocation().getWorld();
 
     if(world == null) {
@@ -110,11 +113,13 @@ public class ShopLayerProvider {
 
   @NotNull
   private Key markerKey(@NotNull final Shop shop) {
+
     return Key.of(Main.SQUAREMAP_KEY + "_" + shop.bukkitLocation().getWorld().getName() + "_" + shop.getShopId());
   }
 
   @NotNull
   private Icon createShopIcon(@NotNull final Shop shop) {
+
     final Location loc = shop.bukkitLocation();
     final Point point = Point.of(loc.getBlockX(), loc.getBlockZ());
 
@@ -130,6 +135,7 @@ public class ShopLayerProvider {
 
   @NotNull
   private String plain(@NotNull final Component component) {
+
     return PlainTextComponentSerializer.plainText().serialize(component);
   }
 

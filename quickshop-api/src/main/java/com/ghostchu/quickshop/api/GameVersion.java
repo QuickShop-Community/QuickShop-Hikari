@@ -1,6 +1,5 @@
 package com.ghostchu.quickshop.api;
 
-import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
@@ -10,13 +9,7 @@ import java.util.function.Consumer;
  *
  * @author Ghost_chu and sandtechnology
  */
-@Getter
 public enum GameVersion {
-  v1_18_R1(new String[]{ "1.18", "1.18.1" }, false, true, false, true, false),
-  v1_18_R2(new String[]{ "1.18.2" }, true, true, true, true, false),
-  v1_19_R1(new String[]{ "1.19", "1.19.1" }, true, true, true, true, false),
-  v1_19_R2(new String[]{ "1.19.2" }, true, true, true, true, false),
-  v1_19_R3(new String[]{ "1.19.3", "1.19.4" }, true, true, true, true, false),
   v1_20_R1(new String[]{ "1.20", "1.20.1" }, true, true, true, true, false),
   v1_20_R2(new String[]{ "1.20.2", "1.20.3" }, true, true, true, true, false),
   v1_20_R3(new String[]{ "1.20.4", "1.20.5" }, true, true, true, true, true),
@@ -106,4 +99,45 @@ public enum GameVersion {
     return v1_21_R10;
   }
 
+  public String[] getMcVersion() {
+
+    return this.mcVersion;
+  }
+
+  /**
+   * CoreSupports - Check does QuickShop most features supports this server version
+   */
+  public boolean isCoreSupports() {
+
+    return this.coreSupports;
+  }
+
+  /**
+   * EndOfLife - It will disable update checker or some else checks
+   */
+  public boolean isEndOfLife() {
+
+    return this.endOfLife;
+  }
+
+  /**
+   * VirtualDisplaySupports - Check does QuickShop VirtualDisplayItem feature this server version
+   */
+  public boolean isVirtualDisplaySupports() {
+
+    return this.virtualDisplaySupports;
+  }
+
+  /**
+   * NewNmsName - Use 1.17+ nms class name mapping
+   */
+  public boolean isNewNmsName() {
+
+    return this.newNmsName;
+  }
+
+  public boolean isNewPotionAPI() {
+
+    return this.newPotionAPI;
+  }
 }
