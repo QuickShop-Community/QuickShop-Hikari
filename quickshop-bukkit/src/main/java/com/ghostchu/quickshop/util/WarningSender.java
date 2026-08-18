@@ -1,21 +1,18 @@
 package com.ghostchu.quickshop.util;
 
 import com.ghostchu.quickshop.QuickShop;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 /**
  * WarningSender to prevent send too many warnings to CommandSender in short time.
  *
  * @author Ghost_chu
  */
-@EqualsAndHashCode
-@ToString
 public class WarningSender {
 
   private final long cooldown;
-  @ToString.Exclude
   private final QuickShop plugin;
   private long lastSend = 0;
 
@@ -48,4 +45,26 @@ public class WarningSender {
     return false;
   }
 
+  @Override
+  public boolean equals(final Object o) {
+
+    if(o == this) return true;
+    if(!(o instanceof WarningSender)) return false;
+    final WarningSender other = (WarningSender)o;
+    return this.cooldown == other.cooldown
+           && this.lastSend == other.lastSend
+           && Objects.equals(this.plugin, other.plugin);
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(this.cooldown, this.lastSend, this.plugin);
+  }
+
+  @Override
+  public String toString() {
+
+    return "WarningSender(cooldown=" + this.cooldown + ", lastSend=" + this.lastSend + ")";
+  }
 }

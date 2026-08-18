@@ -1,10 +1,8 @@
 package com.ghostchu.quickshop.api.serialize;
 
-import lombok.EqualsAndHashCode;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
-@EqualsAndHashCode
 public final class BlockPos {
 
   private final int version = 2;
@@ -65,17 +63,41 @@ public final class BlockPos {
   @Override
   public String toString() {
 
-    return "BlockPos{" +
-           "version=" + version +
-           ", x=" + x +
-           ", y=" + y +
-           ", z=" + z +
-           ", world='" + world + '\'' +
-           '}';
+    return "BlockPos{" + "version=" + version + ", x=" + x + ", y=" + y + ", z=" + z + ", world='" + world + '\'' + '}';
   }
 
   public String serialize() {
 
     return version + ";" + x + ";" + y + ";" + z + ";" + world;
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+
+    if(o == this) return true;
+    if(!(o instanceof BlockPos)) return false;
+    final BlockPos other = (BlockPos)o;
+    if(this.version != other.version) return false;
+    if(this.getX() != other.getX()) return false;
+    if(this.getY() != other.getY()) return false;
+    if(this.getZ() != other.getZ()) return false;
+    final Object thisWorld = this.getWorld();
+    final Object otherWorld = other.getWorld();
+    if(thisWorld == null? otherWorld != null : !thisWorld.equals(otherWorld)) return false;
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+
+    final int PRIME = 59;
+    int result = 1;
+    result = result * PRIME + this.version;
+    result = result * PRIME + this.getX();
+    result = result * PRIME + this.getY();
+    result = result * PRIME + this.getZ();
+    final Object worldValue = this.getWorld();
+    result = result * PRIME + (worldValue == null? 43 : worldValue.hashCode());
+    return result;
   }
 }

@@ -1,7 +1,5 @@
 package com.ghostchu.quickshop;
 
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -14,8 +12,6 @@ import java.util.Arrays;
  *
  * @author Ghost_chu
  */
-@EqualsAndHashCode
-@ToString
 public class BootError {
 
   private final String[] errors;
@@ -49,4 +45,34 @@ public class BootError {
     sender.sendMessage(ChatColor.RED + "#####################################################");
   }
 
+  @Override
+  public boolean equals(final Object o) {
+
+    if(o == this) return true;
+    if(!(o instanceof BootError)) return false;
+    final BootError other = (BootError)o;
+    if(!other.canEqual((Object)this)) return false;
+    if(!java.util.Arrays.deepEquals(this.getErrors(), other.getErrors())) return false;
+    return true;
+  }
+
+  protected boolean canEqual(final Object other) {
+
+    return other instanceof BootError;
+  }
+
+  @Override
+  public int hashCode() {
+
+    final int PRIME = 59;
+    int result = 1;
+    result = result * PRIME + java.util.Arrays.deepHashCode(this.getErrors());
+    return result;
+  }
+
+  @Override
+  public String toString() {
+
+    return "BootError(errors=" + java.util.Arrays.deepToString(this.getErrors()) + ")";
+  }
 }

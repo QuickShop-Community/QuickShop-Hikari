@@ -36,8 +36,7 @@ public class SubCommand_Amount implements CommandHandler<Player> {
 
   @NotNull
   @Override
-  public List<String> onTabComplete(
-          @NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
+  public List<String> onTabComplete(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     return parser.getArgs().size() == 1? Collections.singletonList(plugin.text().of(sender, "tabcomplete.amount").legacy()) : Collections.emptyList();
   }

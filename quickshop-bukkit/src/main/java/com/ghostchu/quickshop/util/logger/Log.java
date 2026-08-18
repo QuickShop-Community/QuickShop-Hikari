@@ -6,9 +6,6 @@ import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.common.util.Timer;
 import com.ghostchu.quickshop.util.Util;
 import com.google.common.collect.EvictingQueue;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -275,17 +272,9 @@ public class Log {
   }
 
   public enum Type {
-    DEBUG,
-    CRON,
-    TRANSACTION,
-    TIMING,
-    PERFORMANCE,
-    PRIVACY,
-    PERMISSION
+    DEBUG, CRON, TRANSACTION, TIMING, PERFORMANCE, PRIVACY, PERMISSION;
   }
 
-  @Getter
-  @EqualsAndHashCode
   public static class Record {
 
     private final long timestamp = System.currentTimeMillis();
@@ -333,10 +322,57 @@ public class Log {
 
       return generate().join();
     }
+
+    public long getTimestamp() {
+
+      return this.timestamp;
   }
 
-  @Data
-  public final static class Caller {
+    @NotNull
+    public Level getLevel() {
+
+      return this.level;
+    }
+
+    @NotNull
+    public Type getType() {
+
+      return this.type;
+    }
+
+    @NotNull
+    public String getMessage() {
+
+      return this.message;
+    }
+
+    @Nullable
+    public Caller getCaller() {
+
+      return this.caller;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+
+      if(o == this) return true;
+      if(!(o instanceof Log.Record)) return false;
+      final Log.Record other = (Log.Record)o;
+      return this.getTimestamp() == other.getTimestamp()
+             && Objects.equals(this.getLevel(), other.getLevel())
+             && Objects.equals(this.getType(), other.getType())
+             && Objects.equals(this.getMessage(), other.getMessage())
+             && Objects.equals(this.getCaller(), other.getCaller());
+    }
+
+    @Override
+    public int hashCode() {
+
+      return Objects.hash(this.getTimestamp(), this.getLevel(), this.getType(), this.getMessage(), this.getCaller());
+    }
+  }
+
+  public static final class Caller {
 
     private static final ThreadLocal<CallerCache> CALLER_CACHE = ThreadLocal.withInitial(CallerCache::new);
 
@@ -376,6 +412,7 @@ public class Log {
 
     @NotNull
     public static Caller create(final int steps, final boolean force) {
+
       if(!force) {
         if("true".equalsIgnoreCase(System.getProperty("quickshop-hikari-disable-debug-logger"))) {
           return new Caller("<DISABLED>", "<DISABLED>", "<DISABLED>", -1);
@@ -403,16 +440,87 @@ public class Log {
     }
 
     /**
-     * Cleans up the ThreadLocal cache for the current thread.
-     * Should be called during plugin shutdown or when threads are being terminated.
+     * Cleans up the ThreadLocal cache for the current thread. Should be called during plugin
+     * shutdown or when threads are being terminated.
      */
     public static void cleanupThreadLocal() {
+
       CALLER_CACHE.remove();
     }
 
     private static class CallerCache {
+
       int steps = -1;
       Caller caller = null;
+    }
+
+    @NotNull
+    public String getThreadName() {
+
+      return this.threadName;
+    }
+
+    @NotNull
+    public String getClassName() {
+
+      return this.className;
+    }
+
+    @NotNull
+    public String getMethodName() {
+
+      return this.methodName;
+    }
+
+    public int getLineNumber() {
+
+      return this.lineNumber;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+
+      if(o == this) return true;
+      if(!(o instanceof Log.Caller)) return false;
+      final Log.Caller other = (Log.Caller)o;
+      if(this.getLineNumber() != other.getLineNumber()) return false;
+      final Object thisThreadName = this.getThreadName();
+      final Object otherThreadName = other.getThreadName();
+      if(thisThreadName == null? otherThreadName != null : !thisThreadName.equals(otherThreadName)) {
+        return false;
+      }
+      final Object thisClassName = this.getClassName();
+      final Object otherClassName = other.getClassName();
+      if(thisClassName == null? otherClassName != null : !thisClassName.equals(otherClassName)) {
+        return false;
+      }
+      final Object thisMethodName = this.getMethodName();
+      final Object otherMethodName = other.getMethodName();
+      if(thisMethodName == null? otherMethodName != null : !thisMethodName.equals(otherMethodName)) {
+        return false;
+      }
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+
+      final int PRIME = 59;
+      int result = 1;
+      result = result * PRIME + this.getLineNumber();
+      final Object threadNameValue = this.getThreadName();
+      result = result * PRIME + (threadNameValue == null? 43 : threadNameValue.hashCode());
+      final Object classNameValue = this.getClassName();
+      result = result * PRIME + (classNameValue == null? 43 : classNameValue.hashCode());
+      final Object methodNameValue = this.getMethodName();
+      result = result * PRIME + (methodNameValue == null? 43 : methodNameValue.hashCode());
+      return result;
+    }
+
+    @Override
+    public String toString() {
+
+      return "Log.Caller(threadName=" + this.getThreadName() + ", className=" + this.getClassName() + ", methodName=" + this.getMethodName() + ", lineNumber=" + this.getLineNumber() + ")";
     }
   }
 

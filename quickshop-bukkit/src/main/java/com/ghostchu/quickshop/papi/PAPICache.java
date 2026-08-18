@@ -9,10 +9,10 @@ import com.ghostchu.simplereloadlib.Reloadable;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheStats;
-import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -43,7 +43,7 @@ public class PAPICache implements Reloadable {
   @NotNull
   public Optional<String> getCached(@NotNull final UUID player, @NotNull final String args, @NotNull final BiFunction<UUID, String, String> loader) {
 
-    try(final PerfMonitor ignored = new PerfMonitor("PlaceHolder API Handling")) {
+    try(PerfMonitor ignored = new PerfMonitor("PlaceHolder API Handling")) {
       return performCaches.get(compileUniqueKey(player, args), ()->Optional.ofNullable(loader.apply(player, args)));
     } catch(final ExecutionException ex) {
       plugin.logger().warn("Failed to get cache for " + player + " " + args, ex);
@@ -100,7 +100,8 @@ public class PAPICache implements Reloadable {
     return expiredTime;
   }
 
-  public @NotNull CacheStats getStats() {
+  @NotNull
+  public CacheStats getStats() {
 
     return performCaches.stats();
   }
@@ -128,7 +129,6 @@ public class PAPICache implements Reloadable {
     performCaches.put(compileUniqueKey(player, queryString), Optional.of(queryValue));
   }
 
-  @Data
   static class CompiledUniqueKey {
 
     private UUID player;
@@ -138,6 +138,48 @@ public class PAPICache implements Reloadable {
 
       this.player = player;
       this.queryString = queryString;
+    }
+
+    public UUID getPlayer() {
+
+      return this.player;
+    }
+
+    public String getQueryString() {
+
+      return this.queryString;
+    }
+
+    public void setPlayer(final UUID player) {
+
+      this.player = player;
+    }
+
+    public void setQueryString(final String queryString) {
+
+      this.queryString = queryString;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+
+      if(o == this) return true;
+      if(!(o instanceof PAPICache.CompiledUniqueKey)) return false;
+      final PAPICache.CompiledUniqueKey other = (PAPICache.CompiledUniqueKey)o;
+      return Objects.equals(this.getPlayer(), other.getPlayer())
+             && Objects.equals(this.getQueryString(), other.getQueryString());
+    }
+
+    @Override
+    public int hashCode() {
+
+      return Objects.hash(this.getPlayer(), this.getQueryString());
+    }
+
+    @Override
+    public String toString() {
+
+      return "PAPICache.CompiledUniqueKey(player=" + this.getPlayer() + ", queryString=" + this.getQueryString() + ")";
     }
   }
 

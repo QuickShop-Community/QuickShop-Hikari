@@ -142,10 +142,10 @@ public class GroupedItemPage {
     // Search button (slot 0) - Left-click to search, Right-click to clear
     final String searchMaterial = (searchConfig != null)? searchConfig.getMaterial() : "ANVIL";
     final int searchSlot = (searchConfig != null)? searchConfig.getSlot() : 0;
-    final String currentSearchDisplay = searchQuery.isEmpty()? "None" : searchQuery;
+    final String currentSearchDisplay = (searchQuery.isEmpty())? "None" : searchQuery;
 
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(searchMaterial, 1)
-                                             .customName(getConfigDisplay(id, searchConfig, "<yellow>Search: {0}</yellow>", currentSearchDisplay))
+                                             .customName(getConfigDisplay(id, searchConfig, "name", "<yellow>Search: {0}</yellow>", currentSearchDisplay))
                                              .lore(getConfigLore(id, searchConfig, currentSearchDisplay)))
                              .withSlot(searchSlot)
                              .withActions(new GuiChatAction((message)->{
@@ -179,7 +179,7 @@ public class GroupedItemPage {
     final int sortSlot = (sortConfig != null)? sortConfig.getSlot() : 2;
 
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(sortMaterial, 1)
-                                             .customName(getConfigDisplay(id, sortConfig, "<green>Sort: {0}</green>", getSortDisplayName(id, sortMode)))
+                                             .customName(getConfigDisplay(id, sortConfig, "name", "<green>Sort: {0}</green>", getSortDisplayName(id, sortMode)))
                                              .lore(getConfigLore(id, sortConfig)))
                              .withSlot(sortSlot)
                              .withActions(
@@ -194,7 +194,7 @@ public class GroupedItemPage {
     final int filterSlot = (filterConfig != null)? filterConfig.getSlot() : 4;
 
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(filterMaterial, 1)
-                                             .customName(getConfigDisplay(id, filterConfig, "<aqua>Filter: {0}</aqua>", getFilterDisplayName(id, filterMode)))
+                                             .customName(getConfigDisplay(id, filterConfig, "name", "<aqua>Filter: {0}</aqua>", getFilterDisplayName(id, filterMode)))
                                              .lore(getConfigLore(id, filterConfig)))
                              .withSlot(filterSlot)
                              .withActions(
@@ -210,7 +210,7 @@ public class GroupedItemPage {
     final String stockStatus = (stockOnly)? "ON" : "OFF";
 
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(stockMaterial, 1)
-                                             .customName(getConfigDisplay(id, stockConfig, "<gold>In Stock Only: {0}</gold>", stockStatus))
+                                             .customName(getConfigDisplay(id, stockConfig, "name", "<gold>In Stock Only: {0}</gold>", stockStatus))
                                              .lore(getConfigLore(id, stockConfig)))
                              .withSlot(stockSlot)
                              .withActions(
