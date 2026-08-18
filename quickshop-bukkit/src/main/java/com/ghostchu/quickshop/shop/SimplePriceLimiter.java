@@ -172,6 +172,9 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
     if(Double.isInfinite(price) || Double.isNaN(price)) {
       return new SimplePriceLimiterCheckResult(PriceLimiterStatus.NOT_VALID, undefinedMin, undefinedMax);
     }
+    if(price < 0) {
+      return new SimplePriceLimiterCheckResult(PriceLimiterStatus.REACHED_PRICE_MIN_LIMIT, 0.0d, undefinedMax);
+    }
     if(wholeNumberOnly) {
       try {
         BigDecimal.valueOf(price).setScale(0, RoundingMode.UNNECESSARY);
@@ -239,6 +242,9 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
 
     if(Double.isInfinite(price) || Double.isNaN(price)) {
       return new SimplePriceLimiterCheckResult(PriceLimiterStatus.NOT_VALID, undefinedMin, undefinedMax);
+    }
+    if(price < 0) {
+      return new SimplePriceLimiterCheckResult(PriceLimiterStatus.REACHED_PRICE_MIN_LIMIT, 0.0d, undefinedMax);
     }
     if(wholeNumberOnly) {
       try {
