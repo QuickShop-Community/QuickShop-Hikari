@@ -18,9 +18,9 @@ package com.ghostchu.quickshop.api.updater;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import java.util.Objects;
-
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 /**
  * UpdateMetadata

@@ -71,7 +71,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
       public void run() {
 
         nameCache.asMap().entrySet().removeIf(entry->entry.getValue().isEmpty());
-        handling.entrySet().removeIf(entry->entry.getKey().get() == null);
+        handling.entrySet().removeIf(entry->entry.getKey().get() == null || entry.getValue().isEmpty());
       }
     }, 0, 1000 * 60 * 60);
   }
