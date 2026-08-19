@@ -33,32 +33,33 @@
 <span class="source-line-no">020</span><span id="line-20"></span>
 <span class="source-line-no">021</span><span id="line-21">import com.ghostchu.quickshop.api.shop.Shop;</span>
 <span class="source-line-no">022</span><span id="line-22">import com.ghostchu.quickshop.api.shop.query.Filter;</span>
-<span class="source-line-no">023</span><span id="line-23">import org.bukkit.Material;import org.jetbrains.annotations.NotNull;</span>
-<span class="source-line-no">024</span><span id="line-24"></span>
-<span class="source-line-no">025</span><span id="line-25">/**</span>
-<span class="source-line-no">026</span><span id="line-26"> * MaterialFilter</span>
-<span class="source-line-no">027</span><span id="line-27"> *</span>
-<span class="source-line-no">028</span><span id="line-28"> * @author creatorfromhell</span>
-<span class="source-line-no">029</span><span id="line-29"> * @since 6.3.0.0</span>
-<span class="source-line-no">030</span><span id="line-30"> */</span>
-<span class="source-line-no">031</span><span id="line-31">public class MaterialFilter implements Filter&lt;Material&gt; {</span>
-<span class="source-line-no">032</span><span id="line-32"></span>
-<span class="source-line-no">033</span><span id="line-33">  /**</span>
-<span class="source-line-no">034</span><span id="line-34">   * Determines whether the specified object satisfies the criteria defined by the implementation in</span>
-<span class="source-line-no">035</span><span id="line-35">   * the context of the given shop.</span>
-<span class="source-line-no">036</span><span id="line-36">   *</span>
-<span class="source-line-no">037</span><span id="line-37">   * @param shop   The shop to consider when evaluating the criteria.</span>
-<span class="source-line-no">038</span><span id="line-38">   * @param object The object to evaluate against the criteria.</span>
-<span class="source-line-no">039</span><span id="line-39">   *</span>
-<span class="source-line-no">040</span><span id="line-40">   * @return {@code true} if the object satisfies the criteria for the given shop, {@code false}</span>
-<span class="source-line-no">041</span><span id="line-41">   * otherwise.</span>
-<span class="source-line-no">042</span><span id="line-42">   */</span>
-<span class="source-line-no">043</span><span id="line-43">  @Override</span>
-<span class="source-line-no">044</span><span id="line-44">  public boolean applies(final @NotNull Shop shop, final @NotNull Material object) {</span>
-<span class="source-line-no">045</span><span id="line-45"></span>
-<span class="source-line-no">046</span><span id="line-46">    return shop.getItem().getType() == object;</span>
-<span class="source-line-no">047</span><span id="line-47">  }</span>
-<span class="source-line-no">048</span><span id="line-48">}</span>
+<span class="source-line-no">023</span><span id="line-23">import org.bukkit.Material;</span>
+<span class="source-line-no">024</span><span id="line-24">import org.jetbrains.annotations.NotNull;</span>
+<span class="source-line-no">025</span><span id="line-25"></span>
+<span class="source-line-no">026</span><span id="line-26">/**</span>
+<span class="source-line-no">027</span><span id="line-27"> * MaterialFilter</span>
+<span class="source-line-no">028</span><span id="line-28"> *</span>
+<span class="source-line-no">029</span><span id="line-29"> * @author creatorfromhell</span>
+<span class="source-line-no">030</span><span id="line-30"> * @since 6.3.0.0</span>
+<span class="source-line-no">031</span><span id="line-31"> */</span>
+<span class="source-line-no">032</span><span id="line-32">public class MaterialFilter implements Filter&lt;Material&gt; {</span>
+<span class="source-line-no">033</span><span id="line-33"></span>
+<span class="source-line-no">034</span><span id="line-34">  /**</span>
+<span class="source-line-no">035</span><span id="line-35">   * Determines whether the specified object satisfies the criteria defined by the implementation in</span>
+<span class="source-line-no">036</span><span id="line-36">   * the context of the given shop.</span>
+<span class="source-line-no">037</span><span id="line-37">   *</span>
+<span class="source-line-no">038</span><span id="line-38">   * @param shop   The shop to consider when evaluating the criteria.</span>
+<span class="source-line-no">039</span><span id="line-39">   * @param object The object to evaluate against the criteria.</span>
+<span class="source-line-no">040</span><span id="line-40">   *</span>
+<span class="source-line-no">041</span><span id="line-41">   * @return {@code true} if the object satisfies the criteria for the given shop, {@code false}</span>
+<span class="source-line-no">042</span><span id="line-42">   * otherwise.</span>
+<span class="source-line-no">043</span><span id="line-43">   */</span>
+<span class="source-line-no">044</span><span id="line-44">  @Override</span>
+<span class="source-line-no">045</span><span id="line-45">  public boolean applies(final @NotNull Shop shop, final @NotNull Material object) {</span>
+<span class="source-line-no">046</span><span id="line-46"></span>
+<span class="source-line-no">047</span><span id="line-47">    return shop.getItem().getType() == object;</span>
+<span class="source-line-no">048</span><span id="line-48">  }</span>
+<span class="source-line-no">049</span><span id="line-49">}</span>
 
 
 
