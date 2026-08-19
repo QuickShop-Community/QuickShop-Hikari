@@ -839,7 +839,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
       logger.info("Start to caching usernames (async)...");
       ((FastPlayerFinder)getPlayerFinder()).bakeCaches();
     });
-    /* Initalize the tools */
+    /* Initialize the tools */
     // Create the shop manager.
     permissionManager = new PermissionManager(this);
     shopPermissionManager = new SimpleShopPermissionManager(this);
