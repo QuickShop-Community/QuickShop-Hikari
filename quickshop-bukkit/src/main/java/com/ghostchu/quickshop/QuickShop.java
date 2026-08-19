@@ -165,7 +165,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
-import java.awt.print.Paper;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -2,9 +2,6 @@ package com.ghostchu.quickshop.addon.squaremap;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.api.shop.query.Filters;
-import com.ghostchu.quickshop.api.shop.query.ShopQuery;
-import com.ghostchu.quickshop.api.shop.query.filters.WorldUUIDFilter;
 import com.ghostchu.quickshop.menu.browse.MarketUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
