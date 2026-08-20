@@ -201,7 +201,7 @@ public class MainPage extends QuickShopPage {
         final int freezeToggleSlot = (freezeToggleConfig != null)? freezeToggleConfig.getSlot() : 20;
 
         if(shop.get().playerAuthorize(id, BuiltInShopPermission.SET_SHOP_STATE)
-           && QuickShop.getInstance().perm().hasPermission(player, "quickshop.freeze")
+           && QuickShop.getInstance().perm().hasPermission(player, "quickshop.togglefreeze")
            || QuickShop.getInstance().perm().hasPermission(player, "quickshop.other.freeze")) {
 
           final String freezeText = QuickShop.getInstance().text().of("shop-state.freeze").plain();

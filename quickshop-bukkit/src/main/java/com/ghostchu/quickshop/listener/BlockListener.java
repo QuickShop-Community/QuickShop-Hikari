@@ -100,7 +100,7 @@ public class BlockListener extends AbstractProtectionListener {
       }
       // If they're either survival or the owner, they can break it
       if(p.getGameMode() == GameMode.CREATIVE
-         && (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.DELETE) || plugin.perm().hasPermission(p, "quickshop.other.destory"))) {
+         && (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.DELETE) || plugin.perm().hasPermission(p, "quickshop.other.destroy"))) {
         // Check SuperTool
         if(p.getInventory().getItemInMainHand().getType() == Material.GOLDEN_AXE) {
           if(getPlugin().getConfig().getBoolean("shop.disable-super-tool")) {
@@ -137,7 +137,7 @@ public class BlockListener extends AbstractProtectionListener {
       // (accidents happen)
       if(p.getGameMode() == GameMode.CREATIVE
          && (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.DELETE)
-             || plugin.perm().hasPermission(p, "quickshop.other.destory"))) {
+             || plugin.perm().hasPermission(p, "quickshop.other.destroy"))) {
         // Check SuperTool
         if(p.getInventory().getItemInMainHand().getType() == Material.GOLDEN_AXE) {
           if(getPlugin().getConfig().getBoolean("shop.disable-super-tool")) {

@@ -78,7 +78,7 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
   @NotNull
   default ItemStack[] createSnapshot() {
 
-    Logger.getLogger("QuickShop-Hikari").log(Level.WARNING, "InventoryWrapper provider " + getWrapperManager().getClass().getName() + " didn't override default InventoryWrapper#createSnapshot method, it may cause un-excepted behavior like item missing, mess order and heavy hit performance! Please report this issue to InventoryWrapper provider plugin author!");
+    Logger.getLogger("QuickShop-Hikari").log(Level.WARNING, "InventoryWrapper provider " + getWrapperManager().getClass().getName() + " didn't override default InventoryWrapper#createSnapshot method, it may cause un-expected behavior like item missing, mess order and heavy hit performance! Please report this issue to InventoryWrapper provider plugin author!");
     final List<ItemStack> contents = new ArrayList<>();
     for(final ItemStack stack : this) {
       if(stack == null) {
@@ -246,7 +246,7 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
    */
   default boolean restoreSnapshot(@NotNull final ItemStack[] snapshot) {
 
-    Logger.getLogger("QuickShop-Hikari").log(Level.WARNING, "InventoryWrapper provider " + getWrapperManager().getClass().getName() + " didn't override default InventoryWrapper#restoreSnapshot method, it may cause un-excepted behavior like item missing, mess order and heavy hit performance! Please report this issue to InventoryWrapper provider plugin author!");
+    Logger.getLogger("QuickShop-Hikari").log(Level.WARNING, "InventoryWrapper provider " + getWrapperManager().getClass().getName() + " didn't override default InventoryWrapper#restoreSnapshot method, it may cause un-expected behavior like item missing, mess order and heavy hit performance! Please report this issue to InventoryWrapper provider plugin author!");
     final InventoryWrapperIterator it = iterator();
     while(it.hasNext()) {
       it.remove();
