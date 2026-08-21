@@ -81,7 +81,7 @@ public class PacketFactoryv1_20 implements PacketFactory<PacketContainer> {
     final UUID identifier = UUID.nameUUIDFromBytes(("SHOP:" + id).getBytes(StandardCharsets.UTF_8));
 
     //First, create a new packet to spawn item
-    final PacketContainer fakeItemPacket = ProtocolLibHandler.instance().internal().createPacket(PacketType.Play.Server.SPAWN_ENTITY);
+    final PacketContainer fakeItemPacket = new PacketContainer(PacketType.Play.Server.SPAWN_ENTITY);
 
     //id and velocity
     fakeItemPacket.getIntegers()
@@ -337,10 +337,15 @@ public class PacketFactoryv1_20 implements PacketFactory<PacketContainer> {
         if(player.getClass().getName().contains("TemporaryPlayer")) {
           return;
         }
-        
-          final StructureModifier<Integer> intModifier = event.getPacket().getIntegers();
-          final int x = intModifier.read(0);
-          final int z = intModifier.read(1);
+
+        final StructureModifier<Integer> intModifier = event.getPacket().getIntegers();
+        //for some reason this issue pops up on 1.20.4 where the intsize is 0
+        if (intModifier.size() < 2) {
+          return;
+        }
+
+        final int x = intModifier.read(0);
+        final int z = intModifier.read(1);
 
         VirtualDisplayItemManager.instance().chunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
           for(final VirtualDisplayItem<?> target : targetList.values()) {
