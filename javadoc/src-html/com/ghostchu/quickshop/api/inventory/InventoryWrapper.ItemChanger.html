@@ -91,7 +91,7 @@
 <span class="source-line-no">078</span><span id="line-78">  @NotNull</span>
 <span class="source-line-no">079</span><span id="line-79">  default ItemStack[] createSnapshot() {</span>
 <span class="source-line-no">080</span><span id="line-80"></span>
-<span class="source-line-no">081</span><span id="line-81">    Logger.getLogger("QuickShop-Hikari").log(Level.WARNING, "InventoryWrapper provider " + getWrapperManager().getClass().getName() + " didn't override default InventoryWrapper#createSnapshot method, it may cause un-excepted behavior like item missing, mess order and heavy hit performance! Please report this issue to InventoryWrapper provider plugin author!");</span>
+<span class="source-line-no">081</span><span id="line-81">    Logger.getLogger("QuickShop-Hikari").log(Level.WARNING, "InventoryWrapper provider " + getWrapperManager().getClass().getName() + " didn't override default InventoryWrapper#createSnapshot method, it may cause un-expected behavior like item missing, mess order and heavy hit performance! Please report this issue to InventoryWrapper provider plugin author!");</span>
 <span class="source-line-no">082</span><span id="line-82">    final List&lt;ItemStack&gt; contents = new ArrayList&lt;&gt;();</span>
 <span class="source-line-no">083</span><span id="line-83">    for(final ItemStack stack : this) {</span>
 <span class="source-line-no">084</span><span id="line-84">      if(stack == null) {</span>
@@ -259,7 +259,7 @@
 <span class="source-line-no">246</span><span id="line-246">   */</span>
 <span class="source-line-no">247</span><span id="line-247">  default boolean restoreSnapshot(@NotNull final ItemStack[] snapshot) {</span>
 <span class="source-line-no">248</span><span id="line-248"></span>
-<span class="source-line-no">249</span><span id="line-249">    Logger.getLogger("QuickShop-Hikari").log(Level.WARNING, "InventoryWrapper provider " + getWrapperManager().getClass().getName() + " didn't override default InventoryWrapper#restoreSnapshot method, it may cause un-excepted behavior like item missing, mess order and heavy hit performance! Please report this issue to InventoryWrapper provider plugin author!");</span>
+<span class="source-line-no">249</span><span id="line-249">    Logger.getLogger("QuickShop-Hikari").log(Level.WARNING, "InventoryWrapper provider " + getWrapperManager().getClass().getName() + " didn't override default InventoryWrapper#restoreSnapshot method, it may cause un-expected behavior like item missing, mess order and heavy hit performance! Please report this issue to InventoryWrapper provider plugin author!");</span>
 <span class="source-line-no">250</span><span id="line-250">    final InventoryWrapperIterator it = iterator();</span>
 <span class="source-line-no">251</span><span id="line-251">    while(it.hasNext()) {</span>
 <span class="source-line-no">252</span><span id="line-252">      it.remove();</span>
