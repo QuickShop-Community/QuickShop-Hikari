@@ -24,6 +24,7 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.reflect.StructureModifier;
 import com.comphenix.protocol.utility.MinecraftReflection;
+import com.comphenix.protocol.wrappers.ChunkCoordIntPair;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedDataValue;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
@@ -338,16 +339,10 @@ public class PacketFactoryv1_20 implements PacketFactory<PacketContainer> {
           return;
         }
 
-        final StructureModifier<Integer> intModifier = event.getPacket().getIntegers();
-        //for some reason this issue pops up on 1.20.4 where the intsize is 0
-        if (intModifier.size() < 2) {
-          return;
-        }
+        final StructureModifier<ChunkCoordIntPair> chunkCoord =event.getPacket().getChunkCoordIntPairs();
+        final ChunkCoordIntPair pair = chunkCoord.read(0);
 
-        final int x = intModifier.read(0);
-        final int z = intModifier.read(1);
-
-        VirtualDisplayItemManager.instance().chunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
+        VirtualDisplayItemManager.instance().chunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), pair.getChunkX(), pair.getChunkZ()), (chunkLoc, targetList)->{
           for(final VirtualDisplayItem<?> target : targetList.values()) {
 
             if(!target.isSpawned()) {
