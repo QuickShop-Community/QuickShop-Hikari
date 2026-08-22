@@ -280,7 +280,7 @@ permissions:
     description: Allows exporting the database to a plain file.
     default: op
   quickshop.alerts:
-    description: Recieve cheat alerts, plugin warnings and update notifications.
+    description: Receive cheat alerts, plugin warnings and update notifications.
     default: op
   quickshop.about:
     description: Show QuickShop's about message.

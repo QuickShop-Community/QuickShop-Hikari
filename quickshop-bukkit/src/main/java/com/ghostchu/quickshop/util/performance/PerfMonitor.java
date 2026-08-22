@@ -71,7 +71,7 @@ public class PerfMonitor implements AutoCloseable {
     messageBuilder.append("has finished in ").append(passed).append(".");
     Level level = Level.INFO;
     if(isReachedLimit()) {
-      messageBuilder.append(" OVER LIMIT! The excepted time cost should less than ").append(exceptedDuration.toMillis()).append("ms.");
+      messageBuilder.append(" OVER LIMIT! The expected time cost should less than ").append(exceptedDuration.toMillis()).append("ms.");
       level = Level.WARNING;
     }
     Log.performance(level, messageBuilder.toString(), caller);

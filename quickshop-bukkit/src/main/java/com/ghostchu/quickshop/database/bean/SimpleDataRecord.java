@@ -5,7 +5,6 @@ import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.PlayerFinder;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.obj.QUserImpl;
-import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.ResultSet;
@@ -14,8 +13,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
-@Data
 public class SimpleDataRecord implements DataRecord {
 
   private final QUser owner;
@@ -128,7 +127,8 @@ public class SimpleDataRecord implements DataRecord {
   }
 
   @Override
-  public @NotNull Date getCreateTime() {
+  @NotNull
+  public Date getCreateTime() {
 
     return createTime;
   }
@@ -140,31 +140,36 @@ public class SimpleDataRecord implements DataRecord {
   }
 
   @Override
-  public @NotNull String getExtra() {
+  @NotNull
+  public String getExtra() {
 
     return extra;
   }
 
   @Override
-  public @NotNull String getInventorySymbolLink() {
+  @NotNull
+  public String getInventorySymbolLink() {
 
     return inventorySymbolLink;
   }
 
   @Override
-  public @NotNull String getInventoryWrapper() {
+  @NotNull
+  public String getInventoryWrapper() {
 
     return inventoryWrapper;
   }
 
   @Override
-  public @NotNull String getItem() {
+  @NotNull
+  public String getItem() {
 
     return item;
   }
 
   @Override
-  public @NotNull String getEncoded() {
+  @NotNull
+  public String getEncoded() {
 
     return encoded;
   }
@@ -176,13 +181,15 @@ public class SimpleDataRecord implements DataRecord {
   }
 
   @Override
-  public @NotNull QUser getOwner() {
+  @NotNull
+  public QUser getOwner() {
 
     return owner;
   }
 
   @Override
-  public @NotNull String getPermissions() {
+  @NotNull
+  public String getPermissions() {
 
     return permissions;
   }
@@ -224,8 +231,46 @@ public class SimpleDataRecord implements DataRecord {
   }
 
   @Override
-  public @NotNull String getBenefit() {
+  @NotNull
+  public String getBenefit() {
 
     return benefit;
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+
+    if(o == this) return true;
+    if(!(o instanceof SimpleDataRecord)) return false;
+    final SimpleDataRecord other = (SimpleDataRecord)o;
+    return this.getType() == other.getType()
+           && Double.compare(this.getPrice(), other.getPrice()) == 0
+           && this.isUnlimited() == other.isUnlimited()
+           && this.isHologram() == other.isHologram()
+           && Objects.equals(this.getOwner(), other.getOwner())
+           && Objects.equals(this.getItem(), other.getItem())
+           && Objects.equals(this.getEncoded(), other.getEncoded())
+           && Objects.equals(this.getName(), other.getName())
+           && Objects.equals(this.getState(), other.getState())
+           && Objects.equals(this.getCurrency(), other.getCurrency())
+           && Objects.equals(this.getTaxAccount(), other.getTaxAccount())
+           && Objects.equals(this.getPermissions(), other.getPermissions())
+           && Objects.equals(this.getExtra(), other.getExtra())
+           && Objects.equals(this.getInventoryWrapper(), other.getInventoryWrapper())
+           && Objects.equals(this.getInventorySymbolLink(), other.getInventorySymbolLink())
+           && Objects.equals(this.getCreateTime(), other.getCreateTime())
+           && Objects.equals(this.getBenefit(), other.getBenefit());
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(this.getType(), this.getPrice(), this.isUnlimited(), this.isHologram(), this.getOwner(), this.getItem(), this.getEncoded(), this.getName(), this.getState(), this.getCurrency(), this.getTaxAccount(), this.getPermissions(), this.getExtra(), this.getInventoryWrapper(), this.getInventorySymbolLink(), this.getCreateTime(), this.getBenefit());
+  }
+
+  @Override
+  public String toString() {
+
+    return "SimpleDataRecord(owner=" + this.getOwner() + ", item=" + this.getItem() + ", encoded=" + this.getEncoded() + ", name=" + this.getName() + ", type=" + this.getType() + ", state=" + this.getState() + ", currency=" + this.getCurrency() + ", price=" + this.getPrice() + ", unlimited=" + this.isUnlimited() + ", hologram=" + this.isHologram() + ", taxAccount=" + this.getTaxAccount() + ", permissions=" + this.getPermissions() + ", extra=" + this.getExtra() + ", inventoryWrapper=" + this.getInventoryWrapper() + ", inventorySymbolLink=" + this.getInventorySymbolLink() + ", createTime=" + this.getCreateTime() + ", benefit=" + this.getBenefit() + ")";
   }
 }

@@ -22,7 +22,6 @@ import com.ghostchu.quickshop.util.paste.item.ShopsInfoItem;
 import com.ghostchu.quickshop.util.paste.item.SystemInfoItem;
 import com.ghostchu.quickshop.util.paste.item.TimingsLogsItem;
 import com.ghostchu.quickshop.util.paste.item.TransactionLogsItem;
-import lombok.Getter;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -257,7 +256,6 @@ public class PasteGenerator {
                                                margin-bottom: .5rem;
                                                font-weight: 600; }
                                              """;
-  @Getter
   private final List<PasteItem> pasteItems = new LinkedList<>();
   private final long timestamp = System.currentTimeMillis();
   private final CommandSender sender;
@@ -341,5 +339,10 @@ public class PasteGenerator {
       format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
     }
     return format.format(time);
+  }
+
+  public List<PasteItem> getPasteItems() {
+
+    return this.pasteItems;
   }
 }

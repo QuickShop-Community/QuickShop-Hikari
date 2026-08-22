@@ -126,8 +126,6 @@ import com.vdurmont.semver4j.Semver;
 import dev.dejvokep.boostedyaml.YamlDocument;
 import dev.dejvokep.boostedyaml.block.implementation.Section;
 import io.papermc.lib.PaperLib;
-import lombok.Getter;
-import lombok.Setter;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.platform.BukkitHelper;
@@ -167,7 +165,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
-import java.awt.print.Paper;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -200,7 +197,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   /**
    * If running environment test
    */
-  @Getter
   private static final boolean TESTING = false;
   /**
    * The active instance of QuickShop You shouldn't use this if you really need it.
@@ -212,29 +208,22 @@ public class QuickShop implements QuickShopAPI, Reloadable {
    * The manager to check permissions.
    */
   private static PermissionManager permissionManager;
-  @Getter
   private final ReloadManager reloadManager = new ReloadManager();
   private final InventoryWrapperRegistry inventoryWrapperRegistry = new InventoryWrapperRegistry();
-  @Getter
   private final InventoryWrapperManager inventoryWrapperManager = new BukkitInventoryWrapperManager();
-  @Getter
   private final ShopControlPanelManager shopControlPanelManager = new SimpleShopControlPanelManager(this);
   private final Map<String, String> addonRegisteredMapping = new HashMap<>();
-  @Getter
   private final QuickShopBukkit javaPlugin;
   private final Logger logger;
   private final Platform platform;
-  @Getter
   private final EconomyLoader economyLoader = new EconomyLoader(this);
   private final EconomyManager economyManager = new QSEconomyManager();
   private final QuickShopTagManager tagManager;
   private UpdateManager updateManager;
-  @Getter
   private final PasteManager pasteManager = new PasteManager();
   protected MenuHandler menuHandler;
   protected BaseHelper helperMethods;
   private QuickShopInteractionManager interactionManager;
-  @Getter
   private GuiConfig guiConfig;
   private FoliaLib folia;
   /* Public QuickShop API End */
@@ -246,32 +235,25 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   private SkullProvider skullProvider;
   private SimpleShopManager shopManager;
   private SimpleTextManager textManager;
-  @Getter
   private SimpleShopPermissionManager shopPermissionManager;
   private boolean priceChangeRequiresFee = false;
-  @Getter
   private DatabaseDriverType databaseDriverType = null;
   /**
    * The BootError, if it not NULL, plugin will stop loading and show setted errors when use /qs
    */
   @Nullable
-  @Getter
-  @Setter
   private BootError bootError;
   /**
    * Default database prefix, can overwrite by config
    */
-  @Getter
   private String dbPrefix = "";
   /**
    * Whether we should use display items or not
    */
   private boolean display = true;
   private boolean invalidProvider = false;
-  @Getter
   private int displayItemCheckTicks;
   @Nullable
-  @Getter
   private LogWatcher logWatcher;
 
   private boolean onFolia = false;
@@ -279,79 +261,53 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   /**
    * The plugin PlaceHolderAPI(null if not present)
    */
-  @Getter
   private Plugin placeHolderAPI;
   /**
    * A util to call to check some actions permission
    */
-  @Getter
   private PermissionChecker permissionChecker;
   /**
    * The error reporter to help devs report errors to Sentry.io
    */
-  @Getter
   @Nullable
   private RollbarErrorReporter sentryErrorReporter;
   /**
    * The server UniqueID, use to the ErrorReporter
    */
-  @Getter
   private UUID serverUniqueID;
   private boolean setupDBonEnableding = false;
   /**
    * Rewrited shoploader, more faster.
    */
-  @Getter
   private ShopLoader shopLoader;
-  @Getter
   private DisplayAutoDespawnWatcher displayAutoDespawnWatcher;
-  @Getter
   private OngoingFeeWatcher ongoingFeeWatcher;
-  @Getter
   private SignUpdateWatcher signUpdateWatcher;
-  @Getter
   private boolean allowStack;
-  @Getter
   private EnvironmentChecker environmentChecker;
-  @Getter
   @Nullable
   private UpdateWatcher updateWatcher;
-  @Getter
   private BuildInfo buildInfo;
-  @Getter
   @Nullable
   private String currency = null;
-  @Getter
   private CalendarWatcher calendarWatcher;
-  @Getter
   private ShopPurger shopPurger;
   private int loggingLocation = 0;
-  @Getter
   private volatile SQLManager sqlManager;
-  @Getter
   @Nullable
   private QuickShopPAPI quickShopPAPI;
-  @Getter
   private ItemMarker itemMarker;
   private Map<String, String> translationMapping;
-  @Getter
   private PlayerFinder playerFinder;
-  @Getter
   private ShopItemBlackList shopItemBlackList;
-  @Getter
   private ShopDataSaveWatcher shopSaveWatcher;
-  @Getter
   private SignHooker signHooker;
-  @Getter
   private BungeeListener bungeeListener;
   private RankLimiter rankLimiter;
   @Nullable
   private DisplayManager<?> displayManager = null;
-  @Getter
   private PrivacyController privacyController;
-  @Getter
   private MetricManager metricManager;
-  @Getter
   private RegistryManager registry;
 
   private LockListener shopLockListener;
@@ -447,13 +403,15 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     logger.info("Registering Bukkit Service: {}", QuickShopProvider.class.getName());
     Bukkit.getServicesManager().register(QuickShopProvider.class, new QuickShopProvider() {
       @Override
-      public @NotNull QuickShopAPI getApiInstance() {
+      @NotNull
+      public QuickShopAPI getApiInstance() {
 
         return instance;
       }
 
       @Override
-      public @NotNull Plugin getInstance() {
+      @NotNull
+      public Plugin getInstance() {
 
         return javaPlugin;
       }
@@ -577,6 +535,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   }
 
   public MainConfig mainConfig() {
+
     return this.config;
   }
 
@@ -620,14 +579,15 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   }
 
   @Override
-  public @NotNull InventoryWrapperRegistry getInventoryWrapperRegistry() {
+  @NotNull
+  public InventoryWrapperRegistry getInventoryWrapperRegistry() {
 
     return inventoryWrapperRegistry;
   }
 
   /**
-   * Retrieves the instance of the {@code SkullProvider}, which is responsible for providing
-   * methods to asynchronously generate player skulls or skull profiles.
+   * Retrieves the instance of the {@code SkullProvider}, which is responsible for providing methods
+   * to asynchronously generate player skulls or skull profiles.
    *
    * The {@code SkullProvider} interface offers functionality to retrieve player skulls (as
    * {@code ItemStack} objects) or skull profile information (via {@code SkullProfile}), using
@@ -671,10 +631,12 @@ public class QuickShop implements QuickShopAPI, Reloadable {
    */
   @Override
   public TagManager tagManager() {
+
     return tagManager;
   }
 
   public UpdateManager updateManager() {
+
     return this.updateManager;
   }
 
@@ -825,7 +787,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     registerService();
     /* Check the running envs is support or not. */
     logger.info("Starting plugin self-test, please wait...");
-    try(final PerfMonitor ignored = new PerfMonitor("Self Test")) {
+    try(PerfMonitor ignored = new PerfMonitor("Self Test")) {
       runtimeCheck(EnvCheckEntry.Stage.ON_ENABLE);
     }
     logger.info("Reading the configuration...");
@@ -870,14 +832,14 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     }
     loadSignHooker();
     //Load the database
-    try(final PerfMonitor ignored = new PerfMonitor("Initialize database")) {
+    try(PerfMonitor ignored = new PerfMonitor("Initialize database")) {
       initDatabase();
     }
     Util.asyncThreadRun(()->{
       logger.info("Start to caching usernames (async)...");
       ((FastPlayerFinder)getPlayerFinder()).bakeCaches();
     });
-    /* Initalize the tools */
+    /* Initialize the tools */
     // Create the shop manager.
     permissionManager = new PermissionManager(this);
     shopPermissionManager = new SimpleShopPermissionManager(this);
@@ -930,7 +892,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     registerCommunicationChannels();
     new QSConfigurationReloadEvent(javaPlugin).callEvent();
     load3rdParty();
-    try(final PerfMonitor ignored = new PerfMonitor("Self Test")) {
+    try(PerfMonitor ignored = new PerfMonitor("Self Test")) {
       runtimeCheck(EnvCheckEntry.Stage.AFTER_ON_ENABLE);
     }
 
@@ -1008,6 +970,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   }
 
   private void loadSignHooker() {
+
     if(getConfig().getBoolean("shop.per-player-shop-sign")) {
 
       signHooker = new SignHooker(this);
@@ -1422,6 +1385,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   }
 
   public Platform platform() {
+
     return platform;
   }
 
@@ -1463,7 +1427,8 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     return new BukkitItemStack().of(itemStack);
   }
 
-  public @NotNull TextManager text() {
+  @NotNull
+  public TextManager text() {
 
     return this.textManager;
   }
@@ -1524,7 +1489,244 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   }
 
   public enum DatabaseDriverType {
-    MYSQL,
-    H2
+    MYSQL, H2;
+  }
+
+  /**
+   * If running environment test
+   */
+  public static boolean isTESTING() {
+
+    return QuickShop.TESTING;
+  }
+
+  public ReloadManager getReloadManager() {
+
+    return this.reloadManager;
+  }
+
+  public InventoryWrapperManager getInventoryWrapperManager() {
+
+    return this.inventoryWrapperManager;
+  }
+
+  public ShopControlPanelManager getShopControlPanelManager() {
+
+    return this.shopControlPanelManager;
+  }
+
+  public QuickShopBukkit getJavaPlugin() {
+
+    return this.javaPlugin;
+  }
+
+  public EconomyLoader getEconomyLoader() {
+
+    return this.economyLoader;
+  }
+
+  public PasteManager getPasteManager() {
+
+    return this.pasteManager;
+  }
+
+  public GuiConfig getGuiConfig() {
+
+    return this.guiConfig;
+  }
+
+  public SimpleShopPermissionManager getShopPermissionManager() {
+
+    return this.shopPermissionManager;
+  }
+
+  public DatabaseDriverType getDatabaseDriverType() {
+
+    return this.databaseDriverType;
+  }
+
+  /**
+   * The BootError, if it not NULL, plugin will stop loading and show setted errors when use /qs
+   */
+  @Nullable
+  public BootError getBootError() {
+
+    return this.bootError;
+  }
+
+  /**
+   * The BootError, if it not NULL, plugin will stop loading and show setted errors when use /qs
+   */
+  public void setBootError(@Nullable final BootError bootError) {
+
+    this.bootError = bootError;
+  }
+
+  /**
+   * Default database prefix, can overwrite by config
+   */
+  public String getDbPrefix() {
+
+    return this.dbPrefix;
+  }
+
+  public int getDisplayItemCheckTicks() {
+
+    return this.displayItemCheckTicks;
+  }
+
+  @Nullable
+  public LogWatcher getLogWatcher() {
+
+    return this.logWatcher;
+  }
+
+  /**
+   * The plugin PlaceHolderAPI(null if not present)
+   */
+  public Plugin getPlaceHolderAPI() {
+
+    return this.placeHolderAPI;
+  }
+
+  /**
+   * A util to call to check some actions permission
+   */
+  public PermissionChecker getPermissionChecker() {
+
+    return this.permissionChecker;
+  }
+
+  /**
+   * The error reporter to help devs report errors to Sentry.io
+   */
+  @Nullable
+  public RollbarErrorReporter getSentryErrorReporter() {
+
+    return this.sentryErrorReporter;
+  }
+
+  /**
+   * The server UniqueID, use to the ErrorReporter
+   */
+  public UUID getServerUniqueID() {
+
+    return this.serverUniqueID;
+  }
+
+  /**
+   * Rewrited shoploader, more faster.
+   */
+  public ShopLoader getShopLoader() {
+
+    return this.shopLoader;
+  }
+
+  public DisplayAutoDespawnWatcher getDisplayAutoDespawnWatcher() {
+
+    return this.displayAutoDespawnWatcher;
+  }
+
+  public OngoingFeeWatcher getOngoingFeeWatcher() {
+
+    return this.ongoingFeeWatcher;
+  }
+
+  public SignUpdateWatcher getSignUpdateWatcher() {
+
+    return this.signUpdateWatcher;
+  }
+
+  public boolean isAllowStack() {
+
+    return this.allowStack;
+  }
+
+  public EnvironmentChecker getEnvironmentChecker() {
+
+    return this.environmentChecker;
+  }
+
+  @Nullable
+  public UpdateWatcher getUpdateWatcher() {
+
+    return this.updateWatcher;
+  }
+
+  public BuildInfo getBuildInfo() {
+
+    return this.buildInfo;
+  }
+
+  @Nullable
+  public String getCurrency() {
+
+    return this.currency;
+  }
+
+  public CalendarWatcher getCalendarWatcher() {
+
+    return this.calendarWatcher;
+  }
+
+  public ShopPurger getShopPurger() {
+
+    return this.shopPurger;
+  }
+
+  public SQLManager getSqlManager() {
+
+    return this.sqlManager;
+  }
+
+  @Nullable
+  public QuickShopPAPI getQuickShopPAPI() {
+
+    return this.quickShopPAPI;
+  }
+
+  public ItemMarker getItemMarker() {
+
+    return this.itemMarker;
+  }
+
+  public PlayerFinder getPlayerFinder() {
+
+    return this.playerFinder;
+  }
+
+  public ShopItemBlackList getShopItemBlackList() {
+
+    return this.shopItemBlackList;
+  }
+
+  public ShopDataSaveWatcher getShopSaveWatcher() {
+
+    return this.shopSaveWatcher;
+  }
+
+  public SignHooker getSignHooker() {
+
+    return this.signHooker;
+  }
+
+  public BungeeListener getBungeeListener() {
+
+    return this.bungeeListener;
+  }
+
+  public PrivacyController getPrivacyController() {
+
+    return this.privacyController;
+  }
+
+  public MetricManager getMetricManager() {
+
+    return this.metricManager;
+  }
+
+  public RegistryManager getRegistry() {
+
+    return this.registry;
   }
 }

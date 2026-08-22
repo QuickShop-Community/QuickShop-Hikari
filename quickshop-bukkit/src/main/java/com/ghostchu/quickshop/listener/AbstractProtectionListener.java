@@ -2,12 +2,10 @@ package com.ghostchu.quickshop.listener;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
-import lombok.Getter;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-@Getter
 public abstract class AbstractProtectionListener extends AbstractQSListener {
 
   protected AbstractProtectionListener(@NotNull final QuickShop plugin) {

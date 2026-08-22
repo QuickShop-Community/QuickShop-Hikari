@@ -57,7 +57,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
   protected AbstractDisplayItem(final Shop shop) {
 
     this.shop = shop;
-    this.originalItemStack = shop.getItem().clone();
+    this.originalItemStack = shop.getItem();
     PLUGIN.getReloadManager().register(this);
     init();
   }

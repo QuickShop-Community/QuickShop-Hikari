@@ -20,10 +20,10 @@ package com.ghostchu.quickshop.util.skin;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
+import com.ghostchu.quickshop.api.inventory.SkullProvider;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.tnemc.item.providers.SkullProfile;
-import com.ghostchu.quickshop.api.inventory.SkullProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

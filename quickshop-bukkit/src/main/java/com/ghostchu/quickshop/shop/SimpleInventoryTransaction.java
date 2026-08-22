@@ -13,7 +13,6 @@ import com.ghostchu.quickshop.shop.operation.RemoveItemOperation;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
-import lombok.Builder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -35,7 +34,6 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
   private int amount;
   private String lastError;
 
-  @Builder
   public SimpleInventoryTransaction(@Nullable final InventoryWrapper from, @Nullable final InventoryWrapper to, @NotNull final ItemStack item, final int amount) {
 
     if(from == null && to == null) {
@@ -57,7 +55,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
   @Override
   public boolean commit() {
 
-    try(final PerfMonitor ignored = new PerfMonitor("Inventory Transaction - Commit")) {
+    try(PerfMonitor ignored = new PerfMonitor("Inventory Transaction - Commit")) {
       return this.commit(new SimpleTransactionCallback() {
       });
     }
@@ -213,7 +211,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
   @Override
   public List<Operation> rollback(final boolean continueWhenFailed) {
 
-    try(final PerfMonitor ignored = new PerfMonitor("Inventory Transaction - Rollback")) {
+    try(PerfMonitor ignored = new PerfMonitor("Inventory Transaction - Rollback")) {
       final List<Operation> operations = new ArrayList<>();
       while(!processingStack.isEmpty()) {
         final Operation operation = processingStack.pop();
@@ -292,4 +290,58 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
 
   }
 
+  public static class SimpleInventoryTransactionBuilder {
+
+    private InventoryWrapper from;
+    private InventoryWrapper to;
+    private ItemStack item;
+    private int amount;
+
+    SimpleInventoryTransactionBuilder() {
+
+  }
+
+    public SimpleInventoryTransaction.SimpleInventoryTransactionBuilder from(@Nullable final InventoryWrapper from) {
+
+      this.from = from;
+      return this;
+    }
+
+    public SimpleInventoryTransaction.SimpleInventoryTransactionBuilder to(@Nullable final InventoryWrapper to) {
+
+      this.to = to;
+      return this;
+    }
+
+    public SimpleInventoryTransaction.SimpleInventoryTransactionBuilder item(@NotNull final ItemStack item) {
+
+      if(item == null) {
+        throw new NullPointerException("item is marked non-null but is null");
+      }
+      this.item = item;
+      return this;
+    }
+
+    public SimpleInventoryTransaction.SimpleInventoryTransactionBuilder amount(final int amount) {
+
+      this.amount = amount;
+      return this;
+    }
+
+    public SimpleInventoryTransaction build() {
+
+      return new SimpleInventoryTransaction(this.from, this.to, this.item, this.amount);
+    }
+
+    @Override
+    public String toString() {
+
+      return "SimpleInventoryTransaction.SimpleInventoryTransactionBuilder(from=" + this.from + ", to=" + this.to + ", item=" + this.item + ", amount=" + this.amount + ")";
+    }
+  }
+
+  public static SimpleInventoryTransaction.SimpleInventoryTransactionBuilder builder() {
+
+    return new SimpleInventoryTransaction.SimpleInventoryTransactionBuilder();
+  }
 }

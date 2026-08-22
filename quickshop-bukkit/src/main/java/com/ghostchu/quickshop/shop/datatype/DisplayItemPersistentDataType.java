@@ -1,9 +1,6 @@
 package com.ghostchu.quickshop.shop.datatype;
 
 import com.ghostchu.quickshop.common.util.JsonUtil;
-import com.ghostchu.quickshop.util.Util;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
