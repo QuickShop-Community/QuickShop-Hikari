@@ -491,12 +491,13 @@ public class Util {
 
   public static boolean isBlacklistWorld(@NotNull final World world) {
 
+    final String worldName = world.getName();
     final List<String> whitelist = plugin.getConfig().getStringList("shop.whitelist-world");
     if(!whitelist.isEmpty()) {
-      return !whitelist.contains(world.getName());
+      return whitelist.stream().noneMatch(entry->Pattern.matches(CommonUtil.createRegexFromGlob(entry), worldName));
     }
     // fall back to blacklist check
-    return plugin.getConfig().getStringList("shop.blacklist-world").contains(world.getName());
+    return plugin.getConfig().getStringList("shop.blacklist-world").stream().anyMatch(entry->Pattern.matches(CommonUtil.createRegexFromGlob(entry), worldName));
   }
 
   /**
