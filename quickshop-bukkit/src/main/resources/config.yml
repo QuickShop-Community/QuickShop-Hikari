@@ -676,10 +676,12 @@ shop:
   # Worlds where shop creation is allowed.
   # If not empty, only worlds in this list can create shops.
   # Takes priority over blacklist-world.
+  # Supports * and ? wildcards (e.g. spawn_*).
   whitelist-world: []
 
   # Worlds where shop creation is disallowed.
   # Only checked when whitelist-world is empty.
+  # Supports * and ? wildcards (e.g. speedrun_*).
   blacklist-world:
     - disabled_world_name
 
