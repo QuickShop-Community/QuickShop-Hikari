@@ -2,13 +2,11 @@ package com.ghostchu.quickshop.api.event.general;
 
 import com.ghostchu.quickshop.api.event.AbstractQSEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
-import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 import java.util.List;
 
-@Getter
 public class ShopHistoryGuiOpenEvent extends AbstractQSEvent {
 
   private final Player player;
@@ -27,5 +25,20 @@ public class ShopHistoryGuiOpenEvent extends AbstractQSEvent {
     this.player = player;
     this.shops = shops;
     this.inventory = inventory;
+  }
+
+  public Player getPlayer() {
+
+    return this.player;
+  }
+
+  public List<Shop> getShops() {
+
+    return this.shops;
+  }
+
+  public Inventory getInventory() {
+
+    return this.inventory;
   }
 }

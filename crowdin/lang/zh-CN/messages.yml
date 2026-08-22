@@ -546,7 +546,7 @@ command:
     lookup: <yellow>管理物品引用查找表
     database: <yellow>查看和维护 QuickShop 数据库
     benefit: <yellow>设置商店所有者和其他玩家之间的利益分配
-    benefitall: <yellow>Settings of divide benefits between shop owner and other players for all shops you own.
+    benefitall: <yellow>设置所有商店中商店所有者和其他玩家之间的利益分配
     browse: <yellow>浏览此服务器上存在的商店
     tag: <yellow>添加、 删除或查询商店标签
     suggestprice: <yellow>根据其他商店的情况, 为商店提出建议价格

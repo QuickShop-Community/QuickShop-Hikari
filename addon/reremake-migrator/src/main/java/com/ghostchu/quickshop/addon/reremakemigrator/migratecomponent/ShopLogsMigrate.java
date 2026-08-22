@@ -11,8 +11,6 @@ import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.google.gson.JsonObject;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -38,6 +36,7 @@ import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.zip.GZIPInputStream;
 
@@ -58,7 +57,7 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
     final File logsFile = new File(getReremake().getDataFolder(), "appended-qs.log");
     final File filteredFile = new File(getReremake().getDataFolder(), "filtered-qs.log");
     final File formattedFile = new File(getReremake().getDataFolder(), "formatted-qs.log");
-    try(final PrintWriter printWriter = new PrintWriter(logsFile, StandardCharsets.UTF_8)) {
+    try(PrintWriter printWriter = new PrintWriter(logsFile, StandardCharsets.UTF_8)) {
       logsFile.createNewFile();
       filteredFile.createNewFile();
       appendFiles(getReremake().getDataFolder(), printWriter);
@@ -254,7 +253,7 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
       final File[] files = logsSubFolder.listFiles(f->f.getName().endsWith(".log.gz"));
       if(files != null) {
         for(final File file : files) {
-          try(final GZIPInputStream gzipInputStream = new GZIPInputStream(new FileInputStream(file))) {
+          try(GZIPInputStream gzipInputStream = new GZIPInputStream(new FileInputStream(file))) {
             final String content = new String(gzipInputStream.readAllBytes(), StandardCharsets.UTF_8);
             logsFile.println(content);
             logsFile.flush();
@@ -275,11 +274,57 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
     }
   }
 
-  @Data
-  @AllArgsConstructor
   static class DatedLogEntry {
 
     private Date date;
     private String content;
+
+    public Date getDate() {
+
+      return this.date;
+    }
+
+    public String getContent() {
+
+      return this.content;
+    }
+
+    public void setDate(final Date date) {
+
+      this.date = date;
+    }
+
+    public void setContent(final String content) {
+
+      this.content = content;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+
+      if(o == this) return true;
+      if(!(o instanceof ShopLogsMigrate.DatedLogEntry)) return false;
+      final ShopLogsMigrate.DatedLogEntry other = (ShopLogsMigrate.DatedLogEntry)o;
+      return Objects.equals(this.getDate(), other.getDate())
+             && Objects.equals(this.getContent(), other.getContent());
+    }
+
+    @Override
+    public int hashCode() {
+
+      return Objects.hash(this.getDate(), this.getContent());
+    }
+
+    @Override
+    public String toString() {
+
+      return "ShopLogsMigrate.DatedLogEntry(date=" + this.getDate() + ", content=" + this.getContent() + ")";
+    }
+
+    public DatedLogEntry(final Date date, final String content) {
+
+      this.date = date;
+      this.content = content;
+  }
   }
 }

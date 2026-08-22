@@ -1,11 +1,9 @@
 package com.ghostchu.quickshop.shop.datatype;
 
 import com.google.gson.annotations.Expose;
-import lombok.Getter;
 
 import java.util.UUID;
 
-@Getter
 public class HopperPersistentData {
 
   @Expose
@@ -14,5 +12,10 @@ public class HopperPersistentData {
   public HopperPersistentData(final UUID player) {
 
     this.player = player;
+  }
+
+  public UUID getPlayer() {
+
+    return this.player;
   }
 }

@@ -10,7 +10,6 @@ import com.google.common.collect.Lists;
 import com.rollbar.notifier.Rollbar;
 import com.rollbar.notifier.config.Config;
 import com.rollbar.notifier.config.ConfigBuilder;
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.InvalidPluginException;
 import org.jetbrains.annotations.NotNull;
@@ -46,7 +45,6 @@ public class RollbarErrorReporter {
   private final GlobalExceptionFilter serverExceptionFilter;
   private boolean disable;
   private boolean tempDisable;
-  @Getter
   private volatile boolean enabled;
 
 
@@ -103,14 +101,10 @@ public class RollbarErrorReporter {
       }
     }
     @NotNull final Throwable finalThrowable = throwable;
-    plugin.getPrivacyController().privacyReview(MetricDataType.DIAGNOSTIC, "RollbarErrorReporter", "QuickShop detected a error, we will report it to Rollbar Error Tracker so QuickShop's developers will receive the notification so we can fix it.",
-                                                ()->{
+    plugin.getPrivacyController().privacyReview(MetricDataType.DIAGNOSTIC, "RollbarErrorReporter", "QuickShop detected a error, we will report it to Rollbar Error Tracker so QuickShop's developers will receive the notification so we can fix it.", ()->{
                                                   try {
                                                     this.rollbar.error(finalThrowable, this.makeMapping(), throwable.getMessage());
-                                                    plugin
-                                                            .logger()
-                                                            .warn(
-                                                                    "A exception was thrown, QuickShop already caught this exception and reported it. This error will only shown once before next restart.");
+        plugin.logger().warn("A exception was thrown, QuickShop already caught this exception and reported it. This error will only shown once before next restart.");
                                                     plugin.logger().warn("====QuickShop Error Report BEGIN===");
                                                     plugin.logger().warn("Description: {}", finalThrowable.getMessage());
                                                     plugin.logger().warn("Server   ID: {}", plugin.getServerUniqueID());
@@ -119,10 +113,7 @@ public class RollbarErrorReporter {
                                                     finalThrowable.printStackTrace();
                                                     resetIgnores();
                                                     plugin.logger().warn("====QuickShop Error Report E N D===");
-                                                    plugin
-                                                            .logger()
-                                                            .warn(
-                                                                    "If this error affects any function, you can join our Discord server to report it and track the feedback: https://discord.gg/Bu3dVtmsD3");
+        plugin.logger().warn("If this error affects any function, you can join our Discord server to report it and track the feedback: https://discord.gg/Bu3dVtmsD3");
                                                     Log.debug(finalThrowable.getMessage());
                                                     Arrays.stream(finalThrowable.getStackTrace()).forEach(a->Log.debug(a.getClassName() + "." + a.getMethodName() + ":" + a.getLineNumber()));
                                                     if(Util.isDevMode()) {
@@ -324,15 +315,12 @@ public class RollbarErrorReporter {
   }
 
   enum PossiblyLevel {
-    CONFIRM,
-    MAYBE,
-    IMPOSSIBLE
+    CONFIRM, MAYBE, IMPOSSIBLE;
   }
 
   class GlobalExceptionFilter implements Filter {
 
     @Nullable
-    @Getter
     private final Filter preFilter;
 
     GlobalExceptionFilter(@Nullable final Filter preFilter) {
@@ -382,12 +370,16 @@ public class RollbarErrorReporter {
       return preFilter == null || preFilter.isLoggable(rec);
     }
 
+    @Nullable
+    public Filter getPreFilter() {
+
+      return this.preFilter;
+    }
   }
 
   class QuickShopExceptionFilter implements Filter {
 
     @Nullable
-    @Getter
     private final Filter preFilter;
 
     QuickShopExceptionFilter(@Nullable final Filter preFilter) {
@@ -437,5 +429,15 @@ public class RollbarErrorReporter {
       return preFilter == null || preFilter.isLoggable(rec);
     }
 
+    @Nullable
+    public Filter getPreFilter() {
+
+      return this.preFilter;
+  }
+  }
+
+  public boolean isEnabled() {
+
+    return this.enabled;
   }
 }

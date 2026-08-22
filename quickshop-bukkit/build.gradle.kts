@@ -1,5 +1,5 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.ghostchu.quickshop.buildlogic.GitInfoValueSource
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
     id("quickshop.core-conventions")

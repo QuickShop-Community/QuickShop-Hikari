@@ -1,4 +1,5 @@
 package com.ghostchu.quickshop.shop.display.virtual.packet.packetevents;
+
 /*
  * QuickShop-Hikari
  * Copyright (C) 2025 Daniel "creatorfromhell" Vidmar
@@ -42,7 +43,6 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEn
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUnloadChunk;
 import io.github.retrooper.packetevents.util.SpigotConversionUtil;
-import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -63,10 +63,8 @@ import java.util.UUID;
  */
 public class PacketFactoryv1_21 implements PacketFactory<PacketWrapper<?>> {
 
-  @Getter
   private PacketListenerCommon chunkSendingPacketAdapter;
 
-  @Getter
   private PacketListenerCommon chunkUnloadingPacketAdapter;
 
   /**
@@ -82,10 +80,7 @@ public class PacketFactoryv1_21 implements PacketFactory<PacketWrapper<?>> {
 
     final EntityType type = EntityType.ITEM;
     final UUID identifier = UUID.nameUUIDFromBytes(("SHOP:" + id).getBytes(StandardCharsets.UTF_8));
-
-    return new WrapperPlayServerSpawnEntity(id, identifier, SpigotConversionUtil.fromBukkitEntityType(type),
-                                            SpigotConversionUtil.fromBukkitLocation(displayLocation),
-                                            0F, 0, Vector3d.zero());
+    return new WrapperPlayServerSpawnEntity(id, identifier, SpigotConversionUtil.fromBukkitEntityType(type), SpigotConversionUtil.fromBukkitLocation(displayLocation), 0.0F, 0, Vector3d.zero());
   }
 
   /**
@@ -115,11 +110,7 @@ public class PacketFactoryv1_21 implements PacketFactory<PacketWrapper<?>> {
   public PacketWrapper<?> createTextDisplaySpawnPacket(final int id, @NotNull final Location location) {
 
     final UUID identifier = UUID.nameUUIDFromBytes(("SHOP_TEXT:" + id).getBytes(StandardCharsets.UTF_8));
-
-    return new WrapperPlayServerSpawnEntity(id, identifier,
-                                            SpigotConversionUtil.fromBukkitEntityType(EntityType.TEXT_DISPLAY),
-                                            SpigotConversionUtil.fromBukkitLocation(location),
-                                            0F, 0, Vector3d.zero());
+    return new WrapperPlayServerSpawnEntity(id, identifier, SpigotConversionUtil.fromBukkitEntityType(EntityType.TEXT_DISPLAY), SpigotConversionUtil.fromBukkitLocation(location), 0.0F, 0, Vector3d.zero());
   }
 
   /**
@@ -131,19 +122,16 @@ public class PacketFactoryv1_21 implements PacketFactory<PacketWrapper<?>> {
    * @return the name visibility packet of type T
    */
   @Override
-  public PacketWrapper<?> createTextDisplayVisiblePacket(final int id, final @NotNull Shop shop, final @NotNull ItemStack itemStack) {
+  public PacketWrapper<?> createTextDisplayVisiblePacket(final int id, @NotNull final Shop shop, @NotNull final ItemStack itemStack) {
+
     final List<EntityData<?>> data = new ArrayList<>();
 
     final int blockDistance = QuickShop.getInstance().getConfig().getInt("shop.text-display.range-blocks", 8);
-
-    final Vector3f scaleVector = new Vector3f(QuickShop.getInstance().getConfig().getFloat("shop.text-display.scale.x", 1.0f),
-                                           QuickShop.getInstance().getConfig().getFloat("shop.text-display.scale.y", 1.0f),
-                                           QuickShop.getInstance().getConfig().getFloat("shop.text-display.scale.z", 1.0f));
-
+    final Vector3f scaleVector = new Vector3f(QuickShop.getInstance().getConfig().getFloat("shop.text-display.scale.x", 1.0F), QuickShop.getInstance().getConfig().getFloat("shop.text-display.scale.y", 1.0F), QuickShop.getInstance().getConfig().getFloat("shop.text-display.scale.z", 1.0F));
     // Text Display text metadata
     data.add(new EntityData<>(12, EntityDataTypes.VECTOR3F, scaleVector));
     data.add(new EntityData<>(15, EntityDataTypes.BYTE, (byte)3));
-    data.add(new EntityData<>(17, EntityDataTypes.FLOAT, blockDistance * 0.0125f));//0.0125 per block
+    data.add(new EntityData<>(17, EntityDataTypes.FLOAT, blockDistance * 0.0125F));//0.0125 per block
     data.add(new EntityData<>(23, EntityDataTypes.ADV_COMPONENT, Util.getTextDisplay(shop, itemStack)));
     data.add(new EntityData<>(24, EntityDataTypes.INT, QuickShop.getInstance().getConfig().getInt("shop.text-display.line-width", 200)));
     data.add(new EntityData<>(25, EntityDataTypes.INT, QuickShop.getInstance().getConfig().getInt("shop.text-display.background-color", 1073741824)));
@@ -328,5 +316,15 @@ public class PacketFactoryv1_21 implements PacketFactory<PacketWrapper<?>> {
 
       PacketEventsHandler.instance().internal().getEventManager().unregisterListener(chunkUnloadingPacketAdapter);
     }
+  }
+
+  public PacketListenerCommon getChunkSendingPacketAdapter() {
+
+    return this.chunkSendingPacketAdapter;
+  }
+
+  public PacketListenerCommon getChunkUnloadingPacketAdapter() {
+
+    return this.chunkUnloadingPacketAdapter;
   }
 }

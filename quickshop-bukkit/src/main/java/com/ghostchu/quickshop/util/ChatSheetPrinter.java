@@ -2,15 +2,11 @@ package com.ghostchu.quickshop.util;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.obj.QUser;
-import lombok.Getter;
-import lombok.Setter;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
 
-@Getter
-@Setter
 /*
  A utils for print sheet on chat.
 */
@@ -66,5 +62,10 @@ public class ChatSheetPrinter {
   public CommandSender getSender() {
 
     return p;
+  }
+
+  public CommandSender getP() {
+
+    return this.p;
   }
 }

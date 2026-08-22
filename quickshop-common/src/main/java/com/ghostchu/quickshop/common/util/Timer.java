@@ -1,20 +1,15 @@
 package com.ghostchu.quickshop.common.util;
 
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-
+import java.util.Objects;
 
 /**
  * Simple Timer for QuickShop to calc time passed (timestamp based)
  *
  * @author Ghost_chu
  */
-@EqualsAndHashCode
-@ToString
 public class Timer {
 
   private long startTime;
-  @EqualsAndHashCode.Exclude
   private long passedTime;
   private boolean isPaused = false;
 
@@ -115,4 +110,25 @@ public class Timer {
     return time;
   }
 
+  @Override
+  public boolean equals(final Object o) {
+
+    if(o == this) return true;
+    if(!(o instanceof Timer)) return false;
+    final Timer other = (Timer)o;
+    return this.startTime == other.startTime
+           && this.isPaused == other.isPaused;
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(this.startTime, this.isPaused);
+  }
+
+  @Override
+  public String toString() {
+
+    return "Timer(startTime=" + this.startTime + ", passedTime=" + this.getPassedTime() + ", isPaused=" + this.isPaused + ")";
+  }
 }

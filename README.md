@@ -181,7 +181,7 @@ Please make sure to:
 
 - Sign the Contributor License Agreement (CLA) if this is your first contribution when it appears in the Pull Request.
 - Follow the coding standards and branch naming conventions outlined in the guidelines.
-- Use the required IntelliJ plugins like **Final Obsession**, and **Lombok** for code quality and consistency.
+- Use the required IntelliJ plugins like **Final Obsession** for code quality and consistency.
 
 Thank you for your contributions!
 
