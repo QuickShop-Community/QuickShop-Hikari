@@ -530,8 +530,10 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     } else {
       logWatcher = null;
     }
-    // Schedule this event can be run in next tick.
-    //Util.mainThreadRun(() -> new QSConfigurationReloadEvent(javaPlugin).callEvent());
+    // FoliaLib is initialized during onEnable, after the initial configuration load.
+    if(folia != null) {
+      Util.mainThreadRun(() -> new QSConfigurationReloadEvent(javaPlugin).callEvent());
+    }
   }
 
   public MainConfig mainConfig() {
