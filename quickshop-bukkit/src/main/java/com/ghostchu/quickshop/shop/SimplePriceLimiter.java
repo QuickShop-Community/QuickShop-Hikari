@@ -166,7 +166,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
     final List<Pattern> currency = new ArrayList<>();
     for(final String currencyStr1 : section.getStringList("currency")) {
       try {
-        final Pattern pattern = Pattern.compile(currencyStr1);
+        final Pattern pattern = Pattern.compile(currencyStr1.equals("*")? ".*" : currencyStr1);
         currency.add(pattern);
       } catch(final PatternSyntaxException e) {
         plugin.logger().warn("Failed to read rule {}'s a Currency option, invalid pattern {}! Skipping...", ruleName, currencyStr1);
