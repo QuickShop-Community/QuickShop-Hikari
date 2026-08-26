@@ -24,6 +24,12 @@ public interface PriceLimiter {
   @NotNull
   PriceLimiterCheckResult check(@NotNull CommandSender sender, @NotNull ItemStack stack, @Nullable String currency, double price);
 
+  @NotNull
+  default PriceLimiterCheckResult check(@NotNull CommandSender sender, @NotNull ItemStack stack, @Nullable String currency, double price,
+                                        @Nullable IShopType shopType) {
+    return check(sender, stack, currency, price);
+  }
+
   /**
    * Check the price restriction rules
    *
@@ -36,4 +42,10 @@ public interface PriceLimiter {
    */
   @NotNull
   PriceLimiterCheckResult check(@NotNull QUser user, @NotNull ItemStack stack, @Nullable String currency, double price);
+
+  @NotNull
+  default PriceLimiterCheckResult check(@NotNull QUser user, @NotNull ItemStack stack, @Nullable String currency, double price,
+                                        @Nullable IShopType shopType) {
+    return check(user, stack, currency, price);
+  }
 }

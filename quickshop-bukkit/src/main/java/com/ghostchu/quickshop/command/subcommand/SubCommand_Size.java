@@ -64,7 +64,7 @@ public class SubCommand_Size implements CommandHandler<Player> {
         final ItemStack pendingItemStack = shop.getItem().clone();
         pendingItemStack.setAmount(amount);
         final PriceLimiter limiter = plugin.getShopManager().getPriceLimiter();
-        final PriceLimiterCheckResult checkResult = limiter.check(sender, pendingItemStack, shop.getCurrency(), shop.getPrice());
+        final PriceLimiterCheckResult checkResult = limiter.check(sender, pendingItemStack, shop.getCurrency(), shop.getPrice(), shop.shopType());
         if(checkResult.getStatus() != PriceLimiterStatus.PASS) {
           plugin.text().of(sender, "restricted-prices", Util.getItemStackName(shop.getItem()),
                            Component.text(checkResult.getMin()),
