@@ -833,7 +833,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     }
 
     // Price limit checking
-    final PriceLimiterCheckResult priceCheckResult = this.priceLimiter.check(p, shop.getItem(), plugin.getCurrency(), shop.getPrice());
+    final PriceLimiterCheckResult priceCheckResult = this.priceLimiter.check(p, shop.getItem(), plugin.getCurrency(), shop.getPrice(), shop.shopType());
     final String currency = (shop.getCurrency() == null)? ((plugin.getCurrency() == null)? "" : plugin.getCurrency()) : shop.getCurrency();
     final World world = shop.bukkitLocation().getWorld();
     final EconomyProvider econ = plugin.getEconomyManager().provider();

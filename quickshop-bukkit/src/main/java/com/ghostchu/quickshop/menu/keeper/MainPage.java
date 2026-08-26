@@ -266,11 +266,20 @@ public class MainPage extends QuickShopPage {
 
           final StateIcon changeIcon = new StateIcon(buyingStack, null, "SHOP_TYPE", modeState, (currentState)->{
             if(currentState.toUpperCase(Locale.ROOT).equals("SELLING")) {
+              if(!ShopUtil.canChangeShopType(QuickShop.getInstance(), player, shop.get(), BUYING_TYPE)) {
+                return currentState;
+              }
               Util.regionThread(shop.get().bukkitLocation(), ()->shop.get().shopType(BUYING_TYPE));
               return "BUYING";
             } else if(currentState.toUpperCase(Locale.ROOT).equals("BUYING")) {
+              if(!ShopUtil.canChangeShopType(QuickShop.getInstance(), player, shop.get(), SELLING_TYPE)) {
+                return currentState;
+              }
               Util.regionThread(shop.get().bukkitLocation(), ()->shop.get().shopType(SELLING_TYPE));
               return "SELLING";
+            }
+            if(!ShopUtil.canChangeShopType(QuickShop.getInstance(), player, shop.get(), SELLING_TYPE)) {
+              return currentState;
             }
             Util.regionThread(shop.get().bukkitLocation(), ()->shop.get().shopType(SELLING_TYPE));
             return "SELLING";

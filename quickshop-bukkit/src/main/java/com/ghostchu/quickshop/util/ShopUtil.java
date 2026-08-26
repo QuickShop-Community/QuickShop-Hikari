@@ -26,8 +26,10 @@ import com.ghostchu.quickshop.api.event.settings.type.ShopPriceEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Info;
+import com.ghostchu.quickshop.api.shop.IShopType;
 import com.ghostchu.quickshop.api.shop.PriceLimiter;
 import com.ghostchu.quickshop.api.shop.PriceLimiterCheckResult;
+import com.ghostchu.quickshop.api.shop.PriceLimiterStatus;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopAction;
 import com.ghostchu.quickshop.api.shop.ShopManager;
@@ -64,6 +66,24 @@ import static com.ghostchu.quickshop.QuickShop.taskCache;
  * @since 6.2.0.8
  */
 public class ShopUtil {
+
+  public static boolean canChangeShopType(@NotNull final QuickShop plugin, @NotNull final Player player,
+                                          @NotNull final Shop shop, @NotNull final IShopType newType) {
+
+    if(shop.shopType().identifier().equalsIgnoreCase(newType.identifier())) {
+      return true;
+    }
+    final PriceLimiterCheckResult result = plugin.getShopManager().getPriceLimiter()
+            .check(player, shop.getItem(), shop.getCurrency(), shop.getPrice(), newType);
+    if(result.getStatus() == PriceLimiterStatus.PASS) {
+      return true;
+    }
+    plugin.text().of(player, "shop-type-change-price-restricted",
+                     plugin.text().of(player, newType.translationKey()).forLocale(),
+                     plugin.getShopManager().format(result.getMin(), shop),
+                     plugin.getShopManager().format(result.getMax(), shop)).send();
+    return false;
+  }
 
   public static boolean allowed(final Shop shop, final ItemStack itemStack) {
 
@@ -212,7 +232,7 @@ public class ShopUtil {
       }
     }
 
-    final PriceLimiterCheckResult checkResult = limiter.check(user, shop.getItem(), plugin.getCurrency(), price);
+    final PriceLimiterCheckResult checkResult = limiter.check(user, shop.getItem(), plugin.getCurrency(), price, shop.shopType());
     final String currency = (shop.getCurrency() == null)? ((plugin.getCurrency() == null)? "" : plugin.getCurrency()) : shop.getCurrency();
     final World world = shop.bukkitLocation().getWorld();
     final EconomyProvider econ = plugin.getEconomyManager().provider();

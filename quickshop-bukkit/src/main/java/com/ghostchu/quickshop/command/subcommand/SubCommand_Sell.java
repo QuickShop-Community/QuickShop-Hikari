@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.util.ShopUtil;
 import com.ghostchu.quickshop.util.Util;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -27,6 +28,9 @@ public class SubCommand_Sell implements CommandHandler<Player> {
     if(shop != null) {
       if(shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_SHOPTYPE)
          || plugin.perm().hasPermission(sender, "quickshop.other.sell")) {
+        if(!ShopUtil.canChangeShopType(plugin, sender, shop, SELLING_TYPE)) {
+          return;
+        }
         shop.shopType(SELLING_TYPE);
         shop.setSignText(plugin.text().findRelativeLanguages(sender));
         plugin.text().of(sender, "command.now-selling", Util.getItemStackName(shop.getItem())).send();
