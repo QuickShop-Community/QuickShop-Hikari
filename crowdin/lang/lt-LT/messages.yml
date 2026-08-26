@@ -376,6 +376,7 @@ unknown-owner: Nežinomas/a
 restricted-prices: '<red>Ribota kaina nuo {0}: Min {1}, Max {2}'
 restricted-price-max: '<red>Restricted price for {0}: Max {1}'
 restricted-price-min: '<red>Restricted price for {0}: Min {1}'
+shop-type-change-price-restricted: '<red>The current price is not valid for a {0} shop. The allowed range is {1} - {2}. Change the price before changing the shop type.'
 nearby-shop-this-way: <green>Parduotuvė yra {0} blokais toliau nuo jūsų.
 owner-bypass-check: <yellow>Praėjote visus patikrinimus. Mainai sėkmingai pavyko! (Nuo šiol jūs esate šios parduotuvės savininkas)
 april-rick-and-roll-easter-egg: "<hover:show_text:'Paspauskite, kad atidarytumėte naršyklėje ir gautumėte laikinus apdovanojimus!'>click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'<green>Paspauskite čia, kad gautumėte laikinus apdovanojimus, kuriuos suteikia QuickShop-Hikari kūrėjas!</green></click></hover>"
