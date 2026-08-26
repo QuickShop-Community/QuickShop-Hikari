@@ -15,6 +15,7 @@ rules: # Rules set
   example: # Rules name, used for identifier and permission node (quickshop.price.restriction.bypass.<name>)
     #items section SUPPORT Item Expression!
     #https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/item-expression
+    # If omitted, the rule name (key) is used as the material name when it matches a Bukkit material.
     items: # Items in the rule (https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html), or the reference the item lookup table by adding @ before the name
       - STONE_SWORD
       - STONE_PICKAXE

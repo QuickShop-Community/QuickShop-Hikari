@@ -15,6 +15,7 @@ import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -160,8 +161,15 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
     final String bypassPermission = "quickshop.price.restriction.bypass." + ruleName;
     final ItemExpressionRegistry itemExpressionRegistry = (ItemExpressionRegistry)plugin.getRegistry().getRegistry(BuiltInRegistry.ITEM_EXPRESSION);
     final List<Function<ItemStack, Boolean>> items = new ArrayList<>();
-    for(final String item : section.getStringList("items")) {
+    final List<String> configuredItems = section.getStringList("items");
+    for(final String item : configuredItems) {
       items.add(itemStack->itemExpressionRegistry.match(itemStack, item));
+    }
+    if(configuredItems.isEmpty()) {
+      final Material material = Material.matchMaterial(ruleName);
+      if(material != null) {
+        items.add(itemStack->itemExpressionRegistry.match(itemStack, material.name()));
+      }
     }
     final List<Pattern> currency = new ArrayList<>();
     for(final String currencyStr1 : section.getStringList("currency")) {
@@ -503,15 +511,16 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
     }
 
     /**
-     * Checks if the currency applies to this rule. Will return true if the currency is null
+     * Checks if the currency applies to this rule. A null currency or an empty configured
+     * currency list applies to every currency.
      *
      * @param currency the currency to check
      *
-     * @return true if the currency either applies, or is null. false otherwise.
+     * @return true if the currency applies or no currency filter is configured, false otherwise.
      */
     public boolean isApplicableCurrency(@Nullable final String currency) {
 
-      if(currency != null) {
+      if(currency != null && !this.currency.isEmpty()) {
         return this.currency.stream().anyMatch(pattern->pattern.matcher(currency).matches());
       }
       return true;
