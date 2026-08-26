@@ -365,6 +365,7 @@ unknown-owner: Desconegut
 restricted-prices: '<red>Preu restringit per {0}: Mínim {1}, màxim {2}.'
 restricted-price-max: '<red>Restricted price for {0}: Max {1}'
 restricted-price-min: '<red>Restricted price for {0}: Min {1}'
+shop-type-change-price-restricted: '<red>The current price is not valid for a {0} shop. The allowed range is {1} - {2}. Change the price before changing the shop type.'
 nearby-shop-this-way: <green>La botiga és a {0} blocs de tu.
 owner-bypass-check: <yellow>Intercanviat amb èxit! (Ara ets el propietari de la botiga!)
 april-rick-and-roll-easter-egg: "<hover:show_text:'Click to open in browser for time limited rewards!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>Click here to acquire your time limited rewards that provided by QuickShop-Hikari developer!</green></click></hover>"
