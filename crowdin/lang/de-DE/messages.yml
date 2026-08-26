@@ -365,6 +365,7 @@ unknown-owner: Unbekannt
 restricted-prices: '<red>Eingeschränkter Preis für {0}: Mindestens {1}, maximal {2}'
 restricted-price-max: '<red>Restricted price for {0}: Max {1}'
 restricted-price-min: '<red>Restricted price for {0}: Min {1}'
+shop-type-change-price-restricted: '<red>The current price is not valid for a {0} shop. The allowed range is {1} - {2}. Change the price before changing the shop type.'
 nearby-shop-this-way: <green>Shop ist {0} Blöcke von dir entfernt.
 owner-bypass-check: <yellow>Alle Prüfungen wurden umgangen. Handel erfolgreich! (Sie sind jetzt der Besitzer des Ladens!)
 april-rick-and-roll-easter-egg: "<hover:show_text:'Anklicken um im Browser zu öffnen für eine limitierte Belohnung!'><click:open_url:'https://www.youtube.com/watch?v?dQw4w9WgXcQ'><green>Klicke hier um eine limitierte Belohnung von den QuickShop-Hikari Entwicklern zu erhalten!</green></click></hover>"
