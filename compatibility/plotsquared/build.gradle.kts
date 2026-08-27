@@ -11,7 +11,6 @@ dependencies {
         exclude("dev.notmyfault.serverlib", "ServerLib")
         exclude("org.enginehub", "squirrelid")
         exclude("net.kyori", "adventure-platform-bukkit")
-        exclude("io.papermc", "paperlib")
         exclude("org.bstats", "bstats-bukkit")
         exclude("com.intellectualsites.prtree", "PRTree")
         exclude("net.kyori", "adventure-api")
@@ -28,7 +27,6 @@ dependencies {
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.3.17") {
         exclude("org.bstats")
         exclude("it.unimi.dsi", "fastutil")
-        exclude("io.papermc", "paperlib")
         exclude("org.antlr", "antlr4")
         exclude("org.antlr", "antlr4-runtime")
         exclude("com.google.code.gson", "gson")
