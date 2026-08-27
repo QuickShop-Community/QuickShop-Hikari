@@ -1,4 +1,5 @@
 [versions]
+jetbrainsAnnotations = "26.0.2-1"
 slf4jApi = "2.0.17"
 slf4jSimple = "2.0.17"
 paperApi = "1.21-R0.1-SNAPSHOT"
@@ -7,6 +8,7 @@ shadow = "9.6.1"
 versionsPlugin = "0.51.0"
 
 [libraries]
+jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrainsAnnotations" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4jApi" }
 slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4jSimple" }
 paper-api = { module = "io.papermc.paper:paper-api", version.ref = "paperApi" }
