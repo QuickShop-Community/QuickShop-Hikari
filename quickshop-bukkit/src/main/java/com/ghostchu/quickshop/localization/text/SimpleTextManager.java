@@ -104,7 +104,6 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     } else {
       plugin.logger().info("[CrowdinOTA] Crowdin Over-The-Air distribution has been disabled.");
     }
-    load();
   }
 
   /**

@@ -472,12 +472,12 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     logger.info("Loading translations (This may take a while)...");
     try {
       this.textManager = new SimpleTextManager(this);
+      textManager.load();
     } catch(final NoSuchMethodError | NoClassDefFoundError e) {
       logger.error("Failed to initialize text manager, the QuickShop doesn't compatible with your Server version. Did you up-to-date?", e);
       Bukkit.getPluginManager().disablePlugin(javaPlugin);
       throw new IllegalStateException("Cannot initialize text manager");
     }
-    textManager.load();
   }
 
   /**
