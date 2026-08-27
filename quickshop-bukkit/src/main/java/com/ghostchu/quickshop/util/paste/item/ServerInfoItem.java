@@ -29,7 +29,12 @@ public class ServerInfoItem implements SubPasteItem {
     this.build = Bukkit.getServer().getVersion();
     this.nmsVersion = ReflectFactory.getNMSVersion() + "/" + plugin.platform().getMinecraftVersion();
     this.dataVersion = String.valueOf(Bukkit.getServer().getUnsafe().getDataVersion());
-    this.moddedServerType = ServerBuildInfo.buildInfo().brandName();
+    try {
+      this.moddedServerType = ServerBuildInfo.buildInfo().brandName();
+    } catch (Throwable e) {
+      // pre 1.20.6 fallback
+      this.moddedServerType = Bukkit.getServer().getName();
+    }
     if(plugin.getEnvironmentChecker().isFabricBasedServer()) {
       this.moddedServerType = "Fabric";
     }

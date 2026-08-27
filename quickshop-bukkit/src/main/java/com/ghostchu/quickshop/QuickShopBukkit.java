@@ -230,7 +230,7 @@ public class QuickShopBukkit extends JavaPlugin {
     if(CommonUtil.isClassAvailable("org.spigotmc.SpigotConfig")) {
       platformId = 1;
     }
-    if(CommonUtil.isClassAvailable("io.papermc.paper.ServerBuildInfo")) {
+    if(CommonUtil.isClassAvailable("io.papermc.paper.ServerBuildInfo") || CommonUtil.isClassAvailable("io.papermc.paper.configuration.Configuration")) {
       platformId = 2;
     }
 
