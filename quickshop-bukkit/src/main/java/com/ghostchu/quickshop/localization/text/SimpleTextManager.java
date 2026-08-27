@@ -111,7 +111,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
    */
   public void load() {
 
-    plugin.logger().info("Loading up translations from Crowdin OTA, this may need a while...");
+    plugin.logger().info("Loading up translations from Crowdin OTA, this may take a while...");
     //TODO: This will break the message processing system in-game until loading finished, need to fix it.
     this.reset();
     initTagResolvers();
