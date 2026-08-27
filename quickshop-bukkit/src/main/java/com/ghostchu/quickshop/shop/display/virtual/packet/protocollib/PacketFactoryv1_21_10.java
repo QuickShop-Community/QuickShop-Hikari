@@ -87,19 +87,19 @@ public class PacketFactoryv1_21_10 implements PacketFactory<PacketContainer> {
 
     //id and velocity
     fakeItemPacket.getIntegers().write(0, id);
-    fakeItemPacket.getVectors().write(0, new Vector(0, 0, 0));
-
-    //Entity Type
-    fakeItemPacket.getEntityTypeModifier().write(0, EntityType.ITEM);
 
     //UUID
     fakeItemPacket.getUUIDs().write(0, identifier);
 
+    //Entity Type
+    fakeItemPacket.getEntityTypeModifier().write(0, EntityType.ITEM);
+
     //Location
-    fakeItemPacket.getDoubles()
-            .write(0, displayLocation.getX())
-            .write(1, displayLocation.getY())
-            .write(2, displayLocation.getZ());
+
+    fakeItemPacket.getDoubles().write(0, displayLocation.getX());
+    fakeItemPacket.getDoubles().write(1, displayLocation.getY());
+    fakeItemPacket.getDoubles().write(2, displayLocation.getZ());
+    fakeItemPacket.getVectors().write(0, new Vector(0, 0, 0));
     return fakeItemPacket;
   }
 
@@ -274,10 +274,9 @@ public class PacketFactoryv1_21_10 implements PacketFactory<PacketContainer> {
           return;
         }
 
-        final StructureModifier<ChunkCoordIntPair> chunkCoord =event.getPacket().getChunkCoordIntPairs();
-        final ChunkCoordIntPair pair = chunkCoord.read(0);
+        final StructureModifier<Integer> integers = event.getPacket().getIntegers();
 
-        VirtualDisplayItemManager.instance().chunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), pair.getChunkX(), pair.getChunkZ()), (chunkLoc, targetList)->{
+        VirtualDisplayItemManager.instance().chunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), integers.read(0), integers.read(1)), (chunkLoc, targetList)->{
           for(final VirtualDisplayItem<?> target : targetList.values()) {
             if(!target.isSpawned()) {
               continue;

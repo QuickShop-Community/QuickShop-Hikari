@@ -331,7 +331,7 @@ public class PacketFactoryv1_20 implements PacketFactory<PacketContainer> {
           return;
         }
 
-        final StructureModifier<ChunkCoordIntPair> chunkCoord =event.getPacket().getChunkCoordIntPairs();
+        final StructureModifier<ChunkCoordIntPair> chunkCoord = event.getPacket().getChunkCoordIntPairs();
         final ChunkCoordIntPair pair = chunkCoord.read(0);
 
         VirtualDisplayItemManager.instance().chunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), pair.getChunkX(), pair.getChunkZ()), (chunkLoc, targetList)->{
