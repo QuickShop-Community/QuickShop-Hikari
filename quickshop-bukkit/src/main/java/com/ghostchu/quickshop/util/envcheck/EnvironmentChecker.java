@@ -10,7 +10,6 @@ import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.ReflectFactory;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
-import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
@@ -304,17 +303,6 @@ public final class EnvironmentChecker {
       final EnvCheckEntry e2 = o2.getAnnotation(EnvCheckEntry.class);
       return Integer.compare(e1.priority(), e2.priority());
     });
-  }
-
-  @EnvCheckEntry(name = "Spigot Based Server Test", priority = 2)
-  public ResultContainer spigotBasedServer() {
-
-    final ResultContainer success = new ResultContainer(CheckResult.PASSED, "Server");
-    final ResultContainer failed = new ResultContainer(CheckResult.STOP_WORKING, "Server must be Spigot based, Don't use CraftBukkit!");
-    if(!PaperLib.isSpigot()) {
-      return failed;
-    }
-    return success;
   }
 
   @EnvCheckEntry(name = "Virtual DisplayItem Support Test", priority = 7, stage = EnvCheckEntry.Stage.ON_ENABLE)

@@ -4,11 +4,6 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import net.kyori.adventure.Adventure;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.serializer.ansi.ANSIComponentSerializer;
-import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
-import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.jetbrains.annotations.NotNull;
 
 public class ChatProcessorInfoItem implements SubPasteItem {
@@ -39,12 +34,21 @@ public class ChatProcessorInfoItem implements SubPasteItem {
     table.insert("Processor", IMPL);
     table.insert("Formatter", FORMATTER);
     table.insert("Adventure API", CommonUtil.getClassPathRelative(Adventure.class));
-    table.insert("Adventure Text Serializer (Legacy)", CommonUtil.getClassPathRelative(LegacyComponentSerializer.class));
-    table.insert("Adventure Text Serializer (Gson)", CommonUtil.getClassPathRelative(GsonComponentSerializer.class));
-    table.insert("Adventure Text Serializer (Json)", CommonUtil.getClassPathRelative(JSONComponentSerializer.class));
-    table.insert("Adventure Text Serializer (ANSI)", CommonUtil.getClassPathRelative(ANSIComponentSerializer.class));
-    table.insert("Adventure Text Serializer (Plain)", CommonUtil.getClassPathRelative(PlainTextComponentSerializer.class));
+    table.insert("Adventure Text Serializer (Legacy)", safePathRelative("net.kyori.adventure.text.serializer.ansi.ANSIComponentSerializer"));
+    table.insert("Adventure Text Serializer (Gson)", safePathRelative("net.kyori.adventure.text.serializer.gson.GsonComponentSerializer"));
+    table.insert("Adventure Text Serializer (Json)", safePathRelative("net.kyori.adventure.text.serializer.json.JSONComponentSerializer"));
+    table.insert("Adventure Text Serializer (ANSI)", safePathRelative("net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer"));
+    table.insert("Adventure Text Serializer (Plain)", safePathRelative("net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer"));
     table.insert("Adventure MiniMessage", CommonUtil.getClassPathRelative(MiniMessage.class));
     return table.render();
+  }
+
+  private String safePathRelative(final String className) {
+
+    try {
+      return CommonUtil.getClassPathRelative(Class.forName(className));
+    } catch (ClassNotFoundException e) {
+      return "null";
+    }
   }
 }

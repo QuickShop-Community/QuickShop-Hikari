@@ -125,9 +125,7 @@ import com.tcoded.folialib.FoliaLib;
 import com.vdurmont.semver4j.Semver;
 import dev.dejvokep.boostedyaml.YamlDocument;
 import dev.dejvokep.boostedyaml.block.implementation.Section;
-import io.papermc.lib.PaperLib;
 import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.platform.BukkitHelper;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.platform.registry.BaseHelper;
@@ -1415,18 +1413,12 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
   public AbstractItemStack<?> stack() {
 
-    if(PaperLib.isPaper()) {
-      return new PaperItemStack();
-    }
-    return new BukkitItemStack();
+    return new PaperItemStack();
   }
 
   public AbstractItemStack<ItemStack> stack(final ItemStack itemStack) {
 
-    if(PaperLib.isPaper()) {
-      return new PaperItemStack().of(itemStack);
-    }
-    return new BukkitItemStack().of(itemStack);
+    return new PaperItemStack().of(itemStack);
   }
 
   @NotNull
