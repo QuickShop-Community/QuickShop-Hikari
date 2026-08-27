@@ -375,6 +375,7 @@ unknown-owner: 未知所有者
 restricted-prices: '<red>物品 {0} 的价格限制为 {1}（包含）到{2}（包含）'
 restricted-price-max: '<red>物品 {0} 的价格最大限制为 {1}'
 restricted-price-min: '<red>物品 {0} 的价格最小限制为 {1}'
+shop-type-change-price-restricted: '<red>The current price is not valid for a {0} shop. The allowed range is {1} - {2}. Change the price before changing the shop type.'
 nearby-shop-this-way: <green>商店距离你 {0} 格远
 owner-bypass-check: <yellow>已绕过所有检查并完成交易（因为你是商店所有者）！
 april-rick-and-roll-easter-egg: "<hover:show_text:'在浏览器中点击打开获取限时奖励!'><click:open_url:'https://www.bilibili.com/video/BV1GJ411x7h7'><green>点击此处可以获取由 QuickShop 开发者提供的限时奖励!</green></click></hover>"

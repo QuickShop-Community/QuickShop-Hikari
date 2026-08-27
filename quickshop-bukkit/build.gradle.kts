@@ -51,15 +51,12 @@ dependencies {
         exclude("net.kyori")
     }
 
-    api(libs.paperlib)
-
     compileOnly(libs.h2)
     compileOnly(libs.unirest.java)
     compileOnly(libs.csvjdbc)
     compileOnly(libs.dom4j)
 
     compileOnly(libs.essentials.x) {
-        exclude("io.papermc", "paperlib")
         exclude("org.yaml", "snakeyaml")
         exclude("com.google.errorprone", "error_prone_annotations")
         exclude("org.checkerframework", "checker-qual")
@@ -85,7 +82,6 @@ dependencies {
     val worldeditExcludes: ExternalModuleDependency.() -> Unit = {
         exclude("org.bstats")
         exclude("it.unimi.dsi", "fastutil")
-        exclude("io.papermc", "paperlib")
         exclude("org.antlr", "antlr4")
         exclude("org.antlr", "antlr4-runtime")
         exclude("com.google.code.gson", "gson")

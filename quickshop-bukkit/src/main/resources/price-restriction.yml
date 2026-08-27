@@ -1,13 +1,21 @@
-version: 3
-whole-number-only: false  # This option not control by enable option, always enabled
-undefined: # This option not control by enable option, always enabled
-  min: 0.01 # Can be zero if you want player create a free shop
-  max: 999999999999999999999999999.99 # This can be up to 1.7976931348623157E308, or -1 to disable maximum price.
+version: 4
 enable: false
+whole-number-only: false  # This option not control by enable option, always enabled
+global: # These options are not controlled by enable; they are always enabled
+  selling:
+    min: 0.01 # Can be zero if you want players to create a free shop
+    max: 999999999999999999999999999.99 # Use -1 to disable the maximum price
+  buying:
+    min: 0.01
+    max: 999999999999999999999999999.99
+# Scope used when a rule does not define its own scope.
+# Allowed values: BUYING, SELLING, BUYING_AND_SELLING
+default-rule-scope: BUYING_AND_SELLING
 rules: # Rules set
   example: # Rules name, used for identifier and permission node (quickshop.price.restriction.bypass.<name>)
     #items section SUPPORT Item Expression!
     #https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/item-expression
+    # If omitted, the rule name (key) is used as the material name when it matches a Bukkit material.
     items: # Items in the rule (https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html), or the reference the item lookup table by adding @ before the name
       - STONE_SWORD
       - STONE_PICKAXE
@@ -16,5 +24,6 @@ rules: # Rules set
       - STONE_HOE
     currency: # Currency name, If your plugin doesn't support multi-currency (Vault API), this section won't be used
       - '*'
+    scope: BUYING_AND_SELLING # Optional: BUYING, SELLING, or BUYING_AND_SELLING (default)
     min: 1.0 # Min price (double)
     max: 50.0 # Max price (double)

@@ -376,6 +376,7 @@ unknown-owner: Невідомо
 restricted-prices: '<red>Обмежена ціна для {0}: Мін. {1}, макс. {2}'
 restricted-price-max: '<red>Restricted price for {0}: Max {1}'
 restricted-price-min: '<red>Restricted price for {0}: Min {1}'
+shop-type-change-price-restricted: '<red>The current price is not valid for a {0} shop. The allowed range is {1} - {2}. Change the price before changing the shop type.'
 nearby-shop-this-way: <green>Магазин знаходиться на відстані {0} блоків від вас.
 owner-bypass-check: <yellow>Усі перевірки пройдено. Торгівля успішна! (Тепер ви власник магазину!)
 april-rick-and-roll-easter-egg: "<hover:show_text:'Click to open in browser for time limited rewards!'>Натисніть, щоб відкрити в браузері та отримати тимчасові нагороди!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>Натисніть тут, щоб отримати тимчасові нагороди від розробника QuickShop-Hikari!</green></click></hover>"

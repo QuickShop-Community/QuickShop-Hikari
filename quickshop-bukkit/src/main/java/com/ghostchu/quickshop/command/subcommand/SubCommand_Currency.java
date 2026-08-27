@@ -83,7 +83,7 @@ public class SubCommand_Currency implements CommandHandler<Player> {
           return;
         }
 
-        final PriceLimiterCheckResult checkResult = limiter.check(sender, shop.getItem(), event.updated(), shop.getPrice());
+        final PriceLimiterCheckResult checkResult = limiter.check(sender, shop.getItem(), event.updated(), shop.getPrice(), shop.shopType());
         if(checkResult.getStatus() != PriceLimiterStatus.PASS) {
           plugin.text().of(sender, "restricted-prices", Util.getItemStackName(shop.getItem()),
                            Component.text(checkResult.getMin()),

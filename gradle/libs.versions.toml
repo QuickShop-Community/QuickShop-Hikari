@@ -5,7 +5,6 @@ jetbrainsAnnotations = "26.0.2-1"
 slf4j = "2.0.17"
 paperApi = "1.21-R0.1-SNAPSHOT"
 paperApiPinned = "1.21.4-R0.1-SNAPSHOT"
-paperlib = "1.0.8"
 shadow = "9.6.1"
 versionsPlugin = "0.51.0"
 
@@ -54,7 +53,6 @@ slf4j-jdk14 = { module = "org.slf4j:slf4j-jdk14", version.ref = "slf4j" }
 
 paper-api = { module = "io.papermc.paper:paper-api", version.ref = "paperApi" }
 paper-api-pinned = { module = "io.papermc.paper:paper-api", version.ref = "paperApiPinned" }
-paperlib = { module = "io.papermc:paperlib", version.ref = "paperlib" }
 
 commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commonsLang3" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }

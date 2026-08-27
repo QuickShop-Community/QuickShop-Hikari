@@ -376,6 +376,7 @@ unknown-owner: 未知
 restricted-prices: '<red>{0} 是無效的價格：最高 {1}，最低 {2}。'
 restricted-price-max: '<red>Restricted price for {0}: Max {1}'
 restricted-price-min: '<red>Restricted price for {0}: Min {1}'
+shop-type-change-price-restricted: '<red>The current price is not valid for a {0} shop. The allowed range is {1} - {2}. Change the price before changing the shop type.'
 nearby-shop-this-way: <green>商店距離你 {0} 格遠。
 owner-bypass-check: <yellow>繞過所有檢查並完成交易（因為你是商店擁有者！）
 april-rick-and-roll-easter-egg: "<hover:show_text:'Click to open in browser for time limited rewards!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>快來點擊此處領取 QuickShop-Hikari 開發人員提供的限時獎勵吧！</green></click></hover>"

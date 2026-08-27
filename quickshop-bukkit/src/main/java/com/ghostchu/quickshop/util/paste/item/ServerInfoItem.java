@@ -4,7 +4,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.ReflectFactory;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
-import io.papermc.lib.PaperLib;
+import io.papermc.paper.ServerBuildInfo;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,12 +29,11 @@ public class ServerInfoItem implements SubPasteItem {
     this.build = Bukkit.getServer().getVersion();
     this.nmsVersion = ReflectFactory.getNMSVersion() + "/" + plugin.platform().getMinecraftVersion();
     this.dataVersion = String.valueOf(Bukkit.getServer().getUnsafe().getDataVersion());
-    this.moddedServerType = "Bukkit";
-    if(PaperLib.isSpigot()) {
-      this.moddedServerType = "Spigot";
-    }
-    if(PaperLib.isPaper()) {
-      this.moddedServerType = "Paper";
+    try {
+      this.moddedServerType = ServerBuildInfo.buildInfo().brandName();
+    } catch (Throwable e) {
+      // pre 1.20.6 fallback
+      this.moddedServerType = Bukkit.getServer().getName();
     }
     if(plugin.getEnvironmentChecker().isFabricBasedServer()) {
       this.moddedServerType = "Fabric";
