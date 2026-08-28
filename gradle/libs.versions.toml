@@ -1,5 +1,6 @@
 [versions]
 boostedYaml = "1.3.7"
+jetbrainsAnnotations = "26.0.2-1"
 slf4j = "2.0.17"
 paperApi = "1.21-R0.1-SNAPSHOT"
 paperApiPinned = "1.21.4-R0.1-SNAPSHOT"
@@ -41,6 +42,8 @@ worldEdit = "7.3.17"
 
 [libraries]
 boosted-yaml = { module = "dev.dejvokep:boosted-yaml", version.ref = "boostedYaml" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
 slf4j-jdk14 = { module = "org.slf4j:slf4j-jdk14", version.ref = "slf4j" }
 
 paper-api = { module = "io.papermc.paper:paper-api", version.ref = "paperApi" }
@@ -51,6 +54,7 @@ gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 simple-reload-lib = { module = "com.ghostchu:simplereloadlib", version.ref = "simpleReloadLib" }
 easysql-api = { module = "cc.carm.lib:easysql-api", version.ref = "easySql" }
 semver4j = { module = "com.vdurmont:semver4j", version.ref = "semver4j" }
+jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrainsAnnotations" }
 
 adventure-api = { module = "net.kyori:adventure-api", version.ref = "adventure" }
 
