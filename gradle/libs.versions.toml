@@ -1,18 +1,98 @@
 [versions]
+boostedYaml = "1.3.7"
 jetbrainsAnnotations = "26.0.2-1"
-slf4jApi = "2.0.17"
-slf4jSimple = "2.0.17"
+slf4j = "2.0.17"
 paperApi = "1.21-R0.1-SNAPSHOT"
 paperApiPinned = "1.21.4-R0.1-SNAPSHOT"
 shadow = "9.6.1"
 versionsPlugin = "0.51.0"
 
+commonsLang3 = "3.18.0"
+gson = "2.13.1"
+simpleReloadLib = "1.1.2"
+easySql = "0.4.7"
+semver4j = "3.1.0"
+adventure = "5.1.1"
+
+protocolLib = "5.4.0"
+packetEvents = "2.12.2"
+luckPerms = "5.5"
+vaultUnlockedApi = "2.20"
+placeholderApi = "2.11.6"
+
+tnml = "1.7.0.1-SNAPSHOT-5"
+tnil = "0.2.0.3-SNAPSHOT-1"
+
+h2 = "2.1.214"
+unirest = "3.14.5"
+csvJdbc = "1.0.42"
+dom4j = "2.1.4"
+essentialsX = "2.21.2"
+crowdinota = "1.0.3"
+
+bstats = "3.0.2"
+rollbar = "2.0.0"
+faststats = "0.17.2"
+commonsCompress = "1.26.2"
+foliaLib = "0.5.1"
+libby = "2.0.2-SNAPSHOT"
+
+fawe = "2.12.0"
+worldEdit = "7.3.17"
+
 [libraries]
-jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrainsAnnotations" }
-slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4jApi" }
-slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4jSimple" }
+boosted-yaml = { module = "dev.dejvokep:boosted-yaml", version.ref = "boostedYaml" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+slf4j-jdk14 = { module = "org.slf4j:slf4j-jdk14", version.ref = "slf4j" }
+
 paper-api = { module = "io.papermc.paper:paper-api", version.ref = "paperApi" }
 paper-api-pinned = { module = "io.papermc.paper:paper-api", version.ref = "paperApiPinned" }
+
+commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commonsLang3" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+simple-reload-lib = { module = "com.ghostchu:simplereloadlib", version.ref = "simpleReloadLib" }
+easysql-api = { module = "cc.carm.lib:easysql-api", version.ref = "easySql" }
+semver4j = { module = "com.vdurmont:semver4j", version.ref = "semver4j" }
+jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrainsAnnotations" }
+
+adventure-api = { module = "net.kyori:adventure-api", version.ref = "adventure" }
+
+protocol-lib = { module = "net.dmulloy2:ProtocolLib", version.ref = "protocolLib" }
+packet-events-spigot = { module = "com.github.retrooper:packetevents-spigot", version.ref = "packetEvents" }
+luckperms-api = { module = "net.luckperms:api", version.ref = "luckPerms" }
+vault-unlocked-api = { module = "net.milkbowl.vault:VaultUnlockedAPI", version.ref = "vaultUnlockedApi" }
+placeholder-api = { module = "me.clip:placeholderapi", version.ref = "placeholderApi" }
+
+tnml-folia = { module = "net.tnemc:TNML-Folia", version.ref = "tnml" }
+tnml-bukkit = { module = "net.tnemc:TNML-Bukkit", version.ref = "tnml" }
+tnml-core = { module = "net.tnemc:TNML-CORE", version.ref = "tnml" }
+
+tnil-bukkit = { module = "net.tnemc:TNIL-Bukkit", version.ref = "tnil" }
+tnil-paper = { module = "net.tnemc:TNIL-Paper", version.ref = "tnil" }
+tnil-core = { module = "net.tnemc:TNIL-Core", version.ref = "tnil" }
+
+h2 = { module = "com.h2database:h2", version.ref = "h2" }
+unirest-java = { module = "com.konghq:unirest-java", version.ref = "unirest" }
+csvjdbc = { module = "net.sourceforge.csvjdbc:csvjdbc", version.ref = "csvJdbc" }
+dom4j = { module = "org.dom4j:dom4j", version.ref = "dom4j" }
+essentials-x = { module = "net.essentialsx:EssentialsX", version.ref = "essentialsX" }
+crowdinota = { module = "com.ghostchu.crowdin:crowdinota", version.ref = "crowdinota" }
+
+bstats-bukkit = { module = "org.bstats:bstats-bukkit", version.ref = "bstats" }
+rollbar-java = { module = "com.rollbar:rollbar-java", version.ref = "rollbar" }
+rollbar-api = { module = "com.rollbar:rollbar-api", version.ref = "rollbar" }
+
+easysql-hikaricp = { module = "cc.carm.lib:easysql-hikaricp", version.ref = "easySql" }
+faststats-bukkit = { module = "dev.faststats.metrics:bukkit", version.ref = "faststats" }
+commons-compress = { module = "org.apache.commons:commons-compress", version.ref = "commonsCompress" }
+folia-lib = { module = "com.tcoded:FoliaLib", version.ref = "foliaLib" }
+
+libby-core = { module = "com.ghostchu.lib.unofficial.com.alessiodp.libby:libby-core", version.ref = "libby" }
+libby-bukkit = { module = "com.ghostchu.lib.unofficial.com.alessiodp.libby:libby-bukkit", version.ref = "libby" }
+
+fawe-core = { module = "com.fastasyncworldedit:FastAsyncWorldEdit-Core", version.ref = "fawe" }
+worldedit-bukkit = { module = "com.sk89q.worldedit:worldedit-bukkit", version.ref = "worldEdit" }
 
 [plugins]
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }

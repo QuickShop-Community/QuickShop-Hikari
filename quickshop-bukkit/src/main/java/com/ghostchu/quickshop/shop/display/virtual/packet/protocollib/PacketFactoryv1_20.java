@@ -25,6 +25,7 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.reflect.StructureModifier;
 import com.comphenix.protocol.utility.MinecraftReflection;
+import com.comphenix.protocol.wrappers.ChunkCoordIntPair;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedDataValue;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
@@ -79,7 +80,7 @@ public class PacketFactoryv1_20 implements PacketFactory<PacketContainer> {
     final UUID identifier = UUID.nameUUIDFromBytes(("SHOP:" + id).getBytes(StandardCharsets.UTF_8));
 
     //First, create a new packet to spawn item
-    final PacketContainer fakeItemPacket = ProtocolLibHandler.instance().internal().createPacket(PacketType.Play.Server.SPAWN_ENTITY);
+    final PacketContainer fakeItemPacket = new PacketContainer(PacketType.Play.Server.SPAWN_ENTITY);
 
     //id and velocity
     fakeItemPacket.getIntegers()
@@ -329,12 +330,11 @@ public class PacketFactoryv1_20 implements PacketFactory<PacketContainer> {
         if(player.getClass().getName().contains("TemporaryPlayer")) {
           return;
         }
-        
-          final StructureModifier<Integer> intModifier = event.getPacket().getIntegers();
-          final int x = intModifier.read(0);
-          final int z = intModifier.read(1);
 
-        VirtualDisplayItemManager.instance().chunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
+        final StructureModifier<ChunkCoordIntPair> chunkCoord = event.getPacket().getChunkCoordIntPairs();
+        final ChunkCoordIntPair pair = chunkCoord.read(0);
+
+        VirtualDisplayItemManager.instance().chunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), pair.getChunkX(), pair.getChunkZ()), (chunkLoc, targetList)->{
           for(final VirtualDisplayItem<?> target : targetList.values()) {
 
             if(!target.isSpawned()) {

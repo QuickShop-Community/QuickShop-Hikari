@@ -46,6 +46,7 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,26 +83,23 @@ public class PacketFactoryv1_21_10 implements PacketFactory<PacketContainer> {
     final UUID identifier = UUID.nameUUIDFromBytes(("SHOP:" + id).getBytes(StandardCharsets.UTF_8));
 
     //First, create a new packet to spawn item
-    final PacketContainer fakeItemPacket = ProtocolLibHandler.instance().internal().createPacket(PacketType.Play.Server.SPAWN_ENTITY);
+    final PacketContainer fakeItemPacket = new PacketContainer(PacketType.Play.Server.SPAWN_ENTITY);
 
     //id and velocity
     fakeItemPacket.getIntegers().write(0, id);
-    fakeItemPacket.getVectors().write(0, new Vector(0, 0, 0));
-
-    //Entity Type
-    fakeItemPacket.getEntityTypeModifier().write(0, EntityType.ITEM);
 
     //UUID
     fakeItemPacket.getUUIDs().write(0, identifier);
 
+    //Entity Type
+    fakeItemPacket.getEntityTypeModifier().write(0, EntityType.ITEM);
+
     //Location
-    fakeItemPacket.getDoubles()
-            //X
-            .write(0, displayLocation.getX())
-            //Y
-            .write(1, displayLocation.getY())
-            //Z
-            .write(2, displayLocation.getZ());
+
+    fakeItemPacket.getDoubles().write(0, displayLocation.getX());
+    fakeItemPacket.getDoubles().write(1, displayLocation.getY());
+    fakeItemPacket.getDoubles().write(2, displayLocation.getZ());
+    fakeItemPacket.getVectors().write(0, new Vector(0, 0, 0));
     return fakeItemPacket;
   }
 
@@ -119,7 +117,7 @@ public class PacketFactoryv1_21_10 implements PacketFactory<PacketContainer> {
     final List<WrappedDataValue> values = new ArrayList<>();
 
     //gravity disabled
-    values.add(new WrappedDataValue(5, WrappedDataWatcher.Registry.get(Boolean.class), true));
+    values.add(new WrappedDataValue(5, WrappedDataWatcher.Registry.get((Type)Boolean.class), true));
     values.add(new WrappedDataValue(8, serializer, MinecraftReflection.getMinecraftItemStack(itemStack)));
 
     if(QuickShop.getInstance().getDisplayManager().useItemName()) {
@@ -127,7 +125,7 @@ public class PacketFactoryv1_21_10 implements PacketFactory<PacketContainer> {
       final String itemName = GsonComponentSerializer.gson().serialize(Util.getItemStackName(itemStack));
 
       values.add(new WrappedDataValue(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true), Optional.of(WrappedChatComponent.fromJson(itemName).getHandle())));
-      values.add(new WrappedDataValue(3, WrappedDataWatcher.Registry.get(Boolean.class), true));
+      values.add(new WrappedDataValue(3, WrappedDataWatcher.Registry.get((Type)Boolean.class), true));
     }
 
     //Next, create a new packet to update item data (default is empty)
@@ -193,16 +191,16 @@ public class PacketFactoryv1_21_10 implements PacketFactory<PacketContainer> {
 
     final List<WrappedDataValue> data = new ArrayList<>();
     //data.add(new WrappedDataValue(12, WrappedDataWatcher.Registry.get(Vector3f.class), scaleVector));
-    data.add(new WrappedDataValue(15, WrappedDataWatcher.Registry.get(Byte.class), (byte)3));
-    data.add(new WrappedDataValue(17, WrappedDataWatcher.Registry.get(Float.class), blockDistance * 0.0125F));
+    data.add(new WrappedDataValue(15, WrappedDataWatcher.Registry.get((Type)Byte.class), (byte)3));
+    data.add(new WrappedDataValue(17, WrappedDataWatcher.Registry.get((Type)Float.class), blockDistance * 0.0125f));
     data.add(new WrappedDataValue(23, WrappedDataWatcher.Registry.getChatComponentSerializer(), component.getHandle()));
-    data.add(new WrappedDataValue(24, WrappedDataWatcher.Registry.get(Integer.class),
+    data.add(new WrappedDataValue(24, WrappedDataWatcher.Registry.get((Type)Integer.class),
                                   QuickShop.getInstance().getConfig().getInt("shop.text-display.line-width", 200)));
-    data.add(new WrappedDataValue(25, WrappedDataWatcher.Registry.get(Integer.class),
+    data.add(new WrappedDataValue(25, WrappedDataWatcher.Registry.get((Type)Integer.class),
                                   QuickShop.getInstance().getConfig().getInt("shop.text-display.background-color", 1073741824)));
-    data.add(new WrappedDataValue(26, WrappedDataWatcher.Registry.get(Byte.class),
+    data.add(new WrappedDataValue(26, WrappedDataWatcher.Registry.get((Type)Byte.class),
                                   QuickShop.getInstance().getConfig().getByte("shop.text-display.text-opacity", (byte)-1)));
-    data.add(new WrappedDataValue(27, WrappedDataWatcher.Registry.get(Byte.class), Util.createTextDisplayFlags()));
+    data.add(new WrappedDataValue(27, WrappedDataWatcher.Registry.get((Type)Byte.class), Util.createTextDisplayFlags()));
 
     packet.getDataValueCollectionModifier().write(0, data);
 
@@ -263,7 +261,7 @@ public class PacketFactoryv1_21_10 implements PacketFactory<PacketContainer> {
   @Override
   public void registerSendChunk() {
 
-    this.chunkSendingPacketAdapter = new PacketAdapter(QuickShop.getInstance().getJavaPlugin(), ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
+    this.chunkSendingPacketAdapter = new PacketAdapter(QuickShop.getInstance().getJavaPlugin(), ListenerPriority.HIGH, PacketType.Play.Server.UNLOAD_CHUNK) {
 
       @Override
       public void onPacketSending(@NotNull final PacketEvent event) {
@@ -275,13 +273,12 @@ public class PacketFactoryv1_21_10 implements PacketFactory<PacketContainer> {
         if(player.getClass().getName().contains("TemporaryPlayer")) {
           return;
         }
-        final StructureModifier<Integer> integerStructureModifier = event.getPacket().getIntegers();
-        //chunk x
-        final int x = integerStructureModifier.read(0);
-        //chunk z
-        final int z = integerStructureModifier.read(1);
 
-        VirtualDisplayItemManager.instance().chunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
+
+        final StructureModifier<ChunkCoordIntPair> chunkCoord = event.getPacket().getChunkCoordIntPairs();
+        final ChunkCoordIntPair pair = chunkCoord.read(0);
+
+        VirtualDisplayItemManager.instance().chunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), pair.getChunkX(), pair.getChunkZ()), (chunkLoc, targetList)->{
           for(final VirtualDisplayItem<?> target : targetList.values()) {
             if(!target.isSpawned()) {
               continue;
