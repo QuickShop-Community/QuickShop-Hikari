@@ -1,7 +1,5 @@
 [versions]
 boostedYaml = "1.3.7"
-lombok = "1.18.46"
-jetbrainsAnnotations = "26.0.2-1"
 slf4j = "2.0.17"
 paperApi = "1.21-R0.1-SNAPSHOT"
 paperApiPinned = "1.21.4-R0.1-SNAPSHOT"
@@ -14,7 +12,6 @@ simpleReloadLib = "1.1.2"
 easySql = "0.4.7"
 semver4j = "3.1.0"
 adventure = "5.1.1"
-examination = "1.3.0"
 
 protocolLib = "5.4.0"
 packetEvents = "2.12.2"
@@ -44,11 +41,6 @@ worldEdit = "7.3.17"
 
 [libraries]
 boosted-yaml = { module = "dev.dejvokep:boosted-yaml", version.ref = "boostedYaml" }
-lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
-jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrainsAnnotations" }
-
-slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
-slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
 slf4j-jdk14 = { module = "org.slf4j:slf4j-jdk14", version.ref = "slf4j" }
 
 paper-api = { module = "io.papermc.paper:paper-api", version.ref = "paperApi" }
@@ -61,16 +53,6 @@ easysql-api = { module = "cc.carm.lib:easysql-api", version.ref = "easySql" }
 semver4j = { module = "com.vdurmont:semver4j", version.ref = "semver4j" }
 
 adventure-api = { module = "net.kyori:adventure-api", version.ref = "adventure" }
-adventure-key = { module = "net.kyori:adventure-key", version.ref = "adventure" }
-adventure-text-logger-slf4j = { module = "net.kyori:adventure-text-logger-slf4j", version.ref = "adventure" }
-adventure-text-minimessage = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }
-adventure-text-serializer-ansi = { module = "net.kyori:adventure-text-serializer-ansi", version.ref = "adventure" }
-adventure-text-serializer-json = { module = "net.kyori:adventure-text-serializer-json", version.ref = "adventure" }
-adventure-text-serializer-legacy = { module = "net.kyori:adventure-text-serializer-legacy", version.ref = "adventure" }
-adventure-text-serializer-plain = { module = "net.kyori:adventure-text-serializer-plain", version.ref = "adventure" }
-
-examination-api = { module = "net.kyori:examination-api", version.ref = "examination" }
-examination-string = { module = "net.kyori:examination-string", version.ref = "examination" }
 
 protocol-lib = { module = "net.dmulloy2:ProtocolLib", version.ref = "protocolLib" }
 packet-events-spigot = { module = "com.github.retrooper:packetevents-spigot", version.ref = "packetEvents" }
