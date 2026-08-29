@@ -1,6 +1,5 @@
 plugins {
     id("quickshop.core-conventions")
-    `maven-publish`
 }
 
 dependencies {
@@ -37,29 +36,4 @@ tasks.named<Javadoc>("javadoc") {
         bottom = "<b>QuickShopCommunity, 2026</b>"
     }
     isFailOnError = false
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("mavenJava") {
-            from(components["java"])
-            groupId = property("group") as String
-            version = property("version") as String
-            artifactId = "quickshop-api"
-        }
-    }
-    repositories {
-        maven {
-            url = uri("https://repo.codemc.io/repository/ghost-chu/")
-
-            val mavenUsername = System.getenv("GRADLE_PROJECT_MAVEN_USERNAME")
-            val mavenPassword = System.getenv("GRADLE_PROJECT_MAVEN_PASSWORD")
-            if (mavenUsername != null && mavenPassword != null) {
-                credentials {
-                    username = mavenUsername
-                    password = mavenPassword
-                }
-            }
-        }
-    }
 }
