@@ -44,8 +44,7 @@ import java.util.Optional;
  */
 public class NexusUpdateProvider implements UpdateProvider {
 
-  private static final String NEXUS_ROOT_METADATA_URL =
-          "https://repo.codemc.io/repository/ghost-chu/com/ghostchu/quickshop-hikari/maven-metadata.xml";
+  private static final String NEXUS_ROOT_METADATA_URL = "https://repo.codemc.io/repository/ghost-chu/com/ghostchu/quickshop-hikari/maven-metadata.xml";
 
   @Override
   public @NotNull String id() {

@@ -61,6 +61,10 @@ public class HTMLTable {
       if(obj == null) {
         obj = "null";
       }
+
+      if (i >= f.length) {
+        break;
+      }
       f[i] = obj.toString();
     }
     if(firstColumnBold) {

@@ -136,7 +136,7 @@ publishing {
             from(components["shadow"])
             groupId = property("group") as String
             version = property("version") as String
-            artifactId = "quickshop-bukkit"
+            artifactId = "quickshop-hikari"
         }
     }
     repositories {

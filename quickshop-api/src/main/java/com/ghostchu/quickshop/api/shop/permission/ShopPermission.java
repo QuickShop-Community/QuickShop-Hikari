@@ -43,6 +43,13 @@ public interface ShopPermission {
   Map<UUID, String> getPermissionAudiences();
 
   /**
+   * Resets all permissions associated with the shop to their default state.
+   * This operation removes any customizations or modifications made to the
+   * permission settings and restores them to their original configuration.
+   */
+  void resetPermissions();
+
+  /**
    * Gets specific player group on specific shop
    *
    * @param player player

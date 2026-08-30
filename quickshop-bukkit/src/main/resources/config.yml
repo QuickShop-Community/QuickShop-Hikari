@@ -11,7 +11,7 @@
 
 # Internal configuration version.
 # Do not change this unless QuickShop support instructs you to.
-config-version: 1048
+config-version: 1049
 
 # Default language used by the plugin.
 # Set to "default" to use the player's Minecraft client language automatically.
@@ -418,6 +418,9 @@ shop:
 
   # Disable the ability to transfer buy shops using the transfer and transferall commands.
   disable-buy-transfer: false
+
+  # Should permissions be cleared on a shop when a player transfers it?
+  remove-perms-on-transfer: true
 
   # Allow shop owners to break only the sign (so it can be replaced).
   # WARNING: May cause sign duplication if auto-sign is enabled.

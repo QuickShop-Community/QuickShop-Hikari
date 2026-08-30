@@ -58,6 +58,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static com.ghostchu.quickshop.QuickShop.taskCache;
+import static com.ghostchu.quickshop.api.QuickShopAPI.getPluginInstance;
 
 /**
  * ShopUtil
@@ -98,7 +99,7 @@ public class ShopUtil {
 
   public static boolean allowed(final Block shopBlock, final ItemStack itemStack) {
 
-    if(shopBlock.getState(false) instanceof ShulkerBox && itemStack.getItemMeta() instanceof BlockStateMeta blockMeta && blockMeta.getBlockState() instanceof ShulkerBox) {
+    if(shopBlock.getState(false) instanceof ShulkerBox && itemStack.getItemMeta() instanceof final BlockStateMeta blockMeta && blockMeta.getBlockState() instanceof ShulkerBox) {
       return false;
     }
 
@@ -604,6 +605,10 @@ public class ShopUtil {
           continue;
         }
         shop.setOwner(event.updated());
+
+        if (getPluginInstance().getConfig().getBoolean("shop.remove-perms-on-transfer", true)) {
+          shop.resetPermissions();
+        }
 
         event = event.clone(Phase.POST);
         event.callEvent();

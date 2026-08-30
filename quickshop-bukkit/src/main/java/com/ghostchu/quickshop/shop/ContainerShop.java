@@ -335,9 +335,9 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
         if(provider != null) {
           this.displayItem = provider.provide(this);
         } else {
-          if(AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && plugin.getDisplayManager() instanceof VirtualDisplayItemManager virtualManager) {
+          if(AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && plugin.getDisplayManager() instanceof final VirtualDisplayItemManager virtualManager) {
             this.displayItem = virtualManager.create(this);
-          } else if(AbstractDisplayItem.getNowUsing() == DisplayType.DISPLAY_ENTITY && plugin.getDisplayManager() instanceof DisplayEntityItemManager displayManager) {
+          } else if(AbstractDisplayItem.getNowUsing() == DisplayType.DISPLAY_ENTITY && plugin.getDisplayManager() instanceof final DisplayEntityItemManager displayManager) {
             this.displayItem = displayManager.create(this);
           }
         }
@@ -628,7 +628,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     //Setup PDC with new owner
     if (owner.getUniqueId() != null) {
       final Block block = this.location.getBlock();
-      if(block.getState(false) instanceof TileState tileState) {
+      if(block.getState(false) instanceof final TileState tileState) {
         tileState.getPersistentDataContainer().set(CHEST_SHOP_OWNER, PersistentDataType.STRING, owner.getUniqueId().toString());
         tileState.update(true);
       }
@@ -653,6 +653,17 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
       clonedPlayerGroup.put(getOwner().getUniqueId(), BuiltInShopPermissionGroup.ADMINISTRATOR.getNamespacedNode());
     }
     return clonedPlayerGroup;
+  }
+
+  /**
+   * Resets all permissions associated with the shop to their default state. This operation
+   * removes any customizations or modifications made to the permission settings and restores them
+   * to their original configuration.
+   */
+  @Override
+  public void resetPermissions() {
+
+    playerGroup.clear();
   }
 
   /**
@@ -1294,7 +1305,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
         continue;
       }
       final BlockState state = b.getState(false);
-      if(!(state instanceof Sign sign)) {
+      if(!(state instanceof final Sign sign)) {
         continue;
       }
       if(!location.getBlock().equals(Util.getAttached(b))) {
@@ -1671,7 +1682,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
       Log.debug("Dupe load request, canceled.");
       return;
     }
-    try(PerfMonitor ignored = new PerfMonitor("Shop Inventory Locate", Duration.of(1, ChronoUnit.SECONDS))) {
+    try(final PerfMonitor ignored = new PerfMonitor("Shop Inventory Locate", Duration.of(1, ChronoUnit.SECONDS))) {
       if(getInventory() == null) {
         plugin.logger().warn("Failed to load shop: {}: {}: {}", symbolLink, this.getClass().getName(), "Inventory is null");
         if(plugin.getConfig().getBoolean("debug.delete-corrupt-shops")) {
@@ -1690,7 +1701,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     this.isLoaded = true;
     //disable schedule check due to performance issue
     //plugin.getShopContainerWatcher().scheduleCheck(this);
-    try(PerfMonitor ignored = new PerfMonitor("Shop Display Check", Duration.of(1, ChronoUnit.SECONDS))) {
+    try(final PerfMonitor ignored = new PerfMonitor("Shop Display Check", Duration.of(1, ChronoUnit.SECONDS))) {
       checkDisplay();
     }
     if(plugin.getConfig().getBoolean("shop.update-sign-on-load", false)) {
