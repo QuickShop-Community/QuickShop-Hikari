@@ -5,7 +5,7 @@ slf4j = "2.0.17"
 paperApi = "1.21-R0.1-SNAPSHOT"
 paperApiPinned = "1.21.4-R0.1-SNAPSHOT"
 shadow = "9.6.1"
-versionsPlugin = "0.51.0"
+versionsPlugin = "0.61.0"
 
 commonsLang3 = "3.18.0"
 gson = "2.13.1"
