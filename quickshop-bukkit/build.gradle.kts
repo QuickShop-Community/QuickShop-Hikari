@@ -4,6 +4,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 plugins {
     id("quickshop.core-conventions")
     id("quickshop.shadow-conventions")
+    `maven-publish`
 }
 
 dependencies {
@@ -127,4 +128,29 @@ tasks.named<ProcessResources>("processResources") {
 
 tasks.withType<ShadowJar>().configureEach {
     archiveBaseName.set("QuickShop-Hikari")
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("shadow") {
+            from(components["shadow"])
+            groupId = property("group") as String
+            version = property("version") as String
+            artifactId = "quickshop-bukkit"
+        }
+    }
+    repositories {
+        maven {
+            url = uri("https://repo.codemc.io/repository/ghost-chu/")
+
+            val mavenUsername = System.getenv("GRADLE_PROJECT_MAVEN_USERNAME")
+            val mavenPassword = System.getenv("GRADLE_PROJECT_MAVEN_PASSWORD")
+            if (mavenUsername != null && mavenPassword != null) {
+                credentials {
+                    username = mavenUsername
+                    password = mavenPassword
+                }
+            }
+        }
+    }
 }

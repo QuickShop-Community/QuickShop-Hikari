@@ -14,6 +14,7 @@ easySql = "0.4.7"
 semver4j = "3.1.0"
 adventure = "5.1.1"
 
+item-nbt-api = "2.16.0"
 protocolLib = "5.4.0"
 packetEvents = "2.12.2"
 luckPerms = "5.5"
@@ -58,6 +59,7 @@ jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "j
 
 adventure-api = { module = "net.kyori:adventure-api", version.ref = "adventure" }
 
+item-nbt-api-plugin = { module = "de.tr7zw:item-nbt-api-plugin", version.ref = "item-nbt-api" }
 protocol-lib = { module = "net.dmulloy2:ProtocolLib", version.ref = "protocolLib" }
 packet-events-spigot = { module = "com.github.retrooper:packetevents-spigot", version.ref = "packetEvents" }
 luckperms-api = { module = "net.luckperms:api", version.ref = "luckPerms" }
