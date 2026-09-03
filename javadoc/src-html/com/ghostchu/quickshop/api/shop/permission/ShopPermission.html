@@ -56,80 +56,87 @@
 <span class="source-line-no">043</span><span id="line-43">  Map&lt;UUID, String&gt; getPermissionAudiences();</span>
 <span class="source-line-no">044</span><span id="line-44"></span>
 <span class="source-line-no">045</span><span id="line-45">  /**</span>
-<span class="source-line-no">046</span><span id="line-46">   * Gets specific player group on specific shop</span>
-<span class="source-line-no">047</span><span id="line-47">   *</span>
-<span class="source-line-no">048</span><span id="line-48">   * @param player player</span>
-<span class="source-line-no">049</span><span id="line-49">   *</span>
-<span class="source-line-no">050</span><span id="line-50">   * @return namespaced group</span>
-<span class="source-line-no">051</span><span id="line-51">   */</span>
-<span class="source-line-no">052</span><span id="line-52">  @NotNull</span>
-<span class="source-line-no">053</span><span id="line-53">  String getPlayerGroup(@NotNull UUID player);</span>
-<span class="source-line-no">054</span><span id="line-54"></span>
-<span class="source-line-no">055</span><span id="line-55">  /**</span>
-<span class="source-line-no">056</span><span id="line-56">   * Check if player have authorized for specific permission on specific shop</span>
-<span class="source-line-no">057</span><span id="line-57">   *</span>
-<span class="source-line-no">058</span><span id="line-58">   * @param player     player</span>
-<span class="source-line-no">059</span><span id="line-59">   * @param namespace  permission namespace</span>
-<span class="source-line-no">060</span><span id="line-60">   * @param permission permission</span>
-<span class="source-line-no">061</span><span id="line-61">   *</span>
-<span class="source-line-no">062</span><span id="line-62">   * @return true if player have authorized</span>
-<span class="source-line-no">063</span><span id="line-63">   */</span>
-<span class="source-line-no">064</span><span id="line-64">  boolean playerAuthorize(@NotNull UUID player, @NotNull Plugin namespace, @NotNull String permission);</span>
-<span class="source-line-no">065</span><span id="line-65"></span>
-<span class="source-line-no">066</span><span id="line-66">  /**</span>
-<span class="source-line-no">067</span><span id="line-67">   * Check if player have authorized for specific permission on specific shop</span>
+<span class="source-line-no">046</span><span id="line-46">   * Resets all permissions associated with the shop to their default state.</span>
+<span class="source-line-no">047</span><span id="line-47">   * This operation removes any customizations or modifications made to the</span>
+<span class="source-line-no">048</span><span id="line-48">   * permission settings and restores them to their original configuration.</span>
+<span class="source-line-no">049</span><span id="line-49">   */</span>
+<span class="source-line-no">050</span><span id="line-50">  void resetPermissions();</span>
+<span class="source-line-no">051</span><span id="line-51"></span>
+<span class="source-line-no">052</span><span id="line-52">  /**</span>
+<span class="source-line-no">053</span><span id="line-53">   * Gets specific player group on specific shop</span>
+<span class="source-line-no">054</span><span id="line-54">   *</span>
+<span class="source-line-no">055</span><span id="line-55">   * @param player player</span>
+<span class="source-line-no">056</span><span id="line-56">   *</span>
+<span class="source-line-no">057</span><span id="line-57">   * @return namespaced group</span>
+<span class="source-line-no">058</span><span id="line-58">   */</span>
+<span class="source-line-no">059</span><span id="line-59">  @NotNull</span>
+<span class="source-line-no">060</span><span id="line-60">  String getPlayerGroup(@NotNull UUID player);</span>
+<span class="source-line-no">061</span><span id="line-61"></span>
+<span class="source-line-no">062</span><span id="line-62">  /**</span>
+<span class="source-line-no">063</span><span id="line-63">   * Check if player have authorized for specific permission on specific shop</span>
+<span class="source-line-no">064</span><span id="line-64">   *</span>
+<span class="source-line-no">065</span><span id="line-65">   * @param player     player</span>
+<span class="source-line-no">066</span><span id="line-66">   * @param namespace  permission namespace</span>
+<span class="source-line-no">067</span><span id="line-67">   * @param permission permission</span>
 <span class="source-line-no">068</span><span id="line-68">   *</span>
-<span class="source-line-no">069</span><span id="line-69">   * @param player     player</span>
-<span class="source-line-no">070</span><span id="line-70">   * @param permission namespaced permission</span>
-<span class="source-line-no">071</span><span id="line-71">   *</span>
-<span class="source-line-no">072</span><span id="line-72">   * @return true if player have authorized</span>
-<span class="source-line-no">073</span><span id="line-73">   */</span>
-<span class="source-line-no">074</span><span id="line-74">  boolean playerAuthorize(@NotNull UUID player, @NotNull BuiltInShopPermission permission);</span>
-<span class="source-line-no">075</span><span id="line-75"></span>
-<span class="source-line-no">076</span><span id="line-76">  /**</span>
-<span class="source-line-no">077</span><span id="line-77">   * Gets the player list of who can authorize specific permission on this shop</span>
+<span class="source-line-no">069</span><span id="line-69">   * @return true if player have authorized</span>
+<span class="source-line-no">070</span><span id="line-70">   */</span>
+<span class="source-line-no">071</span><span id="line-71">  boolean playerAuthorize(@NotNull UUID player, @NotNull Plugin namespace, @NotNull String permission);</span>
+<span class="source-line-no">072</span><span id="line-72"></span>
+<span class="source-line-no">073</span><span id="line-73">  /**</span>
+<span class="source-line-no">074</span><span id="line-74">   * Check if player have authorized for specific permission on specific shop</span>
+<span class="source-line-no">075</span><span id="line-75">   *</span>
+<span class="source-line-no">076</span><span id="line-76">   * @param player     player</span>
+<span class="source-line-no">077</span><span id="line-77">   * @param permission namespaced permission</span>
 <span class="source-line-no">078</span><span id="line-78">   *</span>
-<span class="source-line-no">079</span><span id="line-79">   * @param permission permission</span>
-<span class="source-line-no">080</span><span id="line-80">   *</span>
-<span class="source-line-no">081</span><span id="line-81">   * @return Collection of UUID</span>
-<span class="source-line-no">082</span><span id="line-82">   */</span>
-<span class="source-line-no">083</span><span id="line-83">  List&lt;UUID&gt; playersCanAuthorize(@NotNull BuiltInShopPermission permission);</span>
-<span class="source-line-no">084</span><span id="line-84"></span>
-<span class="source-line-no">085</span><span id="line-85">  /**</span>
-<span class="source-line-no">086</span><span id="line-86">   * Gets the player list of who can authorize specific group on this shop</span>
+<span class="source-line-no">079</span><span id="line-79">   * @return true if player have authorized</span>
+<span class="source-line-no">080</span><span id="line-80">   */</span>
+<span class="source-line-no">081</span><span id="line-81">  boolean playerAuthorize(@NotNull UUID player, @NotNull BuiltInShopPermission permission);</span>
+<span class="source-line-no">082</span><span id="line-82"></span>
+<span class="source-line-no">083</span><span id="line-83">  /**</span>
+<span class="source-line-no">084</span><span id="line-84">   * Gets the player list of who can authorize specific permission on this shop</span>
+<span class="source-line-no">085</span><span id="line-85">   *</span>
+<span class="source-line-no">086</span><span id="line-86">   * @param permission permission</span>
 <span class="source-line-no">087</span><span id="line-87">   *</span>
-<span class="source-line-no">088</span><span id="line-88">   * @param permissionGroup group</span>
-<span class="source-line-no">089</span><span id="line-89">   *</span>
-<span class="source-line-no">090</span><span id="line-90">   * @return Collection of UUID</span>
-<span class="source-line-no">091</span><span id="line-91">   */</span>
-<span class="source-line-no">092</span><span id="line-92">  List&lt;UUID&gt; playersCanAuthorize(@NotNull BuiltInShopPermissionGroup permissionGroup);</span>
-<span class="source-line-no">093</span><span id="line-93"></span>
-<span class="source-line-no">094</span><span id="line-94">  /**</span>
-<span class="source-line-no">095</span><span id="line-95">   * Gets the player list of who can authorize specific permission on this shop</span>
+<span class="source-line-no">088</span><span id="line-88">   * @return Collection of UUID</span>
+<span class="source-line-no">089</span><span id="line-89">   */</span>
+<span class="source-line-no">090</span><span id="line-90">  List&lt;UUID&gt; playersCanAuthorize(@NotNull BuiltInShopPermission permission);</span>
+<span class="source-line-no">091</span><span id="line-91"></span>
+<span class="source-line-no">092</span><span id="line-92">  /**</span>
+<span class="source-line-no">093</span><span id="line-93">   * Gets the player list of who can authorize specific group on this shop</span>
+<span class="source-line-no">094</span><span id="line-94">   *</span>
+<span class="source-line-no">095</span><span id="line-95">   * @param permissionGroup group</span>
 <span class="source-line-no">096</span><span id="line-96">   *</span>
-<span class="source-line-no">097</span><span id="line-97">   * @param permission raw permission</span>
-<span class="source-line-no">098</span><span id="line-98">   * @param plugin     namespace of permission</span>
-<span class="source-line-no">099</span><span id="line-99">   *</span>
-<span class="source-line-no">100</span><span id="line-100">   * @return Collection of UUID</span>
-<span class="source-line-no">101</span><span id="line-101">   */</span>
-<span class="source-line-no">102</span><span id="line-102">  List&lt;UUID&gt; playersCanAuthorize(@NotNull Plugin plugin, @NotNull String permission);</span>
-<span class="source-line-no">103</span><span id="line-103"></span>
-<span class="source-line-no">104</span><span id="line-104">  /**</span>
-<span class="source-line-no">105</span><span id="line-105">   * Sets specific player permission on specfic shop</span>
+<span class="source-line-no">097</span><span id="line-97">   * @return Collection of UUID</span>
+<span class="source-line-no">098</span><span id="line-98">   */</span>
+<span class="source-line-no">099</span><span id="line-99">  List&lt;UUID&gt; playersCanAuthorize(@NotNull BuiltInShopPermissionGroup permissionGroup);</span>
+<span class="source-line-no">100</span><span id="line-100"></span>
+<span class="source-line-no">101</span><span id="line-101">  /**</span>
+<span class="source-line-no">102</span><span id="line-102">   * Gets the player list of who can authorize specific permission on this shop</span>
+<span class="source-line-no">103</span><span id="line-103">   *</span>
+<span class="source-line-no">104</span><span id="line-104">   * @param permission raw permission</span>
+<span class="source-line-no">105</span><span id="line-105">   * @param plugin     namespace of permission</span>
 <span class="source-line-no">106</span><span id="line-106">   *</span>
-<span class="source-line-no">107</span><span id="line-107">   * @param player player</span>
-<span class="source-line-no">108</span><span id="line-108">   * @param group  namespaced group name</span>
-<span class="source-line-no">109</span><span id="line-109">   */</span>
-<span class="source-line-no">110</span><span id="line-110">  void setPlayerGroup(@NotNull UUID player, @Nullable String group);</span>
-<span class="source-line-no">111</span><span id="line-111"></span>
-<span class="source-line-no">112</span><span id="line-112">  /**</span>
-<span class="source-line-no">113</span><span id="line-113">   * Sets specific player permission on specfic shop</span>
-<span class="source-line-no">114</span><span id="line-114">   *</span>
-<span class="source-line-no">115</span><span id="line-115">   * @param player player</span>
-<span class="source-line-no">116</span><span id="line-116">   * @param group  group</span>
-<span class="source-line-no">117</span><span id="line-117">   */</span>
-<span class="source-line-no">118</span><span id="line-118">  void setPlayerGroup(@NotNull UUID player, @Nullable BuiltInShopPermissionGroup group);</span>
-<span class="source-line-no">119</span><span id="line-119">}</span>
+<span class="source-line-no">107</span><span id="line-107">   * @return Collection of UUID</span>
+<span class="source-line-no">108</span><span id="line-108">   */</span>
+<span class="source-line-no">109</span><span id="line-109">  List&lt;UUID&gt; playersCanAuthorize(@NotNull Plugin plugin, @NotNull String permission);</span>
+<span class="source-line-no">110</span><span id="line-110"></span>
+<span class="source-line-no">111</span><span id="line-111">  /**</span>
+<span class="source-line-no">112</span><span id="line-112">   * Sets specific player permission on specfic shop</span>
+<span class="source-line-no">113</span><span id="line-113">   *</span>
+<span class="source-line-no">114</span><span id="line-114">   * @param player player</span>
+<span class="source-line-no">115</span><span id="line-115">   * @param group  namespaced group name</span>
+<span class="source-line-no">116</span><span id="line-116">   */</span>
+<span class="source-line-no">117</span><span id="line-117">  void setPlayerGroup(@NotNull UUID player, @Nullable String group);</span>
+<span class="source-line-no">118</span><span id="line-118"></span>
+<span class="source-line-no">119</span><span id="line-119">  /**</span>
+<span class="source-line-no">120</span><span id="line-120">   * Sets specific player permission on specfic shop</span>
+<span class="source-line-no">121</span><span id="line-121">   *</span>
+<span class="source-line-no">122</span><span id="line-122">   * @param player player</span>
+<span class="source-line-no">123</span><span id="line-123">   * @param group  group</span>
+<span class="source-line-no">124</span><span id="line-124">   */</span>
+<span class="source-line-no">125</span><span id="line-125">  void setPlayerGroup(@NotNull UUID player, @Nullable BuiltInShopPermissionGroup group);</span>
+<span class="source-line-no">126</span><span id="line-126">}</span>
 
 
 

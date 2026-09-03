@@ -153,15 +153,20 @@ loadScripts(document, 'script');</script>
 <div class="block">Gets the player list of who can authorize specific permission on this shop</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setPlayerGroup(java.util.UUID,com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup)" class="member-name-link">setPlayerGroup</a><wbr>(@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&nbsp;player,
- @Nullable <a href="BuiltInShopPermissionGroup.html" title="enum class in com.ghostchu.quickshop.api.shop.permission">BuiltInShopPermissionGroup</a>&nbsp;group)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#resetPermissions()" class="member-name-link">resetPermissions</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Sets specific player permission on specfic shop</div>
+<div class="block">Resets all permissions associated with the shop to their default state.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setPlayerGroup(java.util.UUID,java.lang.String)" class="member-name-link">setPlayerGroup</a><wbr>(@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&nbsp;player,
- @Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;group)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setPlayerGroup(java.util.UUID,com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup)" class="member-name-link">setPlayerGroup</a><wbr>(@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&nbsp;player,
+ @Nullable <a href="BuiltInShopPermissionGroup.html" title="enum class in com.ghostchu.quickshop.api.shop.permission">BuiltInShopPermissionGroup</a>&nbsp;group)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Sets specific player permission on specfic shop</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setPlayerGroup(java.util.UUID,java.lang.String)" class="member-name-link">setPlayerGroup</a><wbr>(@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&nbsp;player,
+ @Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;group)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Sets specific player permission on specfic shop</div>
 </div>
 </div>
@@ -191,10 +196,19 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="resetPermissions()">
+<h3>resetPermissions</h3>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/permission/ShopPermission.html#line-50">resetPermissions</a></span>()</div>
+<div class="block">Resets all permissions associated with the shop to their default state.
+ This operation removes any customizations or modifications made to the
+ permission settings and restores them to their original configuration.</div>
+</section>
+</li>
+<li>
 <section class="detail" id="getPlayerGroup(java.util.UUID)">
 <h3>getPlayerGroup</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/permission/ShopPermission.html#line-52">getPlayerGroup</a></span><wbr><span class="parameters">(@NotNull
+</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/permission/ShopPermission.html#line-59">getPlayerGroup</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&nbsp;player)</span></div>
 <div class="block">Gets specific player group on specific shop</div>
 <dl class="notes">
@@ -208,7 +222,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="playerAuthorize(java.util.UUID,org.bukkit.plugin.Plugin,java.lang.String)">
 <h3>playerAuthorize</h3>
-<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/permission/ShopPermission.html#line-64">playerAuthorize</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/permission/ShopPermission.html#line-71">playerAuthorize</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&nbsp;player,
  @NotNull
  @NotNull org.bukkit.plugin.Plugin&nbsp;namespace,
@@ -228,7 +242,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="playerAuthorize(java.util.UUID,com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission)">
 <h3>playerAuthorize</h3>
-<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/permission/ShopPermission.html#line-74">playerAuthorize</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/permission/ShopPermission.html#line-81">playerAuthorize</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&nbsp;player,
  @NotNull
  @NotNull <a href="BuiltInShopPermission.html" title="enum class in com.ghostchu.quickshop.api.shop.permission">BuiltInShopPermission</a>&nbsp;permission)</span></div>
@@ -245,7 +259,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="playersCanAuthorize(com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission)">
 <h3>playersCanAuthorize</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/permission/ShopPermission.html#line-83">playersCanAuthorize</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/permission/ShopPermission.html#line-90">playersCanAuthorize</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="BuiltInShopPermission.html" title="enum class in com.ghostchu.quickshop.api.shop.permission">BuiltInShopPermission</a>&nbsp;permission)</span></div>
 <div class="block">Gets the player list of who can authorize specific permission on this shop</div>
 <dl class="notes">
@@ -259,7 +273,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="playersCanAuthorize(com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup)">
 <h3>playersCanAuthorize</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/permission/ShopPermission.html#line-92">playersCanAuthorize</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/permission/ShopPermission.html#line-99">playersCanAuthorize</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="BuiltInShopPermissionGroup.html" title="enum class in com.ghostchu.quickshop.api.shop.permission">BuiltInShopPermissionGroup</a>&nbsp;permissionGroup)</span></div>
 <div class="block">Gets the player list of who can authorize specific group on this shop</div>
 <dl class="notes">
@@ -273,7 +287,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="playersCanAuthorize(org.bukkit.plugin.Plugin,java.lang.String)">
 <h3>playersCanAuthorize</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/permission/ShopPermission.html#line-102">playersCanAuthorize</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/permission/ShopPermission.html#line-109">playersCanAuthorize</a></span><wbr><span class="parameters">(@NotNull
  @NotNull org.bukkit.plugin.Plugin&nbsp;plugin,
  @NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;permission)</span></div>
@@ -290,7 +304,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="setPlayerGroup(java.util.UUID,java.lang.String)">
 <h3>setPlayerGroup</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/permission/ShopPermission.html#line-110">setPlayerGroup</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/permission/ShopPermission.html#line-117">setPlayerGroup</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&nbsp;player,
  @Nullable
  @Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;group)</span></div>
@@ -305,7 +319,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="setPlayerGroup(java.util.UUID,com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup)">
 <h3>setPlayerGroup</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/permission/ShopPermission.html#line-118">setPlayerGroup</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/permission/ShopPermission.html#line-125">setPlayerGroup</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&nbsp;player,
  @Nullable
  @Nullable <a href="BuiltInShopPermissionGroup.html" title="enum class in com.ghostchu.quickshop.api.shop.permission">BuiltInShopPermissionGroup</a>&nbsp;group)</span></div>
