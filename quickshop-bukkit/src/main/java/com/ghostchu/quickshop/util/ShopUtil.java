@@ -58,7 +58,6 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static com.ghostchu.quickshop.QuickShop.taskCache;
-import static com.ghostchu.quickshop.api.QuickShopAPI.getPluginInstance;
 
 /**
  * ShopUtil
@@ -596,17 +595,17 @@ public class ShopUtil {
     public void commit(final boolean sendMessage) {
 
       for(final Shop shop : shops) {
-
+        QuickShop.folia().getScheduler().runAtLocation(shop.bukkitLocation(), task -> {
         ShopOwnerEvent event = new ShopOwnerEvent(Phase.PRE, shop, shop.getOwner(), to);
         event.callEvent();
 
         event = event.clone(Phase.MAIN);
         if(event.callCancellableEvent()) {
-          continue;
+          return;
         }
         shop.setOwner(event.updated());
 
-        if (getPluginInstance().getConfig().getBoolean("shop.remove-perms-on-transfer", true)) {
+        if (QuickShop.getInstance().getConfig().getBoolean("shop.remove-perms-on-transfer", true)) {
           shop.resetPermissions();
         }
 
@@ -618,6 +617,8 @@ public class ShopUtil {
           QuickShop.getInstance().text().of(from, "transfer-accepted-fromside", event.updated()).send();
           QuickShop.getInstance().text().of(event.updated(), "transfer-accepted-toside", from).send();
         }
+        }
+        );
       }
     }
 

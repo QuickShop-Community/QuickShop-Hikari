@@ -9,6 +9,7 @@ import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import org.bukkit.Material;
+import org.bukkit.block.BlockState;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
@@ -76,7 +77,8 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
           plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SYSTEM", false), "/quickshop cleanghost command", shop.saveToInfoStorage()));
           return;
         }
-        if(!Util.canBeShop(shop.bukkitLocation().getBlock())) {
+        final BlockState shopBlockState = shop.bukkitLocation().getBlock().getState(false);
+        if(!Util.canBeShop(shopBlockState.getBlock(), shopBlockState)) {
           plugin.text().of(sender, "cleanghost-deleting", shop.getShopId(), "invalid shop block").send();
           plugin.getShopManager().deleteShop(shop);
           deletionCounter.incrementAndGet();

@@ -476,13 +476,13 @@ public class Util {
     }
 
     // Specified types by configuration
-    if(!isShoppables(b.getType())) {
+    if(!isShoppables(bs.getType())) {
       return false;
     }
 
     if (!(bs instanceof InventoryHolder)) {
       if(Util.isDevMode()) {
-        Log.debug(b.getType() + " not a container");
+        Log.debug(bs.getType() + " not a container");
       }
       return false;
     }
