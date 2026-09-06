@@ -77,7 +77,6 @@ public class NationCommand implements CommandHandler<Player> {
       return;
     }
 
-    final UUID uuid = plugin.getUuidConversion().convertTownyAccount(nation);
     // Check if item and type are allowed
     if(plugin.getConfig().getBoolean("bank-mode.enable")) {
       final Double price = plugin.getPriceLimiter().getPrice(shop.getItem().getType(), shop.isSelling());
@@ -94,7 +93,7 @@ public class NationCommand implements CommandHandler<Player> {
     final UUID shopOwnerUUID = shop.getOwner().getUniqueIdIfRealPlayer().orElse(CommonUtil.getNilUniqueId());
     TownyShopUtil.setShopOriginalOwner(shop, shopOwnerUUID);
     shop.setPlayerGroup(shopOwnerUUID, BuiltInShopPermissionGroup.ADMINISTRATOR);
-    shop.setOwner(QUserImpl.createSync(plugin.getApi().getPlayerFinder(), uuid));
+    shop.setOwner(QUserImpl.createSync(plugin.getApi().getPlayerFinder(), nation.getUUID()));
     TownyShopUtil.setShopNation(shop, nation);
     plugin.getApi().getTextManager().of(sender, "addon.towny.make-shop-owned-by-nation", nation.getName()).send();
     plugin.getApi().getTextManager().of(sender, "addon.towny.shop-owning-changing-notice").send();
