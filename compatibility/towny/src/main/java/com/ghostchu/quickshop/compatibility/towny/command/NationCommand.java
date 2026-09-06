@@ -93,7 +93,7 @@ public class NationCommand implements CommandHandler<Player> {
     final UUID shopOwnerUUID = shop.getOwner().getUniqueIdIfRealPlayer().orElse(CommonUtil.getNilUniqueId());
     TownyShopUtil.setShopOriginalOwner(shop, shopOwnerUUID);
     shop.setPlayerGroup(shopOwnerUUID, BuiltInShopPermissionGroup.ADMINISTRATOR);
-    shop.setOwner(QUserImpl.createSync(plugin.getApi().getPlayerFinder(), nation.getUUID()));
+    shop.setOwner(QUserImpl.createFullFilled(nation.getAccount().getUUID(), nation.getAccount().getName(), false));
     TownyShopUtil.setShopNation(shop, nation);
     plugin.getApi().getTextManager().of(sender, "addon.towny.make-shop-owned-by-nation", nation.getName()).send();
     plugin.getApi().getTextManager().of(sender, "addon.towny.shop-owning-changing-notice").send();
