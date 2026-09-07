@@ -476,7 +476,7 @@ shop:
   # Preferred protocol implementation for virtual displays:
   # - protocollib
   # - packetevents
-  display-protocol: 'protocollib'
+  display-protocol: 'packetevents'
 
   # Automatically despawn display items when no players are nearby.
   display-auto-despawn: false
