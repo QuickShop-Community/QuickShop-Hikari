@@ -20,11 +20,6 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.ghostchu.quickshop.compatibility.towny.command.NationCommand;
 import com.ghostchu.quickshop.compatibility.towny.command.TownCommand;
-import com.ghostchu.quickshop.compatibility.towny.compat.UuidConversion;
-import com.ghostchu.quickshop.compatibility.towny.compat.essentials.EssentialsConversion;
-import com.ghostchu.quickshop.compatibility.towny.compat.general.GeneralConversion;
-import com.ghostchu.quickshop.compatibility.towny.compat.gringotts.towny.GringottsTownyConversion;
-import com.ghostchu.quickshop.compatibility.towny.compat.tne.TNEConversion;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -74,7 +69,6 @@ public final class Main extends CompatibilityModule implements Listener {
   private List<TownyFlags> tradeFlags;
   private boolean whiteList;
   private TownyMaterialPriceLimiter priceLimiter;
-  private UuidConversion uuidConversion;
 
   private static Main instance;
 
@@ -148,12 +142,6 @@ public final class Main extends CompatibilityModule implements Listener {
                                                 .description((locale)->api.getTextManager().of("addon.towny.commands.nation").forLocale(locale))
                                                 .executor(new NationCommand(this))
                                                 .build());
-    uuidConversion = switch(getConfig().getInt("uuid-conversion", 0)) {
-      case 1 -> new EssentialsConversion();
-      case 2 -> new GringottsTownyConversion();
-      case 3 -> new TNEConversion();
-      default -> new GeneralConversion();
-    };
     reflectChanges();
   }
 
@@ -569,10 +557,5 @@ public final class Main extends CompatibilityModule implements Listener {
   public TownyMaterialPriceLimiter getPriceLimiter() {
 
     return this.priceLimiter;
-  }
-
-  public UuidConversion getUuidConversion() {
-
-    return this.uuidConversion;
   }
 }
