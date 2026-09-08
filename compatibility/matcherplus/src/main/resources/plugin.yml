@@ -12,5 +12,6 @@ softdepend:
   - CrazyCrates
   - BreweryX
   - Nexo
+  - SafariNet
 authors: [ creatorfromhell ]
 description: Compatibility module for various special item plugins
