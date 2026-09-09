@@ -24,7 +24,7 @@ placeholderApi = "2.11.6"
 tnml = "1.7.0.1-SNAPSHOT-5"
 tnil = "0.2.0.3-SNAPSHOT-1"
 
-h2 = "2.1.214"
+h2 = "2.4.240"
 unirest = "3.14.5"
 csvJdbc = "1.0.42"
 dom4j = "2.1.4"
