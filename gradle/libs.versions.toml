@@ -38,7 +38,7 @@ commonsCompress = "1.26.2"
 foliaLib = "0.5.1"
 libby = "2.0.2-SNAPSHOT"
 
-fawe = "2.12.0"
+fawe = "2.15.3"
 worldEdit = "7.3.17"
 
 [libraries]
