@@ -8,7 +8,7 @@ shadow = "9.6.1"
 versionsPlugin = "0.51.0"
 
 commonsLang3 = "3.18.0"
-gson = "2.13.1"
+gson = "2.14.0"
 simpleReloadLib = "1.1.2"
 easySql = "0.4.7"
 semver4j = "3.1.0"
