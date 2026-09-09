@@ -28,7 +28,10 @@ tasks.register<Copy>("collectReleaseArtifacts") {
 
     subprojects.forEach { subproject ->
         from(subproject.layout.buildDirectory.dir("libs")) {
-            include("*.jar")
+            include("QuickShop-Hikari-*.jar")
+            include("Addon-*.jar")
+            include("Compat-*.jar")
+
             exclude("*-sources.jar")
             exclude("*-javadoc.jar")
         }
