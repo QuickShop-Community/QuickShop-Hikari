@@ -2,8 +2,8 @@
 boostedYaml = "1.3.7"
 jetbrainsAnnotations = "26.0.2-1"
 slf4j = "2.0.17"
-paperApi = "1.21-R0.1-SNAPSHOT"
-paperApiPinned = "1.21.4-R0.1-SNAPSHOT"
+paperApi = "26.2.build.119-stable"
+paperApiPinned = "26.2.build.119-stable"
 shadow = "9.6.1"
 versionsPlugin = "0.51.0"
 
