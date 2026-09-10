@@ -87,7 +87,7 @@ loadScripts(document, 'script');</script>
 </div>
 <section class="class-description" id="class-description">
 <hr>
-<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-33">ShopManager</a></span></div>
+<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-34">ShopManager</a></span></div>
 <div class="block">The manager that managing shops</div>
 </section>
 <section class="summary">
@@ -157,9 +157,11 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
 <div class="block">Adds a shop type to the internal collection of shop types.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#bakeShopRuntimeRandomUniqueIdCache(com.ghostchu.quickshop.api.shop.Shop)" class="member-name-link">bakeShopRuntimeRandomUniqueIdCache</a><wbr>(@NotNull <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&nbsp;shop)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5 method-summary-table-tab6"><code>default void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5 method-summary-table-tab6"><code><a href="#bakeShopRuntimeRandomUniqueIdCache(com.ghostchu.quickshop.api.shop.Shop)" class="member-name-link">bakeShopRuntimeRandomUniqueIdCache</a><wbr>(@NotNull <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&nbsp;shop)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5 method-summary-table-tab6">
+<div class="block"><span class="deprecated-label">Deprecated.</span></div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#clear()" class="member-name-link">clear</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
@@ -202,10 +204,10 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Format the price use formatter</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&gt;</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>@NotNull @Unmodifiable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getAllShops()" class="member-name-link">getAllShops</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Returns all shops in the whole database, include unloaded.</div>
+<div class="block">Returns all shops in the whole database, including ones in unloaded chunks.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getAllShops(com.ghostchu.quickshop.api.obj.QUser)" class="member-name-link">getAllShops</a><wbr>(@NotNull <a href="../obj/QUser.html" title="interface in com.ghostchu.quickshop.api.obj">QUser</a>&nbsp;playerUUID)</code></div>
@@ -510,7 +512,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="shopLayoutProvider()">
 <h3>shopLayoutProvider</h3>
-<div class="member-signature"><span class="return-type"><a href="IShopLayoutProvider.html" title="interface in com.ghostchu.quickshop.api.shop">IShopLayoutProvider</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-41">shopLayoutProvider</a></span>()</div>
+<div class="member-signature"><span class="return-type"><a href="IShopLayoutProvider.html" title="interface in com.ghostchu.quickshop.api.shop">IShopLayoutProvider</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-42">shopLayoutProvider</a></span>()</div>
 <div class="block">Provides an instance of <code>IShopLayoutProvider</code> responsible for managing shop layouts.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -521,7 +523,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="taxManager()">
 <h3>taxManager</h3>
-<div class="member-signature"><span class="return-type"><a href="tax/TaxManager.html" title="interface in com.ghostchu.quickshop.api.shop.tax">TaxManager</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-49">taxManager</a></span>()</div>
+<div class="member-signature"><span class="return-type"><a href="tax/TaxManager.html" title="interface in com.ghostchu.quickshop.api.shop.tax">TaxManager</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-50">taxManager</a></span>()</div>
 <div class="block">Retrieves an instance of the TaxManager class, responsible for handling tax-related computations
  and operations within the application.</div>
 <dl class="notes">
@@ -534,7 +536,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="tradeService()">
 <h3>tradeService</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="trading/TradeService.html" title="interface in com.ghostchu.quickshop.api.shop.trading">TradeService</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-57">tradeService</a></span>()</div>
+</span><span class="return-type">@NotNull <a href="trading/TradeService.html" title="interface in com.ghostchu.quickshop.api.shop.trading">TradeService</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-58">tradeService</a></span>()</div>
 <div class="block">Retrieves the TradeService associated with the EconomyManager.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -546,7 +548,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="shopLayoutProvider(com.ghostchu.quickshop.api.shop.IShopLayoutProvider)">
 <h3>shopLayoutProvider</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-65">shopLayoutProvider</a></span><wbr><span class="parameters">(<a href="IShopLayoutProvider.html" title="interface in com.ghostchu.quickshop.api.shop">IShopLayoutProvider</a>&nbsp;provider)</span></div>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-66">shopLayoutProvider</a></span><wbr><span class="parameters">(<a href="IShopLayoutProvider.html" title="interface in com.ghostchu.quickshop.api.shop">IShopLayoutProvider</a>&nbsp;provider)</span></div>
 <div class="block">Sets the shop layout provider to customize the layout of the shop.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -557,7 +559,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="findCooldown()">
 <h3>findCooldown</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-73">findCooldown</a></span>()</div>
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-74">findCooldown</a></span>()</div>
 <div class="block">Retrieves a map of cooldown information where the keys represent unique identifiers (UUIDs),
  and the values represent the corresponding timestamps indicating when the cooldown expires.</div>
 <dl class="notes">
@@ -570,7 +572,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="shopTypes()">
 <h3>shopTypes</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>,<wbr><a href="IShopType.html" title="interface in com.ghostchu.quickshop.api.shop">IShopType</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-82">shopTypes</a></span>()</div>
+</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>,<wbr><a href="IShopType.html" title="interface in com.ghostchu.quickshop.api.shop">IShopType</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-83">shopTypes</a></span>()</div>
 <div class="block">Retrieves a map containing shop types.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -583,7 +585,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="addShopType(com.ghostchu.quickshop.api.shop.IShopType)">
 <h3>addShopType</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-89">addShopType</a></span><wbr><span class="parameters">(<a href="IShopType.html" title="interface in com.ghostchu.quickshop.api.shop">IShopType</a>&nbsp;type)</span></div>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-90">addShopType</a></span><wbr><span class="parameters">(<a href="IShopType.html" title="interface in com.ghostchu.quickshop.api.shop">IShopType</a>&nbsp;type)</span></div>
 <div class="block">Adds a shop type to the internal collection of shop types.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -594,7 +596,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="removeShopType(int)">
 <h3>removeShopType</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-98">removeShopType</a></span><wbr><span class="parameters">(int&nbsp;id)</span></div>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-99">removeShopType</a></span><wbr><span class="parameters">(int&nbsp;id)</span></div>
 <div class="block">Removes the shop type identified by the specified ID from the collection of shop types.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -605,7 +607,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="shopType(int)">
 <h3>shopType</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;<a href="IShopType.html" title="interface in com.ghostchu.quickshop.api.shop">IShopType</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-108">shopType</a></span><wbr><span class="parameters">(int&nbsp;id)</span></div>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;<a href="IShopType.html" title="interface in com.ghostchu.quickshop.api.shop">IShopType</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-109">shopType</a></span><wbr><span class="parameters">(int&nbsp;id)</span></div>
 <div class="block">Retrieves the shop type corresponding to the given identifier.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -619,7 +621,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="shopTypeOrDefault(int)">
 <h3>shopTypeOrDefault</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="IShopType.html" title="interface in com.ghostchu.quickshop.api.shop">IShopType</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-119">shopTypeOrDefault</a></span><wbr><span class="parameters">(int&nbsp;id)</span></div>
+</span><span class="return-type">@NotNull <a href="IShopType.html" title="interface in com.ghostchu.quickshop.api.shop">IShopType</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-120">shopTypeOrDefault</a></span><wbr><span class="parameters">(int&nbsp;id)</span></div>
 <div class="block">Retrieves the shop type associated with the specified ID.
  If no shop type is found, returns a default shop type.</div>
 <dl class="notes">
@@ -633,7 +635,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="shopType(java.lang.String)">
 <h3>shopType</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;<a href="IShopType.html" title="interface in com.ghostchu.quickshop.api.shop">IShopType</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-127">shopType</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifier)</span></div>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;<a href="IShopType.html" title="interface in com.ghostchu.quickshop.api.shop">IShopType</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-128">shopType</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifier)</span></div>
 <div class="block">Retrieves an optional shop type based on the provided identifier.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -647,7 +649,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="shopTypeOrDefault(java.lang.String)">
 <h3>shopTypeOrDefault</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="IShopType.html" title="interface in com.ghostchu.quickshop.api.shop">IShopType</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-138">shopTypeOrDefault</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifier)</span></div>
+</span><span class="return-type">@NotNull <a href="IShopType.html" title="interface in com.ghostchu.quickshop.api.shop">IShopType</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-139">shopTypeOrDefault</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifier)</span></div>
 <div class="block">Retrieves the shop type associated with the given identifier, or returns a default
  shop type if no match is found.</div>
 <dl class="notes">
@@ -662,7 +664,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="shopStates()">
 <h3>shopStates</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="state/ShopState.html" title="interface in com.ghostchu.quickshop.api.shop.state">ShopState</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-145">shopStates</a></span>()</div>
+</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="state/ShopState.html" title="interface in com.ghostchu.quickshop.api.shop.state">ShopState</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-146">shopStates</a></span>()</div>
 <div class="block">Retrieves a map of shop states where the keys are shop identifiers and the values are the corresponding shop states.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -673,7 +675,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="addShopState(com.ghostchu.quickshop.api.shop.state.ShopState)">
 <h3>addShopState</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-152">addShopState</a></span><wbr><span class="parameters">(<a href="state/ShopState.html" title="interface in com.ghostchu.quickshop.api.shop.state">ShopState</a>&nbsp;type)</span></div>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-153">addShopState</a></span><wbr><span class="parameters">(<a href="state/ShopState.html" title="interface in com.ghostchu.quickshop.api.shop.state">ShopState</a>&nbsp;type)</span></div>
 <div class="block">Adds a shop state to the collection by associating its identifier with the given ShopState instance.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -684,7 +686,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="removeShopState(java.lang.String)">
 <h3>removeShopState</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-161">removeShopState</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifier)</span></div>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-162">removeShopState</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifier)</span></div>
 <div class="block">Removes the shop state associated with the given identifier.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -695,7 +697,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="shopState(java.lang.String)">
 <h3>shopState</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;<a href="state/ShopState.html" title="interface in com.ghostchu.quickshop.api.shop.state">ShopState</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-172">shopState</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifier)</span></div>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;<a href="state/ShopState.html" title="interface in com.ghostchu.quickshop.api.shop.state">ShopState</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-173">shopState</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifier)</span></div>
 <div class="block">Retrieves the shop state associated with the given identifier.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -709,7 +711,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="shopStateOrDefault(java.lang.String)">
 <h3>shopStateOrDefault</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="state/ShopState.html" title="interface in com.ghostchu.quickshop.api.shop.state">ShopState</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-183">shopStateOrDefault</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifier)</span></div>
+</span><span class="return-type">@NotNull <a href="state/ShopState.html" title="interface in com.ghostchu.quickshop.api.shop.state">ShopState</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-184">shopStateOrDefault</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifier)</span></div>
 <div class="block">Retrieves the ShopState associated with the specified identifier.
  If no ShopState is found for the identifier, a default ShopState is returned.</div>
 <dl class="notes">
@@ -723,7 +725,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="actionBuying(org.bukkit.entity.Player,com.ghostchu.quickshop.api.inventory.InventoryWrapper,com.ghostchu.quickshop.api.economy.EconomyProvider,com.ghostchu.quickshop.api.shop.Info,com.ghostchu.quickshop.api.shop.Shop,int)">
 <h3>actionBuying</h3>
-<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-197">actionBuying</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-198">actionBuying</a></span><wbr><span class="parameters">(@NotNull
  @NotNull org.bukkit.entity.Player&nbsp;buyer,
  @NotNull
  @NotNull <a href="../inventory/InventoryWrapper.html" title="interface in com.ghostchu.quickshop.api.inventory">InventoryWrapper</a>&nbsp;buyerInventory,
@@ -751,7 +753,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="actionCreate(org.bukkit.entity.Player,com.ghostchu.quickshop.api.shop.Info,java.lang.String)">
 <h3>actionCreate</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-212">actionCreate</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-213">actionCreate</a></span><wbr><span class="parameters">(@NotNull
  @NotNull org.bukkit.entity.Player&nbsp;p,
  <a href="Info.html" title="interface in com.ghostchu.quickshop.api.shop">Info</a>&nbsp;info,
  @NotNull
@@ -768,7 +770,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="actionSelling(org.bukkit.entity.Player,com.ghostchu.quickshop.api.inventory.InventoryWrapper,com.ghostchu.quickshop.api.economy.EconomyProvider,com.ghostchu.quickshop.api.shop.Info,com.ghostchu.quickshop.api.shop.Shop,int)">
 <h3>actionSelling</h3>
-<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-226">actionSelling</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-227">actionSelling</a></span><wbr><span class="parameters">(@NotNull
  @NotNull org.bukkit.entity.Player&nbsp;seller,
  @NotNull
  @NotNull <a href="../inventory/InventoryWrapper.html" title="interface in com.ghostchu.quickshop.api.inventory">InventoryWrapper</a>&nbsp;sellerInventory,
@@ -796,14 +798,16 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="bakeShopRuntimeRandomUniqueIdCache(com.ghostchu.quickshop.api.shop.Shop)">
 <h3>bakeShopRuntimeRandomUniqueIdCache</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-234">bakeShopRuntimeRandomUniqueIdCache</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Deprecated.html#since()" title="class or interface in java.lang" class="external-link">since</a>="6.3.0.2")
+</span><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-235">bakeShopRuntimeRandomUniqueIdCache</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&nbsp;shop)</span></div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="clear()">
 <h3>clear</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-240">clear</a></span>()</div>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-242">clear</a></span>()</div>
 <div class="block">Removes all shops from memory and the world. Does not delete them from the database. Call this
  on plugin disable ONLY.</div>
 </section>
@@ -811,7 +815,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="createShop(com.ghostchu.quickshop.api.shop.Shop,org.bukkit.block.Block,boolean)">
 <h3>createShop</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-251">createShop</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-253">createShop</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&nbsp;shop,
  @Nullable
  @Nullable org.bukkit.block.Block&nbsp;signBlock,
@@ -832,7 +836,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="format(double,org.bukkit.World,java.lang.String)">
 <h3>format</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-262">format</a></span><wbr><span class="parameters">(double&nbsp;d,
+</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-264">format</a></span><wbr><span class="parameters">(double&nbsp;d,
  @NotNull
  @NotNull org.bukkit.World&nbsp;world,
  @Nullable
@@ -852,7 +856,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="format(double,com.ghostchu.quickshop.api.shop.Shop)">
 <h3>format</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-273">format</a></span><wbr><span class="parameters">(double&nbsp;d,
+</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-275">format</a></span><wbr><span class="parameters">(double&nbsp;d,
  @NotNull
  @NotNull <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&nbsp;shop)</span></div>
 <div class="block">Format the price use formatter</div>
@@ -869,10 +873,8 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getAllShops()">
 <h3>getAllShops</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-283">getAllShops</a></span>()</div>
-<div class="block">Returns all shops in the whole database, include unloaded.
-
- <p>Make sure you have caching this, because this need a while to get all shops</div>
+</span><span class="return-type">@NotNull @Unmodifiable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-283">getAllShops</a></span>()</div>
+<div class="block">Returns all shops in the whole database, including ones in unloaded chunks.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>All shop in the database</dd>
@@ -883,7 +885,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getLoadedShops()">
 <h3>getLoadedShops</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-291">getLoadedShops</a></span>()</div>
+</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-292">getLoadedShops</a></span>()</div>
 <div class="block">Get all loaded shops.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -895,7 +897,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getAllShops(com.ghostchu.quickshop.api.obj.QUser)">
 <h3>getAllShops</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-303">getAllShops</a></span><wbr><span class="parameters">(@NotNull
+</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-304">getAllShops</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="../obj/QUser.html" title="interface in com.ghostchu.quickshop.api.obj">QUser</a>&nbsp;playerUUID)</span></div>
 <div class="block">Get a players all shops.
 
@@ -912,7 +914,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getAllShops(java.util.UUID)">
 <h3>getAllShops</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-315">getAllShops</a></span><wbr><span class="parameters">(@NotNull
+</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-316">getAllShops</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&nbsp;playerUUID)</span></div>
 <div class="block">Get a players all shops.
 
@@ -929,7 +931,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getPriceLimiter()">
 <h3>getPriceLimiter</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="PriceLimiter.html" title="interface in com.ghostchu.quickshop.api.shop">PriceLimiter</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-323">getPriceLimiter</a></span>()</div>
+</span><span class="return-type">@NotNull <a href="PriceLimiter.html" title="interface in com.ghostchu.quickshop.api.shop">PriceLimiter</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-324">getPriceLimiter</a></span>()</div>
 <div class="block">Getting the Shop Price Limiter</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -941,7 +943,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getShop(long)">
 <h3>getShop</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="return-type">@Nullable <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-331">getShop</a></span><wbr><span class="parameters">(long&nbsp;shopId)</span></div>
+</span><span class="return-type">@Nullable <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-332">getShop</a></span><wbr><span class="parameters">(long&nbsp;shopId)</span></div>
 <div class="block">Gets a shop by shop Id</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -953,7 +955,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getShop(org.bukkit.Location)">
 <h3>getShop</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="return-type">@Nullable <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-341">getShop</a></span><wbr><span class="parameters">(@NotNull
+</span><span class="return-type">@Nullable <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-342">getShop</a></span><wbr><span class="parameters">(@NotNull
  @NotNull org.bukkit.Location&nbsp;loc)</span></div>
 <div class="block">Gets a shop in a specific location ATTENTION: This not include attached shops (double-chest)</div>
 <dl class="notes">
@@ -968,7 +970,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getShopViaCache(org.bukkit.Location)">
 <h3>getShopViaCache</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="return-type">@Nullable <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-352">getShopViaCache</a></span><wbr><span class="parameters">(@NotNull
+</span><span class="return-type">@Nullable <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-353">getShopViaCache</a></span><wbr><span class="parameters">(@NotNull
  @NotNull org.bukkit.Location&nbsp;loc)</span></div>
 <div class="block">Gets a shop in a specific location but via cache ATTENTION: This not include attached shops
  (double-chest)</div>
@@ -984,7 +986,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getShop(org.bukkit.Location,boolean)">
 <h3>getShop</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="return-type">@Nullable <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-363">getShop</a></span><wbr><span class="parameters">(@NotNull
+</span><span class="return-type">@Nullable <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-364">getShop</a></span><wbr><span class="parameters">(@NotNull
  @NotNull org.bukkit.Location&nbsp;loc,
  boolean&nbsp;skipShopableChecking)</span></div>
 <div class="block">Gets a shop in a specific location ATTENTION: This not include attached shops (double-chest)</div>
@@ -1001,7 +1003,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getShopFromRuntimeRandomUniqueId(java.util.UUID)">
 <h3>getShopFromRuntimeRandomUniqueId</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="return-type">@Nullable <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-367">getShopFromRuntimeRandomUniqueId</a></span><wbr><span class="parameters">(@NotNull
+</span><span class="return-type">@Nullable <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-368">getShopFromRuntimeRandomUniqueId</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&nbsp;runtimeRandomUniqueId)</span></div>
 </section>
 </li>
@@ -1009,7 +1011,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getShopFromRuntimeRandomUniqueId(java.util.UUID,boolean)">
 <h3>getShopFromRuntimeRandomUniqueId</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="return-type">@Nullable <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-370">getShopFromRuntimeRandomUniqueId</a></span><wbr><span class="parameters">(@NotNull
+</span><span class="return-type">@Nullable <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-371">getShopFromRuntimeRandomUniqueId</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&nbsp;runtimeRandomUniqueId,
  boolean&nbsp;includeInvalid)</span></div>
 </section>
@@ -1018,7 +1020,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getShopIncludeAttached(org.bukkit.Location)">
 <h3>getShopIncludeAttached</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="return-type">@Nullable <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-380">getShopIncludeAttached</a></span><wbr><span class="parameters">(@Nullable
+</span><span class="return-type">@Nullable <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-381">getShopIncludeAttached</a></span><wbr><span class="parameters">(@Nullable
  @Nullable org.bukkit.Location&nbsp;loc)</span></div>
 <div class="block">Gets a shop in a specific location Include the attached shop, e.g DoubleChest shop.</div>
 <dl class="notes">
@@ -1033,7 +1035,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getShopIncludeAttachedViaCache(org.bukkit.Location)">
 <h3>getShopIncludeAttachedViaCache</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="return-type">@Nullable <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-391">getShopIncludeAttachedViaCache</a></span><wbr><span class="parameters">(@Nullable
+</span><span class="return-type">@Nullable <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-392">getShopIncludeAttachedViaCache</a></span><wbr><span class="parameters">(@Nullable
  @Nullable org.bukkit.Location&nbsp;loc)</span></div>
 <div class="block">Gets a shop in a specific location Include the attached shop, e.g DoubleChest shop. but via
  cache</div>
@@ -1049,7 +1051,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getShopIterator()">
 <h3>getShopIterator</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Iterator.html" title="class or interface in java.util" class="external-link">Iterator</a>&lt;<a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-401">getShopIterator</a></span>()</div>
+</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Iterator.html" title="class or interface in java.util" class="external-link">Iterator</a>&lt;<a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-402">getShopIterator</a></span>()</div>
 <div class="block">Returns a new shop iterator object, allowing iteration over shops easily, instead of sorting
  through a 3D map.</div>
 <dl class="notes">
@@ -1062,7 +1064,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getShops()">
 <h3>getShops</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="ShopChunk.html" title="interface in com.ghostchu.quickshop.api.shop">ShopChunk</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;org.bukkit.Location,<wbr><a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&gt;&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-409">getShops</a></span>()</div>
+</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="ShopChunk.html" title="interface in com.ghostchu.quickshop.api.shop">ShopChunk</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;org.bukkit.Location,<wbr><a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&gt;&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-410">getShops</a></span>()</div>
 <div class="block">Returns a map of World - Chunk - Shop</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -1074,7 +1076,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getShops(org.bukkit.Chunk)">
 <h3>getShops</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;org.bukkit.Location,<wbr><a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-419">getShops</a></span><wbr><span class="parameters">(@NotNull
+</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;org.bukkit.Location,<wbr><a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-420">getShops</a></span><wbr><span class="parameters">(@NotNull
  @NotNull org.bukkit.Chunk&nbsp;c)</span></div>
 <div class="block">Returns a map of Shops</div>
 <dl class="notes">
@@ -1089,7 +1091,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getShops(java.lang.String,int,int)">
 <h3>getShops</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;org.bukkit.Location,<wbr><a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-431">getShops</a></span><wbr><span class="parameters">(@NotNull
+</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;org.bukkit.Location,<wbr><a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-432">getShops</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;world,
  int&nbsp;chunkX,
  int&nbsp;chunkZ)</span></div>
@@ -1108,7 +1110,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getShops(com.ghostchu.quickshop.api.shop.ShopChunk)">
 <h3>getShops</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;org.bukkit.Location,<wbr><a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-441">getShops</a></span><wbr><span class="parameters">(@NotNull
+</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;org.bukkit.Location,<wbr><a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-442">getShops</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="ShopChunk.html" title="interface in com.ghostchu.quickshop.api.shop">ShopChunk</a>&nbsp;shopChunk)</span></div>
 <div class="block">Gets the shop at the world and specific chunk.</div>
 <dl class="notes">
@@ -1123,7 +1125,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getShops(java.lang.String)">
 <h3>getShops</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="ShopChunk.html" title="interface in com.ghostchu.quickshop.api.shop">ShopChunk</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;org.bukkit.Location,<wbr><a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-451">getShops</a></span><wbr><span class="parameters">(@NotNull
+</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="ShopChunk.html" title="interface in com.ghostchu.quickshop.api.shop">ShopChunk</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;org.bukkit.Location,<wbr><a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-452">getShops</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;world)</span></div>
 <div class="block">Returns a map of Chunk - Shop</div>
 <dl class="notes">
@@ -1138,7 +1140,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getShopsInWorld(org.bukkit.World)">
 <h3>getShopsInWorld</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-461">getShopsInWorld</a></span><wbr><span class="parameters">(@NotNull
+</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-462">getShopsInWorld</a></span><wbr><span class="parameters">(@NotNull
  @NotNull org.bukkit.World&nbsp;world)</span></div>
 <div class="block">Get the all shops in the world.</div>
 <dl class="notes">
@@ -1153,7 +1155,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getShopsInWorld(java.lang.String)">
 <h3>getShopsInWorld</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-471">getShopsInWorld</a></span><wbr><span class="parameters">(@NotNull
+</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-472">getShopsInWorld</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;worldName)</span></div>
 <div class="block">Get the all shops in the world.</div>
 <dl class="notes">
@@ -1169,7 +1171,7 @@ loadScripts(document, 'script');</script>
 <h3>getTax</h3>
 <div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Deprecated.html#since()" title="class or interface in java.lang" class="external-link">since</a>="6.2.0.11",
             <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Deprecated.html#forRemoval()" title="class or interface in java.lang" class="external-link">forRemoval</a>=true)
-</span><span class="modifiers">default</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-484">getTax</a></span><wbr><span class="parameters">(@NotNull
+</span><span class="modifiers">default</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-485">getTax</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&nbsp;shop,
  @NotNull
  @NotNull <a href="../obj/QUser.html" title="interface in com.ghostchu.quickshop.api.obj">QUser</a>&nbsp;p)</span></div>
@@ -1189,7 +1191,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="handleChat(org.bukkit.entity.Player,java.lang.String)">
 <h3>handleChat</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-489">handleChat</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-490">handleChat</a></span><wbr><span class="parameters">(@NotNull
  @NotNull org.bukkit.entity.Player&nbsp;player,
  @NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;msg)</span></div>
@@ -1198,7 +1200,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="isReachedLimit(com.ghostchu.quickshop.api.obj.QUser,boolean)">
 <h3>isReachedLimit</h3>
-<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-499">isReachedLimit</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-500">isReachedLimit</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="../obj/QUser.html" title="interface in com.ghostchu.quickshop.api.obj">QUser</a>&nbsp;p,
  boolean&nbsp;message)</span></div>
 <div class="block">Checks if player reached the limit of shops</div>
@@ -1214,7 +1216,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="loadShop(com.ghostchu.quickshop.api.shop.Shop)">
 <h3>loadShop</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-508">loadShop</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-509">loadShop</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&nbsp;shop)</span></div>
 <div class="block">Load shop method for loading shop into mapping, so getShops method will can find it. It also
  effects a lots of feature, make sure load it after create it.</div>
@@ -1228,7 +1230,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="unloadShop(com.ghostchu.quickshop.api.shop.Shop)">
 <h3>unloadShop</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-517">unloadShop</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-518">unloadShop</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&nbsp;shop)</span></div>
 <div class="block">Load shop method for loading shop into mapping, so getShops method will can find it. It also
  effects a lots of feature, make sure load it after create it.</div>
@@ -1242,7 +1244,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="unloadShop(com.ghostchu.quickshop.api.shop.Shop,boolean)">
 <h3>unloadShop</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-529">unloadShop</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-530">unloadShop</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&nbsp;shop,
  boolean&nbsp;chunkUnloading)</span></div>
 <div class="block">Load shop method for loading shop into mapping, so getShops method will can find it. It also
@@ -1260,14 +1262,14 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="migrateOwnerToUnlimitedShopOwner(com.ghostchu.quickshop.api.shop.Shop)">
 <h3>migrateOwnerToUnlimitedShopOwner</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-534">migrateOwnerToUnlimitedShopOwner</a></span><wbr><span class="parameters">(<a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&nbsp;shop)</span></div>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-535">migrateOwnerToUnlimitedShopOwner</a></span><wbr><span class="parameters">(<a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&nbsp;shop)</span></div>
 <div class="block">Change the owner to unlimited shop owner. It defined in configuration.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="registerShop(com.ghostchu.quickshop.api.shop.Shop,boolean)">
 <h3>registerShop</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;?&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-543">registerShop</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;?&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-544">registerShop</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&nbsp;shop,
  boolean&nbsp;persist)</span></div>
 <div class="block">Register shop to database.</div>
@@ -1282,7 +1284,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="unregisterShop(com.ghostchu.quickshop.api.shop.Shop,boolean)">
 <h3>unregisterShop</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;?&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-552">unregisterShop</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;?&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-553">unregisterShop</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&nbsp;shop,
  boolean&nbsp;persist)</span></div>
 <div class="block">Unregister a shop from database.</div>
@@ -1298,7 +1300,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="sendPurchaseSuccess(com.ghostchu.quickshop.api.obj.QUser,com.ghostchu.quickshop.api.shop.Shop,int,double,double)">
 <h3>sendPurchaseSuccess</h3>
 <div class="member-signature"><span class="annotations">@Experimental
-</span><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-561">sendPurchaseSuccess</a></span><wbr><span class="parameters">(@NotNull
+</span><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-562">sendPurchaseSuccess</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="../obj/QUser.html" title="interface in com.ghostchu.quickshop.api.obj">QUser</a>&nbsp;purchaser,
  @NotNull
  @NotNull <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&nbsp;shop,
@@ -1318,7 +1320,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="sendSellSuccess(com.ghostchu.quickshop.api.obj.QUser,com.ghostchu.quickshop.api.shop.Shop,int,double,double)">
 <h3>sendSellSuccess</h3>
 <div class="member-signature"><span class="annotations">@Experimental
-</span><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-571">sendSellSuccess</a></span><wbr><span class="parameters">(@NotNull
+</span><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-572">sendSellSuccess</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="../obj/QUser.html" title="interface in com.ghostchu.quickshop.api.obj">QUser</a>&nbsp;seller,
  @NotNull
  @NotNull <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&nbsp;shop,
@@ -1338,7 +1340,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="sendShopInfo(org.bukkit.entity.Player,com.ghostchu.quickshop.api.shop.Shop)">
 <h3>sendShopInfo</h3>
 <div class="member-signature"><span class="annotations">@Experimental
-</span><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-580">sendShopInfo</a></span><wbr><span class="parameters">(@NotNull
+</span><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-581">sendShopInfo</a></span><wbr><span class="parameters">(@NotNull
  @NotNull org.bukkit.entity.Player&nbsp;p,
  @NotNull
  @NotNull <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&nbsp;shop)</span></div>
@@ -1353,7 +1355,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="shopIsNotValid(com.ghostchu.quickshop.api.obj.QUser,com.ghostchu.quickshop.api.shop.Info,com.ghostchu.quickshop.api.shop.Shop)">
 <h3>shopIsNotValid</h3>
-<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-592">shopIsNotValid</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-593">shopIsNotValid</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="../obj/QUser.html" title="interface in com.ghostchu.quickshop.api.obj">QUser</a>&nbsp;uuid,
  @NotNull
  @NotNull <a href="Info.html" title="interface in com.ghostchu.quickshop.api.shop">Info</a>&nbsp;info,
@@ -1374,7 +1376,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getInteractiveManager()">
 <h3>getInteractiveManager</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type"><a href="ShopManager.InteractiveManager.html" title="interface in com.ghostchu.quickshop.api.shop">ShopManager.InteractiveManager</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-599">getInteractiveManager</a></span>()</div>
+</span><span class="return-type"><a href="ShopManager.InteractiveManager.html" title="interface in com.ghostchu.quickshop.api.shop">ShopManager.InteractiveManager</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-600">getInteractiveManager</a></span>()</div>
 <div class="block">Gets the InteractiveManager (which former as known getActions())</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -1386,7 +1388,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="makeShopSign(org.bukkit.block.Block,org.bukkit.block.Block,org.bukkit.Material)">
 <h3>makeShopSign</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull org.bukkit.block.BlockState</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-602">makeShopSign</a></span><wbr><span class="parameters">(@NotNull
+</span><span class="return-type">@NotNull org.bukkit.block.BlockState</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-603">makeShopSign</a></span><wbr><span class="parameters">(@NotNull
  @NotNull org.bukkit.block.Block&nbsp;container,
  @NotNull
  @NotNull org.bukkit.block.Block&nbsp;signBlock,
@@ -1398,7 +1400,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="queryTaggedShops(java.util.UUID,java.lang.String)">
 <h3>queryTaggedShops</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-605">queryTaggedShops</a></span><wbr><span class="parameters">(@NotNull
+</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-606">queryTaggedShops</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&nbsp;tagger,
  @NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tag)</span></div>
@@ -1407,7 +1409,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="clearShopTags(java.util.UUID,com.ghostchu.quickshop.api.shop.Shop)">
 <h3>clearShopTags</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-608">clearShopTags</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-609">clearShopTags</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&nbsp;tagger,
  @NotNull
  @NotNull <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&nbsp;shop)</span></div>
@@ -1416,7 +1418,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="clearTagFromShops(java.util.UUID,java.lang.String)">
 <h3>clearTagFromShops</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-610">clearTagFromShops</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-611">clearTagFromShops</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&nbsp;tagger,
  @NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tag)</span></div>
@@ -1425,7 +1427,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="removeTag(java.util.UUID,com.ghostchu.quickshop.api.shop.Shop,java.lang.String)">
 <h3>removeTag</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-612">removeTag</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-613">removeTag</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&nbsp;tagger,
  @NotNull
  @NotNull <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&nbsp;shop,
@@ -1436,7 +1438,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="tagShop(java.util.UUID,com.ghostchu.quickshop.api.shop.Shop,java.lang.String)">
 <h3>tagShop</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-614">tagShop</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-615">tagShop</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&nbsp;tagger,
  @NotNull
  @NotNull <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&nbsp;shop,
@@ -1448,14 +1450,14 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="listTags(java.util.UUID)">
 <h3>listTags</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-616">listTags</a></span><wbr><span class="parameters">(@NotNull
+</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-617">listTags</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&nbsp;tagger)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="deleteShop(com.ghostchu.quickshop.api.shop.Shop)">
 <h3>deleteShop</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-619">deleteShop</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-620">deleteShop</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&nbsp;shop)</span></div>
 </section>
 </li>
@@ -1463,7 +1465,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="queryShopInventoryCacheInDatabase(com.ghostchu.quickshop.api.shop.Shop)">
 <h3>queryShopInventoryCacheInDatabase</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="cache/ShopInventoryCountCache.html" title="interface in com.ghostchu.quickshop.api.shop.cache">ShopInventoryCountCache</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-621">queryShopInventoryCacheInDatabase</a></span><wbr><span class="parameters">(@NotNull
+</span><span class="return-type">@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="cache/ShopInventoryCountCache.html" title="interface in com.ghostchu.quickshop.api.shop.cache">ShopInventoryCountCache</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/ShopManager.html#line-622">queryShopInventoryCacheInDatabase</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&nbsp;shop)</span></div>
 </section>
 </li>
