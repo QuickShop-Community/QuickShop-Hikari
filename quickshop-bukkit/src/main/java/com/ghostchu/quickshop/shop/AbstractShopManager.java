@@ -544,7 +544,7 @@ public abstract class AbstractShopManager implements ShopManager {
     final List<Shop> worldShops = new ArrayList<>();
 
     final Map<ShopChunk, Map<Location, Shop>> shopsInWorld = getShops(worldName);
-    for (final Map<Location, Shop> chunkEntry : shopsInWorld.values()) {
+    for(final Map<Location, Shop> chunkEntry : shopsInWorld.values()) {
 
         worldShops.addAll(chunkEntry.values());
     }
