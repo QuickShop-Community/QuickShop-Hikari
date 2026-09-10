@@ -59,9 +59,7 @@ public class PAPICache implements Reloadable {
 
   private long getShopsInWorld(@NotNull final String world, final boolean loadedOnly) {
 
-    return plugin.getShopManager().getAllShops().stream()
-            .filter(shop->shop.bukkitLocation().getWorld() != null)
-            .filter(shop->shop.bukkitLocation().getWorld().getName().equals(world))
+    return plugin.getShopManager().getShopsInWorld(world).stream()
             .filter(shop->!loadedOnly || shop.isLoaded())
             .count();
   }

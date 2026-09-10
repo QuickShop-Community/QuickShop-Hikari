@@ -2250,38 +2250,4 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
 
     return "ContainerShop{" + "location=" + location + ", plugin=" + plugin + ", runtimeRandomUniqueId=" + runtimeRandomUniqueId + ", playerGroup=" + playerGroup + ", isDeleted=" + isDeleted + ", extra=" + serializeExtra() + ", shopId=" + shopId + ", owner=" + owner + ", price=" + price + ", shopType=" + shopType + ", unlimited=" + unlimited + ", item=" + item + ", displayItem=" + displayItem + ", isLoaded=" + isLoaded + ", createBackup=" + createBackup + ", dirty=" + dirty + ", updating=" + updating + ", currency='" + currency + '\'' + ", disableDisplay=" + disableDisplay + ", taxAccount=" + taxAccount + ", inventoryWrapperProvider='" + inventoryWrapperProvider + '\'' + ", symbolLink='" + symbolLink + '\'' + ", shopName='" + shopName + '\'' + ", benefit=" + benefit + '}';
   }
-
-  @Override
-  public boolean equals(final Object o) {
-
-    if(o == this) return true;
-    if(!(o instanceof ContainerShop)) return false;
-    final ContainerShop other = (ContainerShop)o;
-    return this.getShopId() == other.getShopId()
-           && Double.compare(this.getPrice(), other.getPrice()) == 0
-           && this.isUnlimited() == other.isUnlimited()
-           && this.isDisableDisplay() == other.isDisableDisplay()
-           && Objects.equals(this.extraMap, other.extraMap)
-           && Objects.equals(this.getLocation(), other.getLocation())
-           && Objects.equals(this.playerGroup, other.playerGroup)
-           && Objects.equals(this.getOwner(), other.getOwner())
-           && Objects.equals(this.shopType, other.shopType)
-           && Objects.equals(this.shopState, other.shopState)
-           && Objects.equals(this.getItem(), other.getItem())
-           && Objects.equals(this.itemSerialize, other.itemSerialize)
-           && Objects.equals(this.getCurrency(), other.getCurrency())
-           && Objects.equals(this.getTaxAccount(), other.getTaxAccount())
-           && Objects.equals(this.getInventoryWrapperProvider(), other.getInventoryWrapperProvider())
-           && Objects.equals(this.symbolLink, other.symbolLink)
-           && Objects.equals(this.getShopName(), other.getShopName())
-           && Objects.equals(this.benefit, other.benefit)
-           && Objects.equals(this.updatingAtomic, other.updatingAtomic)
-           && Objects.equals(this.inFlightUpdate, other.inFlightUpdate);
-  }
-
-  @Override
-  public int hashCode() {
-
-    return Objects.hash(this.getShopId(), this.getPrice(), this.isUnlimited(), this.isDisableDisplay(), this.extraMap, this.getLocation(), this.playerGroup, this.getOwner(), this.shopType, this.shopState, this.getItem(), this.itemSerialize, this.getCurrency(), this.getTaxAccount(), this.getInventoryWrapperProvider(), this.symbolLink, this.getShopName(), this.benefit, this.updatingAtomic, this.inFlightUpdate);
-  }
 }

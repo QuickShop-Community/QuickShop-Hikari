@@ -51,13 +51,7 @@ public class SubCommand_RemoveAll implements CommandHandler<CommandSender> {
                   return;
                 }
               }
-              final List<Shop> pendingRemoval = new ArrayList<>();
-              for(final Shop shop : plugin.getShopManager().getAllShops()) {
-                if(!shop.getOwner().equals(qUser)) {
-                  continue;
-                }
-                pendingRemoval.add(shop);
-              }
+              final List<Shop> pendingRemoval = plugin.getShopManager().getAllShops(qUser);
               pendingRemoval.forEach(shop->{
                 plugin.logEvent(new ShopRemoveLog(qUser, "Deleting shop " + shop + " as requested by the /quickshop removeall command.", shop.saveToInfoStorage()));
                 Util.regionThread(shop.bukkitLocation(), () -> plugin.getShopManager().deleteShop(shop));

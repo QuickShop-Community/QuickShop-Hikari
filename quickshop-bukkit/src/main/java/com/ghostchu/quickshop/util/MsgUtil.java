@@ -494,7 +494,6 @@ public class MsgUtil {
       Log.debug("ControlPanel blocked by 3rd-party");
       return;
     }
-    PLUGIN.getShopManager().bakeShopRuntimeRandomUniqueIdCache(shop);
     PLUGIN.getShopControlPanelManager().openControlPanel((Player)sender, shop);
 
   }

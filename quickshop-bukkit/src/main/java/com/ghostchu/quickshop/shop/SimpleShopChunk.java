@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.api.shop.ShopChunk;
+import it.unimi.dsi.fastutil.HashCommon;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
@@ -64,8 +65,7 @@ public class SimpleShopChunk implements ShopChunk {
   public boolean equals(final Object o) {
 
     if(o == this) return true;
-    if(!(o instanceof SimpleShopChunk)) return false;
-    final SimpleShopChunk other = (SimpleShopChunk)o;
+    if(!(o instanceof SimpleShopChunk other)) return false;
     return this.getX() == other.getX()
            && this.getZ() == other.getZ()
            && Objects.equals(this.getWorld(), other.getWorld());
@@ -74,7 +74,7 @@ public class SimpleShopChunk implements ShopChunk {
   @Override
   public int hashCode() {
 
-    return Objects.hash(this.getX(), this.getZ(), this.getWorld());
+    return Objects.hash(HashCommon.mix(this.getX()), this.getZ(), this.getWorld());
   }
 
   @Override

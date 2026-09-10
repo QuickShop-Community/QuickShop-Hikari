@@ -17,9 +17,7 @@ import com.ghostchu.quickshop.shop.cache.SimpleShopCache;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.economyformatter.EconomyFormatter;
 import com.ghostchu.quickshop.util.logger.Log;
-import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -46,7 +44,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 // This class is extract from SimpleShopManager because it is too big...
@@ -54,18 +51,11 @@ import java.util.function.Function;
 public abstract class AbstractShopManager implements ShopManager {
 
   protected static final DecimalFormat STANDARD_FORMATTER = new DecimalFormat("#.#########");
-  // the performance impact on busy server
-  protected final Cache<UUID, Shop> shopRuntimeUUIDCaching =
-          CacheBuilder.newBuilder()
-                  .expireAfterAccess(10, TimeUnit.MINUTES)
-                  .maximumSize(50)
-                  .weakValues()
-                  .initialCapacity(50)
-                  .build();
   protected final QuickShop plugin;
   protected final TradeService tradeService;
   protected final EconomyFormatter formatter;
   protected final Map<String, Map<ShopChunk, Map<Location, Shop>>> shops = Maps.newConcurrentMap();
+  protected final Map<UUID, Shop> allShops = Maps.newConcurrentMap();
   protected final Set<Shop> loadedShops = Sets.newConcurrentHashSet(); // Handle it by collection to reduce
   protected ShopCache shopCache;
 
@@ -101,8 +91,8 @@ public abstract class AbstractShopManager implements ShopManager {
     // Put it in the data universe
     // Calculate the chunks coordinates. These are 1,2,3 for each chunk, NOT
     // location rounded to the nearest 16.
-    final int x = (int)Math.floor((shop.bukkitLocation().getBlockX()) / 16.0);
-    final int z = (int)Math.floor((shop.bukkitLocation().getBlockZ()) / 16.0);
+    final int x = shop.bukkitLocation().getBlockX() >> 4;
+    final int z = shop.bukkitLocation().getBlockZ() >> 4;
     // Get the chunk set from the world info
     final ShopChunk shopChunk = new SimpleShopChunk(world, x, z);
     final Map<Location, Shop> inChunk =
@@ -112,12 +102,7 @@ public abstract class AbstractShopManager implements ShopManager {
     // Put the shop in its location in the chunk list.
     inChunk.put(shop.bukkitLocation(), shop);
     shopCache.invalidate(null, shop.bukkitLocation());
-  }
-
-  @Override
-  public void bakeShopRuntimeRandomUniqueIdCache(@NotNull final Shop shop) {
-
-    shopRuntimeUUIDCaching.put(shop.getRuntimeRandomUniqueId(), shop);
+    allShops.put(shop.getRuntimeRandomUniqueId(), shop);
   }
 
   /**
@@ -191,8 +176,8 @@ public abstract class AbstractShopManager implements ShopManager {
     if(inWorld == null) {
       return;
     }
-    final int x = (int)Math.floor((loc.getBlockX()) / 16.0);
-    final int z = (int)Math.floor((loc.getBlockZ()) / 16.0);
+    final int x = loc.getBlockX() >> 4;
+    final int z = loc.getBlockZ() >> 4;
     final ShopChunk shopChunk = new SimpleShopChunk(world, x, z);
     final Map<Location, Shop> inChunk = inWorld.get(shopChunk);
     if(inChunk == null) {
@@ -200,7 +185,7 @@ public abstract class AbstractShopManager implements ShopManager {
     }
     inChunk.remove(loc);
     shopCache.invalidate(null, shop.bukkitLocation());
-    shopRuntimeUUIDCaching.invalidate(shop.getRuntimeRandomUniqueId());
+    allShops.remove(shop.getRuntimeRandomUniqueId());
   }
 
 
@@ -269,27 +254,11 @@ public abstract class AbstractShopManager implements ShopManager {
             });
   }
 
-
-  /**
-   * Returns all shops in the memory, include unloaded.
-   *
-   * <p>Make sure you have caching this, because this need a while to get all shops
-   *
-   * @return All shop in the database
-   */
   @Override
   @NotNull
   public List<Shop> getAllShops() {
 
-    try(PerfMonitor ignored = new PerfMonitor("Getting all shops")) {
-      final List<Shop> shopsCollected = new ArrayList<>();
-      for(final Map<ShopChunk, Map<Location, Shop>> shopMapData : getShops().values()) {
-        for(final Map<Location, Shop> shopData : shopMapData.values()) {
-          shopsCollected.addAll(shopData.values());
-        }
-      }
-      return shopsCollected;
-    }
+    return List.copyOf(this.allShops.values());
   }
 
   /**
@@ -318,7 +287,7 @@ public abstract class AbstractShopManager implements ShopManager {
   public List<Shop> getAllShops(@NotNull final QUser playerUUID) {
 
     final List<Shop> playerShops = new ArrayList<>(10);
-    for(final Shop shop : getAllShops()) {
+    for(final Shop shop : this.allShops.values()) {
       if(shop.getOwner().equals(playerUUID)) {
         playerShops.add(shop);
       }
@@ -331,7 +300,7 @@ public abstract class AbstractShopManager implements ShopManager {
   public List<Shop> getAllShops(@NotNull final UUID playerUUID) {
 
     final List<Shop> playerShops = new ArrayList<>(10);
-    for(final Shop shop : getAllShops()) {
+    for(final Shop shop : this.allShops.values()) {
       final UUID shopUuid = shop.getOwner().getUniqueIdIfRealPlayer().orElse(null);
       if(playerUUID.equals(shopUuid)) {
         playerShops.add(shop);
@@ -352,7 +321,7 @@ public abstract class AbstractShopManager implements ShopManager {
   @Nullable
   public Shop getShop(final long shopId) {
 
-    for(final Shop shop : getAllShops()) {
+    for(final Shop shop : this.allShops.values()) {
       if(shop.getShopId() == shopId) {
         return shop;
       }
@@ -402,19 +371,8 @@ public abstract class AbstractShopManager implements ShopManager {
   public Shop getShopFromRuntimeRandomUniqueId(
           @NotNull final UUID runtimeRandomUniqueId, final boolean includeInvalid) {
 
-    final Shop shop = shopRuntimeUUIDCaching.getIfPresent(runtimeRandomUniqueId);
-    if(shop == null) {
-      for(final Shop shopWithoutCache : this.getLoadedShops()) {
-        if(shopWithoutCache.getRuntimeRandomUniqueId().equals(runtimeRandomUniqueId)) {
-          return shopWithoutCache;
-        }
-      }
-      return null;
-    }
-    if(includeInvalid) {
-      return shop;
-    }
-    if(shop.isValid()) {
+    final Shop shop = allShops.get(runtimeRandomUniqueId);
+    if(includeInvalid || shop.isValid()) {
       return shop;
     }
     return null;
@@ -576,14 +534,7 @@ public abstract class AbstractShopManager implements ShopManager {
   @NotNull
   public List<Shop> getShopsInWorld(@NotNull final World world) {
 
-    final List<Shop> worldShops = new ArrayList<>();
-    for(final Shop shop : getAllShops()) {
-      final Location location = shop.bukkitLocation();
-      if(location.isWorldLoaded() && Objects.equals(location.getWorld(), world)) {
-        worldShops.add(shop);
-      }
-    }
-    return worldShops;
+    return this.getShopsInWorld(world.getName());
   }
 
   @Override
@@ -591,12 +542,13 @@ public abstract class AbstractShopManager implements ShopManager {
   public List<Shop> getShopsInWorld(@NotNull final String worldName) {
 
     final List<Shop> worldShops = new ArrayList<>();
-    for(final Shop shop : getAllShops()) {
-      final Location location = shop.bukkitLocation();
-      if(location.isWorldLoaded() && com.ghostchu.quickshop.common.util.CommonUtil.strEquals(worldName, location.getWorld().getName())) {
-        worldShops.add(shop);
-      }
+
+    final Map<ShopChunk, Map<Location, Shop>> shopsInWorld = getShops(worldName);
+    for(final Map<Location, Shop> chunkEntry : shopsInWorld.values()) {
+
+        worldShops.addAll(chunkEntry.values());
     }
+
     return worldShops;
   }
 
