@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.Iterator;
 import java.util.List;
@@ -231,7 +232,8 @@ public interface ShopManager {
           @NotNull Shop shop,
           int amount);
 
-  void bakeShopRuntimeRandomUniqueIdCache(@NotNull Shop shop);
+  @Deprecated(since = "6.3.0.2")
+  default void bakeShopRuntimeRandomUniqueIdCache(@NotNull Shop shop) {}
 
   /**
    * Removes all shops from memory and the world. Does not delete them from the database. Call this
@@ -274,13 +276,12 @@ public interface ShopManager {
   String format(double d, @NotNull Shop shop);
 
   /**
-   * Returns all shops in the whole database, include unloaded.
-   *
-   * <p>Make sure you have caching this, because this need a while to get all shops
+   * Returns all shops in the whole database, including ones in unloaded chunks.
    *
    * @return All shop in the database
    */
   @NotNull
+  @Unmodifiable
   List<Shop> getAllShops();
 
   /**

@@ -741,6 +741,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     this.interactiveManager.reset();
     this.shops.clear();
     shopCache.invalidateAll(null);
+    this.allShops.clear();
   }
 
   /**
