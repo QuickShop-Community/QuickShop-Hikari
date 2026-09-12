@@ -31,6 +31,9 @@ import org.jetbrains.annotations.Nullable;
  */
 public class PyroFishingCheck implements ItemCheck {
 
+  final NamespacedKey fishNumberKey = new NamespacedKey("pyrofishingpro", "fishnumber");
+  final NamespacedKey tierKey = new NamespacedKey("pyrofishingpro", "tier");
+
   /**
    * Check if this check applies to the specified ItemStack
    *
@@ -45,7 +48,8 @@ public class PyroFishingCheck implements ItemCheck {
 
       return false;
     }
-    return stack.getItemMeta().getPersistentDataContainer().has(new NamespacedKey("pyrofishingpro", "fishnumber"), PersistentDataType.INTEGER);
+    return stack.getItemMeta().getPersistentDataContainer().has(fishNumberKey, PersistentDataType.INTEGER)
+           && stack.getItemMeta().getPersistentDataContainer().has(tierKey, PersistentDataType.STRING);
   }
 
   /**
@@ -59,17 +63,28 @@ public class PyroFishingCheck implements ItemCheck {
   @Override
   public boolean matches(final @Nullable ItemStack stack, final @Nullable ItemStack compare) {
 
-    final int originalFish = fishData(stack);
-    final int testerFish = fishData(compare);
+    final int originalFishNumber = fishNumber(stack);
+    final int testerFishNumber = fishNumber(compare);
 
-    return originalFish == testerFish;
+    final String originalFishTier = fishTier(stack);
+    final String testerFishTier = fishTier(compare);
+
+    return originalFishNumber == testerFishNumber && originalFishTier.equalsIgnoreCase(testerFishTier);
   }
 
-  public Integer fishData(final ItemStack stack) {
+  public Integer fishNumber(final ItemStack stack) {
 
     if(stack.getItemMeta() != null) {
-      return stack.getItemMeta().getPersistentDataContainer().getOrDefault(new NamespacedKey("pyrofishingpro", "fishnumber"), PersistentDataType.INTEGER, -1);
+      return stack.getItemMeta().getPersistentDataContainer().getOrDefault(fishNumberKey, PersistentDataType.INTEGER, -1);
     }
     return -1;
+  }
+
+  public String fishTier(final ItemStack stack) {
+
+    if(stack.getItemMeta() != null) {
+      return stack.getItemMeta().getPersistentDataContainer().getOrDefault(tierKey, PersistentDataType.STRING, "NO_TIER");
+    }
+    return "NO_TIER";
   }
 }
