@@ -27,7 +27,7 @@ dependencyResolutionManagement {
             }
         }
         maven("https://m2.dv8tion.net/releases")
-        maven("https://maven.devs.beer/")
+        maven("https://oss.sonatype.org/content/groups/public/")
         maven("https://repo.spaceio.xyz/repository/maven-public/")
         maven("https://maven.enginehub.org/repo/")
         maven("https://maven.mohistmc.com/")

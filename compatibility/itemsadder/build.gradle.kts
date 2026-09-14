@@ -6,7 +6,7 @@ dependencies {
     compileOnly(libs.paper.api)
     implementation(project(":compatibility:common"))
     compileOnly(project(":quickshop-bukkit"))
-    compileOnly("dev.lone:api-itemsadder:4.0.10")
+    compileOnly("beer.devs:itemsadder-api:4.0.18-beta-9")
 }
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>().configureEach {
