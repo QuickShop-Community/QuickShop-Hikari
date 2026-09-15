@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.menu.keeper;
  */
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.api.event.display.ItemPreviewComponentPrePopulateEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.shop.Shop;
@@ -41,20 +42,27 @@ import net.tnemc.menu.core.icon.action.impl.SwitchMenuAction;
 import net.tnemc.menu.core.icon.impl.StateIcon;
 import net.tnemc.menu.core.manager.MenuManager;
 import net.tnemc.menu.core.viewer.MenuViewer;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 
+import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_DATA_RECORDS;
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_RECORDS;
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_SUMMARY;
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.SHOPS_DATA;
+import static com.ghostchu.quickshop.menu.ShopHistoryMenu.SHOPS_HEADERS;
 import static com.ghostchu.quickshop.menu.ShopKeeperMenu.KEEPER_MAIN;
 import static com.ghostchu.quickshop.shop.SimpleShopManager.ACTIVE_STATE;
 import static com.ghostchu.quickshop.shop.SimpleShopManager.BUYING_TYPE;
@@ -375,6 +383,13 @@ public class MainPage extends QuickShopPage {
                                              final ShopHistory shopHistory = new ShopHistory(QuickShop.getInstance(), shops);
 
                                              try {
+                                               final Map<Long, Component> shopHeader = new HashMap<>();
+                                               if(shop.get().getShopName() != null) {
+                                                 shopHeader.put(shop.get().getShopId(), QuickShop.getInstance().text().of("history.shop.header-icon-shop-name", shop.get().getShopName()).forLocale());
+                                               } else {
+                                                 shopHeader.put(shop.get().getShopId(), QuickShop.getInstance().text().of("history.shop.header-icon-shop-empty-name", shop.get().bukkitLocation().getWorld().getName(), shop.get().bukkitLocation().getBlockX(), shop.get().bukkitLocation().getBlockY(), shop.get().bukkitLocation().getBlockZ()).forLocale());
+                                               }
+
                                                final List<ShopHistory.ShopHistoryRecord> queryResult = shopHistory.query();
                                                final ShopHistory.ShopSummary summary = shopHistory.generateSummary().join();
                                                Log.debug(summary.toString());
@@ -383,10 +398,23 @@ public class MainPage extends QuickShopPage {
                                                  return;
                                                }
 
+                                               final Map<Long, DataRecord> dataRecords = new ConcurrentHashMap<>();
+                                               final List<CompletableFuture<Void>> futures = new ArrayList<>();
+                                               for(final ShopHistory.ShopHistoryRecord record : queryResult) {
+                                                 futures.add(QuickShop.getInstance().getDatabaseHelper().getDataRecord(record.dataId()).thenAccept(data->{
+                                                   if(data != null) {
+                                                     dataRecords.put(record.dataId(), data);
+                                                   }
+                                                 }));
+                                               }
+                                               CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+
                                                final MenuViewer historyViewer = new MenuViewer(id);
                                                MenuManager.instance().addViewer(historyViewer);
                                                historyViewer.addData(SHOPS_DATA, shops);
+                                               historyViewer.addData(SHOPS_HEADERS, shopHeader);
                                                historyViewer.addData(HISTORY_RECORDS, queryResult);
+                                               historyViewer.addData(HISTORY_DATA_RECORDS, dataRecords);
                                                historyViewer.addData(HISTORY_SUMMARY, summary);
 
                                                Util.mainThreadRun(()->{
