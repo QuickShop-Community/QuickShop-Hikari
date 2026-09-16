@@ -480,6 +480,11 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   @Override
   public @NotNull CompletableFuture<@NotNull Integer> insertMetricRecord(@NotNull final ShopMetricRecord metricRecord) {
 
+    if(!plugin.getConfig().getBoolean("transaction-metric.enable", true)) {
+      Log.debug("Transaction metric recording is disabled, skipping the metrics record insert.");
+      return CompletableFuture.completedFuture(0);
+    }
+
     final CompletableFuture<Integer> future = new CompletableFuture<>();
     plugin.getDatabaseHelper().locateShopDataId(metricRecord.getShopId()).whenCompleteAsync((dataId, err)->{
       if(err != null) {
@@ -504,6 +509,11 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
   @Override
   public void insertTransactionRecord(@Nullable UUID from, @Nullable UUID to, final double amount, @Nullable final String currency, final double taxAmount, @Nullable final UUID taxAccount, @Nullable final String error) {
+
+    if(!plugin.getConfig().getBoolean("transaction-metric.enable", true)) {
+      Log.debug("Transaction metric recording is disabled, skipping the transaction record insert.");
+      return;
+    }
 
     if(from == null) {
       from = CommonUtil.getNilUniqueId();
