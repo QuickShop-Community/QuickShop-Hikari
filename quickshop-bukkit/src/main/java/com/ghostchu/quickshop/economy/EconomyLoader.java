@@ -20,9 +20,11 @@ package com.ghostchu.quickshop.economy;
 import com.ghostchu.quickshop.BuiltInSolution;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.EconomyProvider;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.economy.provider.VaultProvider;
 import com.ghostchu.quickshop.economy.provider.VaultUnlockedProvider;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import net.milkbowl.vault2.economy.Economy;
@@ -30,8 +32,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.jetbrains.annotations.Nullable;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -120,40 +122,34 @@ public class EconomyLoader {
   private EconomyProvider loadVaultUnlocked() {
 
     final VaultUnlockedProvider vault = new VaultUnlockedProvider(plugin);
-    final boolean taxEnabled = plugin.getConfig().getDouble("tax", 0.0d) > 0;
-    final String taxAccount = plugin.getConfig().getString("tax-account", "tax");
     if(!vault.valid()) {
       return null;
     }
-    if(!taxEnabled) {
+
+    final QUser taxAccount = resolveTaxAccount();
+    if(taxAccount == null) {
       return vault;
     }
 
-    if(CommonUtil.isEmptyString(taxAccount)) {
+    final UUID taxID = taxAccount.getUniqueId();
+    if(taxID == null) {
       return vault;
     }
 
-    UUID taxID;
-
-    try {
-      taxID = UUID.fromString(taxAccount);
-
-    } catch(final Exception ignore) {
-      taxID = UUID.nameUUIDFromBytes(taxAccount.getBytes(StandardCharsets.UTF_8));
-    }
+    final String taxAccountName = (taxAccount.getUsername() == null)? taxID.toString() : taxAccount.getUsername();
 
     if(!Objects.requireNonNull(vault.economy()).hasAccount(taxID)) {
 
-      Log.debug("Tax account doesn't exists: " + taxAccount);
+      Log.debug("Tax account doesn't exists: " + taxAccountName);
 
-      plugin.logger().warn("QuickShop detected that no tax account exists and will try to create one. If you see any errors, please change the tax-account name in the config.yml to that of the Server owner.");
+      plugin.logger().warn("QuickShop detected that no tax account exists and will try to create one. If you see any errors, please change the shop-tax.account value in the config.yml to that of the Server owner.");
 
-      if(vault.economy().createAccount(taxID, taxAccount, false)) {
+      if(vault.economy().createAccount(taxID, taxAccountName, false)) {
 
         plugin.logger().info("Tax account created.");
       } else {
 
-        plugin.logger().warn("Cannot create tax-account, please change the tax-account name in the config.yml to that of the server owner");
+        plugin.logger().warn("Cannot create tax-account, please change the shop-tax.account value in the config.yml to that of the server owner");
       }
 
       if(!vault.economy().hasAccount(taxID)) {
@@ -167,36 +163,66 @@ public class EconomyLoader {
   private EconomyProvider loadVault() {
 
     final VaultProvider vault = new VaultProvider(plugin);
-    final boolean taxEnabled = plugin.getConfig().getDouble("tax", 0.0d) > 0;
-    final String taxAccount = plugin.getConfig().getString("tax-account", "tax");
     if(!vault.valid()) {
       return null;
     }
-    if(!taxEnabled) {
+
+    final QUser taxAccount = resolveTaxAccount();
+    if(taxAccount == null) {
       return vault;
     }
-    if(CommonUtil.isEmptyString(taxAccount)) {
+
+    final UUID taxID = taxAccount.getUniqueId();
+    if(taxID == null) {
       return vault;
     }
-    final OfflinePlayer tax;
-    if(CommonUtil.isUUID(taxAccount)) {
-      tax = Bukkit.getOfflinePlayer(UUID.fromString(taxAccount));
-    } else {
-      tax = Bukkit.getOfflinePlayer(taxAccount);
-    }
+
+    final String taxAccountName = (taxAccount.getUsername() == null)? taxID.toString() : taxAccount.getUsername();
+    final OfflinePlayer tax = Bukkit.getOfflinePlayer(taxID);
+
     if(!Objects.requireNonNull(vault.economy()).hasAccount(tax)) {
-      Log.debug("Tax account doesn't exists: " + tax);
-      plugin.logger().warn("QuickShop detected that no tax account exists and will try to create one. If you see any errors, please change the tax-account name in the config.yml to that of the Server owner.");
+
+      Log.debug("Tax account doesn't exists: " + taxAccountName);
+
+      plugin.logger().warn("QuickShop detected that no tax account exists and will try to create one. If you see any errors, please change the shop-tax.account value in the config.yml to that of the Server owner.");
+
       if(vault.economy().createPlayerAccount(tax)) {
+
         plugin.logger().info("Tax account created.");
       } else {
-        plugin.logger().warn("Cannot create tax-account, please change the tax-account name in the config.yml to that of the server owner");
+
+        plugin.logger().warn("Cannot create tax-account, please change the shop-tax.account value in the config.yml to that of the server owner");
       }
+
       if(!vault.economy().hasAccount(tax)) {
+
         plugin.logger().warn("Player for the Tax-account has never played on this server before and we couldn't create an account. This may cause server lag or economy errors, therefore changing the name is recommended. You may ignore this warning if it doesn't cause any issues.");
       }
     }
     return vault;
+  }
+
+  /**
+   * Resolves the tax account configured in the {@code shop-tax.account} option into a {@link QUser}.
+   * <p>
+   * The account is resolved with the very same logic the shop manager uses while depositing the tax
+   * money, so an account created by this loader is always the account that will receive the tax
+   * money later on.
+   *
+   * @return the resolved tax account, or null if no tax account is configured (which means the tax
+   * money will be deducted but never deposited)
+   */
+  private @Nullable QUser resolveTaxAccount() {
+
+    final String taxAccount = plugin.getConfig().getString("shop-tax.account", "tax");
+    if(CommonUtil.isEmptyString(taxAccount)) {
+
+      //An empty tax account name means "disable depositing", see the shop-tax section in config.yml
+      plugin.logger().warn("Tax account is empty, the tax money will be deducted but not deposited.");
+      return null;
+    }
+
+    return QUserImpl.createSync(plugin.getPlayerFinder(), taxAccount);
   }
 
   private boolean vaultUnlockedPresent() {
