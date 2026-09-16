@@ -9,6 +9,7 @@ import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.logger.Log;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -59,24 +60,45 @@ public class MetricQuery {
             .orderBy("id", !descending).build().execute()) {
       final ResultSet set = query.getResultSet();
       while(set.next()) {
-        //"time", "shop", "data", "buyer", "type", "amount", "money", "tax"
+        //"time", "from", "to", "currency", "amount", "tax_account", "tax_amount", "error"
         final ShopTransactionRecord record = new ShopTransactionRecord(
                 set.getDate("time"),
                 UUID.fromString(set.getString("from")),
                 UUID.fromString(set.getString("to")),
                 set.getString("currency"),
                 set.getDouble("amount"),
-                UUID.fromString(set.getString("tax_currency")),
+                parseUuid(set.getString("tax_account")),
                 set.getDouble("tax_amount"),
                 set.getString("error")
         );
         list.add(record);
       }
     } catch(SQLException e) {
-      e.printStackTrace();
+      plugin.logger().warn("Querying transactions failed.", e);
       return list;
     }
     return list;
+  }
+
+  /**
+   * Parses an optional UUID column into an UUID instance.
+   *
+   * @param value the raw column value, may be null or blank
+   *
+   * @return the parsed UUID, or null if the value is absent or not a valid UUID
+   */
+  @Nullable
+  private static UUID parseUuid(@Nullable final String value) {
+
+    if(value == null || value.isBlank()) {
+      return null;
+    }
+    try {
+      return UUID.fromString(value);
+    } catch(final IllegalArgumentException exception) {
+      Log.debug("Failed to parse " + value + " as an UUID, treating it as null.");
+      return null;
+    }
   }
 
   // Use LinkedHashMap forced because we need keep the order.
