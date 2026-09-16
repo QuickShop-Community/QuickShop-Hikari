@@ -107,7 +107,8 @@ public class QSEconomyTransaction implements EconomyTransaction {
 
     this.fromTax = CalculateUtil.subtract(fromAmount, amount);
 
-    this.totalTax = toTax.add(fromTax);
+    //The total tax is the sum of both tax AMOUNTS, not the tax rates (toTax/fromTax parameters)
+    this.totalTax = this.toTax.add(this.fromTax);
 
     if(from == null && to == null) {
       lastError = "From and To cannot be null in same time.";
@@ -501,7 +502,7 @@ public class QSEconomyTransaction implements EconomyTransaction {
 
   private void checkTax(@NotNull final TransactionCallback callback) {
 
-    if(totalTax.compareTo(BigDecimal.ZERO) > 0) {
+    if(totalTax.compareTo(BigDecimal.ZERO) <= 0) {
       return;
     }
 
