@@ -2162,7 +2162,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
             getPrice(),
             isUnlimited(),
             isDisableDisplay(),
-            getTaxAccount(),
+            getTaxAccountActual(),
             JsonUtil.getGson().toJson(getPermissionAudiences()),
             serializeExtra(),
             getInventoryWrapperProvider(),

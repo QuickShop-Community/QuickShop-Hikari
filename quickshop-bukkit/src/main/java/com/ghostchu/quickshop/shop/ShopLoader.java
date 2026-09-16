@@ -341,10 +341,7 @@ public class ShopLoader implements SubPasteItem {
       //handle old shops
       this.currency = dataRecord.getCurrency();
       this.hologram = dataRecord.isHologram();
-      this.taxAccount = null;
-      if(dataRecord.getTaxAccount() != null) {
-        this.taxAccount = getTaxAccount();
-      }
+      this.taxAccount = dataRecord.getTaxAccount();
       this.invSymbolLink = dataRecord.getInventorySymbolLink();
       this.invWrapper = dataRecord.getInventoryWrapper();
       this.benefits = QSBenefitProvider.deserialize(dataRecord.getBenefit());
