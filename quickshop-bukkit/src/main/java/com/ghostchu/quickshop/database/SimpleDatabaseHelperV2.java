@@ -493,6 +493,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     plugin.getDatabaseHelper().locateShopDataId(metricRecord.getShopId()).whenCompleteAsync((dataId, err)->{
       if(err != null) {
         future.completeExceptionally(err);
+        return;
       }
       DataTables.LOG_PURCHASE
               .createInsert()
