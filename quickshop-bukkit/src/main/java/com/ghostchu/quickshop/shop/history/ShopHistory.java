@@ -313,6 +313,12 @@ public class ShopHistory {
 
   public CompletableFuture<ShopSummary> generateSummary() {
 
+    if(shopsMapping.isEmpty()) {
+      return CompletableFuture.completedFuture(new ShopSummary(0L, 0L, 0L, 0L, 0L,
+                                                               0.0, 0.0, 0.0, 0.0, 0.0,
+                                                               0L, new LinkedHashMap<>()));
+    }
+
     final long recentPurchases24h = summaryPurchasesCount(Instant.now().minus(24, ChronoUnit.HOURS), Instant.now()).join();
     final long recentPurchases3d = summaryPurchasesCount(Instant.now().minus(3, ChronoUnit.DAYS), Instant.now()).join();
     final long recentPurchases7d = summaryPurchasesCount(Instant.now().minus(7, ChronoUnit.DAYS), Instant.now()).join();
@@ -345,6 +351,10 @@ public class ShopHistory {
 
 
   public List<ShopHistoryRecord> query() throws SQLException {
+
+    if(shopsMapping.isEmpty()) {
+      return List.of();
+    }
 
     Util.ensureThread(true);
     final List<ShopHistoryRecord> historyRecords = new ArrayList<>();
