@@ -100,7 +100,7 @@ public class SubCommand_List implements CommandHandler<Player> {
     printer.printLine(quickshop.text().of(sender, "addon.list.table-prefix-pageable", name, page, (int)Math.ceil((double)shops.size() / pageSize)).forLocale());
     for(final Shop shop : shops) {
       counter++;
-      if(counter < startPos) {
+      if(counter <= startPos) {
         continue;
       }
       /*String shopName = shop.getShopName();
