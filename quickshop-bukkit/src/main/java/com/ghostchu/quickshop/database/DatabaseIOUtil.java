@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -133,7 +134,16 @@ public class DatabaseIOUtil {
 
   public void writeToCSV(@NotNull final ResultSet set, @NotNull final File csvFile) throws SQLException, IOException {
 
-    TableZipCsvBackup.writeToCSV(set, csvFile);
+    if(!csvFile.getParentFile().exists()) {
+      csvFile.getParentFile().mkdirs();
+    }
+    if(!csvFile.exists()) {
+      csvFile.createNewFile();
+    }
+    try(PrintStream stream = new PrintStream(csvFile)) {
+      Log.debug("Writing to CSV file: " + csvFile.getAbsolutePath());
+      TableZipCsvBackup.writeToCSV(set, stream);
+    }
   }
 
   public SimpleDatabaseHelperV2 getHelper() {
