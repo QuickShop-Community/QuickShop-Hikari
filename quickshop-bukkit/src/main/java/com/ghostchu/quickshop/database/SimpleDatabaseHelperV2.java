@@ -36,6 +36,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -343,6 +346,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     return queryDataId(simpleDataRecord).thenCompose(id->{
       if(id == null) {
         final Map<String, Object> map = simpleDataRecord.generateParams();
+        map.put("create_time", LocalDateTime.ofInstant(simpleDataRecord.getCreateTime().toInstant(), ZoneId.systemDefault()));
         return DataTables.DATA.createInsert()
                 .setColumnNames(new ArrayList<>(map.keySet()))
                 .setParams(map.values())
@@ -472,8 +476,8 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   public @NotNull CompletableFuture<@NotNull Integer> insertHistoryRecord(@NotNull final Object rec) {
 
     return DataTables.LOG_OTHERS.createInsert()
-            .setColumnNames("type", "data")
-            .setParams(rec.getClass().getName(), JsonUtil.getGson().toJson(rec))
+            .setColumnNames("time", "type", "data")
+            .setParams(LocalDateTime.now(ZoneId.systemDefault()), rec.getClass().getName(), JsonUtil.getGson().toJson(rec))
             .executeFuture(lines->lines);
   }
 
@@ -489,11 +493,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     plugin.getDatabaseHelper().locateShopDataId(metricRecord.getShopId()).whenCompleteAsync((dataId, err)->{
       if(err != null) {
         future.completeExceptionally(err);
+        return;
       }
       DataTables.LOG_PURCHASE
               .createInsert()
               .setColumnNames("time", "shop", "data", "buyer", "type", "amount", "money", "tax")
-              .setParams(new Date(metricRecord.getTime()), metricRecord.getShopId()
+              .setParams(LocalDateTime.ofInstant(Instant.ofEpochMilli(metricRecord.getTime()), ZoneId.systemDefault()), metricRecord.getShopId()
                       , dataId, metricRecord.getPlayer(), metricRecord.getType().name(),
                          metricRecord.getAmount(), metricRecord.getTotal(), metricRecord.getTax())
               .executeFuture(lines->lines).whenComplete((line, err2)->{
@@ -522,8 +527,8 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
       to = CommonUtil.getNilUniqueId();
     }
     DataTables.LOG_TRANSACTION.createInsert()
-            .setColumnNames("from", "to", "currency", "amount", "tax_amount", "tax_account", "error")
-            .setParams(from.toString(), to.toString(), currency, amount, taxAmount, taxAccount == null? null : taxAccount.toString(), error)
+            .setColumnNames("time", "from", "to", "currency", "amount", "tax_amount", "tax_account", "error")
+            .setParams(LocalDateTime.now(ZoneId.systemDefault()), from.toString(), to.toString(), currency, amount, taxAmount, taxAccount == null? null : taxAccount.toString(), error)
             .executeAsync(handler->Log.debug("Operation completed, insertTransactionRecord, " + handler + " lines affected"));
   }
 
@@ -780,7 +785,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     return DataTables.MESSAGES.createInsert()
             .setColumnNames("receiver", "time", "content")
-            .setParams(player.toString(), new Date(time), message)
+            .setParams(player.toString(), LocalDateTime.ofInstant(Instant.ofEpochMilli(time), ZoneId.systemDefault()), message)
             .executeFuture(lines->lines);
   }
 
