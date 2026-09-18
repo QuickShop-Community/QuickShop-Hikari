@@ -114,6 +114,9 @@ public class ProtocolLibHandler implements PacketHandler<ProtocolManager> {
     final PacketFactoryv1_21_10 oneTwentyOneTen = new PacketFactoryv1_21_10();
     factories.put("1.21.10", oneTwentyOneTen);
     factories.put("1.21.11", oneTwentyOneTen);
+    factories.put("26.1", oneTwentyOneTen);
+    factories.put("26.2", oneTwentyOneTen);
+    factories.put("26.3", oneTwentyOneTen);
   }
 
   @Override
