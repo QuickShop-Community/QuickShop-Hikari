@@ -787,7 +787,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     registerService();
     /* Check the running envs is support or not. */
     logger.info("Starting plugin self-test, please wait...");
-    try(PerfMonitor ignored = new PerfMonitor("Self Test")) {
+    try(final PerfMonitor ignored = new PerfMonitor("Self Test")) {
       runtimeCheck(EnvCheckEntry.Stage.ON_ENABLE);
     }
     logger.info("Reading the configuration...");
@@ -832,7 +832,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     }
     loadSignHooker();
     //Load the database
-    try(PerfMonitor ignored = new PerfMonitor("Initialize database")) {
+    try(final PerfMonitor ignored = new PerfMonitor("Initialize database")) {
       initDatabase();
     }
     Util.asyncThreadRun(()->{
@@ -892,7 +892,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     registerCommunicationChannels();
     new QSConfigurationReloadEvent(javaPlugin).callEvent();
     load3rdParty();
-    try(PerfMonitor ignored = new PerfMonitor("Self Test")) {
+    try(final PerfMonitor ignored = new PerfMonitor("Self Test")) {
       runtimeCheck(EnvCheckEntry.Stage.AFTER_ON_ENABLE);
     }
 
@@ -950,7 +950,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         try {
 
           this.displayManager = new VirtualDisplayItemManager(this);
-        } catch(final Exception e) {
+        } catch(final Exception | NoClassDefFoundError e) {
 
           //disable displays since we don't have packet support
           this.display = false;
@@ -958,7 +958,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
           javaPlugin.saveConfig();
 
           logger.warn("Failed to initialize Virtual Display packet factory. Please validate that you have an up-to-date ProtocolLib or PacketEvents installation.", e);
-          throw e;
+          this.displayManager = null;
         }
       }
 
