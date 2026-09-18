@@ -23,6 +23,7 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.tag.TaggingResult;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -78,6 +79,11 @@ public class SubCommand_Favorite implements CommandHandler<Player> {
 
         if(!plugin.perm().hasPermission(sender, "quickshop.favorite.list")) {
           plugin.text().of(sender, "no-permission").send();
+          return;
+        }
+
+        if(parser.getArgs().size() >= 2 && !CommonUtil.isInteger(parser.getArgs().get(1))) {
+          plugin.text().of(sender, "not-a-number", parser.getArgs().get(1)).send();
           return;
         }
 

@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.tag.TaggingResult;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.pagination.Pagination;
 import com.ghostchu.quickshop.util.pagination.PaginationOptions;
@@ -183,6 +184,11 @@ public class SubCommand_Tag implements CommandHandler<Player> {
       return;
     }
 
+    if(parser.getArgs().size() >= 2 && !CommonUtil.isInteger(parser.getArgs().get(1))) {
+      plugin.text().of(sender, "not-a-number", parser.getArgs().get(1)).send();
+      return;
+    }
+
     final int page = (parser.getArgs().size() >= 2)? Integer.parseInt(parser.getArgs().get(1)) : 1;
 
     final int total = count.get(TOTAL_INDEX);
@@ -241,6 +247,11 @@ public class SubCommand_Tag implements CommandHandler<Player> {
       return;
     }
 
+    if(parser.getArgs().size() >= 2 && !CommonUtil.isInteger(parser.getArgs().get(1))) {
+      plugin.text().of(sender, "not-a-number", parser.getArgs().get(1)).send();
+      return;
+    }
+
     final int page = (parser.getArgs().size() >= 2)? Integer.parseInt(parser.getArgs().get(1)) : 1;
 
     final PaginationOptions<String> options = PaginationOptions
@@ -279,6 +290,11 @@ public class SubCommand_Tag implements CommandHandler<Player> {
 
     if(parser.getArgs().size() < 2) {
       sendUsage(sender);
+      return;
+    }
+
+    if(parser.getArgs().size() >= 3 && !CommonUtil.isInteger(parser.getArgs().get(2))) {
+      plugin.text().of(sender, "not-a-number", parser.getArgs().get(2)).send();
       return;
     }
 
