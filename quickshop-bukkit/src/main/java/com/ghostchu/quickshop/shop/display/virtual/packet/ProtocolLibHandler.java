@@ -24,6 +24,7 @@ import com.ghostchu.quickshop.api.shop.display.PacketHandler;
 import com.ghostchu.quickshop.shop.display.virtual.packet.protocollib.PacketFactoryv1_20;
 import com.ghostchu.quickshop.shop.display.virtual.packet.protocollib.PacketFactoryv1_21;
 import com.ghostchu.quickshop.shop.display.virtual.packet.protocollib.PacketFactoryv1_21_10;
+import com.ghostchu.quickshop.shop.display.virtual.packet.protocollib.PacketFactoryv26_3;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -116,7 +117,10 @@ public class ProtocolLibHandler implements PacketHandler<ProtocolManager> {
     factories.put("1.21.11", oneTwentyOneTen);
     factories.put("26.1", oneTwentyOneTen);
     factories.put("26.2", oneTwentyOneTen);
-    factories.put("26.3", oneTwentyOneTen);
+
+
+    final PacketFactoryv26_3 twentySixThree = new PacketFactoryv26_3();
+    factories.put("26.3", twentySixThree);
   }
 
   @Override
