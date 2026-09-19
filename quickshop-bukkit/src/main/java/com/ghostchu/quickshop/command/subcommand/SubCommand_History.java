@@ -91,6 +91,11 @@ public class SubCommand_History implements CommandHandler<Player> {
       }
     }
 
+    if(shops.isEmpty()) {
+      plugin.text().of(sender, "metric.no-results").send();
+      return;
+    }
+
     final MenuViewer viewer = new MenuViewer(sender.getUniqueId());
     MenuManager.instance().addViewer(viewer);
 
