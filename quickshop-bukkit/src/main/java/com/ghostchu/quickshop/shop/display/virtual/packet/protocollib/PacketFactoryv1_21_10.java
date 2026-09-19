@@ -261,7 +261,7 @@ public class PacketFactoryv1_21_10 implements PacketFactory<PacketContainer> {
   @Override
   public void registerSendChunk() {
 
-    this.chunkSendingPacketAdapter = new PacketAdapter(QuickShop.getInstance().getJavaPlugin(), ListenerPriority.HIGH, PacketType.Play.Server.UNLOAD_CHUNK) {
+    this.chunkSendingPacketAdapter = new PacketAdapter(QuickShop.getInstance().getJavaPlugin(), ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
 
       @Override
       public void onPacketSending(@NotNull final PacketEvent event) {
