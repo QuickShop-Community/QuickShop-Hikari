@@ -796,6 +796,8 @@ shop:
     # Set to 0 to disable.
     click-cooldown: 100
 
+  message_date_time_formatter: "yyyy-MM-dd HH:mm"
+
 # Item Blacklist
 # Items that cannot be sold in shops.
 # Permission quickshop.bypass.<itemID> bypasses the restriction.
