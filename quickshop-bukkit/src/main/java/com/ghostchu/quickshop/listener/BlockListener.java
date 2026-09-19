@@ -94,7 +94,7 @@ public class BlockListener extends AbstractProtectionListener {
     final Player p = e.getPlayer();
     // If the shop was a chest
     if(Util.canBeShop(b)) {
-      final Shop shop = getShopPlayer(b.getLocation(), false);
+      final Shop shop = getShopPlayer(b.getLocation(), true);
       if(shop == null) {
         return;
       }
