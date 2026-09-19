@@ -359,6 +359,8 @@ public class ConfigCollectorItem implements SubPasteItem {
             .replaceAll("resource-pack-prompt=.*", "resource-pack-prompt= ******")
             .replaceAll("resource-pack-sha1=.*", "resource-pack-sha1= ******")
             .replaceAll("seed=.*", "seed=******")
+            .replaceAll("text-filtering-config=.*", "text-filtering-config=******")
+            .replaceAll("ip=.*", "ip=******")
             .replaceAll("port=.*", "port=******");
     for(final String paperSeedType : seedType) {
       string = string.replaceAll(paperSeedType + ":.*", "seed-protected: ******");
