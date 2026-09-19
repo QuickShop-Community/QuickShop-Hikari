@@ -916,6 +916,9 @@ matcher:
     # Compare potion duration scaling.
     POTION_DURATION_SCALE: true
 
+    # Compare ominous bottle level.
+    OMINOUS_BOTTLE_AMPLIFIER: true
+
     # ------------------------------
     # GROUP COMPONENT TOGGLES
     # (Expand into multiple component keys)
