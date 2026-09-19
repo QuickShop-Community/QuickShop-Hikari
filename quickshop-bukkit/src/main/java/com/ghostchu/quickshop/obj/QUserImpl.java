@@ -354,7 +354,7 @@ public final class QUserImpl implements QUser {
   @Override
   public int hashCode() {
 
-    return Objects.hash(username, uniqueId, realPlayer);
+    return isRealPlayer()? Objects.hash(uniqueId, true) : Objects.hash(username, false);
   }
 
   @Override
