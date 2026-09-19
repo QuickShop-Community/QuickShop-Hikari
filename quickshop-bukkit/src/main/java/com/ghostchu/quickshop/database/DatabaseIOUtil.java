@@ -6,7 +6,6 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import org.jetbrains.annotations.NotNull;
-import org.relique.jdbc.csv.CsvDriver;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -143,7 +142,7 @@ public class DatabaseIOUtil {
     }
     try(PrintStream stream = new PrintStream(csvFile)) {
       Log.debug("Writing to CSV file: " + csvFile.getAbsolutePath());
-      CsvDriver.writeToCsv(set, stream, true);
+      TableZipCsvBackup.writeToCSV(set, stream);
     }
   }
 

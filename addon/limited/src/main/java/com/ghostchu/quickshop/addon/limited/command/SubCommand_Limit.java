@@ -44,6 +44,10 @@ public class SubCommand_Limit implements CommandHandler<Player> {
 
     switch(parser.getArgs().getFirst()) {
       case "set" -> {
+        if(parser.getArgs().size() < 2) {
+          quickshop.text().of(sender, "command.wrong-args").send();
+          return;
+        }
         try {
           final int limitAmount = Integer.parseInt(parser.getArgs().get(1));
           if(limitAmount > 0) {
@@ -68,6 +72,10 @@ public class SubCommand_Limit implements CommandHandler<Player> {
         quickshop.text().of(sender, "addon.limited.success-reset").send();
       }
       case "period" -> {
+        if(parser.getArgs().size() < 2) {
+          quickshop.text().of(sender, "command.wrong-args").send();
+          return;
+        }
         try {
           final CalendarEvent.CalendarTriggerType type = CalendarEvent.CalendarTriggerType.valueOf(parser.getArgs().get(1).toUpperCase(Locale.ROOT));
           shop.setExtra(new NamespacedKey(Main.instance, "period"), type.name());

@@ -59,6 +59,7 @@ public enum DataTables {
     table.addAutoIncrementColumn("id", true); // SHOP ID
     // DATA ID
     table.addColumn("data", "INT UNSIGNED NOT NULL");
+    table.setIndex(IndexType.INDEX, "idx_qs_shops_data", "data");
   }),
 
   SHOP_MAP("shop_map", (table)->{
@@ -72,6 +73,7 @@ public enum DataTables {
     table.addColumn("shop", "INT UNSIGNED NOT NULL");
 
     table.setIndex(IndexType.PRIMARY_KEY, null, "world", "x", "y", "z");
+    table.setIndex(IndexType.INDEX, "idx_qs_shop_map_shop", "shop");
 //        table.addForeignKey(
 //                "shop", "fk_qs_shop_map", SHOPS.getName(), "id",
 //                ForeignKeyRule.CASCADE, ForeignKeyRule.CASCADE
