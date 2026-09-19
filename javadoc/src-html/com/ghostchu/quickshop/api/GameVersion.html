@@ -37,123 +37,124 @@
 <span class="source-line-no">024</span><span id="line-24">  v1_21_R10(new String[]{ "1.21.11" }, true, false, true, true, true),</span>
 <span class="source-line-no">025</span><span id="line-25">  v26_1(new String[]{ "26.1", "26.1.1", "26.1.2" }, true, false, true, true, true),</span>
 <span class="source-line-no">026</span><span id="line-26">  v26_2(new String[]{ "26.2" }, true, false, true, true, true),</span>
-<span class="source-line-no">027</span><span id="line-27">  UNKNOWN(new String[0], true, false, false, true, true);</span>
-<span class="source-line-no">028</span><span id="line-28">  private final String[] mcVersion;</span>
-<span class="source-line-no">029</span><span id="line-29">  /**</span>
-<span class="source-line-no">030</span><span id="line-30">   * CoreSupports - Check does QuickShop most features supports this server version</span>
-<span class="source-line-no">031</span><span id="line-31">   */</span>
-<span class="source-line-no">032</span><span id="line-32">  private final boolean coreSupports;</span>
-<span class="source-line-no">033</span><span id="line-33"></span>
-<span class="source-line-no">034</span><span id="line-34">  /**</span>
-<span class="source-line-no">035</span><span id="line-35">   * EndOfLife - It will disable update checker or some else checks</span>
-<span class="source-line-no">036</span><span id="line-36">   */</span>
-<span class="source-line-no">037</span><span id="line-37">  private final boolean endOfLife;</span>
-<span class="source-line-no">038</span><span id="line-38"></span>
-<span class="source-line-no">039</span><span id="line-39">  /**</span>
-<span class="source-line-no">040</span><span id="line-40">   * VirtualDisplaySupports - Check does QuickShop VirtualDisplayItem feature this server version</span>
-<span class="source-line-no">041</span><span id="line-41">   */</span>
-<span class="source-line-no">042</span><span id="line-42">  private final boolean virtualDisplaySupports;</span>
-<span class="source-line-no">043</span><span id="line-43"></span>
-<span class="source-line-no">044</span><span id="line-44">  /**</span>
-<span class="source-line-no">045</span><span id="line-45">   * NewNmsName - Use 1.17+ nms class name mapping</span>
-<span class="source-line-no">046</span><span id="line-46">   */</span>
-<span class="source-line-no">047</span><span id="line-47">  private final boolean newNmsName;</span>
-<span class="source-line-no">048</span><span id="line-48"></span>
-<span class="source-line-no">049</span><span id="line-49">  private final boolean newPotionAPI;</span>
-<span class="source-line-no">050</span><span id="line-50"></span>
-<span class="source-line-no">051</span><span id="line-51">  GameVersion(final String[] mcVersion, final boolean coreSupports, final boolean endOfLife, final boolean virtualDisplaySupports, final boolean newNmsName, final boolean newPotionAPI) {</span>
-<span class="source-line-no">052</span><span id="line-52"></span>
-<span class="source-line-no">053</span><span id="line-53">    this.mcVersion = mcVersion;</span>
-<span class="source-line-no">054</span><span id="line-54">    this.coreSupports = coreSupports;</span>
-<span class="source-line-no">055</span><span id="line-55">    this.endOfLife = endOfLife;</span>
-<span class="source-line-no">056</span><span id="line-56">    this.virtualDisplaySupports = virtualDisplaySupports;</span>
-<span class="source-line-no">057</span><span id="line-57">    this.newNmsName = newNmsName;</span>
-<span class="source-line-no">058</span><span id="line-58">    this.newPotionAPI = newPotionAPI;</span>
-<span class="source-line-no">059</span><span id="line-59">  }</span>
-<span class="source-line-no">060</span><span id="line-60"></span>
+<span class="source-line-no">027</span><span id="line-27">  v26_3(new String[]{ "26.3" }, true, false, true, true, true),</span>
+<span class="source-line-no">028</span><span id="line-28">  UNKNOWN(new String[0], true, false, false, true, true);</span>
+<span class="source-line-no">029</span><span id="line-29">  private final String[] mcVersion;</span>
+<span class="source-line-no">030</span><span id="line-30">  /**</span>
+<span class="source-line-no">031</span><span id="line-31">   * CoreSupports - Check does QuickShop most features supports this server version</span>
+<span class="source-line-no">032</span><span id="line-32">   */</span>
+<span class="source-line-no">033</span><span id="line-33">  private final boolean coreSupports;</span>
+<span class="source-line-no">034</span><span id="line-34"></span>
+<span class="source-line-no">035</span><span id="line-35">  /**</span>
+<span class="source-line-no">036</span><span id="line-36">   * EndOfLife - It will disable update checker or some else checks</span>
+<span class="source-line-no">037</span><span id="line-37">   */</span>
+<span class="source-line-no">038</span><span id="line-38">  private final boolean endOfLife;</span>
+<span class="source-line-no">039</span><span id="line-39"></span>
+<span class="source-line-no">040</span><span id="line-40">  /**</span>
+<span class="source-line-no">041</span><span id="line-41">   * VirtualDisplaySupports - Check does QuickShop VirtualDisplayItem feature this server version</span>
+<span class="source-line-no">042</span><span id="line-42">   */</span>
+<span class="source-line-no">043</span><span id="line-43">  private final boolean virtualDisplaySupports;</span>
+<span class="source-line-no">044</span><span id="line-44"></span>
+<span class="source-line-no">045</span><span id="line-45">  /**</span>
+<span class="source-line-no">046</span><span id="line-46">   * NewNmsName - Use 1.17+ nms class name mapping</span>
+<span class="source-line-no">047</span><span id="line-47">   */</span>
+<span class="source-line-no">048</span><span id="line-48">  private final boolean newNmsName;</span>
+<span class="source-line-no">049</span><span id="line-49"></span>
+<span class="source-line-no">050</span><span id="line-50">  private final boolean newPotionAPI;</span>
+<span class="source-line-no">051</span><span id="line-51"></span>
+<span class="source-line-no">052</span><span id="line-52">  GameVersion(final String[] mcVersion, final boolean coreSupports, final boolean endOfLife, final boolean virtualDisplaySupports, final boolean newNmsName, final boolean newPotionAPI) {</span>
+<span class="source-line-no">053</span><span id="line-53"></span>
+<span class="source-line-no">054</span><span id="line-54">    this.mcVersion = mcVersion;</span>
+<span class="source-line-no">055</span><span id="line-55">    this.coreSupports = coreSupports;</span>
+<span class="source-line-no">056</span><span id="line-56">    this.endOfLife = endOfLife;</span>
+<span class="source-line-no">057</span><span id="line-57">    this.virtualDisplaySupports = virtualDisplaySupports;</span>
+<span class="source-line-no">058</span><span id="line-58">    this.newNmsName = newNmsName;</span>
+<span class="source-line-no">059</span><span id="line-59">    this.newPotionAPI = newPotionAPI;</span>
+<span class="source-line-no">060</span><span id="line-60">  }</span>
 <span class="source-line-no">061</span><span id="line-61"></span>
-<span class="source-line-no">062</span><span id="line-62">  /**</span>
-<span class="source-line-no">063</span><span id="line-63">   * Matches the version that QuickShop supports or not</span>
-<span class="source-line-no">064</span><span id="line-64">   *</span>
-<span class="source-line-no">065</span><span id="line-65">   * @param nmsVersion The Minecraft NMS version</span>
-<span class="source-line-no">066</span><span id="line-66">   *</span>
-<span class="source-line-no">067</span><span id="line-67">   * @return The object contains supports details for GameVersion</span>
-<span class="source-line-no">068</span><span id="line-68">   */</span>
-<span class="source-line-no">069</span><span id="line-69">  @NotNull</span>
-<span class="source-line-no">070</span><span id="line-70">  public static GameVersion get(@NotNull final String nmsVersion) {</span>
-<span class="source-line-no">071</span><span id="line-71"></span>
-<span class="source-line-no">072</span><span id="line-72">    return get(nmsVersion, null);</span>
-<span class="source-line-no">073</span><span id="line-73">  }</span>
-<span class="source-line-no">074</span><span id="line-74"></span>
-<span class="source-line-no">075</span><span id="line-75">  public static GameVersion get(@NotNull final String nmsVersion, final Consumer&lt;Boolean&gt; fallback) {</span>
-<span class="source-line-no">076</span><span id="line-76"></span>
-<span class="source-line-no">077</span><span id="line-77">    for (final GameVersion version : GameVersion.values()) {</span>
-<span class="source-line-no">078</span><span id="line-78">      if (version.name().equals(nmsVersion.trim())) {</span>
-<span class="source-line-no">079</span><span id="line-79"></span>
-<span class="source-line-no">080</span><span id="line-80">        if (fallback != null) {</span>
-<span class="source-line-no">081</span><span id="line-81">          fallback.accept(false);</span>
-<span class="source-line-no">082</span><span id="line-82">        }</span>
-<span class="source-line-no">083</span><span id="line-83">        return version;</span>
-<span class="source-line-no">084</span><span id="line-84">      }</span>
-<span class="source-line-no">085</span><span id="line-85"></span>
-<span class="source-line-no">086</span><span id="line-86">      for (final String str : version.mcVersion) {</span>
-<span class="source-line-no">087</span><span id="line-87">        if (str.trim().equalsIgnoreCase(nmsVersion.trim())) {</span>
-<span class="source-line-no">088</span><span id="line-88">          if (fallback != null) {</span>
-<span class="source-line-no">089</span><span id="line-89">            fallback.accept(false);</span>
-<span class="source-line-no">090</span><span id="line-90">          }</span>
-<span class="source-line-no">091</span><span id="line-91">          return version;</span>
-<span class="source-line-no">092</span><span id="line-92">        }</span>
-<span class="source-line-no">093</span><span id="line-93">      }</span>
-<span class="source-line-no">094</span><span id="line-94">    }</span>
-<span class="source-line-no">095</span><span id="line-95"></span>
-<span class="source-line-no">096</span><span id="line-96">    if (fallback != null) {</span>
-<span class="source-line-no">097</span><span id="line-97">      fallback.accept(true);</span>
-<span class="source-line-no">098</span><span id="line-98">    }</span>
-<span class="source-line-no">099</span><span id="line-99">    return v1_21_R10;</span>
-<span class="source-line-no">100</span><span id="line-100">  }</span>
-<span class="source-line-no">101</span><span id="line-101"></span>
-<span class="source-line-no">102</span><span id="line-102">  public String[] getMcVersion() {</span>
-<span class="source-line-no">103</span><span id="line-103"></span>
-<span class="source-line-no">104</span><span id="line-104">    return this.mcVersion;</span>
-<span class="source-line-no">105</span><span id="line-105">  }</span>
-<span class="source-line-no">106</span><span id="line-106"></span>
-<span class="source-line-no">107</span><span id="line-107">  /**</span>
-<span class="source-line-no">108</span><span id="line-108">   * CoreSupports - Check does QuickShop most features supports this server version</span>
-<span class="source-line-no">109</span><span id="line-109">   */</span>
-<span class="source-line-no">110</span><span id="line-110">  public boolean isCoreSupports() {</span>
-<span class="source-line-no">111</span><span id="line-111"></span>
-<span class="source-line-no">112</span><span id="line-112">    return this.coreSupports;</span>
-<span class="source-line-no">113</span><span id="line-113">  }</span>
-<span class="source-line-no">114</span><span id="line-114"></span>
-<span class="source-line-no">115</span><span id="line-115">  /**</span>
-<span class="source-line-no">116</span><span id="line-116">   * EndOfLife - It will disable update checker or some else checks</span>
-<span class="source-line-no">117</span><span id="line-117">   */</span>
-<span class="source-line-no">118</span><span id="line-118">  public boolean isEndOfLife() {</span>
-<span class="source-line-no">119</span><span id="line-119"></span>
-<span class="source-line-no">120</span><span id="line-120">    return this.endOfLife;</span>
-<span class="source-line-no">121</span><span id="line-121">  }</span>
-<span class="source-line-no">122</span><span id="line-122"></span>
-<span class="source-line-no">123</span><span id="line-123">  /**</span>
-<span class="source-line-no">124</span><span id="line-124">   * VirtualDisplaySupports - Check does QuickShop VirtualDisplayItem feature this server version</span>
-<span class="source-line-no">125</span><span id="line-125">   */</span>
-<span class="source-line-no">126</span><span id="line-126">  public boolean isVirtualDisplaySupports() {</span>
-<span class="source-line-no">127</span><span id="line-127"></span>
-<span class="source-line-no">128</span><span id="line-128">    return this.virtualDisplaySupports;</span>
-<span class="source-line-no">129</span><span id="line-129">  }</span>
-<span class="source-line-no">130</span><span id="line-130"></span>
-<span class="source-line-no">131</span><span id="line-131">  /**</span>
-<span class="source-line-no">132</span><span id="line-132">   * NewNmsName - Use 1.17+ nms class name mapping</span>
-<span class="source-line-no">133</span><span id="line-133">   */</span>
-<span class="source-line-no">134</span><span id="line-134">  public boolean isNewNmsName() {</span>
-<span class="source-line-no">135</span><span id="line-135"></span>
-<span class="source-line-no">136</span><span id="line-136">    return this.newNmsName;</span>
-<span class="source-line-no">137</span><span id="line-137">  }</span>
-<span class="source-line-no">138</span><span id="line-138"></span>
-<span class="source-line-no">139</span><span id="line-139">  public boolean isNewPotionAPI() {</span>
-<span class="source-line-no">140</span><span id="line-140"></span>
-<span class="source-line-no">141</span><span id="line-141">    return this.newPotionAPI;</span>
-<span class="source-line-no">142</span><span id="line-142">  }</span>
-<span class="source-line-no">143</span><span id="line-143">}</span>
+<span class="source-line-no">062</span><span id="line-62"></span>
+<span class="source-line-no">063</span><span id="line-63">  /**</span>
+<span class="source-line-no">064</span><span id="line-64">   * Matches the version that QuickShop supports or not</span>
+<span class="source-line-no">065</span><span id="line-65">   *</span>
+<span class="source-line-no">066</span><span id="line-66">   * @param nmsVersion The Minecraft NMS version</span>
+<span class="source-line-no">067</span><span id="line-67">   *</span>
+<span class="source-line-no">068</span><span id="line-68">   * @return The object contains supports details for GameVersion</span>
+<span class="source-line-no">069</span><span id="line-69">   */</span>
+<span class="source-line-no">070</span><span id="line-70">  @NotNull</span>
+<span class="source-line-no">071</span><span id="line-71">  public static GameVersion get(@NotNull final String nmsVersion) {</span>
+<span class="source-line-no">072</span><span id="line-72"></span>
+<span class="source-line-no">073</span><span id="line-73">    return get(nmsVersion, null);</span>
+<span class="source-line-no">074</span><span id="line-74">  }</span>
+<span class="source-line-no">075</span><span id="line-75"></span>
+<span class="source-line-no">076</span><span id="line-76">  public static GameVersion get(@NotNull final String nmsVersion, final Consumer&lt;Boolean&gt; fallback) {</span>
+<span class="source-line-no">077</span><span id="line-77"></span>
+<span class="source-line-no">078</span><span id="line-78">    for (final GameVersion version : GameVersion.values()) {</span>
+<span class="source-line-no">079</span><span id="line-79">      if (version.name().equals(nmsVersion.trim())) {</span>
+<span class="source-line-no">080</span><span id="line-80"></span>
+<span class="source-line-no">081</span><span id="line-81">        if (fallback != null) {</span>
+<span class="source-line-no">082</span><span id="line-82">          fallback.accept(false);</span>
+<span class="source-line-no">083</span><span id="line-83">        }</span>
+<span class="source-line-no">084</span><span id="line-84">        return version;</span>
+<span class="source-line-no">085</span><span id="line-85">      }</span>
+<span class="source-line-no">086</span><span id="line-86"></span>
+<span class="source-line-no">087</span><span id="line-87">      for (final String str : version.mcVersion) {</span>
+<span class="source-line-no">088</span><span id="line-88">        if (str.trim().equalsIgnoreCase(nmsVersion.trim())) {</span>
+<span class="source-line-no">089</span><span id="line-89">          if (fallback != null) {</span>
+<span class="source-line-no">090</span><span id="line-90">            fallback.accept(false);</span>
+<span class="source-line-no">091</span><span id="line-91">          }</span>
+<span class="source-line-no">092</span><span id="line-92">          return version;</span>
+<span class="source-line-no">093</span><span id="line-93">        }</span>
+<span class="source-line-no">094</span><span id="line-94">      }</span>
+<span class="source-line-no">095</span><span id="line-95">    }</span>
+<span class="source-line-no">096</span><span id="line-96"></span>
+<span class="source-line-no">097</span><span id="line-97">    if (fallback != null) {</span>
+<span class="source-line-no">098</span><span id="line-98">      fallback.accept(true);</span>
+<span class="source-line-no">099</span><span id="line-99">    }</span>
+<span class="source-line-no">100</span><span id="line-100">    return v1_21_R10;</span>
+<span class="source-line-no">101</span><span id="line-101">  }</span>
+<span class="source-line-no">102</span><span id="line-102"></span>
+<span class="source-line-no">103</span><span id="line-103">  public String[] getMcVersion() {</span>
+<span class="source-line-no">104</span><span id="line-104"></span>
+<span class="source-line-no">105</span><span id="line-105">    return this.mcVersion;</span>
+<span class="source-line-no">106</span><span id="line-106">  }</span>
+<span class="source-line-no">107</span><span id="line-107"></span>
+<span class="source-line-no">108</span><span id="line-108">  /**</span>
+<span class="source-line-no">109</span><span id="line-109">   * CoreSupports - Check does QuickShop most features supports this server version</span>
+<span class="source-line-no">110</span><span id="line-110">   */</span>
+<span class="source-line-no">111</span><span id="line-111">  public boolean isCoreSupports() {</span>
+<span class="source-line-no">112</span><span id="line-112"></span>
+<span class="source-line-no">113</span><span id="line-113">    return this.coreSupports;</span>
+<span class="source-line-no">114</span><span id="line-114">  }</span>
+<span class="source-line-no">115</span><span id="line-115"></span>
+<span class="source-line-no">116</span><span id="line-116">  /**</span>
+<span class="source-line-no">117</span><span id="line-117">   * EndOfLife - It will disable update checker or some else checks</span>
+<span class="source-line-no">118</span><span id="line-118">   */</span>
+<span class="source-line-no">119</span><span id="line-119">  public boolean isEndOfLife() {</span>
+<span class="source-line-no">120</span><span id="line-120"></span>
+<span class="source-line-no">121</span><span id="line-121">    return this.endOfLife;</span>
+<span class="source-line-no">122</span><span id="line-122">  }</span>
+<span class="source-line-no">123</span><span id="line-123"></span>
+<span class="source-line-no">124</span><span id="line-124">  /**</span>
+<span class="source-line-no">125</span><span id="line-125">   * VirtualDisplaySupports - Check does QuickShop VirtualDisplayItem feature this server version</span>
+<span class="source-line-no">126</span><span id="line-126">   */</span>
+<span class="source-line-no">127</span><span id="line-127">  public boolean isVirtualDisplaySupports() {</span>
+<span class="source-line-no">128</span><span id="line-128"></span>
+<span class="source-line-no">129</span><span id="line-129">    return this.virtualDisplaySupports;</span>
+<span class="source-line-no">130</span><span id="line-130">  }</span>
+<span class="source-line-no">131</span><span id="line-131"></span>
+<span class="source-line-no">132</span><span id="line-132">  /**</span>
+<span class="source-line-no">133</span><span id="line-133">   * NewNmsName - Use 1.17+ nms class name mapping</span>
+<span class="source-line-no">134</span><span id="line-134">   */</span>
+<span class="source-line-no">135</span><span id="line-135">  public boolean isNewNmsName() {</span>
+<span class="source-line-no">136</span><span id="line-136"></span>
+<span class="source-line-no">137</span><span id="line-137">    return this.newNmsName;</span>
+<span class="source-line-no">138</span><span id="line-138">  }</span>
+<span class="source-line-no">139</span><span id="line-139"></span>
+<span class="source-line-no">140</span><span id="line-140">  public boolean isNewPotionAPI() {</span>
+<span class="source-line-no">141</span><span id="line-141"></span>
+<span class="source-line-no">142</span><span id="line-142">    return this.newPotionAPI;</span>
+<span class="source-line-no">143</span><span id="line-143">  }</span>
+<span class="source-line-no">144</span><span id="line-144">}</span>
 
 
 
