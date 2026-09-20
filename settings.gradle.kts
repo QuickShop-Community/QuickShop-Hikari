@@ -11,6 +11,14 @@ pluginManagement {
 dependencyResolutionManagement {
     repositories {
         mavenCentral()
+        exclusiveContent {
+            forRepository {
+                maven("https://repo.momirealms.net/releases")
+            }
+            filter {
+                includeGroup("net.momirealms")
+            }
+        }
         maven("https://repo.papermc.io/repository/maven-public/")
         maven("https://api.modrinth.com/maven")
         maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
@@ -85,7 +93,7 @@ project(":compatibility:common").projectDir = file("compatibility/common")
 
 listOf(
     "advancedregionmarket", "bentobox", "bolt", "bungeecord", "bungeecord-geyser",
-    "chestprotect", "clearlag", "dominion", "ecoenchants", "elitemobs", "griefprevention",
+    "chestprotect", "clearlag", "craftengine", "dominion", "ecoenchants", "elitemobs", "griefprevention",
     "husktowns", "itemsadder", "lands", "matcherplus", "openinv", "plotsquared", "reforges",
     "residence", "simpleclaimsystem", "slimefun", "superiorskyblock", "towny",
     "ultimateclaims", "velocity", "voidchest", "worldguard",
