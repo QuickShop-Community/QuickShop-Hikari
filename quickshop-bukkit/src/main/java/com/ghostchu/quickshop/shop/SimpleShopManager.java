@@ -88,6 +88,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -153,6 +155,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
   private boolean useShopableChecks;
   private boolean useShopCache;
   private IShopLayoutProvider shopLayoutProvider;
+  private DateTimeFormatter dateTimeFormatter;
 
   //Initialize our shop types
   public static final BuyingType BUYING_TYPE = new BuyingType();
@@ -230,6 +233,14 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     this.useShopCache = plugin.getConfig().getBoolean("shop.use-cache", true);
     this.infoRateLimit = new ExpiringSet<>(Math.max(0L, plugin.getConfig().getLong("shop.info-panel.click-cooldown", 1000L)), TimeUnit.MILLISECONDS);
 
+    final String pattern = plugin.getConfig().getString("shop.message_date_time_formatter", "yyyy-MM-dd HH:mm");
+    try {
+      this.dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
+      this.dateTimeFormatter.format(LocalDateTime.now()); // Test it out
+    } catch (Throwable throwable) {
+      this.dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+      plugin.logger().warn("Invalid date time pattern configured '{}'", pattern);
+    }
   }
 
   /**
@@ -482,7 +493,8 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
 
     Util.asyncThreadRun(()->{
       final List<Function<String, Component>> sendList = new ArrayList<>();
-      final Function<String, Component> notify = langCode->plugin.platform().setItemStackHoverEvent(plugin.text().of("player-sold-to-your-store", buyerQUser.getDisplay(), amount, Util.getItemStackName(shop.getItem()), format(total, shop)).forLocale(langCode), shop.getItem());
+      final String date = dateTimeFormatter.format(LocalDateTime.now());
+      final Function<String, Component> notify = langCode->plugin.platform().setItemStackHoverEvent(plugin.text().of("player-sold-to-your-store", buyerQUser.getDisplay(), amount, Util.getItemStackName(shop.getItem()), format(total, shop), date).forLocale(langCode), shop.getItem());
       sendList.add(notify);
       if(space == amount) {
         Function<String, Component> spaceWarn;
@@ -1255,13 +1267,14 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
 
     Util.asyncThreadRun(()->{
       final List<Function<String, Component>> sendList = new ArrayList<>();
+      final String date = dateTimeFormatter.format(LocalDateTime.now());
       Function<String, Component> notify;
       final double ownerPayment = transaction.ownerPayment().doubleValue();
       final double tax = transaction.toTax().doubleValue();
       if(showTax) {
-        notify = langCode->plugin.text().of("player-bought-from-your-store-tax", seller, amount * shop.getItem().getAmount(), Util.getItemStackName(shop.getItem()), this.formatter.format(ownerPayment, shop), this.formatter.format(tax, shop)).forLocale(langCode);
+        notify = langCode->plugin.text().of("player-bought-from-your-store-tax", seller, amount * shop.getItem().getAmount(), Util.getItemStackName(shop.getItem()), this.formatter.format(ownerPayment, shop), this.formatter.format(tax, shop), date).forLocale(langCode);
       } else {
-        notify = langCode->plugin.text().of("player-bought-from-your-store", seller, amount * shop.getItem().getAmount(), Util.getItemStackName(shop.getItem()), this.formatter.format(ownerPayment, shop)).forLocale(langCode);
+        notify = langCode->plugin.text().of("player-bought-from-your-store", seller, amount * shop.getItem().getAmount(), Util.getItemStackName(shop.getItem()), this.formatter.format(ownerPayment, shop), date).forLocale(langCode);
       }
       final Function<String, Component> finalNotify = notify;
       notify = langCode->plugin.platform().setItemStackHoverEvent(finalNotify.apply(langCode), shop.getItem());

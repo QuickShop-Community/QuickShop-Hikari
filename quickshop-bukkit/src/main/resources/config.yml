@@ -796,6 +796,12 @@ shop:
     # Set to 0 to disable.
     click-cooldown: 100
 
+  # The datetime format to use when notifying shop owners or staff about sales in their shop
+  # Note that the timezone used is the server's, not the player's
+  # Supported fields: year (yyyy), month (MM or MMM), day (dd), hour (HH), minute (mm), and seconds (ss)
+  # Default: yyyy-MM-dd HH:mm
+  message_date_time_formatter: "yyyy-MM-dd HH:mm"
+
 # Item Blacklist
 # Items that cannot be sold in shops.
 # Permission quickshop.bypass.<itemID> bypasses the restriction.
