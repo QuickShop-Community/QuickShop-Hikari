@@ -233,7 +233,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     this.useShopCache = plugin.getConfig().getBoolean("shop.use-cache", true);
     this.infoRateLimit = new ExpiringSet<>(Math.max(0L, plugin.getConfig().getLong("shop.info-panel.click-cooldown", 1000L)), TimeUnit.MILLISECONDS);
 
-    String pattern = plugin.getConfig().getString("shop.message_date_time_formatter", "yyyy-MM-dd HH:mm");
+    final String pattern = plugin.getConfig().getString("shop.message_date_time_formatter", "yyyy-MM-dd HH:mm");
     try {
       this.dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
       this.dateTimeFormatter.format(LocalDateTime.now()); // Test it out
@@ -493,7 +493,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
 
     Util.asyncThreadRun(()->{
       final List<Function<String, Component>> sendList = new ArrayList<>();
-      String date = dateTimeFormatter.format(LocalDateTime.now());
+      final String date = dateTimeFormatter.format(LocalDateTime.now());
       final Function<String, Component> notify = langCode->plugin.platform().setItemStackHoverEvent(plugin.text().of("player-sold-to-your-store", buyerQUser.getDisplay(), amount, Util.getItemStackName(shop.getItem()), format(total, shop), date).forLocale(langCode), shop.getItem());
       sendList.add(notify);
       if(space == amount) {
@@ -1267,7 +1267,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
 
     Util.asyncThreadRun(()->{
       final List<Function<String, Component>> sendList = new ArrayList<>();
-      String date = dateTimeFormatter.format(LocalDateTime.now());
+      final String date = dateTimeFormatter.format(LocalDateTime.now());
       Function<String, Component> notify;
       final double ownerPayment = transaction.ownerPayment().doubleValue();
       final double tax = transaction.toTax().doubleValue();
