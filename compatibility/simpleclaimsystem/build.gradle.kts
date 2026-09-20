@@ -6,7 +6,7 @@ dependencies {
     compileOnly(libs.paper.api)
     implementation(project(":compatibility:common"))
     compileOnly(project(":quickshop-bukkit"))
-    compileOnly("com.github.Xyness:SimpleClaimSystem:1.11.6.1")
+    compileOnly("com.github.Xyness:SimpleClaimSystem:1.13.1")
 }
 
 configurations.named("compileClasspath") {
