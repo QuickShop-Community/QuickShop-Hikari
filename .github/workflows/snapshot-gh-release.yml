@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       snapshot_tag:
-        description: "Snapshot tag/version, example: snapshot/6.3.0.0-SNAPSHOT-8"
+        description: "Snapshot tag/version, example: snapshot/6.4.0.0-SNAPSHOT-1"
         required: true
         type: string
 
@@ -19,6 +19,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
+          fetch-tags: true
 
       - uses: actions/setup-java@v5
         with:
@@ -50,15 +51,45 @@ jobs:
         id: changelog
         shell: bash
         run: |
-          PREVIOUS_TAG=$(git tag --sort=-creatordate | grep '^snapshot/' | head -n 1 || true)
+          # First, look for the most recent snapshot tag reachable from HEAD.
+          PREVIOUS_TAG=$(git describe \
+            --tags \
+            --abbrev=0 \
+            --match 'snapshot/*' \
+            HEAD^ 2>/dev/null || true)
+
+          BASELINE_TYPE="snapshot"
+
+          # If there is no previous snapshot, use the most recent normal
+          # release tag reachable from HEAD.
+          if [ -z "$PREVIOUS_TAG" ]; then
+            PREVIOUS_TAG=$(git describe \
+              --tags \
+              --abbrev=0 \
+              --exclude 'snapshot/*' \
+              HEAD^ 2>/dev/null || true)
+
+            BASELINE_TYPE="release"
+          fi
 
           if [ -z "$PREVIOUS_TAG" ]; then
-            CHANGELOG=$(git log -n 25 --pretty=format:"- %s (%h)")
+            echo "No previous snapshot or release tag found."
+            echo "Using latest 25 commits."
+
+            CHANGELOG=$(git log \
+              -n 25 \
+              --pretty=format:"- %s (%h)")
+
             CHANGELOG="${CHANGELOG}
 
-          _No previous snapshot tag found. Showing latest 25 commits only._"
+          _No previous snapshot or release tag was found. Showing latest 25 commits only._"
           else
-            CHANGELOG=$(git log "${PREVIOUS_TAG}..HEAD" --pretty=format:"- %s (%h)" | head -n 25)
+            echo "Using previous ${BASELINE_TYPE} tag: ${PREVIOUS_TAG}"
+
+            CHANGELOG=$(git log \
+              -n 25 \
+              "${PREVIOUS_TAG}..HEAD" \
+              --pretty=format:"- %s (%h)")
           fi
 
           if [ -z "$CHANGELOG" ]; then
@@ -70,6 +101,9 @@ jobs:
             echo "$CHANGELOG"
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
+
+          echo "baseline=$PREVIOUS_TAG" >> "$GITHUB_OUTPUT"
+          echo "baseline_type=$BASELINE_TYPE" >> "$GITHUB_OUTPUT"
 
       - name: Build snapshot
         run: ./gradlew build
@@ -121,5 +155,6 @@ jobs:
             ## Changes
 
             ${{ steps.changelog.outputs.content }}
+
           files: |
             release-artifacts/*.jar

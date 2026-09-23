@@ -28,7 +28,7 @@ public class InteractionEntityListener implements Listener {
     this.plugin = plugin;
   }
 
-  @EventHandler(priority = EventPriority.MONITOR)
+  @EventHandler(priority = EventPriority.HIGHEST)
   public void onInteract(final PlayerInteractAtEntityEvent event) {
 
     final Optional<InteractionType> interactionType = plugin.getInteractionManager().interaction(event, InteractionClick.DISPLAY);
@@ -55,10 +55,11 @@ public class InteractionEntityListener implements Listener {
       return;
     }
 
+    event.setCancelled(true);
     behavior.get().handle(plugin, shop, event.getPlayer(), event, InteractionClick.DISPLAY, interactionType.get());
   }
 
-  @EventHandler(priority = EventPriority.MONITOR)
+  @EventHandler(priority = EventPriority.HIGHEST)
   public void onDamage(final EntityDamageByEntityEvent event) {
 
     final Optional<InteractionType> interactionType = plugin.getInteractionManager().interaction(event, InteractionClick.DISPLAY);
@@ -85,6 +86,7 @@ public class InteractionEntityListener implements Listener {
       return;
     }
 
+    event.setCancelled(true);
     behavior.get().handle(plugin, shop, (Player)event.getDamager(), event, InteractionClick.DISPLAY, interactionType.get());
   }
 }
