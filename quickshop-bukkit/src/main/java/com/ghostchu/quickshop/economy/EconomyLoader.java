@@ -227,6 +227,13 @@ public class EconomyLoader {
 
   private boolean vaultUnlockedPresent() {
 
+
+    try {
+      Class.forName("com.example.vault.VaultPlugin");
+      return false;
+    } catch(final ClassNotFoundException ignored) {
+    }
+
     final Plugin vault = plugin.getJavaPlugin().getServer().getPluginManager().getPlugin("Vault");
     return vault != null && vault.getDescription().getVersion().startsWith("2");
   }
