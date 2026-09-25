@@ -279,7 +279,7 @@ public class PacketFactoryv1_21 implements PacketFactory<PacketContainer> {
           return;
         }
 
-        final StructureModifier<ChunkCoordIntPair> chunkCoord =event.getPacket().getChunkCoordIntPairs();
+        final StructureModifier<ChunkCoordIntPair> chunkCoord = event.getPacket().getChunkCoordIntPairs();
         final ChunkCoordIntPair pair = chunkCoord.read(0);
 
         final List<VirtualDisplayItem<?>> items = new ArrayList<>();
