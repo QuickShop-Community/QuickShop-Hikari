@@ -11,7 +11,7 @@ bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following p
 thats-not-a-number: <red>Invalid number
 shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
 console-only-danger: <red>This is a dangerous command, so that only the Console can execute it.
-not-a-number: <red>You can only input a number, your input was {0}.
+not-a-number: <red>你只可以入一個數字，而你入咗 {0}。
 not-looking-at-valid-shop-block: <red>找不到用來創建商店的箱子，你需正視著一個。
 shop-removed-cause-ongoing-fee: <red>Your shop at {0} was removed because you didn't have enough money to keep it!
 tabcomplete:
