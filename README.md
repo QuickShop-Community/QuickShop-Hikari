@@ -230,7 +230,7 @@ QuickShop-Hikari offers an API for you to use features such as retrieving active
 <repositories>
     <repository>
         <id>codemc</id>
-        <url>https://repo.codemc.io/repository/maven-public/</url>
+        <url>https://repo.codemc.io/repository/ghost-chu/</url>
     </repository>
 </repositories>
 
@@ -250,7 +250,7 @@ QuickShop-Hikari offers an API for you to use features such as retrieving active
 
 ```groovy
 repositories {
-    maven { url = "https://repo.codemc.io/repository/maven-public/" }
+    maven { url = "https://repo.codemc.io/repository/ghost-chu/" }
 }
 
 dependencies {
