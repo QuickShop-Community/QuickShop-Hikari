@@ -1,46 +1,46 @@
-break-shop-use-supertool: <yellow>You can break the shop by using the super tool.
+break-shop-use-supertool: <yellow>你可以用超級工具嚟破壞間舖頭。
 fee-charged-for-price-change: <green>You paid <red>{0}<green> to change the price.
-not-allowed-to-create: <red>You may not create a shop here.
-disabled-in-this-world: <red>QuickShop is disabled in this world
+not-allowed-to-create: <red>你唔可以喺度起舖頭。
+disabled-in-this-world: <red>呢個世界停用咗QuickShop
 how-much-to-trade-for: <green>Enter in chat, how much you wish to trade <yellow>{1}x {0}<green> for.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
 shops-backingup: Creating Shop-backup from database...
 _comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/qs-hikari instead.
 unlimited-shop-owner-changed: <yellow>This unlimited shop owner has been changed to {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
-thats-not-a-number: <red>Invalid number
+thats-not-a-number: <red>無效嘅數字
 shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
 console-only-danger: <red>This is a dangerous command, so that only the Console can execute it.
 not-a-number: <red>你只可以入一個數字，而你入咗 {0}。
 not-looking-at-valid-shop-block: <red>找不到用來創建商店的箱子，你需正視著一個。
-shop-removed-cause-ongoing-fee: <red>Your shop at {0} was removed because you didn't have enough money to keep it!
+shop-removed-cause-ongoing-fee: <red>你喺 {0} 嘅舖頭因為唔夠錢維持營運而被移除咗喇！
 tabcomplete:
-  amount: '[amount]'
-  item: '[item]'
-  price: '[price]'
-  name: '[name]'
+  amount: '[數量]'
+  item: '[物品]'
+  price: '[價錢]'
+  name: '[名稱]'
   range: '[range]'
   list: 'list'
   page: '[page #]'
   shop-id: '[shop id]'
   currency: '[currency name]'
   percentage: '[percentage%]'
-  add: 'add'
-  remove: 'remove'
-  clear: 'clear'
-  clearall: 'clearall'
-  shops: 'shops'
-  tagged: 'tagged'
+  add: '增加'
+  remove: '移除'
+  clear: '清除'
+  clearall: '清除所有'
+  shops: '舖頭'
+  tagged: '被標籤'
   purge: 'purge'
-  tag: '[tag]'
+  tag: '[標籤]'
 taxaccount-unset: <green>This shop's tax account now following server global setting.
 blacklisted-item: <red>You cannot sell this item because it is on the blacklist
 command-type-mismatch: <red>This command only can executed by <aqua>{0}.
-server-crash-warning: '<red>WARNING: Using the /quickshop reload command to replace/delete the QuickShop Jar file may crash the server while it is running.'
+server-crash-warning: '<red>警吿：喺伺服器運行途中用 /quickshop reload指令去取代 / 刪除 QuickShop Jar檔可能會令伺服器崩潰。'
 you-cant-afford-to-change-price: <red>您的商店中改价格要 {0}。
 safe-mode: <red>QuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.
 forbidden-vanilla-behavior: <red>The operation is forbidden due to it not being consisten with vanilla behaviour
-shop-out-of-space-name: <dark_purple>Your shop {0} is full!
+shop-out-of-space-name: <dark_purple>你間舖頭 {0} 滿咗喇！
 paste-disabled: |-
   <red>Paste function has been disabled! You cannot request technical support.
   Reason: {0}
@@ -66,8 +66,8 @@ quick-fill:
 3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide:https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
 average-price-nearby: '<green>Nearby average price: <yellow>{0}'
 inventory-check-global-alert: "<red>[Inventory Check] <gray>Warning! Found a QuickShop display item <gold>{2}</gold> in inventory at <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, which it shouldn't happened, This usually means that someone is maliciously exploiting the exploit to duplicating the display item."
-digits-reach-the-limit: <red>You have reached the limits of decimals in the price.
-currency-unset: <green>Shop currency removed successfully. Using default settings now.
+digits-reach-the-limit: <red>你己經去到價錢裡面小數點嘅上限。
+currency-unset: <green>已成功移除舖頭嘅貨幣。而家用緊預設設定。
 you-cant-create-shop-in-there: <red>You don't have permission to create a shop at this location.
 no-pending-action: <red>You do not have any pending actions
 refill-success: <green>Refill successful
