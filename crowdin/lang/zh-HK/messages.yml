@@ -19,19 +19,19 @@ tabcomplete:
   item: '[物品]'
   price: '[價錢]'
   name: '[名稱]'
-  range: '[range]'
-  list: 'list'
-  page: '[page #]'
-  shop-id: '[shop id]'
-  currency: '[currency name]'
-  percentage: '[percentage%]'
+  range: '[範圍]'
+  list: '列表'
+  page: '[頁數 #]'
+  shop-id: '[舖頭ID]'
+  currency: '[貨幣名稱]'
+  percentage: '[百分比%]'
   add: '增加'
   remove: '移除'
   clear: '清除'
   clearall: '清除所有'
   shops: '舖頭'
   tagged: '被標籤'
-  purge: 'purge'
+  purge: '清除'
   tag: '[標籤]'
 taxaccount-unset: <green>This shop's tax account now following server global setting.
 blacklisted-item: <red>You cannot sell this item because it is on the blacklist
@@ -70,12 +70,12 @@ digits-reach-the-limit: <red>你己經去到價錢裡面小數點嘅上限。
 currency-unset: <green>已成功移除舖頭嘅貨幣。而家用緊預設設定。
 you-cant-create-shop-in-there: <red>You don't have permission to create a shop at this location.
 no-pending-action: <red>You do not have any pending actions
-refill-success: <green>Refill successful
-failed-to-paste: <red>Failed to upload the data to Pastebin. Check your internet connection and try again. (See console for details)
-shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
+refill-success: <green>補貨成功
+failed-to-paste: <red>上載唔到數據上Pastebin。檢查一下你嘅網絡連接然後再試多次。（更多詳情請睇Console）
+shop-out-of-stock-name: <dark_purple>你間舖頭 {0} 無晒 {1}！
 shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
 how-many-buy-stack: <yellow>Enter in chat, how many bulks you wish to <aqua>BUY<green>. There are <yellow>{0}<green> items in each bulk and you can buy <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to buy all.
-exceeded-maximum: <red>The value exceeded the maximum value in Java.
+exceeded-maximum: <red>呢個數值超出咗Java 容許嘅最大值。
 unlimited-shop-owner-keeped: '<yellow>Attention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself.'
 no-enough-money-to-keep-shops: <red>You didn't have enough money to keep your shops! All shops have been removed...
 3rd-plugin-build-check-failed: 第 3 方插件 <bold>{0}<reset><red> 阻止了創建商店，您是否在那裡有權限？
@@ -83,7 +83,7 @@ not-a-integer: <red>You must input a integer, your input was {0}.
 translation-country: '語言區域: 中文(zh_HK)'
 buying-more-than-selling: '<red>WARNING: You are buying items for more than you are selling them!'
 purchase-failed: '<red>Purchase failed: Internal Error. Please contact the Server Administrator.'
-denied-put-in-item: <red>You cannot put this item into your shop!
+denied-put-in-item: <red>你唔放得呢件嘢入你舖頭！
 shop-has-changed: <red>The shop you tried to use has changed since you clicked it!
 flush-finished: <green>Successfully flushed the messages.
 no-price-given: <red>Please give a valid price.
@@ -94,14 +94,14 @@ you-cant-afford-a-new-shop: <red>創建新的箱子商店的成本為 {0}。
 success-created-shop: <red>Shop created.
 shop-creation-cancelled: <red>Shop creation cancelled.
 shop-owner-self-trade: <yellow>You trading with yourself shop, so you might won't gain any balance.
-shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
+shop-owner-self-trade-denied: <red>你唔可以左手交右手。
 purchase-out-of-space: <red>This shop run out of the space, Contact shop owner or staffs to empty the shop.
 reloading-status:
   success: <green>Reload completed without any errors.
   scheduled: <green>Reload completed. <gray>(Some changes required a while to affect)
   require-restart: <green>Reload completed. <yellow>(Some changes require server restart to affect)
   failed: <red>Reload failed, check the server console
-player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
+player-bought-from-your-store-tax: <green>{0} 喺你舖頭度買咗 {1} {2} ， 你亦都賺咗 {3} ({4} 稅金）。
 not-enough-space: <red>You only have room for {0} more!
 shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <green>Successfully added {0} as a staff member for your shop.
