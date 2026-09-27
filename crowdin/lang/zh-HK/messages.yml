@@ -72,7 +72,7 @@ you-cant-create-shop-in-there: <red>You don't have permission to create a shop a
 no-pending-action: <red>You do not have any pending actions
 refill-success: <green>補貨成功
 failed-to-paste: <red>上載唔到數據上Pastebin。檢查一下你嘅網絡連接然後再試多次。（更多詳情請睇Console）
-shop-out-of-stock-name: <dark_purple>你間舖頭 {0} 無晒 {1}！
+shop-out-of-stock-name: <dark_purple>你間舖 {0} 無晒 {1}喇！
 shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
 how-many-buy-stack: <yellow>Enter in chat, how many bulks you wish to <aqua>BUY<green>. There are <yellow>{0}<green> items in each bulk and you can buy <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to buy all.
 exceeded-maximum: <red>呢個數值超出咗Java 容許嘅最大值。
@@ -101,7 +101,7 @@ reloading-status:
   scheduled: <green>Reload completed. <gray>(Some changes required a while to affect)
   require-restart: <green>Reload completed. <yellow>(Some changes require server restart to affect)
   failed: <red>Reload failed, check the server console
-player-bought-from-your-store-tax: <green>{0} 喺你舖頭度買咗 {1} {2} ， 你亦都賺咗 {3} ({4} 稅金）。
+player-bought-from-your-store-tax: <green>{0} 喺你舖頭度買咗 {1} 個 {2}，你賺咗 {3} 蚊（{4} 蚊稅）。
 not-enough-space: <red>You only have room for {0} more!
 shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <green>Successfully added {0} as a staff member for your shop.
@@ -166,55 +166,55 @@ tags:
     no-tagged-shops-tag: "<red>You have no shops with tag <aqua>{0}</aqua>."
 menu:
   sell-tax: <green>You paid <yellow>{0} <green>in taxes.
-  owner: '<green>Owner: {0}'
+  owner: '<green>老細：{0}'
   preview: <aqua>[Item Preview]
-  enchants: <dark_purple>Enchantments
+  enchants: <dark_purple>附魔
   sell-tax-self: <green>You didn't pay taxes because you own this shop.
-  shop-information: '<green>Shop Information:'
-  item: '<green>Item: <yellow>{0}'
-  price-per: <green>Price per <yellow>{0} <green>- <yellow>{1}
+  shop-information: '<green>店舖資訊：'
+  item: '<green>物品：<yellow>{0}'
+  price-per: <green>每個<yellow>{0}<green>嘅價錢 - <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>for <yellow>{2}
-  item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)
-  successful-purchase: '<green>Successfully purchased:'
-  price-per-stack: <green>Price per <yellow>{2}x {0} - {1}
-  stored-enchants: <dark_purple>Stored Enchantments
-  item-holochat-error: <red>[Error]
+  item-name-and-price-tax: <yellow>{0}個{1}<green>盛惠</green>{2}<gray>(<green>{3}</green>蚊稅)
+  successful-purchase: '<green>你成功買咗：'
+  price-per-stack: <green>每<yellow>{2} 組x {0} 嘅價錢 - {1}
+  stored-enchants: <dark_purple>已儲存嘅附魔
+  item-holochat-error: <red>[錯誤]
   this-shop-is-selling: <green>This shop is <aqua>SELLING<green> items.
-  this-shop-is-buying: <green>This shop is <light_purple>BUYING<green> items.
-  this-shop-is-frozen: <blue>FROZEN</blue>
-  this-shop-is-active: <aqua>ACTIVE</aqua>
-  this-shop-is-state: <green>This shop's current state is {0}<green>.
+  this-shop-is-buying: <green>呢間舖<light_purple>收購緊<green>物品。
+  this-shop-is-frozen: <blue>凍結</blue>
+  this-shop-is-active: <aqua>活躍</aqua>
+  this-shop-is-state: <green>呢間舖現時嘅狀態係{0}<green>。
   shop-stack: '<green>Amount of bulk: <yellow>{0}'
-  space: '<green>Space: <yellow>{0}'
-  effects: <green>Effects
-  damage-percent-remaining: <yellow>{0}% <green>remaining.
+  space: '<green>空間：<yellow>{0}'
+  effects: <green>效果
+  damage-percent-remaining: 仲剩<yellow>{0}%<green>。
   item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
   stock: '<green>Stock <yellow>{0}'
-  successfully-sold: '<green>Successfully sold:'
-  total-value-of-chest: '<green>Total value of chest: <yellow>{0}'
-currency-not-exists: <red>Cannot find the currency that you want to set. Maybe the spelling is wrong or that currency isn't available in this world.
+  successfully-sold: '<green>成功賣出：'
+  total-value-of-chest: '<green>箱嘅總數：<yellow>{0}'
+currency-not-exists: <red>揾唔到你想設定嘅貨幣。可能係因為打錯字或者呢個世界無得用嗰隻貨幣。
 no-nearby-shop: <red>No nearby shop matching {0}.
 translation-author: 'Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red>集成 {0} 拒絕了商店交易
-shop-transaction-failed: "<red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any other operations have been rolled back. Reason: {0}"
-success-change-owner-to-server: <green>Successfully set the shop owner to Server.
+shop-transaction-failed: "<red>唔好意思，處理你單買賣嘅時候出現內部錯誤。單買賣已被取消．其他操作都已被還原。原因：{0}"
+success-change-owner-to-server: <green>成功將呢間舖頭嘅老細設定做Server。
 shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
-shop-name-too-long: <red>This shop name is too long (max length {0}), please pick another one!
+shop-name-too-long: <red>呢個舖頭名太長喇！（最長{0}個字），揀過另一個啦！
 metric:
-  header-player: '<yellow>{0}''s {1} {2} transactions:'
+  header-player: '<yellow>{0}嘅{1} {2}交易：'
   action-hover: <yellow>{0}
-  price-hover: <yellow>Total {0}, including {1} taxes.
-  unknown: <gray>(unknown)
-  undefined: <gray>(noname)
-  no-results: <red>No transactions found.
+  price-hover: <yellow>總共{0}蚊，包括{1}蚊稅。
+  unknown: <gray>（未知）
+  undefined: <gray>（無名）
+  no-results: <red>揾唔到交易紀錄。
   action-description:
     DELETE: <yellow>Player deleted a shop. And refunded the shop creation fee to owner if possible.
     ONGOING_FEE: <yellow>Player paid the ongoing fee because the payment period.
-    PURCHASE_BUYING_SHOP: <yellow>Player sold some items to a buying shop.
-    CREATE: <yellow>Player created a shop.
-    PURCHASE_SELLING_SHOP: <yellow>Player bought some items from a selling shop
-    PURCHASE: <yellow>Purchased item with a shop
-  query-argument: 'Query Argument: {0}'
+    PURCHASE_BUYING_SHOP: <yellow>玩家喺一間收購嘅舖頭度賣咗啲嘢。
+    CREATE: <yellow>玩家起咗一間舖頭。
+    PURCHASE_SELLING_SHOP: <yellow>玩家喺一間賣嘢嘅舖頭度買咗啲嘢
+    PURCHASE: <yellow>喺一間舖頭度買咗嘢
+  query-argument: '查詢參數：'
   amount-hover: <yellow>{0}x
   header-shop: '<yellow>The shop {0}''s {1} {2} transactions:'
   player-hover: |-
