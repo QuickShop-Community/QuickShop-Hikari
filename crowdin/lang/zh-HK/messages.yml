@@ -19,19 +19,19 @@ tabcomplete:
   item: '[物品]'
   price: '[價錢]'
   name: '[名稱]'
-  range: '[range]'
-  list: 'list'
-  page: '[page #]'
-  shop-id: '[shop id]'
-  currency: '[currency name]'
-  percentage: '[percentage%]'
+  range: '[範圍]'
+  list: '列表'
+  page: '[頁數 #]'
+  shop-id: '[舖頭ID]'
+  currency: '[貨幣名稱]'
+  percentage: '[百分比%]'
   add: '增加'
   remove: '移除'
   clear: '清除'
   clearall: '清除所有'
   shops: '舖頭'
   tagged: '被標籤'
-  purge: 'purge'
+  purge: '清除'
   tag: '[標籤]'
 taxaccount-unset: <green>This shop's tax account now following server global setting.
 blacklisted-item: <red>You cannot sell this item because it is on the blacklist
@@ -70,12 +70,12 @@ digits-reach-the-limit: <red>你己經去到價錢裡面小數點嘅上限。
 currency-unset: <green>已成功移除舖頭嘅貨幣。而家用緊預設設定。
 you-cant-create-shop-in-there: <red>You don't have permission to create a shop at this location.
 no-pending-action: <red>You do not have any pending actions
-refill-success: <green>Refill successful
-failed-to-paste: <red>Failed to upload the data to Pastebin. Check your internet connection and try again. (See console for details)
-shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
+refill-success: <green>補貨成功
+failed-to-paste: <red>上載唔到數據上Pastebin。檢查一下你嘅網絡連接然後再試多次。（更多詳情請睇Console）
+shop-out-of-stock-name: <dark_purple>你間舖 {0} 無晒 {1}喇！
 shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
 how-many-buy-stack: <yellow>Enter in chat, how many bulks you wish to <aqua>BUY<green>. There are <yellow>{0}<green> items in each bulk and you can buy <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to buy all.
-exceeded-maximum: <red>The value exceeded the maximum value in Java.
+exceeded-maximum: <red>呢個數值超出咗Java 容許嘅最大值。
 unlimited-shop-owner-keeped: '<yellow>Attention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself.'
 no-enough-money-to-keep-shops: <red>You didn't have enough money to keep your shops! All shops have been removed...
 3rd-plugin-build-check-failed: 第 3 方插件 <bold>{0}<reset><red> 阻止了創建商店，您是否在那裡有權限？
@@ -83,7 +83,7 @@ not-a-integer: <red>You must input a integer, your input was {0}.
 translation-country: '語言區域: 中文(zh_HK)'
 buying-more-than-selling: '<red>WARNING: You are buying items for more than you are selling them!'
 purchase-failed: '<red>Purchase failed: Internal Error. Please contact the Server Administrator.'
-denied-put-in-item: <red>You cannot put this item into your shop!
+denied-put-in-item: <red>你唔放得呢件嘢入你舖頭！
 shop-has-changed: <red>The shop you tried to use has changed since you clicked it!
 flush-finished: <green>Successfully flushed the messages.
 no-price-given: <red>Please give a valid price.
@@ -94,34 +94,34 @@ you-cant-afford-a-new-shop: <red>創建新的箱子商店的成本為 {0}。
 success-created-shop: <red>Shop created.
 shop-creation-cancelled: <red>Shop creation cancelled.
 shop-owner-self-trade: <yellow>You trading with yourself shop, so you might won't gain any balance.
-shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
+shop-owner-self-trade-denied: <red>你唔可以左手交右手。
 purchase-out-of-space: <red>This shop run out of the space, Contact shop owner or staffs to empty the shop.
 reloading-status:
   success: <green>Reload completed without any errors.
   scheduled: <green>Reload completed. <gray>(Some changes required a while to affect)
   require-restart: <green>Reload completed. <yellow>(Some changes require server restart to affect)
   failed: <red>Reload failed, check the server console
-player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
+player-bought-from-your-store-tax: <green>{0} 喺你舖頭度買咗 {1} 個 {2}，你賺咗 {3} 蚊（{4} 蚊稅）。
 not-enough-space: <red>You only have room for {0} more!
 shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <green>Successfully added {0} as a staff member for your shop.
-shop-staff-empty: <yellow>This shop have no staff members.
+shop-staff-empty: <yellow>呢間舖無店員。
 shops-recovering: Recovering shops from backup...
-virtual-player-component-hover: "<gray>This is a virtual player.\n<gray>Refers to a system account of this name with the same name.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>"
-real-player-component-hover: "<gray>This is a real exists player.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>\n<gray>If you wish to use a virtual system account with the same name, add <dark_gray>\"[]\"</dark_gray> to the both side of the username: <dark_gray>[{1}]</dark_gray>."
+virtual-player-component-hover: "<gray>呢位係一位虛擬玩家。\n<gray>同一位同名嘅系統帳戶有關。</gray>\n<green>UUID：<yellow>{0}</yellow></green>\n<green>帳號名稱：<yellow>{1}</yellow></green>\n<green>顯示為：<yellow>{2}</yellow></green>"
+real-player-component-hover: "<gray>呢位係一位真實玩家。\n<green>UUID: <yellow>{0}</yellow></green>\n<green>帳號名稱：<yellow>{1}</yellow></green>\n<green>顯示為：<yellow>{2}</yellow></green>\n<gray>如果你想用一個同名嘅虛擬系統帳戶，喺帳號名稱嘅左右兩邊加 <dark_gray>\"[]\"</dark_gray>：<dark_gray>[{1}]</dark_gray>."
 pagination:
-  header: "<green>{0}</green>:"
-  footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Previous page\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Next page\"><white>></white></hover></click>]</light_purple>"
+  header: "<green>{0}</green>："
+  footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>上一頁\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>下一頁\"><white>></white></hover></click>]</light_purple>"
 tags:
   commands:
-    tag: "<yellow>Manage your shop tags."
+    tag: "<yellow>管理你間舖頭嘅標籤。"
     favorite: "<yellow>Toggle favorite on looked-at shop."
     watch: "<yellow>Toggle watch on looked-at shop."
     avoid: "<yellow>Toggle avoid on looked-at shop."
   general:
     database-error: "<red>An error occurred while executing a tag operation."
     list-entry: "<green>{0}.</green> <aqua>{1}</aqua> <light_purple>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>View all shops with this tag\">View Shops</hover></click>]</light_purple> <red>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove</hover></click>]</red>"
-    invalid: "<red>Invalid tag. Only letters, dash (-), and underscore (_) are allowed. Max length: <yellow>{0}</yellow>"
+    invalid: "<red>無效嘅標籤。只可以用文字、減號（-）同埋底線（_）。最長：<yellow>{0}</yellow>字"
   avoid:
     added: "<green>Added this shop to your avoid list."
     removed: "<green>Removed this shop from your avoid list."
@@ -129,11 +129,11 @@ tags:
     none: "<red>You have no avoided shops."
     label: "<yellow>Avoid"
   favorite:
-    added: "<green>Added this shop to your favorite list."
-    removed: "<green>Removed this shop from your favorite list."
+    added: "<green>加呢間舖頭入你嘅最愛清單。"
+    removed: "<green>喺你嘅最愛清單度移除呢間舖頭。"
     unable: "<red>Unable to toggle favorite on this shop."
-    none: "<red>You have no favorite shops."
-    label: "<yellow>Favorite"
+    none: "<red>你嘅最愛清單度無舖頭。"
+    label: "<yellow>最愛"
   watch:
     added: "<green>You are now watching this shop."
     removed: "<green>You are no longer watching this shop."
@@ -149,72 +149,72 @@ tags:
     list-tag-title: "<green>Tag <aqua>{0}</aqua> usage</green> <gray>(<yellow>{1}</yellow> shops)</gray>"
     shops-entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <light_purple>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>View all tags on this shop\">View {10} tags</hover></click>]</light_purple>"
     entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <red>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove Tag</hover></click>]</red>"
-    list-tag-shop-entry-tp: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Teleport to this shop\">Teleport</hover></click>]</light_purple>"
-    added: "<green>Added tag <aqua>{0}</aqua> to this shop."
-    duplicate: "<red>This shop already has tag <aqua>{0}</aqua>."
-    failed-add: "<red>An error occurred while adding tag <aqua>{0}</aqua> to this shop."
-    failed-remove: "<red>An error occurred while removing tag <aqua>{0}</aqua> from this shop."
-    removed: "<green>Removed tag <aqua>{0}</aqua> from this shop."
-    does-not-exist: "<red>This shop does not have tag <aqua>{0}</aqua>."
-    cleared: "<green>Cleared all tags from this shop."
-    cleared-all: "<green>Cleared all tags from all shops."
-    cleared-tag: "<green>Cleared tag <aqua>{0}</aqua> from all your tagged shops."
-    no-tags-all: "<red>There are no tags on any shop."
-    no-tags: "<red>This shop has no tags."
-    no-tagged-shops-player: "<red>You have no tags on this shop."
-    no-tagged-shops: "<red>You have no tagged shops."
+    list-tag-shop-entry-tp: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>瞬移到呢間舖頭\">瞬移</hover></click>]</light_purple>"
+    added: "<green>加咗<aqua>{0}</aqua>標籤落呢間舖頭。"
+    duplicate: "<red>呢間舖頭已經有<aqua>{0}</aqua>標籤。"
+    failed-add: "<red>加<aqua>{0}</aqua>標籤落呢間舖頭嘅時候有錯誤出現。"
+    failed-remove: "<red>移除<aqua>{0}</aqua>標籤出呢間舖頭嘅時候有錯誤出現。"
+    removed: "<green>移除咗<aqua>{0}</aqua>標籤出呢間舖頭。"
+    does-not-exist: "<red>呢間舖頭無一個叫<aqua>{0}</aqua>嘅標籤。"
+    cleared: "<green>呢間舖頭嘅所有標籤已被清除。"
+    cleared-all: "<green>所有舖頭嘅所有標籤已被清除。"
+    cleared-tag: "<green>已喺所有有<aqua>{0}</aqua>標籤嘅舖頭度清除呢個標籤。"
+    no-tags-all: "<red>所有舖頭都無標籤。"
+    no-tags: "<red>呢間舖頭無任何標籤。"
+    no-tagged-shops-player: "<red>你無落過任何標籤到呢間舖頭。"
+    no-tagged-shops: "<red>你無任何有標籤到嘅舖頭。"
     no-tagged-shops-tag: "<red>You have no shops with tag <aqua>{0}</aqua>."
 menu:
   sell-tax: <green>You paid <yellow>{0} <green>in taxes.
-  owner: '<green>Owner: {0}'
+  owner: '<green>老細：{0}'
   preview: <aqua>[Item Preview]
-  enchants: <dark_purple>Enchantments
+  enchants: <dark_purple>附魔
   sell-tax-self: <green>You didn't pay taxes because you own this shop.
-  shop-information: '<green>Shop Information:'
-  item: '<green>Item: <yellow>{0}'
-  price-per: <green>Price per <yellow>{0} <green>- <yellow>{1}
+  shop-information: '<green>店舖資訊：'
+  item: '<green>物品：<yellow>{0}'
+  price-per: <green>每個<yellow>{0}<green>嘅價錢 - <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>for <yellow>{2}
-  item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)
-  successful-purchase: '<green>Successfully purchased:'
-  price-per-stack: <green>Price per <yellow>{2}x {0} - {1}
-  stored-enchants: <dark_purple>Stored Enchantments
-  item-holochat-error: <red>[Error]
+  item-name-and-price-tax: <yellow>{0}個{1}<green>盛惠</green>{2}<gray>(<green>{3}</green>蚊稅)
+  successful-purchase: '<green>你成功買咗：'
+  price-per-stack: <green>每<yellow>{2} 組x {0} 嘅價錢 - {1}
+  stored-enchants: <dark_purple>已儲存嘅附魔
+  item-holochat-error: <red>[錯誤]
   this-shop-is-selling: <green>This shop is <aqua>SELLING<green> items.
-  this-shop-is-buying: <green>This shop is <light_purple>BUYING<green> items.
-  this-shop-is-frozen: <blue>FROZEN</blue>
-  this-shop-is-active: <aqua>ACTIVE</aqua>
-  this-shop-is-state: <green>This shop's current state is {0}<green>.
+  this-shop-is-buying: <green>呢間舖<light_purple>收購緊<green>物品。
+  this-shop-is-frozen: <blue>凍結</blue>
+  this-shop-is-active: <aqua>活躍</aqua>
+  this-shop-is-state: <green>呢間舖現時嘅狀態係{0}<green>。
   shop-stack: '<green>Amount of bulk: <yellow>{0}'
-  space: '<green>Space: <yellow>{0}'
-  effects: <green>Effects
-  damage-percent-remaining: <yellow>{0}% <green>remaining.
+  space: '<green>空間：<yellow>{0}'
+  effects: <green>效果
+  damage-percent-remaining: 仲剩<yellow>{0}%<green>。
   item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
   stock: '<green>Stock <yellow>{0}'
-  successfully-sold: '<green>Successfully sold:'
-  total-value-of-chest: '<green>Total value of chest: <yellow>{0}'
-currency-not-exists: <red>Cannot find the currency that you want to set. Maybe the spelling is wrong or that currency isn't available in this world.
+  successfully-sold: '<green>成功賣出：'
+  total-value-of-chest: '<green>箱嘅總數：<yellow>{0}'
+currency-not-exists: <red>揾唔到你想設定嘅貨幣。可能係因為打錯字或者呢個世界無得用嗰隻貨幣。
 no-nearby-shop: <red>No nearby shop matching {0}.
 translation-author: 'Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red>集成 {0} 拒絕了商店交易
-shop-transaction-failed: "<red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any other operations have been rolled back. Reason: {0}"
-success-change-owner-to-server: <green>Successfully set the shop owner to Server.
+shop-transaction-failed: "<red>唔好意思，處理你單買賣嘅時候出現內部錯誤。單買賣已被取消．其他操作都已被還原。原因：{0}"
+success-change-owner-to-server: <green>成功將呢間舖頭嘅老細設定做Server。
 shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
-shop-name-too-long: <red>This shop name is too long (max length {0}), please pick another one!
+shop-name-too-long: <red>呢個舖頭名太長喇！（最長{0}個字），揀過另一個啦！
 metric:
-  header-player: '<yellow>{0}''s {1} {2} transactions:'
+  header-player: '<yellow>{0}嘅{1} {2}交易：'
   action-hover: <yellow>{0}
-  price-hover: <yellow>Total {0}, including {1} taxes.
-  unknown: <gray>(unknown)
-  undefined: <gray>(noname)
-  no-results: <red>No transactions found.
+  price-hover: <yellow>總共{0}蚊，包括{1}蚊稅。
+  unknown: <gray>（未知）
+  undefined: <gray>（無名）
+  no-results: <red>揾唔到交易紀錄。
   action-description:
     DELETE: <yellow>Player deleted a shop. And refunded the shop creation fee to owner if possible.
     ONGOING_FEE: <yellow>Player paid the ongoing fee because the payment period.
-    PURCHASE_BUYING_SHOP: <yellow>Player sold some items to a buying shop.
-    CREATE: <yellow>Player created a shop.
-    PURCHASE_SELLING_SHOP: <yellow>Player bought some items from a selling shop
-    PURCHASE: <yellow>Purchased item with a shop
-  query-argument: 'Query Argument: {0}'
+    PURCHASE_BUYING_SHOP: <yellow>玩家喺一間收購嘅舖頭度賣咗啲嘢。
+    CREATE: <yellow>玩家起咗一間舖頭。
+    PURCHASE_SELLING_SHOP: <yellow>玩家喺一間賣嘢嘅舖頭度買咗啲嘢
+    PURCHASE: <yellow>喺一間舖頭度買咗嘢
+  query-argument: '查詢參數：'
   amount-hover: <yellow>{0}x
   header-shop: '<yellow>The shop {0}''s {1} {2} transactions:'
   player-hover: |-
