@@ -9,3 +9,7 @@ depend:
   - QuickShop-Hikari
 authors: [ creatorfromhell ]
 description: Compatibility module for IridiumSkyblock
+permissions:
+  quickshop.iridium.override:
+    description: Allows a player to bypass the IridiumSkyblock island check when admin-override is enabled.
+    default: op

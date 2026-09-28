@@ -7,3 +7,10 @@ api-version: '1.20'
 depend: [ Towny, QuickShop-Hikari ]
 authors: [ Ghost_chu ]
 description: Compatibility module for Towny
+permissions:
+  quickshop.addon.towny.town:
+    description: Permission to use /quickshop town.
+    default: op
+  quickshop.addon.towny.nation:
+    description: Permission to use /quickshop nation.
+    default: op

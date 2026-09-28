@@ -14,6 +14,15 @@ permissions:
   quickshopaddon.discount.bypass:
     default: op
     description: Bypass the permission check to on any discount code operation
+  quickshopaddon.discount.remove.bypass:
+    default: op
+    description: Allow remove discount code that owned by other players
+  quickshopaddon.discount.list:
+    default: true
+    description: Allow list the discount codes owned by the player themself
+  quickshopaddon.discount.listall:
+    default: op
+    description: Allow list all discount codes on this server
   quickshopaddon.discount.create.server_all_shops:
     default: op
     description: Allow create discount code for all shops on this server

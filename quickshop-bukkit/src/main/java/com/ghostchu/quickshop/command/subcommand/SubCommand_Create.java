@@ -55,7 +55,7 @@ public class SubCommand_Create implements CommandHandler<Player> {
         plugin.text().of(sender, "item-not-exist", matName).send();
         return;
       }
-      if(parser.getArgs().size() > 2 && plugin.perm().hasPermission(sender, "quickshop.create.stack") && plugin.isAllowStack()) {
+      if(parser.getArgs().size() > 2 && plugin.perm().hasPermission(sender, "quickshop.create.stacks") && plugin.isAllowStack()) {
         try {
           int amount = Integer.parseInt(parser.getArgs().get(2));
           if(amount < 1) {
