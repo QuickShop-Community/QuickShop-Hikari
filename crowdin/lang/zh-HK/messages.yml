@@ -214,35 +214,35 @@ metric:
     CREATE: <yellow>玩家起咗一間舖頭。
     PURCHASE_SELLING_SHOP: <yellow>玩家喺一間賣嘢嘅舖頭度買咗啲嘢
     PURCHASE: <yellow>喺一間舖頭度買咗嘢
-  query-argument: '查詢參數：'
+  query-argument: '查詢參數：{0}'
   amount-hover: <yellow>{0}x
-  header-shop: '<yellow>The shop {0}''s {1} {2} transactions:'
+  header-shop: '<yellow>舖頭{0}嘅{1} {2}交易：'
   player-hover: |-
     <yellow>{0}
     <gold>UUID: <gray>{1}
   looking-up: <yellow>Performing metric lookup, Please wait...
-  tax-hover: <yellow>{0} taxes
-  header-global: '<yellow>The server {0} {1} transactions:'
+  tax-hover: <yellow>{0} 稅
+  header-global: '<yellow>伺服器{0} {1}交易：'
   na: <gray>N/A
-  transaction-count: <yellow>{0} total
+  transaction-count: <yellow>{0} 總共
   shop-hover: |-
     <yellow>{0}
-    <gold>Pos: <gray>{1} {2} {3}, World: {4}
-    <gold>Owner: <gray>{5}
-    <gold>Shop Type: <gray>{6}
-    <gold>Item: <gray>{7}
-    <gold>Price: <gray>{8}
-  time-hover: '<yellow>Time: {0}'
-  amount-stack-hover: <yellow>{0}x stack
+    <gold>位置：<gray>{1} {2} {3}, 世界：{4}
+    <gold>老細：<gray>{5}
+    <gold>舖頭種類：<gray>{6}
+    <gold>物品：<gray>{7}
+    <gold>價錢：<gray>{8}
+  time-hover: '<yellow>時間：{0}'
+  amount-stack-hover: <yellow>{0}x 組
 permission-denied-3rd-party: '<red>Permission denied: 3rd Party Plugin [{0}].'
-you-dont-have-that-many-items: <red>You only have {0} {1}.
-complete: <green>Complete!
+you-dont-have-that-many-items: <red>你淨係得{0}個{1}。
+complete: <green>搞掂！
 translate-not-completed-yet-url: 'The translation of the language {0} was not completed yet by {1}. Do you want to help us improving the translation? Browse: {2}'
-success-removed-shop: <green>Shop removed.
-currency-set: <green>Shop currency successfully set to {0}.
+success-removed-shop: <green>舖頭已被移除。
+currency-set: <green>成功設定舖頭嘅貨幣為 {0}。
 shop-purged-start: <green>Shop purge started, check the console for details.
 economy-transaction-failed: <red>Sorry, but an internal error occurred while processing your transaction. The transaction has been cancelled and any economy operation has been rollback. Please contact the server administrators if it keeping occurred.
-nothing-to-flush: <green>You have no new shop messages.
+nothing-to-flush: <green>你無新嘅店舖訊息。
 no-price-change: <red>这不能导致价格更改！
 edition-confilct: QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.
 inventory-unavailable: |-
