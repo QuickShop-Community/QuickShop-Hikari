@@ -349,7 +349,7 @@ saved-to-path: The Backup was saved to {0}.
 shop-now-freezed: <green>You have frozen the shop. Nobody can trade with this shop now!
 price-is-now: <green>The new price of the shop is <yellow>{0}
 shops-arent-locked: <red>Remember, shops are NOT protected from theft! If you want to stop thieves, lock it with LWC, Lockette, etc!
-that-is-locked: <red>This shop is locked.
+that-is-locked: <red>呢間舖頭鎖咗。
 shop-has-no-space: <red>The shop only has room for {0} more {1}.
 safe-mode-admin: <red><bold>WARNING:</bold> The QuickShop version on this server is currently running in safe mode. Features won't work. Please use the <yellow>/quickshop</yellow> command to check for any errors.
 shop-stock-too-low: <red>The shop only has {0} {1} left!
