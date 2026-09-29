@@ -253,17 +253,17 @@ unknown-player: <red>Target player doesn't exist, please check the username you 
 player-offline: <red>The target player currently is offline.
 player-profile-format: <aqua>{0}</aqua><gold>（<yellow>{1}</yellow>）
 shop-type:
-  selling: SELLING
-  buying: BUYING
+  selling: 出售
+  buying: 收購
   frozen: FROZEN
 shop-state:
-  frozen: FROZEN
-  unfrozen: UNFROZEN
-  freeze: Freeze
-  unfreeze: Unfreeze
+  frozen: 已凍結
+  unfrozen: 已解凍
+  freeze: 凍結
+  unfreeze: 解凍
 shop-display:
   enabled: Enabled
-  disabled: Disabled
+  disabled: 停用
 language:
   qa-issues: '<yellow>Quality assurance issues: <aqua>{0}%'
   code: '<yellow>Code: <gold>{0}'
@@ -295,8 +295,8 @@ updatenotify:
     modrinth: '[Modrinth]'
     basic: '[Basic]'
   list:
-    - '{0} was released. You are still using {1}!'
-    - Boom! New update {0} incoming. Update!
+    - '已推出新版本{0}。你仲用緊{1}！'
+    - 勁爆！有關{0}嘅更新嚟緊喇！
     - Surprise! {0} came out. You are on {1}
     - Looks like you need to update. {0} was released!
     - Ooops! {0} was now released. You are on {1}!
