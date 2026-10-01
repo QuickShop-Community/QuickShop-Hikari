@@ -68,7 +68,7 @@ average-price-nearby: '<green>Nearby average price: <yellow>{0}'
 inventory-check-global-alert: "<red>[Inventory Check] <gray>Warning! Found a QuickShop display item <gold>{2}</gold> in inventory at <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, which it shouldn't happened, This usually means that someone is maliciously exploiting the exploit to duplicating the display item."
 digits-reach-the-limit: <red>你己經去到價錢裡面小數點嘅上限。
 currency-unset: <green>已成功移除舖頭嘅貨幣。而家用緊預設設定。
-you-cant-create-shop-in-there: <red>You don't have permission to create a shop at this location.
+you-cant-create-shop-in-there: <red>你唔可以喺呢個位起舖頭。
 no-pending-action: <red>You do not have any pending actions
 refill-success: <green>補貨成功
 failed-to-paste: <red>上載唔到數據上Pastebin。檢查一下你嘅網絡連接然後再試多次。（更多詳情請睇Console）
@@ -106,7 +106,7 @@ not-enough-space: <red>You only have room for {0} more!
 shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <green>Successfully added {0} as a staff member for your shop.
 shop-staff-empty: <yellow>呢間舖無店員。
-shops-recovering: Recovering shops from backup...
+shops-recovering: 喺備份度還原緊店舖⋯⋯
 virtual-player-component-hover: "<gray>呢位係一位虛擬玩家。\n<gray>同一位同名嘅系統帳戶有關。</gray>\n<green>UUID：<yellow>{0}</yellow></green>\n<green>帳號名稱：<yellow>{1}</yellow></green>\n<green>顯示為：<yellow>{2}</yellow></green>"
 real-player-component-hover: "<gray>呢位係一位真實玩家。\n<green>UUID: <yellow>{0}</yellow></green>\n<green>帳號名稱：<yellow>{1}</yellow></green>\n<green>顯示為：<yellow>{2}</yellow></green>\n<gray>如果你想用一個同名嘅虛擬系統帳戶，喺帳號名稱嘅左右兩邊加 <dark_gray>\"[]\"</dark_gray>：<dark_gray>[{1}]</dark_gray>."
 pagination:
@@ -135,17 +135,17 @@ tags:
     none: "<red>你嘅最愛清單度無舖頭。"
     label: "<yellow>最愛"
   watch:
-    added: "<green>You are now watching this shop."
-    removed: "<green>You are no longer watching this shop."
+    added: "<green>你而家𥄫住呢間舖頭。"
+    removed: "<green>你而家無再𥄫住呢間舖頭。"
     unable: "<red>Unable to toggle watch on this shop."
-    none: "<red>You are not watching any shops."
-    label: "<yellow>Watching"
+    none: "<red>你而家無𥄫緊邊間舖頭。"
+    label: "<yellow>𥄫緊"
   tag:
     title-avoided-shops: "<green>Avoided shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
     title-favorited-shops: "<green>Favorited shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
     title-watched-shops: "<green>Watched shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
     list-player-shops-title: "<green>Your tagged shops</green> <gray>(<yellow>{0}</yellow> shops, <yellow>{1}</yellow> tags)</gray>"
-    list-player-shop-title: "<green>Shop tags</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    list-player-shop-title: "<green>舖頭標籤</green><gray>（總共<yellow>{0}</yellow>）</gray>"
     list-tag-title: "<green>Tag <aqua>{0}</aqua> usage</green> <gray>(<yellow>{1}</yellow> shops)</gray>"
     shops-entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <light_purple>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>View all tags on this shop\">View {10} tags</hover></click>]</light_purple>"
     entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <red>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove Tag</hover></click>]</red>"
@@ -163,7 +163,7 @@ tags:
     no-tags: "<red>呢間舖頭無任何標籤。"
     no-tagged-shops-player: "<red>你無落過任何標籤到呢間舖頭。"
     no-tagged-shops: "<red>你無任何有標籤到嘅舖頭。"
-    no-tagged-shops-tag: "<red>You have no shops with tag <aqua>{0}</aqua>."
+    no-tagged-shops-tag: "<red>你無舖頭係被標籤住<aqua>{0}</aqua>。"
 menu:
   sell-tax: <green>You paid <yellow>{0} <green>in taxes.
   owner: '<green>老細：{0}'
@@ -214,35 +214,35 @@ metric:
     CREATE: <yellow>玩家起咗一間舖頭。
     PURCHASE_SELLING_SHOP: <yellow>玩家喺一間賣嘢嘅舖頭度買咗啲嘢
     PURCHASE: <yellow>喺一間舖頭度買咗嘢
-  query-argument: '查詢參數：'
+  query-argument: '查詢參數：{0}'
   amount-hover: <yellow>{0}x
-  header-shop: '<yellow>The shop {0}''s {1} {2} transactions:'
+  header-shop: '<yellow>舖頭{0}嘅{1} {2}交易：'
   player-hover: |-
     <yellow>{0}
     <gold>UUID: <gray>{1}
   looking-up: <yellow>Performing metric lookup, Please wait...
-  tax-hover: <yellow>{0} taxes
-  header-global: '<yellow>The server {0} {1} transactions:'
+  tax-hover: <yellow>{0} 稅
+  header-global: '<yellow>伺服器{0} {1}交易：'
   na: <gray>N/A
-  transaction-count: <yellow>{0} total
+  transaction-count: <yellow>{0} 總共
   shop-hover: |-
     <yellow>{0}
-    <gold>Pos: <gray>{1} {2} {3}, World: {4}
-    <gold>Owner: <gray>{5}
-    <gold>Shop Type: <gray>{6}
-    <gold>Item: <gray>{7}
-    <gold>Price: <gray>{8}
-  time-hover: '<yellow>Time: {0}'
-  amount-stack-hover: <yellow>{0}x stack
+    <gold>位置：<gray>{1} {2} {3}, 世界：{4}
+    <gold>老細：<gray>{5}
+    <gold>舖頭種類：<gray>{6}
+    <gold>物品：<gray>{7}
+    <gold>價錢：<gray>{8}
+  time-hover: '<yellow>時間：{0}'
+  amount-stack-hover: <yellow>{0}x 組
 permission-denied-3rd-party: '<red>Permission denied: 3rd Party Plugin [{0}].'
-you-dont-have-that-many-items: <red>You only have {0} {1}.
-complete: <green>Complete!
+you-dont-have-that-many-items: <red>你淨係得{0}個{1}。
+complete: <green>搞掂！
 translate-not-completed-yet-url: 'The translation of the language {0} was not completed yet by {1}. Do you want to help us improving the translation? Browse: {2}'
-success-removed-shop: <green>Shop removed.
-currency-set: <green>Shop currency successfully set to {0}.
+success-removed-shop: <green>舖頭已被移除。
+currency-set: <green>成功設定舖頭嘅貨幣為 {0}。
 shop-purged-start: <green>Shop purge started, check the console for details.
 economy-transaction-failed: <red>Sorry, but an internal error occurred while processing your transaction. The transaction has been cancelled and any economy operation has been rollback. Please contact the server administrators if it keeping occurred.
-nothing-to-flush: <green>You have no new shop messages.
+nothing-to-flush: <green>你無新嘅店舖訊息。
 no-price-change: <red>这不能导致价格更改！
 edition-confilct: QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.
 inventory-unavailable: |-
@@ -251,19 +251,19 @@ inventory-unavailable: |-
 file-test: 一個係一個測試嘅檔案,我哋用呢個嚟測試message.json檔案係咪壞嘅,呢個檔案入邊你鍾意寫乜都得:)
 unknown-player: <red>Target player doesn't exist, please check the username you typed.
 player-offline: <red>The target player currently is offline.
-player-profile-format: <aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)
+player-profile-format: <aqua>{0}</aqua><gold>（<yellow>{1}</yellow>）
 shop-type:
-  selling: SELLING
-  buying: BUYING
+  selling: 出售
+  buying: 收購
   frozen: FROZEN
 shop-state:
-  frozen: FROZEN
-  unfrozen: UNFROZEN
-  freeze: Freeze
-  unfreeze: Unfreeze
+  frozen: 已凍結
+  unfrozen: 已解凍
+  freeze: 凍結
+  unfreeze: 解凍
 shop-display:
   enabled: Enabled
-  disabled: Disabled
+  disabled: 停用
 language:
   qa-issues: '<yellow>Quality assurance issues: <aqua>{0}%'
   code: '<yellow>Code: <gold>{0}'
@@ -295,8 +295,8 @@ updatenotify:
     modrinth: '[Modrinth]'
     basic: '[Basic]'
   list:
-    - '{0} was released. You are still using {1}!'
-    - Boom! New update {0} incoming. Update!
+    - '已推出新版本{0}。你仲用緊{1}！'
+    - 勁爆！有關{0}嘅更新嚟緊喇！
     - Surprise! {0} came out. You are on {1}
     - Looks like you need to update. {0} was released!
     - Ooops! {0} was now released. You are on {1}!
@@ -349,7 +349,7 @@ saved-to-path: The Backup was saved to {0}.
 shop-now-freezed: <green>You have frozen the shop. Nobody can trade with this shop now!
 price-is-now: <green>The new price of the shop is <yellow>{0}
 shops-arent-locked: <red>Remember, shops are NOT protected from theft! If you want to stop thieves, lock it with LWC, Lockette, etc!
-that-is-locked: <red>This shop is locked.
+that-is-locked: <red>呢間舖頭鎖咗。
 shop-has-no-space: <red>The shop only has room for {0} more {1}.
 safe-mode-admin: <red><bold>WARNING:</bold> The QuickShop version on this server is currently running in safe mode. Features won't work. Please use the <yellow>/quickshop</yellow> command to check for any errors.
 shop-stock-too-low: <red>The shop only has {0} {1} left!
