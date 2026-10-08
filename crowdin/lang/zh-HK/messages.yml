@@ -42,8 +42,7 @@ safe-mode: <red>QuickShop now in safe-mode, you cannot open this shop container,
 forbidden-vanilla-behavior: <red>The operation is forbidden due to it not being consisten with vanilla behaviour
 shop-out-of-space-name: <dark_purple>你間舖頭 {0} 滿咗喇！
 paste-disabled: |-
-  <red>Paste function has been disabled! You cannot request technical support.
-  Reason: {0}
+  <red>貼上功能已被停用！你唔可以請求技術支援。原因：{0}
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
