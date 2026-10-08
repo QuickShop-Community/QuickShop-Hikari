@@ -7,3 +7,10 @@ api-version: '1.20'
 depend: [ OpenInv, QuickShop-Hikari ]
 authors: [ Ghost_chu ]
 description: Compatibility module for OpenInv
+permissions:
+  quickshop.echest:
+    description: Permission to use /quickshop echest.
+    default: op
+  quickshop.admin:
+    description: Allows a staff member to switch the inventory type of someone else's shop.
+    default: op

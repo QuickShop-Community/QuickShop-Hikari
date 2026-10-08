@@ -177,8 +177,8 @@ permissions:
       quickshop.create.admin: true
       quickshop.history.*: true
       quickshop.transferownership.other: true
-      quickshop.other.changeitem: true
-      quickshop.other.changeamount: true
+      quickshop.other.item: true
+      quickshop.other.amount: true
       quickshop.other.staff: true
       quickshop.other.currency: true
       quickshop.other.taxaccount: true
@@ -429,3 +429,84 @@ permissions:
   quickshop.self-trade:
     description: Allows a player to trade with their own shops
     default: true
+  quickshop.avoid:
+    description: Permission to use /quickshop avoid to hide shops.
+    default: op
+  quickshop.avoid.list:
+    description: Permission to use /quickshop avoid list.
+    default: op
+  quickshop.favorite:
+    description: Permission to use /quickshop favorite to bookmark shops.
+    default: op
+  quickshop.favorite.list:
+    description: Permission to use /quickshop favorite list.
+    default: op
+  quickshop.watch:
+    description: Permission to use /quickshop watch to watch shop changes.
+    default: op
+  quickshop.watch.list:
+    description: Permission to use /quickshop watch list.
+    default: op
+  quickshop.tag:
+    description: Permission to use /quickshop tag.
+    default: op
+  quickshop.tag.add:
+    description: Permission to use /quickshop tag add.
+    default: op
+  quickshop.tag.delete:
+    description: Permission to use /quickshop tag delete.
+    default: op
+  quickshop.tag.list:
+    description: Permission to use /quickshop tag list.
+    default: op
+  quickshop.tag.purge:
+    description: Permission to use /quickshop tag purge.
+    default: op
+  quickshop.tag.shops:
+    description: Permission to use /quickshop tag shops.
+    default: op
+  quickshop.tag.tagged:
+    description: Permission to use /quickshop tag tagged.
+    default: op
+  quickshop.tag.tagged.teleport:
+    description: Permission to teleport to shops from the tagged shop browser.
+    default: op
+  quickshop.tag.clear:
+    description: Permission to use /quickshop tag clear.
+    default: op
+  quickshop.tag.clearall:
+    description: Permission to use /quickshop tag clearall.
+    default: op
+  quickshop.inventory:
+    description: Permission to use /quickshop inventory.
+    default: op
+  quickshop.clean:
+    description: Permission to use /quickshop clean.
+    default: op
+  quickshop.reload:
+    description: Permission to use /quickshop reload.
+    default: op
+  quickshop.lookup:
+    description: Permission to use /quickshop lookup.
+    default: op
+  quickshop.benefitall:
+    description: Permission to use /quickshop benefitall to manage the benefit of all your shops.
+    default: op
+  quickshop.toggledisplayall:
+    description: Permission to use /quickshop toggledisplayall.
+    default: op
+  quickshop.toggledisplayall.admin:
+    description: Permission to toggle the display of all shops on the server.
+    default: op
+  quickshop.create.enderchest:
+    description: Allows a player to create a shop on an ender chest.
+    default: op
+  quickshop.other.setowner:
+    description: Allows a staff member to change the owner of someone else's shop without ownership check.
+    default: op
+  quickshop.permission.bypass:
+    description: Allows a staff member to manage the permissions of someone else's shop without ownership check.
+    default: op
+  quickshop.price.restriction.bypass.<ruleName>:
+    description: Allows a player to bypass the price restriction rule named <ruleName>.
+    default: op

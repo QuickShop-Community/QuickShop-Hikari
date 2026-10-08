@@ -9,3 +9,7 @@ depend:
   - QuickShop-Hikari
 authors: [ Ghost_chu ]
 description: Compatibility module for SuperiorSkyblock
+permissions:
+  quickshop.superior.override:
+    description: Allows a player to bypass the SuperiorSkyblock island check when admin-override is enabled.
+    default: op

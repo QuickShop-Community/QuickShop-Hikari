@@ -9,3 +9,7 @@ depend:
   - QuickShop-Hikari
 authors: [ Ghost_chu ]
 description: Compatibility module for AdvancedRegionMarket
+permissions:
+  quickshop.arm.admin:
+    description: Allows a player to bypass the AdvancedRegionMarket region check when admin-override is enabled.
+    default: op
