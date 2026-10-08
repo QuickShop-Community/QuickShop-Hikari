@@ -33,7 +33,7 @@ public enum DataTables {
     table.addColumn("type", "INT NOT NULL DEFAULT 0"); // SHOP TYPE (see ShopType enum)
     table.addColumn("shop_state", "VARCHAR(64)"); // shop state
     table.addColumn("currency", "VARCHAR(64)");  // CURRENCY (NULL means use the default currency)
-    table.addColumn("price", "DECIMAL(32,2) NOT NULL"); // SHOP ITEM PRICE
+    table.addColumn("price", "DECIMAL(32,7) NOT NULL"); // SHOP ITEM PRICE
 
     // UNLIMITED STORAGE (means the shop can sell/buy unlimited amount of items)
     table.addColumn("unlimited", "BIT NOT NULL DEFAULT 0");
@@ -114,8 +114,8 @@ public enum DataTables {
     table.addColumn("type", "VARCHAR(32) NOT NULL"); // SHOP TYPE (use enum name)
     table.addColumn("amount", "INT NOT NULL"); // ITEM AMOUNT
 
-    table.addColumn("money", "DECIMAL(32,2) NOT NULL"); // TOTAL MONEY
-    table.addColumn("tax", "DECIMAL(32,2) NOT NULL DEFAULT 0"); // TAX
+    table.addColumn("money", "DECIMAL(32,7) NOT NULL"); // TOTAL MONEY
+    table.addColumn("tax", "DECIMAL(32,7) NOT NULL DEFAULT 0"); // TAX
     table.setIndex(IndexType.INDEX, "idx_log_purchase_shop", "shop");
     table.setIndex(IndexType.INDEX, "idx_log_purchase_time", "time");
     table.setIndex(IndexType.INDEX, "idx_log_purchase_buyer", "buyer");
@@ -129,9 +129,9 @@ public enum DataTables {
     table.addColumn("to", "VARCHAR(128) NOT NULL");
 
     table.addColumn("currency", "VARCHAR(64)");
-    table.addColumn("amount", "DECIMAL(32,2) NOT NULL");
+    table.addColumn("amount", "DECIMAL(32,7) NOT NULL");
 
-    table.addColumn("tax_amount", "DECIMAL(32,2) NOT NULL DEFAULT 0");
+    table.addColumn("tax_amount", "DECIMAL(32,7) NOT NULL DEFAULT 0");
     table.addColumn("tax_account", "VARCHAR(128)");
 
     // TRANSACTION ERROR MESSAGES (NULL means successfully transacted)
