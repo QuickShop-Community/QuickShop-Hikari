@@ -299,11 +299,11 @@ updatenotify:
     - Surprise! {0} came out. You are on {1}
     - Looks like you need to update. {0} was released!
     - Ooops! {0} was now released. You are on {1}!
-    - I swear, QS has been updated to {0}. Why have you not updated yet?
+    - 我發誓，QS已經更新到{0}。點解你仲未更新㗎？
     - Fixing and re... Sorry, but {0} was released!
     - Err! Nope. This is not an error. {0} has been released!
-    - OMG! {0} came out! Why are you still using {1}?
-    - 'Todays News: QuickShop has been updated to {0}!'
+    - OMG！{0}推出咗喇！你做咩仲用緊{1}㗎？
+    - '今日新聞：QuickShop已經更新到{0}喇！'
     - Plugin k.i.a. You should update to {0}!
     - Update {0} ignited. Save update!
     - There is an update available Commander. {0} has just came out!
@@ -316,48 +316,48 @@ updatenotify:
   remote-disable-warning: '<red>This version of QuickShop is marked as disabled by the remote server, which means this version may have serious problem, get details from our SpigotMC page: {0}. This warning will continue to appear until you switch to a stable version, but it will not affect your server''s performance.'
 purchase-out-of-stock: <red>This shop run out of the stock, Contact shop owner or staffs to refill the stock.
 nearby-shop-entry: '<green>- Info: {0} Price: <aqua>{1} <green>X: <aqua>{2} <green>Y: <aqua>{3} <green>Z: <aqua>{4} <green>Distance: <aqua>{5} <green>block(s)'
-chest-title: QuickShop Store
+chest-title: QuickShop店舖
 console-only: <red>This command can only be executed by Console.
-failed-to-put-sign: <red>Not enough space around the shop to place the info sign.
+failed-to-put-sign: <red>舖頭附近唔夠位放資料牌。
 shop-name-unset: <red>This shop's name now removed
 shop-nolonger-freezed: <green>You unfroze the shop. It's back to normal now!
-no-permission-build: <red>You cannot build a shop here.
+no-permission-build: <red>你唔可以喺度起間舖頭。
 tableformat:
   left_half_line: <dark_purple>+--------------------
   right_half_line: <dark_purple>--------------------+
   full_line: <dark_purple>+---------------------------------------------------+
   left_begin: '<dark_purple>| '
-quickshop-gui-preview: QuickShop GUI Item Preview
+quickshop-gui-preview: QuickShop GUI物品預覽
 translate-not-completed-yet-click: The translation of the language {0} was not completed yet by {1}. Do you want to help us improving the translation? Click here!
 taxaccount-invalid: <red>Target account not invalid, please enter a valid player name or uuid(with dashes).
 player-bought-from-your-store: <red>{0} purchased {1} {2} from your shop, and you earned {3}.
 reached-maximum-can-create: <red>You already created a maximum of {0}/{1} shops!
-translation-version: 'Support Version: Hikari'
+translation-version: '支援版本：Hikari'
 no-double-chests: <red>您無法創建大箱子商店。
 price-too-cheap: <red>價格必須大於<yellow>${0}
-shop-not-exist: <red>There is no shop.
+shop-not-exist: <red>嗰度無舖頭。
 bad-command-usage: <red>Bad command arguments!
 cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <bold><red>EXISTS IN A UNLOADED WORLD</red></bold>. Make sure to create a full backup of your shop data first and use <aqua>/quickshop cleanghost confirm</aqua> to continue.
 cleanghost-starting: <green>Starting to check for ghost shops (missing container blocks). All non-existing shops will be removed...
 cleanghost-deleting: <yellow>Found a corrupted shop <aqua>{0}</aqua> because {1}, mark it to delete...
-cleanghost-deleted: <green>Total <yellow>{0}</yellow> shops have been deleted.
+cleanghost-deleted: <green>總共有<yellow>{0}</yellow>間舖頭已被刪除。
 shop-purchase-cancelled: <red>Shop purchase cancelled.
 bypassing-lock: <red>Bypassing a QuickShop lock!
 bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'
-saved-to-path: The Backup was saved to {0}.
-shop-now-freezed: <green>You have frozen the shop. Nobody can trade with this shop now!
-price-is-now: <green>The new price of the shop is <yellow>{0}
+saved-to-path: 備份已被儲存到{0}。
+shop-now-freezed: <green>你已經凍結咗間舖。而家無人可以同呢間舖交易喇！
+price-is-now: <green>呢間舖嘅新價錢為<yellow>{0}
 shops-arent-locked: <red>Remember, shops are NOT protected from theft! If you want to stop thieves, lock it with LWC, Lockette, etc!
 that-is-locked: <red>呢間舖頭鎖咗。
-shop-has-no-space: <red>The shop only has room for {0} more {1}.
+shop-has-no-space: <red>舖頭只夠位放多{0}個{1}。
 safe-mode-admin: <red><bold>WARNING:</bold> The QuickShop version on this server is currently running in safe mode. Features won't work. Please use the <yellow>/quickshop</yellow> command to check for any errors.
-shop-stock-too-low: <red>The shop only has {0} {1} left!
+shop-stock-too-low: <red>舖頭只剩低{0}件{1}！
 world-not-exists: <red>The world <yellow>{0}<red> doesn't exist
 how-many-sell: <green>Enter in chat, how much you wish to <light_purple>SELL<green>. You can sell <yellow>{0}<green>. Enter <aqua>{1}<green> in chat, to sell all.
-shop-freezed-at-location: <yellow>Your shop {0} at {1} got frozen!
+shop-freezed-at-location: <yellow>你嗰間喺{1}嘅舖頭{0}被凍結咗！
 translation-contributors: '貢獻者: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken 同埋 Andre_601'
 empty-success: <green>Emptying shop successful
-taxaccount-set: <green>This shop's tax account has been set to <yellow>{0}
+taxaccount-set: <green>呢間舖嘅稅務户口已經被設定為<yellow>{0}
 support-disable-reason:
   hot-reload: <yellow>Unsupported hot reloaded, restart the server and check again.
   outdated: <yellow>This version of QuickShop already outdated, up-to-date before requesting support!
