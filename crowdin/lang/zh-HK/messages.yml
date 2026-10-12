@@ -107,7 +107,7 @@ shop-staff-added: <green>Successfully added {0} as a staff member for your shop.
 shop-staff-empty: <yellow>呢間舖無店員。
 shops-recovering: 喺備份度還原緊店舖⋯⋯
 virtual-player-component-hover: "<gray>呢位係一位虛擬玩家。\n<gray>同一位同名嘅系統帳戶有關。</gray>\n<green>UUID：<yellow>{0}</yellow></green>\n<green>帳號名稱：<yellow>{1}</yellow></green>\n<green>顯示為：<yellow>{2}</yellow></green>"
-real-player-component-hover: "<gray>呢位係一位真實玩家。\n<green>UUID: <yellow>{0}</yellow></green>\n<green>帳號名稱：<yellow>{1}</yellow></green>\n<green>顯示為：<yellow>{2}</yellow></green>\n<gray>如果你想用一個同名嘅虛擬系統帳戶，喺帳號名稱嘅左右兩邊加 <dark_gray>\"[]\"</dark_gray>：<dark_gray>[{1}]</dark_gray>."
+real-player-component-hover: "<gray>呢位係一位真實玩家。\n<green>UUID: <yellow>{0}</yellow></green>\n<green>帳號名稱：<yellow>{1}</yellow></green>\n<green>顯示為：<yellow>{2}</yellow></green>\n<gray>如果你想用一個同名嘅虛擬系統帳戶，喺帳號名稱嘅左右兩邊加 <dark_gray>\"[]\"</dark_gray>：<dark_gray>[{1}]</dark_gray>。"
 pagination:
   header: "<green>{0}</green>："
   footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>上一頁\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>下一頁\"><white>></white></hover></click>]</light_purple>"
@@ -373,35 +373,35 @@ support-disable-reason:
 supertool-is-disabled: <red>超級工具被禁用，不能破壞任何商店。
 unknown-owner: 未知
 restricted-prices: '<red>Restricted price for {0}: Min {1}, max {2}'
-restricted-price-max: '<red>Restricted price for {0}: Max {1}'
-restricted-price-min: '<red>Restricted price for {0}: Min {1}'
+restricted-price-max: '<red>{0}嘅價格限制：最高{1}蚊'
+restricted-price-min: '<red>{0}嘅價格限制：最低{1}蚊'
 shop-type-change-price-restricted: '<red>The current price is not valid for a {0} shop. The allowed range is {1} - {2}. Change the price before changing the shop type.'
 nearby-shop-this-way: <green>Shop is {0} blocks away from you.
 owner-bypass-check: <yellow>Bypassed all checks. Trade successful! (You are now the shop owner!)
 april-rick-and-roll-easter-egg: "<hover:show_text:'Click to open in browser for time limited rewards!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>Click here to acquire your time limited rewards that provided by QuickShop-Hikari developer!</green></click></hover>"
 signs:
   item-right: ''
-  out-of-space: Out of Space
-  unlimited: Unlimited
-  stack-selling: Selling {0}
+  out-of-space: 唔夠位
+  unlimited: 無限制
+  stack-selling: 賣緊{0}
   stack-price: '{0} per {1}x {2}'
   status-unavailable: <red>
-  out-of-stock: Out of Stock
-  stack-buying: Buying {0}
+  out-of-stock: 賣晒
+  stack-buying: 買緊{0}
   freeze: Trading disabled
-  price: '{0} each'
-  buying: Buying {0}
+  price: '{0}蚊一件'
+  buying: 買緊{0}
   header: '{1}{0}'
   header-available: <green>{0}
   header-unavailable: <red>{0}
-  selling: Selling {0}
+  selling: 賣緊{0}
   status-available: <green>
   item-left: ''
-  item-duration: 'Dur: {0}'
-  item-level: 'Level: {0}'
+  item-duration: '時長：{0}'
+  item-level: '等級：{0}'
   splash-potion: "Splash"
   linger-potion: "Lingering"
-negative-amount: <red>You can't trade negative amounts
+negative-amount: <red>你唔用得負數嘅金額去交易
 display-turn-on: <green>Successfully turn on the shop display.
 display-turn-off: <green>Successfully turn off the shop display.
 display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
@@ -411,17 +411,17 @@ display-turn-off-all: <green>Successfully turned off shop display for all server
 shop-staff-deleted: <green>Successfully removed {0} as a staff member for your shop.
 nearby-shop-header: '<green>Nearby Shop matching <aqua>{0}<green>:'
 backup-failed: Cannot backup the database. Check the console for details.
-shop-staff-cleared: <green>Successfully removed all staff members from your shop.
+shop-staff-cleared: <green>已成功移除晒你舖頭嘅員工。
 price-too-high: <red>The shop price is too high! You cannot create one with a price higher than {0}.
 plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
-player-sold-to-your-store: <green>{0} sold {1} {2} to your shop for {3}.
-shop-out-of-stock: <dark_purple>Your shop at {0}, {1}, {2} has run out of {3}!
+player-sold-to-your-store: <green>{0}用咗{3}蚊賣咗{1}件{2}去你舖頭。
+shop-out-of-stock: <dark_purple>你喺{0}、{1}、{2}嗰幾間舖頭無晒{3}喇！
 how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY<green>. You can buy <yellow>{0}<green>. Enter <aqua>{1}<green> to buy them all.
 language-info-panel:
-  help: 'Help us: '
+  help: '幫助我哋： '
   code: 'Code: '
-  name: 'Language: '
-  progress: 'Progress: '
+  name: '語言： '
+  progress: '進度： '
   translate-on-crowdin: '[Translate on Crowdin]'
 item-not-exist: <red>The item <yellow>{0} <red>does not exist, please check your spelling.
 shop-creation-failed: <red>Shop creation failed, please contact with server administrator.
@@ -433,7 +433,7 @@ booleanformat:
 controlpanel:
   stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
   price-hover: <yellow>Click to set a new price for the item.
-  remove: <bold><red>[Remove Shop]
+  remove: <bold><red>[移除舖頭]
   mode-buying-hover: <yellow>Click to change the shop to SELL mode.
   empty: '<green>Empty: Remove all items <yellow>[<bold><light_purple>OK</light_purple></bold>]'
   stack-hover: <yellow>Click to set the amount of item per bulk. Set to 1 for normal behaviour.
@@ -444,7 +444,7 @@ controlpanel:
   price: '<green>Price: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
   currency-hover: <yellow>Click to set or remove the currency that this shop is using
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
-  mode-selling: '<green>Shop mode: <aqua>Selling <yellow>[<bold><light_purple>Change</light_purple></bold>]'
+  mode-selling: '<green>舖頭模式：<aqua>賣嘢<yellow>[<bold><light_purple>更改</light_purple></bold>]'
   currency: '<green>Currency: <aqua>{0} <yellow>[<bold><light_purple>Set</light_purple></bold>]'
   setowner-hover: <yellow>Click to switch owner.
   mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<bold><light_purple>Change</light_purple></bold>]'
@@ -1715,14 +1715,14 @@ gui:
     title: "<dark_aqua>Market Browser</dark_aqua>"
     shop-list:
       buying-label: "<#FFA500>Buying</#FFA500>"
-      selling-label: "<green>Selling</green>"
+      selling-label: "<green>賣緊</green>"
       price-indicator:
         average: "● Average"
         selling:
-          great: "▼▼ Great Deal!"
-          good: "▼ Below Avg"
-          bad: "▲▲ Expensive"
-          worst: "▲ Above Avg"
+          great: "▼▼ 超級抵！"
+          good: "▼ 抵過平均價"
+          bad: "▲▲ 貴"
+          worst: "▲ 高過平均價"
         buying:
           great: "▲▲ Great Price!"
           good: "▲ Above Avg"
@@ -1750,10 +1750,10 @@ gui:
         - "<gray>Shops: <white>{0}</white></gray>"
       lore-selling:
         - "<green>▼ Selling ({0} shops)</green>"
-        - "<gray> Price: <white>{1} - {2}</white></gray>"
-        - "<gray> Average: <yellow>{3}</yellow></gray>"
-        - "<gray> Median: <gold>{4}</gold></gray>"
-        - "<gray> Stock: <aqua>{5}</aqua></gray>"
+        - "<gray>價錢：<white>{1} - {2}</white></gray>"
+        - "<gray>平均：<yellow>{3}</yellow></gray>"
+        - "<gray>中位數：<gold>{4}</gold></gray>"
+        - "<gray>庫存︰<aqua>{5}</aqua></gray>"
       lore-buying:
         - "<#FFA500>▲ Buying ({0} shops)</#FFA500>"
         - "<gray> Price: <white>{1} - {2}</white></gray>"
@@ -1784,11 +1784,11 @@ gui:
       display: "<aqua>Filter: {0}</aqua>"
       lore:
         - "<gray>Click to cycle</gray>"
-      all: "All"
-      selling: "Selling"
-      buying: "Buying"
-      all-indicator: "<white>All Shops</white>"
-      selling-indicator: "<green>Selling Shops</green>"
+      all: "全部"
+      selling: "賣緊"
+      buying: "買緊"
+      all-indicator: "<white>全部舖頭</white>"
+      selling-indicator: "<green>賣嘢嘅舖頭</green>"
       buying-indicator: "<#FFA500>Buying Shops</#FFA500>"
     stock-filter:
       display: "<gold>In Stock Only: {0}</gold>"
@@ -1831,7 +1831,7 @@ gui:
       enter-buy: "<yellow>Enter the quantity you want to buy. Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</yellow>"
       #Shown when player clicks "Custom Order" button (selling)
       #{0} = item amount per purchase
-      enter-sell: "<yellow>Enter the quantity you want to sell. Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</yellow>"
+      enter-sell: "<yellow>輸入你想賣嘅數量。一定要係<white>{0}</white>嘅倍數。輸入<white>0</white>去取消。</yellow>"
       #Shown when player enters invalid quantity (not multiple of item amount)
       #{0} = item amount per purchase
       invalid-multiple: "<red>Invalid quantity! Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</red>"
