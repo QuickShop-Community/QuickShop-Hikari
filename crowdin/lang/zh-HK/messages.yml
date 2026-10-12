@@ -556,7 +556,7 @@ command:
   bulk-size-not-set: '<red>Usage: /quickshop size \<amount>'
   no-type-given: '<red>Usage: /quickshop find \<item>'
   feature-not-enabled: This feature is not enabled in the config file.
-  now-debuging: <green>Successfully enabled developer mode. Reloading QuickShop...
+  now-debuging: <green>己成功開咗開發者模式。而家重載緊QuickShop⋯⋯
   no-amount-given: <red>No amount provided. Use <green>/quickshop refill \<amount>
   no-owner-given: <red>No owner provided
   disabled: '<red>This command is disabled: <yellow>{0}'
@@ -565,15 +565,15 @@ command:
     counting: <green>Shop is now always counting container even is unlimited
     not-counting: <green>Shop is now respect if shop is unlimited
   cleaning: <green>Removing shops without any stock...
-  now-nolonger-debuging: <green>Successfully disabled Developer mode. Reloading QuickShop...
+  now-nolonger-debuging: <green>己成功停用開發者模式。而家重載緊QuickShop⋯⋯
   toggle-unlimited:
     limited: <green>Shop is now limited
     unlimited: <green>Shop is now unlimited
   transfer-success-other: <green>Transferred <yellow>{0} {1}<green>'s shop(s) to <yellow>{2}
   no-trade-item: <green>Please hold a trade item to change in main hand
   wrong-args: <red>Invalid argument. Use <bold>/quickshop help</bold> to see a list of commands.
-  some-shops-removed: <yellow>{0} <green>shop(s) removed
-  new-owner: '<green>New owner: <yellow>{0}'
+  some-shops-removed: <yellow>{0} <green>間舖頭已被移除
+  new-owner: '<green>新老細：<yellow>{0}'
   format: <green>/{0} {1} <yellow>- {2}
   transfer-success: <green>Transferred <yellow>{0} <green>shop(s) to <yellow>{1}
   now-buying: <green>Now <light_purple>BUYING <yellow>{0}
