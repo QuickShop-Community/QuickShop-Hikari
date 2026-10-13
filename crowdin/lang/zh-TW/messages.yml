@@ -30,7 +30,7 @@ tabcomplete:
   clear: '清除'
   clearall: '清除全部'
   shops: '商店'
-  tagged: 'tagged'
+  tagged: '已標籤'
   purge: '清除'
   tag: '[標籤]'
 taxaccount-unset: <green>此商店的稅金帳戶現在按照伺服器全域設定。
@@ -114,7 +114,7 @@ pagination:
   footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Previous page\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Next page\"><white>></white></hover></click>]</light_purple>"
 tags:
   commands:
-    tag: "<yellow>Manage your shop tags."
+    tag: "<yellow>管理你的商店標籤。"
     favorite: "<yellow>Toggle favorite on looked-at shop."
     watch: "<yellow>Toggle watch on looked-at shop."
     avoid: "<yellow>Toggle avoid on looked-at shop."
@@ -138,29 +138,29 @@ tags:
     added: "<green>You are now watching this shop."
     removed: "<green>You are no longer watching this shop."
     unable: "<red>Unable to toggle watch on this shop."
-    none: "<red>You are not watching any shops."
-    label: "<yellow>Watching"
+    none: "<red>你沒有在觀察任何商店。"
+    label: "<yellow>正在觀察"
   tag:
-    title-avoided-shops: "<green>Avoided shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
-    title-favorited-shops: "<green>Favorited shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    title-avoided-shops: "<green>已屏蔽的商店</green><gray>（共<yellow>{0}</yellow>間）</gray>"
+    title-favorited-shops: "<green>喜愛的商店</green><gray>（共<yellow>{0}</yellow>間）</gray>"
     title-watched-shops: "<green>Watched shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
-    list-player-shops-title: "<green>Your tagged shops</green> <gray>(<yellow>{0}</yellow> shops, <yellow>{1}</yellow> tags)</gray>"
-    list-player-shop-title: "<green>Shop tags</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    list-player-shops-title: "<green>你已標籤的商店</green><gray>（<yellow>{0}</yellow>間商店，<yellow>{1}</yellow>個標籤）</gray>"
+    list-player-shop-title: "<green>商店標籤</green><gray>（共<yellow>{0}</yellow>）</gray>"
     list-tag-title: "<green>Tag <aqua>{0}</aqua> usage</green> <gray>(<yellow>{1}</yellow> shops)</gray>"
     shops-entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <light_purple>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>View all tags on this shop\">View {10} tags</hover></click>]</light_purple>"
     entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <red>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove Tag</hover></click>]</red>"
     list-tag-shop-entry-tp: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Teleport to this shop\">Teleport</hover></click>]</light_purple>"
-    added: "<green>Added tag <aqua>{0}</aqua> to this shop."
-    duplicate: "<red>This shop already has tag <aqua>{0}</aqua>."
-    failed-add: "<red>An error occurred while adding tag <aqua>{0}</aqua> to this shop."
-    failed-remove: "<red>An error occurred while removing tag <aqua>{0}</aqua> from this shop."
-    removed: "<green>Removed tag <aqua>{0}</aqua> from this shop."
-    does-not-exist: "<red>This shop does not have tag <aqua>{0}</aqua>."
-    cleared: "<green>Cleared all tags from this shop."
-    cleared-all: "<green>Cleared all tags from all shops."
+    added: "<green>已新增標籤<aqua>{0}</aqua>到此商店。"
+    duplicate: "<red>此商店已有標籤<aqua>{0}</aqua>。"
+    failed-add: "<red>新增標籤<aqua>{0}</aqua>到此商店時發生了錯誤。"
+    failed-remove: "<red>從此商店移除標籤<aqua>{0}</aqua>時發生了錯誤。"
+    removed: "<green>已從此商店移除標籤<aqua>{0}</aqua>。"
+    does-not-exist: "<red>此商店沒有標籤<aqua>{0}</aqua>。"
+    cleared: "<green>從此商店清除全部標籤。"
+    cleared-all: "<green>從所有商店清除全部標籤。"
     cleared-tag: "<green>Cleared tag <aqua>{0}</aqua> from all your tagged shops."
     no-tags-all: "<red>There are no tags on any shop."
-    no-tags: "<red>This shop has no tags."
+    no-tags: "<red>此商店沒有任何標籤。"
     no-tagged-shops-player: "<red>You have no tags on this shop."
     no-tagged-shops: "<red>You have no tagged shops."
     no-tagged-shops-tag: "<red>You have no shops with tag <aqua>{0}</aqua>."
@@ -181,9 +181,9 @@ menu:
   item-holochat-error: <red>[錯誤]
   this-shop-is-selling: <green>此商店正在<aqua>出售<green>物品。
   this-shop-is-buying: <green>此商店正在<light_purple>收購<green>物品。
-  this-shop-is-frozen: <blue>FROZEN</blue>
+  this-shop-is-frozen: <blue>已凍結</blue>
   this-shop-is-active: <aqua>ACTIVE</aqua>
-  this-shop-is-state: <green>This shop's current state is {0}<green>.
+  this-shop-is-state: <green>此商店目前狀態為{0}<green>。
   shop-stack: '<green>每份物品的數量：<yellow>{0}'
   space: '<green>空間：<yellow>{0}'
   effects: <green>藥水效果
@@ -251,16 +251,16 @@ inventory-unavailable: |-
 file-test: 這是個測試的文字檔案，我們使用它來測試 messages.json 是否損壞，你可以在這裡填入任何喜歡的彩蛋。 :)
 unknown-player: <red>找不到相對應的玩家，請檢查你輸入的玩家名稱是否正確。
 player-offline: <red>目標玩家離線。
-player-profile-format: <aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)
+player-profile-format: <aqua>{0}</aqua><gold>（<yellow>{1}</yellow>）
 shop-type:
   selling: 出售中
   buying: 收購中
   frozen: 冷凍
 shop-state:
-  frozen: FROZEN
-  unfrozen: UNFROZEN
-  freeze: Freeze
-  unfreeze: Unfreeze
+  frozen: 已凍結
+  unfrozen: 已解凍
+  freeze: 凍結
+  unfreeze: 解凍
 shop-display:
   enabled: 已啟用
   disabled: 已停用
@@ -399,7 +399,7 @@ signs:
   status-available: <green>
   item-left: ''
   item-duration: 'Dur: {0}'
-  item-level: 'Level: {0}'
+  item-level: '等級：{0}'
   splash-potion: "噴濺"
   linger-potion: "滯留"
 negative-amount: <red>我的天啊，沒想到居然有人想要交易負數的數量。
@@ -608,7 +608,7 @@ permission:
   header: <green>商店權限細節
   header-player: <green>{0} 的商店權限細節
   header-group: <green>{0} 商店群的權限細節
-  table: <gold><bold>{0}</bold>:</gold> <gray>{1}
+  table: <gold><bold>{0}</bold>：</gold><gray>{1}
   item:
     purchase: <yellow>擁有此權限者可以進行購買或出售。（商店物品或商店本身）
     show-information: <yellow>擁有此權限者可以查看商店資訊。（打開商店資訊面板）
@@ -857,7 +857,7 @@ addon:
     owner-create-only: <red>只有島嶼擁有者能夠在那裡建立商店。
     owner-member-create-only: <red>只有島嶼擁有者或成員能夠在那裡建立商店。
   fabledskyblock:
-    owner-create-only: <red>Only island owner can create shop there.
+    owner-create-only: <red>只有島主才能在該處建造商店。
     owner-member-create-only: <red>只有島主或會員可以在那裡建立商店
   worldguard:
     creation-flag-test-failed: <red>你沒有在此 WorldGuard 保護區建立商店的權限。
@@ -1634,18 +1634,18 @@ price-suggest-multi: ""
 suggest-wait: "<green>請稍候……正在計算建議價格。"
 gui:
   trade:
-    title: "<dark_aqua>Shop</dark_aqua>"
+    title: "<dark_aqua>商店</dark_aqua>"
     info-stock:
-      display: "<yellow>Stock Information</yellow>"
+      display: "<yellow>庫存資訊</yellow>"
       lore:
         - "<gray>Available: <white>{0}</white></gray>"
     info-price:
-      display: "<gold>Price Information</gold>"
+      display: "<gold>價格資訊</gold>"
       lore:
-        - "<gray>Price: <white>{0}</white></gray>"
-        - "<gray>Per: <white>{1} item(s)</white></gray>"
+        - "<gray>價錢：<white>{0}</white></gray>"
+        - "<gray>每：<white>{1}件物品</white></gray>"
     info-seller:
-      display: "<aqua>Seller Information</aqua>"
+      display: "<aqua>賣家資訊</aqua>"
       lore:
         - "<gray>Owner: <white>{0}</white></gray>"
     custom-amount:
