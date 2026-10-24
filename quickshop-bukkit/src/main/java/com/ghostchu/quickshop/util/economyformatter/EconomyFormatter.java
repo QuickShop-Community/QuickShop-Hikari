@@ -70,7 +70,10 @@ public class EconomyFormatter implements Reloadable {
       return getInternalFormat(n, currency);
     }
 
-    Log.debug("Economy Provider null check: " + (plugin.getEconomyManager().provider() == null));
+    if(plugin.getEconomyManager().provider() == null) {
+      Log.debug("Economy provider is not ready yet, fallback to internal format");
+      return getInternalFormat(n, currency);
+    }
 
     try {
       final String formatted = plugin.getEconomyManager().provider().format(BigDecimal.valueOf(n), world.getName(), currency);
@@ -122,7 +125,7 @@ public class EconomyFormatter implements Reloadable {
     if(shop != null) {
       return format(n, internalFormat, world, shop.getCurrency());
     } else {
-      return format(n, internalFormat, world, (Shop)null);
+      return format(n, internalFormat, world, (String)null);
     }
   }
 }
