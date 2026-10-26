@@ -853,14 +853,14 @@ addon:
     discord-enabled: <aqua>Successfully <green>enabled</green> your QuickShop discord messages, now you can receive the shop messages from Discord.
     discord-disabled: <aqua>Successfully <red>disabled</red> your QuickShop discord messages, now you won't receive the shop messages from Discord anymore.
     discord-not-integrated: <red>Discord hesabını henüz bağlamamışsın! Lütfen önce Discord hesabını bağla!
-    feature-enabled-for-user: <aqua>You have <green>enabled</green> <gold>{0}</gold> notification.
-    feature-disabled-for-user: <aqua>You have <red>disabled</red> <gold>{0}</gold> notification.
-    link-help: <yellow>This server using <gold>{0}</gold> for Discord driver, please use <green>{0}</green> to link your Discord account.
-    save-notifaction-exception: <red>An error occurred while saving your Discord notifaction settings, please contact the server administrator.
+    feature-enabled-for-user: <aqua>Siz, <gold>{0}</gold> bildirimini <green>etkinleştirdiniz.</green>
+    feature-disabled-for-user: <aqua>Siz, <gold>{0}</gold> bildirimini <red>devredışı bıraktınız.</red>
+    link-help: <yellow>Bu sunucu Discord driver olarak <gold>{0}</gold> kullanmaktadır; Discord hesabınızı bağlamak için <green>{0}</green> kullanın.
+    save-notifaction-exception: <red>Discord bildirim ayarlarınızı kaydederken bir hata oluştu; lütfen sunucu yöneticisiyle iletişime geçin.
     feature-status-changed: <green>Successfully set the notifaction <aqua>{0}</aqua> status to <gold>{1}</gold>
     commands:
       discord:
-        description: <yellow>Managing your QuickShop Discord settings
+        description: <yellow>QuickShop Discord ayarlarınızı yönetme
     discord-messages:
       sold-to-your-shop: |
         {
@@ -1591,7 +1591,7 @@ suite:
     quota-remove: <green>Satın alma kısıtlaması bu dükkandan artık kaldırıldı!
     subtitles:
       title: <green>Satın Alma Başarılı
-      subtitle: <aqua>You can purchase <yellow>{0}</yellow> more in this shop
+      subtitle: <aqua>Bu mağazadan daha fazla <yellow>{0}</yellow> satın alabilirsiniz
   list:
     command-description: <yellow>Kendinize veya başka bir oyuncuya ait tüm dükkanları listeleyin.
     table-prefix: <yellow>Bu sunucuda toplam <aqua>{0}</aqua> mağazanız var.
