@@ -1,7 +1,7 @@
 [versions]
 boostedYaml = "1.3.7"
 jetbrainsAnnotations = "26.0.2-1"
-slf4j = "2.0.17"
+slf4j = "2.0.18"
 paperApi = "1.21-R0.1-SNAPSHOT"
 paperApiPinned = "1.21.4-R0.1-SNAPSHOT"
 shadow = "9.6.1"
