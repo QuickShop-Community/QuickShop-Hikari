@@ -135,8 +135,8 @@ tags:
     none: "<red>你還未收藏任何商店。"
     label: "<yellow>收藏"
   watch:
-    added: "<green>You are now watching this shop."
-    removed: "<green>You are no longer watching this shop."
+    added: "<green>你正在觀察此商店。"
+    removed: "<green>你不再觀察此商店。"
     unable: "<red>Unable to toggle watch on this shop."
     none: "<red>你沒有在觀察任何商店。"
     label: "<yellow>正在觀察"
