@@ -20,19 +20,19 @@ tabcomplete:
   price: '[fiyat]'
   name: '[name]'
   range: '[menzil]'
-  list: 'list'
-  page: '[page #]'
-  shop-id: '[shop id]'
+  list: 'liste'
+  page: '[sayfa #]'
+  shop-id: '[mağaza kimliği]'
   currency: '[para biriminin adı]'
   percentage: '[percentage%]'
-  add: 'add'
-  remove: 'remove'
-  clear: 'clear'
-  clearall: 'clearall'
+  add: 'ekle'
+  remove: 'kaldır'
+  clear: 'temizle'
+  clearall: 'temizletümü'
   shops: 'mağazalar'
-  tagged: 'tagged'
+  tagged: 'etiketli'
   purge: 'purge'
-  tag: '[tag]'
+  tag: '[etiket]'
 taxaccount-unset: <green>Bu dükkanın vergi hesabı artık sunucu genel ayarını takip ediyor.
 blacklisted-item: <red>Bu öğeyi satamazsın çünkü kara listede
 command-type-mismatch: <red>Bu komut sadece <aqua>{0} <red>tarafından kullanılabilir.
@@ -62,7 +62,7 @@ quick-fill:
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ''
   entry-cooperation: ''
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide:https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
+3rd-plugin-build-check-failed-admin: '<gray>(Yalnızca Yönetici) <light_purple>{0}<dark_gray> izin denetimlerini geçemedi. Bu durum beklenmiyorsa, dinleyici kara listesine <light_yy ppurple>{1} <gray> eklemeyi deneyin. Yapılandırma Kılavuzu: https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
 average-price-nearby: '<green>Yakınlardaki ortalama fiyat: <yellow>{0}'
 inventory-check-global-alert: "<red>[Envanter Kontrolü] <gray>Uyarı! QuickShop görüntülü öğe bulundu <gold>{2}</gold> Envanterde <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, ki bu olmamalı, Bu genellikle birisinin görüntüleme öğesini çoğaltmak için istismardan kötü niyetli olarak yararlandığı anlamına gelir."
 digits-reach-the-limit: <red>Fiyatta maksimum basamak sınırına ulaştın.
@@ -110,13 +110,13 @@ virtual-player-component-hover: "<gray>Bu sanal bir oynatıcıdır.\n<gray>Aynı
 real-player-component-hover: "<gray>Bu gerçek bir oyuncu.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Kullanıcı adı: <yellow>{1}</yellow></green>\n<green>Olarak görüntüle: <yellow>{2}</yellow></green>\n<gray>Aynı ada sahip bir sanal sistem hesabı kullanmak istiyorsanız, <dark_gray>\"[]\"</dark_gray> Kullanıcı adının her iki tarafına: <dark_gray>[{1}]</dark_gray>."
 pagination:
   header: "<green>{0}</green>:"
-  footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Previous page\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Next page\"><white>></white></hover></click>]</light_purple>"
+  footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Önceki sayfa\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Sonraki sayfa\"><white>></white></hover></click>]</light_purple>"
 tags:
   commands:
-    tag: "<yellow>Manage your shop tags."
-    favorite: "<yellow>Toggle favorite on looked-at shop."
-    watch: "<yellow>Toggle watch on looked-at shop."
-    avoid: "<yellow>Toggle avoid on looked-at shop."
+    tag: "<yellow>Mağazanızın etiketlerini yönet."
+    favorite: "<yellow>Görüntülenen mağazayı favorilere ekle/çıkar."
+    watch: "<yellow>Görüntülenen mağazada izlemeyi değiştir."
+    avoid: "<yellow>Görüntülenen mağaza seçeneğini aç/kapat."
   general:
     database-error: "<red>An error occurred while executing a tag operation."
     list-entry: "<green>{0}.</green> <aqua>{1}</aqua> <light_purple>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>View all shops with this tag\">View Shops</hover></click>]</light_purple> <red>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove</hover></click>]</red>"
@@ -132,17 +132,17 @@ tags:
     removed: "<green>Removed this shop from your favorite list."
     unable: "<red>Unable to toggle favorite on this shop."
     none: "<red>You have no favorite shops."
-    label: "<yellow>Favorite"
+    label: "<yellow>Favori"
   watch:
-    added: "<green>You are now watching this shop."
-    removed: "<green>You are no longer watching this shop."
-    unable: "<red>Unable to toggle watch on this shop."
-    none: "<red>You are not watching any shops."
-    label: "<yellow>Watching"
+    added: "<green>Şu anda bu mağazayı takip ediyorsunuz."
+    removed: "<green>Artık bu mağazayı takip etmiyorsunuz."
+    unable: "<red>Bu mağazayı izlemek açıp/kapatılamıyor."
+    none: "<red>Hiçbir herhangi bir mağazayı takip etmiyorsun."
+    label: "<yellow>İzleniyor"
   tag:
     title-avoided-shops: "<green>Avoided shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
-    title-favorited-shops: "<green>Favorited shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
-    title-watched-shops: "<green>Watched shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    title-favorited-shops: "<green>Favori mağazalar</green> <gray>(Toplam<yellow>{0}</yellow>)</gray>"
+    title-watched-shops: "<green>Takip edilen mağazalar</green> <gray>(Toplam <yellow>{0}</yellow>)</gray>"
     list-player-shops-title: "<green>Your tagged shops</green> <gray>(<yellow>{0}</yellow> shops, <yellow>{1}</yellow> tags)</gray>"
     list-player-shop-title: "<green>Shop tags</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
     list-tag-title: "<green>Tag <aqua>{0}</aqua> usage</green> <gray>(<yellow>{1}</yellow> shops)</gray>"
@@ -180,8 +180,8 @@ menu:
   item-holochat-error: <red>[Hata]
   this-shop-is-selling: <green>Bu market eşyaları<aqua> SATIYOR</aqua>.
   this-shop-is-buying: <green>Bu market öğe <light_purple>SATIN ALIYOR<green>.
-  this-shop-is-frozen: <blue>FROZEN</blue>
-  this-shop-is-active: <aqua>ACTIVE</aqua>
+  this-shop-is-frozen: <blue>DONMUŞ</blue>
+  this-shop-is-active: <aqua>AKTİF</aqua>
   this-shop-is-state: <green>This shop's current state is {0}<green>.
   shop-stack: '<green>Yığının miktarı: <yellow>{0}'
   space: '<green>Yer: <yellow>{0}'
@@ -389,13 +389,13 @@ signs:
   item-left: ''
   item-duration: 'Dur: {0}'
   item-level: 'Level: {0}'
-  splash-potion: "Splash"
-  linger-potion: "Lingering"
+  splash-potion: "Sıçratma"
+  linger-potion: "Kalıcı"
 negative-amount: <red>Negatif miktarlarda işlem yapamazsın
 display-turn-on: <green>Mağaza ekranını başarıyla açın.
 display-turn-off: <green>Mağaza ekranını başarıyla kapatın.
-display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
-display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-owned: <green>Sahip olunan tüm mağazalar için mağaza göstergesi başarıyla etkinleştirildi.
+display-turn-off-owned: <green>Sahip olunan tüm mağazaların göstergesi başarıyla kapatıldı.
 display-turn-on-all: <green>Successfully turned on shop display for all server shops.
 display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <green>{0} başarıyla market personellerinizden kaldırıldı.
@@ -711,7 +711,7 @@ debug:
   restart-database-manager-unfinished-task: "<yellow>Unfinished task: <white>{0}</white>"
   restart-database-manager-unfinished-task-history-query: "<yellow>Unfinished task (History Query): <white>{0}</white>"
   restart-database-manager-reconnect: "<yellow>Re-launching SQLManager via initial sequence (via async executor)"
-  restart-database-manager-done: "<green>Done!"
+  restart-database-manager-done: "<green>Bitti!"
   property-incorrect: "<yellow>You must enter a (and only one) property key=value set. E.g   aaa=bbb"
   property-security-block: "<red>Request was rejected, for security reason, you can only change the property that startsWith <aqua>com.ghostchu.quickshop</aqua> or <aqua>quickshop</aqua>."
   property-removed: "<green>Removed property key <white>{0}</white>"
@@ -826,7 +826,7 @@ addon:
     sell-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to sell items to a shop.
     buy-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to buy items from a shop.
   dominion:
-    creation-denied: <red>You don't have permission to create shops in this Dominion area.
+    creation-denied: <red>Bu Dominion bölgesinde mağaza oluşturma izniniz yok.
     trade-denied: <red>The shop must be within a Dominion to trade with it.
   plotsquared:
     no-plot-whitelist-creation: <red>You cannot create shop outside of Plot.
@@ -849,18 +849,18 @@ addon:
   discord:
     __to_translators: 'To translators: `addon.discord.discord-messages` use a special variable in strings, %%LANG_KEY%% instead of QuickShop''s style {LANG_INDEX}, do not translate anything inside double ''%'' section. BUT for any other section texts, it respect the normal QuickShop Text System syntax ({0},{1} etc.) This may be difficult to understand because two different variable forms are used in the same program at the same time, but trust me, it is reasonable. (you don''t need translate this string, it''s a comment)'
     __to_users: Like the QuickShop Text System, Discord addon will also auto-detect user language and use user's language to send Discord message, it following the QuickShop-Hikari's language system settings.
-    __to_message_designer: 'Design your Discord message with GUI: https://glitchii.github.io/embedbuilder/, then copy the JSON code and paste it into the translation and here we go!'
+    __to_message_designer: 'Discord mesajınızı GUI ile tasarlayın: https://glitchii.github.io/embedbuilder/, ardından JSON kodunu kopyalayıp çeviri alanına yapıştırın ve işte bu kadar!'
     discord-enabled: <aqua>Successfully <green>enabled</green> your QuickShop discord messages, now you can receive the shop messages from Discord.
     discord-disabled: <aqua>Successfully <red>disabled</red> your QuickShop discord messages, now you won't receive the shop messages from Discord anymore.
-    discord-not-integrated: <red>You hadn't link your Discord yet! Please link your Discord account first!
-    feature-enabled-for-user: <aqua>You have <green>enabled</green> <gold>{0}</gold> notification.
-    feature-disabled-for-user: <aqua>You have <red>disabled</red> <gold>{0}</gold> notification.
-    link-help: <yellow>This server using <gold>{0}</gold> for Discord driver, please use <green>{0}</green> to link your Discord account.
-    save-notifaction-exception: <red>An error occurred while saving your Discord notifaction settings, please contact the server administrator.
+    discord-not-integrated: <red>Discord hesabını henüz bağlamamışsın! Lütfen önce Discord hesabını bağla!
+    feature-enabled-for-user: <aqua>Siz, <gold>{0}</gold> bildirimini <green>etkinleştirdiniz.</green>
+    feature-disabled-for-user: <aqua>Siz, <gold>{0}</gold> bildirimini <red>devredışı bıraktınız.</red>
+    link-help: <yellow>Bu sunucu Discord driver olarak <gold>{0}</gold> kullanmaktadır; Discord hesabınızı bağlamak için <green>{0}</green> kullanın.
+    save-notifaction-exception: <red>Discord bildirim ayarlarınızı kaydederken bir hata oluştu; lütfen sunucu yöneticisiyle iletişime geçin.
     feature-status-changed: <green>Successfully set the notifaction <aqua>{0}</aqua> status to <gold>{1}</gold>
     commands:
       discord:
-        description: <yellow>Managing your QuickShop Discord settings
+        description: <yellow>QuickShop Discord ayarlarınızı yönetme
     discord-messages:
       sold-to-your-shop: |
         {
@@ -1090,8 +1090,8 @@ addon:
       mod-shop-created: |
         {
           "embed": {
-            "title": ":classical_building: A new shop has been created",
-            "description": "Player created a new shop on your server!",
+            "title": ":classical_building: Yeni bir mağaza oluşturuldu",
+            "description": "Oyuncu, sunucunuzda yeni bir mağaza oluşturdu!",
             "color": 6061450,
             "author": {
               "name": "QuickShop-Hikari",
@@ -1104,32 +1104,32 @@ addon:
               "url": ""
             },
             "footer": {
-              "text": "QuickShop-Hikari Discord Notification",
+              "text": "QuickShop-Hikari Discord Bildirimi",
               "icon_url": ""
             },
             "fields": [
               {
-                "name": "Shop",
+                "name": "Mağaza",
                 "value": "%%shop.display-name%%",
                 "inline": false
               },
               {
-                "name": "Owner",
+                "name": "Sahibi",
                 "value": "%%shop.owner.name%%",
                 "inline": true
               },
               {
-                "name": "Item",
+                "name": "Ürün",
                 "value": "%%shop.item.name%%",
                 "inline": true
               },
               {
-                "name": "Amount",
+                "name": "Miktar",
                 "value": "%%shop.stacking-amount%%",
                 "inline": true
               },
               {
-                "name": "Type",
+                "name": "Türü",
                 "value": "%%shop.type%%",
                 "inline": true
               }
@@ -1424,7 +1424,7 @@ addon:
             UNIX Example: 1671273097
     discount-code-already-exists: <red>Sorry, the name of your discount code already in use.
     invalid-discount-code-regex: '<red>The discount code must matches the regex: <yellow>{0}</yellow>'
-    invalid-discount-code: <red>This discount code are invalid.
+    invalid-discount-code: <red>Bu indirim kodu geçersiz.
     discount-code-added: <green>Your discount code <yellow>{0}</yellow> has been added into shop <aqua>{1}</aqua>
     discount-code-removed: <green>Your discount code <yellow>{0}</yellow> has been removed from shop <aqua>{1}</aqua>
     invalid-code-type: <red>The code type <yellow>{0}</yellow> are invalid.
@@ -1481,7 +1481,7 @@ addon:
   list:
     commands:
       list: <yellow>Listing all shops owned by your or specific player
-    table-prefix: '<yellow><green>{0}</green>''s shops <gray>(Total {1})</gray>: '
+    table-prefix: '<yellow><green>{0}</green> kişisinin mağazaları <gray>(Toplam {1})</gray>: '
     table-prefix-pageable: '<yellow><green>{0}</green>''s shops <gray>(Page {1}/{2})</gray>: '
     entry: "<yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>Price <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}<br><green>{10}'>{0}.<aqua>{1}</hover>"
   shopitemonly:
@@ -1503,24 +1503,24 @@ addon:
     markerset-title: QuickShop-Hikari Shops
     marker-name: '{0} @ {2} @ {3} for x{4} @ {5}'
     marker-description: |
-      Name: {0}
-      Owner: {1}
-      Item: {2}
-      Price: {3} for x{4} item(s)
-      Type: {5}
-      Unlimited: {6}
-      Location: {7}
+      Adı: {0}
+      Sahibi: {1}
+      Ürün: {2}
+      Fiyatı: {3} (x{4} ürün için)
+      Türü: {5}
+      Sınırsız mı: {6}
+      Lokasyonu: {7}
   bluemap:
-    markerset-title: QuickShop-Hikari Shops
+    markerset-title: QuickShop-Hikari Mağazaları
     marker-name: '{0} @ {2} @ {3} for x{4} @ {5}'
     marker-description: |
-      Name: {0}
-      Owner: {1}
-      Item: {2}
-      Price: {3} for x{4} item(s)
-      Type: {5}
-      Unlimited: {6}
-      Location: {7}
+      Adı: {0}
+      Sahibi: {1}
+      Ürün: {2}
+      Fiyatı: {3} (x{4} ürün için)
+      Türü: {5}
+      Sınırsız mı: {6}
+      Lokasyonu: {7}
   chestprotect:
     protection-exists: <red>This region already protected by ChestProtect and you don't have permission to create shops at here.
     shops-exsts: <red>The region that you want to protect contains other player's shops and you don't have permission to access them.
@@ -1591,7 +1591,7 @@ suite:
     quota-remove: <green>Satın alma kısıtlaması bu dükkandan artık kaldırıldı!
     subtitles:
       title: <green>Satın Alma Başarılı
-      subtitle: <aqua>You can purchase <yellow>{0}</yellow> more in this shop
+      subtitle: <aqua>Bu mağazadan daha fazla <yellow>{0}</yellow> satın alabilirsiniz
   list:
     command-description: <yellow>Kendinize veya başka bir oyuncuya ait tüm dükkanları listeleyin.
     table-prefix: <yellow>Bu sunucuda toplam <aqua>{0}</aqua> mağazanız var.
