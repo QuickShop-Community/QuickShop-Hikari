@@ -209,7 +209,7 @@ public class PacketFactoryv26_3 implements PacketFactory<PacketContainer> {
         if(player == null || !player.isOnline() || player.getClass().getName().contains("TemporaryPlayer")) {
           return;
         }
-        final ChunkCoordIntPair pair = event.getPacket().getChunkCoordIntPairs().read(0);
+        final ChunkCoordIntPair pair = ProtocolLibHandler.readChunkCoordinates(event.getPacket());
         VirtualDisplayItemManager.instance().chunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), pair.getChunkX(), pair.getChunkZ()), (chunkLoc, targetList)->{
           for(final VirtualDisplayItem<?> target : targetList.values()) {
             if(target.isSpawned() && target.isApplicableForPlayer(player)) {
@@ -234,7 +234,7 @@ public class PacketFactoryv26_3 implements PacketFactory<PacketContainer> {
         if(player == null || !player.isOnline() || player.getClass().getName().contains("TemporaryPlayer")) {
           return;
         }
-        final ChunkCoordIntPair pair = event.getPacket().getChunkCoordIntPairs().read(0);
+        final ChunkCoordIntPair pair = ProtocolLibHandler.readChunkCoordinates(event.getPacket());
         VirtualDisplayItemManager.instance().chunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), pair.getChunkX(), pair.getChunkZ()), (chunkLoc, targetList)->{
           for(final VirtualDisplayItem<?> target : targetList.values()) {
             if(target.isSpawned()) {

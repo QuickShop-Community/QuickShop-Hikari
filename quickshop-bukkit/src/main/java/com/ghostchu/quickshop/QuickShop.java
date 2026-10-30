@@ -949,7 +949,11 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         logger.info("Using Virtual Displays. Attempting to initialize packet factory...");
         try {
 
-          this.displayManager = new VirtualDisplayItemManager(this);
+          final VirtualDisplayItemManager virtualManager = new VirtualDisplayItemManager(this);
+          this.displayManager = virtualManager;
+
+          final Plugin packetPlugin = Bukkit.getPluginManager().getPlugin(virtualManager.packetHandler().pluginName());
+          logger.info("Using {} as the packet handler for virtual displays.", packetPlugin != null? packetPlugin.getName() : virtualManager.packetHandler().pluginName());
         } catch(final Exception | NoClassDefFoundError e) {
 
           //disable displays since we don't have packet support
