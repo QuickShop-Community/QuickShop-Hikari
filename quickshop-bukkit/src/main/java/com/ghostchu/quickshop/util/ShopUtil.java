@@ -185,8 +185,8 @@ public class ShopUtil {
       return false;
     }
 
-    //max 32 total digits
-    return price.precision() <= 32;
+    //DECIMAL(32,2) allows at most 30 integer digits
+    return price.precision() - price.scale() <= 30;
   }
 
   public static void setPrice(final QuickShop plugin, @NotNull final QUser user, final double price, @NotNull final Shop shop) {
