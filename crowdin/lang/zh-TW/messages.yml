@@ -121,7 +121,7 @@ tags:
   general:
     database-error: "<red>An error occurred while executing a tag operation."
     list-entry: "<green>{0}.</green> <aqua>{1}</aqua> <light_purple>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>View all shops with this tag\">View Shops</hover></click>]</light_purple> <red>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove</hover></click>]</red>"
-    invalid: "<red>Invalid tag. Only letters, dash (-), and underscore (_) are allowed. Max length: <yellow>{0}</yellow>"
+    invalid: "<red>無效標籤。只接受文字、連接號（-）和下橫線（_）。字數上限：<yellow>{0}</yellow>"
   avoid:
     added: "<green>已將此商店加入屏蔽清單。"
     removed: "<green>已將此商店從你的屏蔽清單中移除。"
