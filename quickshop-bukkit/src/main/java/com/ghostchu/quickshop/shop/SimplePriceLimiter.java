@@ -127,7 +127,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
     }
     if(configuration.getInt("version") == 2) {
       if(configuration.getDouble("undefined.max") == -1) {
-        configuration.set("undefined.max", 1.0E29); // DECIMAL (32,2) MAX
+        configuration.set("undefined.max", 1.0E25); // DECIMAL (32,7) MAX
       }
       configuration.set("version", 3);
       anyChanges = true;
@@ -135,7 +135,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
     if(configuration.getInt("version") == 3) {
       Log.debug("Migrating price-restriction.yml from version 3 to version 4");
       final double min = configuration.getDouble("undefined.min", 0.01);
-      final double max = configuration.getDouble("undefined.max", 1.0E29);
+      final double max = configuration.getDouble("undefined.max", 1.0E25);
       configuration.set("global.selling.min", min);
       configuration.set("global.selling.max", max);
       configuration.set("global.buying.min", min);
