@@ -146,8 +146,7 @@ public class MainPage {
         final int next = (page >= maxPages)? 1 : page + 1;
 
         // Set up borders from config
-        final String borderMaterial = (borderConfig != null)? borderConfig.getMaterial() : "GRAY_STAINED_GLASS_PANE";
-        final IconBuilder borderBuilder = new IconBuilder(QuickShop.getInstance().stack().of(borderMaterial, 1));
+        final IconBuilder borderBuilder = new IconBuilder(QuickShop.getInstance().stack(borderConfig, "GRAY_STAINED_GLASS_PANE", 1));
         final List<Integer> borderRows = (borderConfig != null)? borderConfig.getRows() : List.of(1, 6);
         for(final int row : borderRows) {
           callback.getPage().setRow(row, borderBuilder);
@@ -168,9 +167,7 @@ public class MainPage {
         final Component shopType = QuickShop.getInstance().text().of(shop.shopType().translationKey()).forLocale();
 
         // Shop info icon from config
-        final String shopInfoMaterial = (shopInfoConfig != null)? shopInfoConfig.getMaterial() : "PLAYER_HEAD";
         final int shopInfoSlot = (shopInfoConfig != null)? shopInfoConfig.getSlot() : 4;
-        final String multiShopMaterial = (multiShopConfig != null)? multiShopConfig.getMaterial() : "CHEST";
         final int multiShopSlot = (multiShopConfig != null)? multiShopConfig.getSlot() : 4;
 
         if(shops.size() == 1) {
@@ -183,7 +180,7 @@ public class MainPage {
             ownerProfile.uuid(owner.getUniqueId());
           }
 
-          callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(shopInfoMaterial, 1)
+          callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack(shopInfoConfig, "PLAYER_HEAD", 1)
                                                              .customName(shopName)
                                                              .lore(getConfigLore(id, shopInfoConfig,
                                                                                  shopType,
@@ -199,17 +196,16 @@ public class MainPage {
                                              .build());
         } else {
 
-          callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(multiShopMaterial, 1)
+          callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack(multiShopConfig, "CHEST", 1)
                                                              .customName(getConfigDisplay(id, multiShopConfig, "<yellow>Multiple Shops ({0})</yellow>", shops.size())))
                                              .withSlot(multiShopSlot)
                                              .build());
         }
 
         // Summary icon from config
-        final String summaryMaterial = (summaryConfig != null)? summaryConfig.getMaterial() : "OAK_SIGN";
         final int summarySlot = (summaryConfig != null)? summaryConfig.getSlot() : 0;
 
-        callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(summaryMaterial, 1)
+        callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack(summaryConfig, "OAK_SIGN", 1)
                                                            .customName(getConfigDisplay(id, summaryConfig, "<yellow>Summary</yellow>"))
                                                            .lore(getConfigLore(id, summaryConfig, locale.getNumberFormat().format(summary.totalPurchases()),
                                                                                locale.getNumberFormat().format(summary.uniquePurchasers()),
@@ -228,7 +224,6 @@ public class MainPage {
                                            .build());
 
         // Top customers icon from config
-        final String topCustomersMaterial = (topCustomersConfig != null)? topCustomersConfig.getMaterial() : "DIAMOND";
         final int topCustomersSlot = (topCustomersConfig != null)? topCustomersConfig.getSlot() : 8;
 
         final List<Component> valuableDescription = new ArrayList<>(summary.valuableCustomers().size());
@@ -237,26 +232,24 @@ public class MainPage {
                                                                                          entry.getKey()).getDisplay(), entry.getValue()));
         }
 
-        callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(topCustomersMaterial, 1)
+        callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack(topCustomersConfig, "DIAMOND", 1)
                                                            .customName(getConfigDisplay(id, topCustomersConfig, "<aqua>Top Customers ({0})</aqua>", summary.valuableCustomers().size()))
                                                            .lore(valuableDescription)).withSlot(topCustomersSlot).build());
 
         // Pagination icons from config
-        final String prevPageMaterial = (prevPageConfig != null)? prevPageConfig.getMaterial() : "ARROW";
         final int prevPageSlot = (prevPageConfig != null)? prevPageConfig.getSlot() : 3;
-        final String nextPageMaterial = (nextPageConfig != null)? nextPageConfig.getMaterial() : "ARROW";
         final int nextPageSlot = (nextPageConfig != null)? nextPageConfig.getSlot() : 5;
 
         if(maxPages > 1) {
 
-          callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(prevPageMaterial, 1)
+          callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack(prevPageConfig, "ARROW", 1)
                                                              .customName(getConfigDisplay(id, prevPageConfig, "<white><< Previous Page</white>"))
                                                              .lore(getConfigLore(id, prevPageConfig, page)))
                                              .withActions(new DataAction(staffPageID, prev), new SwitchPageAction(menuName, menuPage))
                                              .withSlot(prevPageSlot)
                                              .build());
 
-          callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(nextPageMaterial, 1)
+          callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack(nextPageConfig, "ARROW", 1)
                                                              .customName(getConfigDisplay(id, nextPageConfig, "<white>Next Page >></white>"))
                                                              .lore(getConfigLore(id, nextPageConfig, page)))
                                              .withActions(new DataAction(staffPageID, next), new SwitchPageAction(menuName, menuPage))

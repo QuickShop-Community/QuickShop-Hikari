@@ -21,7 +21,7 @@
 # Common tags: <bold>, <italic>, <red>, <green>, <yellow>, <aqua>, <gradient:color1:color2>
 # If you wish to use a value from the language file for display names or lore, start your value with "lang:"
 
-version: 7
+version: 8
 
 # ===================
 # GLOBAL STYLE SETTINGS
@@ -43,6 +43,7 @@ trade:
   border:
     material: GRAY_STAINED_GLASS_PANE
     name: " "
+    provider: "vanilla"
     custom-model-data: 0
     rows: [1, 4, 6]  # Top, middle separator, bottom
   
@@ -66,6 +67,7 @@ trade:
     name: "lang:gui.trade.info-price.display"
     lore:
       - "lang:gui.trade.info-price.lore"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 22
   
@@ -74,6 +76,7 @@ trade:
     name: "lang:gui.trade.info-seller.display"
     lore:
       - "lang:gui.trade.info-seller.lore"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 23
   
@@ -81,6 +84,7 @@ trade:
   custom-amount:
     material: NAME_TAG
     name: "lang:gui.trade.custom-amount.display"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 43
   
@@ -93,6 +97,7 @@ trade:
     slots: [37, 38, 39, 40, 41, 42]
     quantities: [1, 2, 4, 8, 16, 64]
     close-after: true
+    provider: "vanilla"
     display-buy: "lang:gui.trade.quantity-button.display-buy"
     display-sell: "lang:gui.trade.quantity-button.display-sell"
     lore:
@@ -102,6 +107,7 @@ trade:
   close:
     material: BARRIER
     name: "lang:gui.shared.close.display"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 49
 
@@ -115,6 +121,7 @@ keeper:
   border:
     material: GRAY_STAINED_GLASS_PANE
     name: " "
+    provider: "vanilla"
     custom-model-data: 0
     rows: [2, 4]  # Separator and bottom
   
@@ -144,6 +151,7 @@ keeper:
     name: "lang:gui.keeper.change-price.display"
     lore:
       - "lang:gui.keeper.change-price.lore"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 19
 
@@ -187,6 +195,7 @@ keeper:
     name: "lang:gui.keeper.staff.display"
     lore:
       - "lang:gui.keeper.staff.lore"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 23
     disable: false
@@ -197,6 +206,7 @@ keeper:
     name: "lang:gui.keeper.history.display"
     lore:
       - "lang:gui.keeper.history.lore"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 24
   
@@ -206,6 +216,7 @@ keeper:
     name: "lang:gui.keeper.remove.display"
     lore:
       - "lang:gui.keeper.remove.lore"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 25
   
@@ -213,6 +224,7 @@ keeper:
   close:
     material: OAK_DOOR
     name: "lang:gui.shared.close.display"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 31
 
@@ -228,6 +240,7 @@ staff:
   border:
     material: GRAY_STAINED_GLASS_PANE
     name: " "
+    provider: "vanilla"
     custom-model-data: 0
     rows: [1, 6]
   
@@ -238,6 +251,7 @@ staff:
     name: "lang:gui.staff.search.display"
     lore:
       - "lang:gui.staff.search.lore"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 0
   
@@ -247,6 +261,7 @@ staff:
     name: "lang:gui.staff.add-staff.display"
     lore:
       - "lang:gui.staff.add-staff.lore"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 4
   
@@ -254,6 +269,7 @@ staff:
   back:
     material: OAK_DOOR
     name: "lang:gui.shared.back.display"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 8
   
@@ -261,18 +277,21 @@ staff:
   previous-page:
     material: ARROW
     name: "lang:gui.shared.previous-page.display"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 48
   
   next-page:
     material: ARROW
     name: "lang:gui.shared.next-page.display"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 50
   
   page-info:
     material: BOOK
     name: "lang:gui.shared.page-info.display"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 49
   
@@ -289,6 +308,7 @@ history:
   border:
     material: GRAY_STAINED_GLASS_PANE
     name: " "
+    provider: "vanilla"
     custom-model-data: 0
     rows: [1, 6]
 
@@ -297,6 +317,7 @@ history:
     name: "lang:history.shop.log-icon-title"
     lore:
       - "lang:history.shop.log-icon-description-with-store-name"
+    provider: "vanilla"
     custom-model-data: 0
   
   # Summary icon
@@ -305,6 +326,7 @@ history:
     name: "lang:history.shop.summary-icon-title"
     lore:
       - "lang:history.shop.summary-icon-description"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 0
   
@@ -313,6 +335,7 @@ history:
     material: PLAYER_HEAD
     lore:
       - "lang:history.shop.header-icon-description"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 4
   
@@ -320,6 +343,7 @@ history:
   multi-shop-info:
     material: CHEST
     name: "lang:history.shop.multi-shops-icon-title"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 4
   
@@ -329,24 +353,28 @@ history:
     name: "lang:history.shop.top-n-valuable-customers-title"
     lore:
       - "lang:history.shop.top-n-valuable-customers-entry"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 8
   
   previous-page:
     material: ARROW
     name: "lang:gui.shared.previous-page.display"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 3
   
   next-page:
     material: ARROW
     name: "lang:gui.shared.next-page.display"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 5
   
   back:
     material: OAK_DOOR
     name: "lang:gui.shared.back.display"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 49
   
@@ -364,6 +392,7 @@ browse:
   border:
     material: GRAY_STAINED_GLASS_PANE
     name: " "
+    provider: "vanilla"
     custom-model-data: 0
     rows: [1, 6]
 
@@ -427,6 +456,7 @@ browse:
     name: "lang:gui.browse.search.display"
     lore:
       - "lang:gui.browse.search.lore"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 0
   #Same as above, but if the player is search for a specific item.
@@ -442,6 +472,7 @@ browse:
     name: "lang:gui.browse.sort.display"
     lore:
       - "lang:gui.browse.sort.lore"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 2
 
@@ -455,6 +486,7 @@ browse:
     name: "lang:gui.browse.filter.display"
     lore:
       - "lang:gui.browse.filter.lore"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 4
   
@@ -465,6 +497,7 @@ browse:
     name: "lang:gui.browse.stock-filter.display"
     lore:
       - "lang:gui.browse.stock-filter.lore"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 6
   
@@ -472,6 +505,7 @@ browse:
   close:
     material: BARRIER
     name: "lang:gui.shared.close.display"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 8
   
@@ -479,6 +513,7 @@ browse:
   back:
     material: OAK_DOOR
     name: "lang:gui.shared.back.display"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 8
   
@@ -486,18 +521,21 @@ browse:
   previous-page:
     material: ARROW
     name: "lang:gui.shared.previous-page.display"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 48
   
   next-page:
     material: ARROW
     name: "lang:gui.shared.next-page.display"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 50
   
   page-info:
     material: BOOK
     name: "lang:gui.shared.page-info.display"
+    provider: "vanilla"
     custom-model-data: 0
     slot: 49
   
@@ -510,19 +548,23 @@ shared:
   previous-page:
     material: ARROW
     name: "lang:gui.shared.previous-page.display"
+    provider: "vanilla"
     custom-model-data: 0
   
   next-page:
     material: ARROW
     name: "lang:gui.shared.next-page.display"
+    provider: "vanilla"
     custom-model-data: 0
   
   back:
     material: OAK_DOOR
     name: "lang:gui.shared.back.display"
+    provider: "vanilla"
     custom-model-data: 0
   
   close:
     material: BARRIER
     name: "lang:gui.shared.close.display"
+    provider: "vanilla"
     custom-model-data: 0
