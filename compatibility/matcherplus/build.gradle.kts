@@ -2,6 +2,12 @@ plugins {
     id("quickshop.compat-conventions")
 }
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(25))
+    }
+}
+
 dependencies {
     compileOnly(libs.paper.api)
     implementation(project(":compatibility:common"))

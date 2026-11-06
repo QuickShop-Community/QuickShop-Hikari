@@ -1420,9 +1420,72 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     return new PaperItemStack();
   }
 
+  public AbstractItemStack<?> stack(final GuiConfig.IconConfig config) {
+
+    return stack(config, config.getAmount());
+  }
+
+  public AbstractItemStack<?> stack(final GuiConfig.IconConfig config, final int amount) {
+
+    PaperItemStack stack = new PaperItemStack().of(config.getMaterial(), amount);
+
+    final String provider = config.getProvider();
+    if (!provider.equalsIgnoreCase("vanilla")) {
+
+      stack = stack.setItemProvider(provider);
+    }
+
+    return stack;
+  }
+
+  public AbstractItemStack<?> stack(final GuiConfig.IconConfig config, final String defaultMaterial, final int amount) {
+
+    final String material = (config == null)? defaultMaterial : config.getMaterial();
+
+    PaperItemStack stack = new PaperItemStack().of(material, amount);
+
+    final String provider = (config == null)? "vanilla" : config.getProvider();
+    if (!provider.equalsIgnoreCase("vanilla")) {
+
+      stack = stack.setItemProvider(provider);
+    }
+
+    return stack;
+  }
+
+  public AbstractItemStack<?> stackSwitch(final GuiConfig.IconConfig config, final boolean condition, final String trueMaterial, final String falseMaterial) {
+
+    return stackSwitch(config, config.getAmount(), condition, trueMaterial, falseMaterial);
+  }
+
+  public AbstractItemStack<?> stackSwitch(final GuiConfig.IconConfig config, final int amount, final boolean condition, final String trueMaterial, final String falseMaterial) {
+
+    final String material = (condition)? trueMaterial : falseMaterial;
+
+    PaperItemStack stack = new PaperItemStack().of(material, amount);
+
+    final String provider = (config == null)? "vanilla" : config.getProvider();
+    if (!provider.equalsIgnoreCase("vanilla")) {
+
+      stack = stack.setItemProvider(provider);
+    }
+
+    return stack;
+  }
+
   public AbstractItemStack<ItemStack> stack(final ItemStack itemStack) {
 
     return new PaperItemStack().of(itemStack);
+  }
+
+  public AbstractItemStack<ItemStack> stack(final ItemStack itemStack, final int amount) {
+
+    return stack(itemStack.getType().key().asString(), amount);
+  }
+
+  public AbstractItemStack<ItemStack> stack(final String material, final int amount) {
+
+    return new PaperItemStack().of(material, amount);
   }
 
   @NotNull
