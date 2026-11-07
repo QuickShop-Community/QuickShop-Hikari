@@ -71,7 +71,20 @@ public class SimpleTradeService implements TradeService {
                                                  @NotNull final TradeOptions options) {
     Util.ensureThread(false);
 
-    final int normalizedAmount = normalizeAmount(shop, amount);
+    int normalizedAmount = 0;
+    try {
+      normalizedAmount = normalizeAmount(shop, amount);
+    } catch(final Exception ignore) {
+      return failedResult(
+              TradeType.SELL_TO_SHOP,
+              null,
+              amount,
+              0,
+              BigDecimal.ZERO,
+              BigDecimal.ZERO,
+              TradeFailureReason.INVALID_AMOUNT,
+              "Invalid trade quantity");
+    }
     if(normalizedAmount < 0) {
       return executeSellToShop(shop, buyer, buyerInventory, dropLocation, -amount, options);
     }
@@ -178,7 +191,20 @@ public class SimpleTradeService implements TradeService {
                                                 @NotNull final TradeOptions options) {
     Util.ensureThread(false);
 
-    final int normalizedAmount = normalizeAmount(shop, amount);
+    int normalizedAmount = 0;
+    try {
+      normalizedAmount = normalizeAmount(shop, amount);
+    } catch(final Exception ignore) {
+      return failedResult(
+              TradeType.SELL_TO_SHOP,
+              null,
+              amount,
+              0,
+              BigDecimal.ZERO,
+              BigDecimal.ZERO,
+              TradeFailureReason.INVALID_AMOUNT,
+              "Invalid trade quantity");
+    }
     if(normalizedAmount < 0) {
       return executeBuyFromShop(shop, seller, sellerInventory, dropLocation, -amount, options);
     }
@@ -293,7 +319,35 @@ public class SimpleTradeService implements TradeService {
 
       final int stackSize = Math.max(1, shop.getItem().getAmount());
       final int stock = Util.countItems(chestInv, shop);
-      final int requestedUnits = normalizeAmount(shop, amount) / stackSize;
+      int requestedUnits = 0;
+      try {
+        requestedUnits = normalizeAmount(shop, amount) / stackSize;
+      } catch(final Exception ignore) {
+
+        return new TradePreview(
+                TradeType.SELL_TO_SHOP,
+                amount,
+                requestedUnits,
+                unitPrice(shop),
+                totalPrice(shop, requestedUnits),
+                false,
+                TradeFailureReason.ITEM_NOT_ENOUGH,
+                "Invalid trade amount."
+        );
+      }
+
+      if (requestedUnits <= 0) {
+        return new TradePreview(
+                TradeType.SELL_TO_SHOP,
+                amount,
+                requestedUnits,
+                unitPrice(shop),
+                totalPrice(shop, requestedUnits),
+                false,
+                TradeFailureReason.ITEM_NOT_ENOUGH,
+                "Invalid trade amount."
+        );
+      }
       if(stock < requestedUnits) {
         final int allowedTrades = stock / stackSize;
         return new TradePreview(
@@ -352,7 +406,36 @@ public class SimpleTradeService implements TradeService {
 
 
     final int stackSize = Math.max(1, shop.getItem().getAmount());
-    final int requestedUnits = normalizeAmount(shop, amount) / stackSize;
+    int requestedUnits = 0;
+    try {
+      requestedUnits = normalizeAmount(shop, amount) / stackSize;
+    } catch(final Exception ignore) {
+
+      return new TradePreview(
+              TradeType.SELL_TO_SHOP,
+              amount,
+              requestedUnits,
+              unitPrice(shop),
+              totalPrice(shop, requestedUnits),
+              false,
+              TradeFailureReason.ITEM_NOT_ENOUGH,
+              "Invalid trade amount."
+      );
+    }
+
+    if (requestedUnits <= 0) {
+      return new TradePreview(
+              TradeType.SELL_TO_SHOP,
+              amount,
+              requestedUnits,
+              unitPrice(shop),
+              totalPrice(shop, requestedUnits),
+              false,
+              TradeFailureReason.ITEM_NOT_ENOUGH,
+              "Invalid trade amount."
+      );
+    }
+
     final int sellerStock = Util.countItems(sellerInventory, shop);
     if(sellerStock < requestedUnits) {
       final int allowedTrades = sellerStock / stackSize;
@@ -417,8 +500,19 @@ public class SimpleTradeService implements TradeService {
     );
   }
 
+  /*
   private int normalizeAmount(@NotNull final Shop shop, final int tradeAmount) {
     return shop.getItem().getAmount() * tradeAmount;
+  }*/
+
+  private int normalizeAmount(@NotNull final Shop shop, final int tradeAmount) {
+
+    if (tradeAmount <= 0) {
+
+      throw new IllegalArgumentException("Trade amount must be positive");
+    }
+
+    return Math.multiplyExact(shop.getItem().getAmount(), tradeAmount);
   }
 
   @SuppressWarnings("unchecked")
