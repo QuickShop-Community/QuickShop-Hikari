@@ -1,7 +1,10 @@
 {
   "releases": [
     {
-      "version": "6.3.0.4"
+      "version": "6.3.0.4",
+      "minecraft": "1.20 - 26.3",
+      "java": "21",
+      "serverSoftware": ["Paper", "Purpur", "Folia"]
     },
     {
       "version": "6.3.0.3"
