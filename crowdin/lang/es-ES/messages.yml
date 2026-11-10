@@ -537,7 +537,7 @@ command:
     lookup: <yellow>Administrar tabla de elementos consultables
     database: <yellow>Ver y mantener la base de datos del sistema de tiendas de empresas
     benefit: <yellow>Configuración de dividir el porcentaje de beneficios (ingresos) entre el dueño de la tienda de empresa y otros jugadores
-    benefitall: <yellow>Settings of divide benefits between shop owner and other players for all shops you own.
+    benefitall: Configuración de cómo dividir los beneficios entre el dueño de la tienda y otros jugadores para todas las tiendas que posees.
     browse: <yellow>Explorar tiendas de empresa que existen en este servidor.
     tag: <yellow>Añadir, eliminar o consultar etiquetas de una tienda de empresa
     suggestprice: <yellow>Sugerir un precio recomendado para la tienda de empresa, basado en otras tiendas
@@ -687,7 +687,7 @@ debug:
   toggle-shop-loaded-status: <aqua>Toggle this shop loaded status to <gold>{0}</gold>
   shop-internal-data: '<yellow>The internal data of this shop: <reset>{0}</reset>'
   handler-list-not-valid-bukkit-event-class: quicks
-  update-player-shops-signs-no-username-given: <red>You must provide a valid player username.
+  update-player-shops-signs-no-username-given: Debes proporcionar un nombre de usuario de jugador válido.
   update-player-shops-signs-create-async-task: <yellow>Creating async tasks for force updating signs...
   update-player-shops-player-selected: '<yellow>Player selected: <gold>{0}</gold>'
   update-player-shops-player-shops: <yellow>Total <gold>{0}</gold> shops waiting for updates.
@@ -695,21 +695,21 @@ debug:
   update-player-shops-complete:
   update-player-shops-task-started: <gold>The tasks has been started, please wait for it to complete.
   item-info-store-as-string: "<green>The store you looking at: <gold>{0}</gold> Hash: <white>{1}</white>"
-  item-info-hand-as-string: "<green>The item in your hand: <gold>{0}</gold> Hash: <white>{1}</white>"
+  item-info-hand-as-string: "<green>El objeto en tu mano: <gold>{0}</gold> Hash: <white>{1}</white>"
   item-matching-result: "<green>Hand2Store: <aqua>{0}</aqua>, Store2Hand: <aqua>{1}</aqua>"
   hikari-cp-size-tweak: "<green>HikariCP MaximumPoolSize and MinimumIdle was set to <white>{0}</white>"
   hikari-cp-testing: "<green>Please wait, testing HikariCP connection..."
-  hikari-cp-working: "<green>Pass! HikariCP working well!"
+  hikari-cp-working: "¡<green>! ¡HikariCP funciona bien!"
   hikari-cp-not-working: "<red>¡Fracasado! ¡La conexión que devolvió HikariCP está muerta! (No pasó la prueba en 1 segundo)"
-  hikari-cp-timeout: "<red>HikariCP is timed out while getting a valid connection, please clean up all active queries to release connection resources."
-  queries-stopped: "<green>Stopped <white>{0}</white> active queries."
+  hikari-cp-timeout: "<red>HikariCP ha caducado el tiempo de espera al obtener una conexión válida, por favor limpia todas las consultas activas para liberar los recursos de la conexión."
+  queries-stopped: "<green>Detenió <white>{0}</white> consultas activas."
   queries-dumping: "<yellow>Dumping active queries..."
   restart-database-manager: "<yellow>Restarting SQLManager..."
   restart-database-manager-clear-executors: "<yellow>Clearing executors..."
   restart-database-manager-unfinished-task: "<yellow>Unfinished task: <white>{0}</white>"
   restart-database-manager-unfinished-task-history-query: "<yellow>Unfinished task (History Query): <white>{0}</white>"
   restart-database-manager-reconnect: "<yellow>Re-launching SQLManager via initial sequence (via async executor)"
-  restart-database-manager-done: "<green>Done!"
+  restart-database-manager-done: "Listo!"
   property-incorrect: "<yellow>You must enter a (and only one) property key=value set. E.g   aaa=bbb"
   property-security-block: "<red>Request was rejected, for security reason, you can only change the property that startsWith <aqua>com.ghostchu.quickshop</aqua> or <aqua>quickshop</aqua>."
   property-removed: "<green>Removed property key <white>{0}</white>"
@@ -721,8 +721,8 @@ database:
   scanning-async: <yellow>Scanning the isolated data in QuickShop databases on async task thread, the database load may increase in scan progress, this might need a while, try again later.
   already-scanning: <red>An scan task has been started, please wait until it finished.
   trim-warning: '<yellow><red><bold>Warning: </red>Backup your database before continue database trim to avoid the data loss. Once you get ready, execute <aqua>/qs database trim confirm</aqua> to continue.'
-  status: '<yellow>Status: {0}'
-  status-good: <green>Good
+  status: '<yellow>Estado: {0}'
+  status-good: Bien
   status-bad: <yellow>Maintenance Required
   isolated: '<yellow>Isolated Data:'
   isolated-data-ids: '<yellow><aqua>└</aqua> Data Records: <gold>{0}</gold>'
