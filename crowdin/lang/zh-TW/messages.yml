@@ -415,7 +415,7 @@ backup-failed: 無法備份商店資料庫，請查看控制台以獲得詳細�
 shop-staff-cleared: <green>成功地將所有員工從你的商店移除。
 price-too-high: <red>商店價格太高了！請設定在 {0} 以內。
 plugin-cancelled: '<red>操作被取消。原因：{0}'
-player-sold-to-your-store: <green>{0} sold {1} {2} to your shop for {3}.
+player-sold-to-your-store: <green>{0} 以 {3} 向你的商店出售了 {1} 個 {2}。
 shop-out-of-stock: <dark_purple>你在 {0}, {1}, {2} 出售 {3} 的商店已售罄一空！
 how-many-buy: <green>在聊天室中輸入你想要 <aqua>購買 <green>的數量，你可以購買 <yellow>{0} <green>個。輸入 <aqua>{1}<green>購買全部。
 language-info-panel:
@@ -456,8 +456,8 @@ controlpanel:
   remove-hover: <yellow>點擊移除此商店。
   toggledisplay-hover: <yellow>切換商店是否顯示懸浮物
   refill: '<green>補貨：重新填充商品 <yellow>[<bold><light_purple>好</light_purple></bold>]'
-  inventory: '<green>Inventory: </green><yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
-  inventory-hover: <yellow>Open the shop's inventory.
+  inventory: '<green>庫存：</green><yellow>[<bold><light_purple>查看庫存</light_purple></bold>]'
+  inventory-hover: <yellow>打開商店庫存。
   freeze-hover: <yellow>切換商店凍結狀態。
   lock-hover: <yellow>啟用 / 停用商店鎖保護。
   item-hover: <yellow>點擊變更商店物品
@@ -839,9 +839,9 @@ addon:
     world-not-enabled: <red>你不能在此世界中建立或購買商店。
     creation-denied: <red>你沒有在此領土建立商店的權限。
   quests:
-    create-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to create a shop.
-    sell-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to sell items to a shop.
-    buy-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to buy items from a shop.
+    create-quest-required: <red>你必須先完成任務 <aqua>{0}</aqua> 才可建立商店。
+    sell-quest-required: <red>你必須先完成任務 <aqua>{0}</aqua> 才可向商店出售物品。
+    buy-quest-required: <red>你必須先完成任務 <aqua>{0}</aqua> 才可從商店裡購買物品。
   dominion:
     creation-denied: <red>您無權在此區域建立商店。
     trade-denied: <red>The shop must be within a Dominion to trade with it.
