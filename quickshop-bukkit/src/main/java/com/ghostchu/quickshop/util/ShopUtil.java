@@ -177,11 +177,11 @@ public class ShopUtil {
     QuickShop.getInstance().text().of(receiverQUser, "transfer-single-ask", 60).send();
   }
 
-  //check if the price will fit within DECIMAL(32,2)
+  //check if the price will fit within DECIMAL(32,7)
   public static boolean isValidPrice(final BigDecimal price) {
 
-    //At most 2 decimal places
-    if (price.scale() > 2) {
+    //At most 7 decimal places
+    if (price.scale() > 7) {
       return false;
     }
 
