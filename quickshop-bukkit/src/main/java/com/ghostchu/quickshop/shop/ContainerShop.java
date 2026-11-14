@@ -285,8 +285,11 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     while(remains > 0) {
       final int stackSize = Math.min(remains, itemMaxStackSize);
       item.setAmount(stackSize);
-      Objects.requireNonNull(inv).addItem(item);
+      final Map<Integer, ItemStack> leftovers = Objects.requireNonNull(inv).addItem(item);
       remains -= stackSize;
+      if(!leftovers.isEmpty()) {
+        break;
+      }
     }
     this.setSignText();
   }
