@@ -216,14 +216,10 @@ public final class MarketUtils {
     final List<Shop> sorted = new ArrayList<>(shops);
 
     switch(sortMode) {
-      case PRICE_ASC -> {
-
-        sorted.sort((a, b) -> a.comparePrice(b.price(), false));
-      }
+      case PRICE_ASC -> sorted.sort((a, b) -> a.comparePrice(b.price(), false));
       case PRICE_DESC -> sorted.sort((a, b) -> a.comparePrice(b.price(), true));
       case STOCK -> sorted.sort(Comparator.comparingInt(MarketUtils::getStockFromCache).reversed());
-      case NAME -> sorted.sort(Comparator.comparing(shop->
-                                                            CommonUtil.prettifyText(shop.getItem().getType().name())));
+      case NAME -> sorted.sort(Comparator.comparing(shop->CommonUtil.prettifyText(shop.getItem().getType().name())));
     }
 
     return sorted;

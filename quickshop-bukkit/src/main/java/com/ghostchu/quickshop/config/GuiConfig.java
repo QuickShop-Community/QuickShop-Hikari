@@ -196,6 +196,16 @@ public class GuiConfig extends QSConfig {
       return section.getString("material", "STONE");
     }
 
+    @NotNull
+    public String getProvider() {
+
+      if (!section.contains("provider")) {
+        return "vanilla";
+      }
+
+      return section.getString("provider", "vanilla");
+    }
+
     @Nullable
     public String getName() {
 
