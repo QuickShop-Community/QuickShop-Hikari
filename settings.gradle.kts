@@ -39,8 +39,6 @@ dependencyResolutionManagement {
         maven("https://repo.spaceio.xyz/repository/maven-public/")
         maven("https://maven.enginehub.org/repo/")
         maven("https://maven.mohistmc.com/")
-        maven("https://nexus.liggesmeyer.net/repository/maven-releases/")
-        maven("https://nexus.liggesmeyer.net/repository/maven-snapshots/")
         maven("https://nexus.scarsz.me/content/groups/public/")
         maven("https://oss.sonatype.org/content/groups/public/")
         maven("https://oss.sonatype.org/content/repositories/snapshots")
@@ -57,7 +55,6 @@ dependencyResolutionManagement {
         maven("https://repo.dustplanet.de/artifactory/libs-release-local/")
         maven("https://repo.essentialsx.net/releases/")
         maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
-        maven("https://repo.georgev22.com/releases")
         maven("https://repo.glaremasters.me/repository/towny/")
         maven("https://repo.jsinco.dev/releases")
         maven("https://repo.magmaguy.com/releases")
@@ -74,6 +71,9 @@ dependencyResolutionManagement {
         maven("https://repo.william278.net/releases")
         maven("https://repo.xenondevs.xyz/releases")
         maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+        maven("https://repo.georgev22.com/releases")
+        maven("https://nexus.liggesmeyer.net/repository/maven-releases/")
+        maven("https://nexus.liggesmeyer.net/repository/maven-snapshots/")
     }
 }
 
@@ -92,7 +92,7 @@ include("compatibility:common")
 project(":compatibility:common").projectDir = file("compatibility/common")
 
 listOf(
-    "advancedregionmarket", "bentobox", "bolt", "bungeecord", "bungeecord-geyser",
+    /*"advancedregionmarket", */"bentobox", "bolt", "bungeecord", "bungeecord-geyser",
     "chestprotect", "clearlag", "craftengine", "dominion", "ecoenchants", "elitemobs", "griefprevention",
     "husktowns", "itemsadder", "lands", "matcherplus", "openinv", "plotsquared", "reforges",
     "residence", "simpleclaimsystem", "slimefun", "superiorskyblock", "towny",
