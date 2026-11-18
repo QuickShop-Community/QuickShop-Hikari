@@ -31,7 +31,7 @@ tabcomplete:
   clearall: 'temizletümü'
   shops: 'mağazalar'
   tagged: 'etiketli'
-  purge: 'purge'
+  purge: 'temizle'
   tag: '[etiket]'
 taxaccount-unset: <green>Bu dükkanın vergi hesabı artık sunucu genel ayarını takip ediyor.
 blacklisted-item: <red>Bu öğeyi satamazsın çünkü kara listede
@@ -118,7 +118,7 @@ tags:
     watch: "<yellow>Görüntülenen mağazada izlemeyi değiştir."
     avoid: "<yellow>Görüntülenen mağaza seçeneğini aç/kapat."
   general:
-    database-error: "<red>An error occurred while executing a tag operation."
+    database-error: "<red>Bir etiket işlemi gerçekleştirilirken bir hata oluştu."
     list-entry: "<green>{0}.</green> <aqua>{1}</aqua> <light_purple>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>View all shops with this tag\">View Shops</hover></click>]</light_purple> <red>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove</hover></click>]</red>"
     invalid: "<red>Invalid tag. Only letters, dash (-), and underscore (_) are allowed. Max length: <yellow>{0}</yellow>"
   avoid:
@@ -249,13 +249,13 @@ shop-type:
   buying: Satın alım
   frozen: Duraklatılmış
 shop-state:
-  frozen: FROZEN
-  unfrozen: UNFROZEN
-  freeze: Freeze
-  unfreeze: Unfreeze
+  frozen: DONDURULDU
+  unfrozen: ERİTİLDİ
+  freeze: Dondur
+  unfreeze: Erit
 shop-display:
-  enabled: Enabled
-  disabled: Disabled
+  enabled: Etkin
+  disabled: Devredışı
 language:
   qa-issues: '<yellow>Kalite güven sorunları: <aqua>{0}%'
   code: '<yellow>Kod: <gold>{0}'
@@ -335,7 +335,7 @@ cleanghost-deleting: <yellow>Bozuk bir dükkan buldum <aqua>{0}</aqua> çünkü 
 cleanghost-deleted: <green>Toplam <yellow>{0}</yellow> Mağazalar silindi.
 shop-purchase-cancelled: <red>Market alımı iptal edildi.
 bypassing-lock: <red>Bir QuickShop kilidi atlanıyor!
-bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'
+bungee-cross-server-msg: '<yellow>QuickShop sunucular arası mesaj: <green>{0}'
 saved-to-path: Yedek {0} dosyasına kaydedildi.
 shop-now-freezed: <green>Marketi dondurdunuz. Artık hiç kimse bu marketle ticaret yapamaz!
 price-is-now: <green>Marketin yeni fiyatı <yellow>{0}
@@ -387,8 +387,8 @@ signs:
   selling: 'Satıyor: {0}'
   status-available: <green>
   item-left: ''
-  item-duration: 'Dur: {0}'
-  item-level: 'Level: {0}'
+  item-duration: 'Süre: {0}'
+  item-level: 'Seviye: {0}'
   splash-potion: "Sıçratma"
   linger-potion: "Kalıcı"
 negative-amount: <red>Negatif miktarlarda işlem yapamazsın
@@ -652,7 +652,7 @@ lookup-item-removed: <green>The specified item <aqua>{0}</aqua> has been success
 internal-error: <red>Bir iç hata oluştu, lütfen sunucu yöneticisine başvurun.
 argument-cannot-be: <red>The argument <aqua>{0}</aqua> cannot be <yellow>{1}</yellow>.
 argument-must-between: <red>The argument <aqua>{0}</aqua> value must between <yellow>{1}</yellow> and <yellow>{2}</yellow>
-invalid-percentage: <red>Percentage invalid, you must add '%' after the number of percentage.
+invalid-percentage: <red>Yüzde değeri geçersiz; yüzde sayısının arkasına '%' eklemelisiniz.
 display-fallback: |-
   <red>Due to an internal failure, a fallback message is being displayed.
   The value of this item may not be localized or processed correctly.
@@ -1701,60 +1701,60 @@ gui:
       buying-label: "<#FFA500>Buying</#FFA500>"
       selling-label: "<green>Selling</green>"
       price-indicator:
-        average: "● Average"
+        average: "● Ortalama"
         selling:
-          great: "▼▼ Great Deal!"
-          good: "▼ Below Avg"
-          bad: "▲▲ Expensive"
-          worst: "▲ Above Avg"
+          great: "▼▼ Harika Fırsat!"
+          good: "▼ Ortalamanın Altında"
+          bad: "▲▲ Pahalı"
+          worst: "▲ Ortalamanın Üstünde"
         buying:
-          great: "▲▲ Great Price!"
-          good: "▲ Above Avg"
-          bad: "▼▼ Low Offer"
-          worst: "▼▼ Below Avg"
+          great: "▲▲ Harika Fiyat!"
+          good: "▲ Ortalamanın Üstünde"
+          bad: "▼▼ Düşük Teklif"
+          worst: "▼▼ Ortalamanın Altında"
       display: "<yellow>{0}</yellow>"
       lore:
-        - "<gray>Owner: <white>{0}</white></gray>"
-        - "<gray>Type: {1}</gray>"
-        - "<gray>Price: {2}</gray>"
+        - "<gray>Sahibi: <white>{0}</white></gray>"
+        - "<gray>Türü: {1}</gray>"
+        - "<gray>Fiyatı: {2}</gray>"
         - "<gray><aqua>{3}</aqua></gray>"
-        - "<gray>Location: <white>{4}</white></gray>"
+        - "<gray>Konumu: <white>{4}</white></gray>"
         - "<dark_gray>{5}</dark_gray>"
-      teleport: "<newline><yellow>Click to teleport</yellow>"
+      teleport: "<newline><yellow>Işınlanmak için tıkla</yellow>"
     shop-item:
       lore:
-        - "<green>Owner: </green><yellow>{0}</yellow>"
-        - "<green>Location: </green><yellow>{1}</yellow>"
-        - "<green>Type: </green><yellow>{2}</yellow>"
-        - "<green>Price: </green><yellow>{3}</yellow>"
-        - "<green>Stock: </green><yellow>{4}</yellow>"
+        - "<green>Sahibi: </green><yellow>{0}</yellow>"
+        - "<green>Konumu: </green><yellow>{1}</yellow>"
+        - "<green>Türü: </green><yellow>{2}</yellow>"
+        - "<green>Fiyatı: </green><yellow>{3}</yellow>"
+        - "<green>Stok: </green><yellow>{4}</yellow>"
     grouped-item:
       display: "<yellow>{0}</yellow>"
       lore-title:
-        - "<gray>Shops: <white>{0}</white></gray>"
+        - "<gray>Mağazalar: <white>{0}</white></gray>"
       lore-selling:
-        - "<green>▼ Selling ({0} shops)</green>"
-        - "<gray> Price: <white>{1} - {2}</white></gray>"
-        - "<gray> Average: <yellow>{3}</yellow></gray>"
-        - "<gray> Median: <gold>{4}</gold></gray>"
-        - "<gray> Stock: <aqua>{5}</aqua></gray>"
+        - "<green>▼ Satış ({0} mağaza)</green>"
+        - "<gray> Fiyatı: <white>{1} - {2}</white></gray>"
+        - "<gray> Ortalama: <yellow>{3}</yellow></gray>"
+        - "<gray> Medyan: <gold>{4}</gold></gray>"
+        - "<gray> Stok: <aqua>{5}</aqua></gray>"
       lore-buying:
-        - "<#FFA500>▲ Buying ({0} shops)</#FFA500>"
-        - "<gray> Price: <white>{1} - {2}</white></gray>"
-        - "<gray> Average: <yellow>{3}</yellow></gray>"
-        - "<gray> Median: <gold>{4}</gold></gray>"
+        - "<#FFA500>▲ Satın alınıyor ({0} mağaza)</#FFA500>"
+        - "<gray> Fiyatı: <white>{1} - {2}</white></gray>"
+        - "<gray> Ortalama: <yellow>{3}</yellow></gray>"
+        - "<gray> Medyan: <gold>{4}</gold></gray>"
       lore-footer:
-        - "<yellow>Click to view all shops</yellow>"
+        - "<yellow>Tüm mağazaları görmek için tıklayın</yellow>"
     search:
-      display: "<yellow>Search: {0}</yellow>"
+      display: "<yellow>Arama: {0}</yellow>"
       lore:
-        - "<gray>Left-click to search for items</gray>"
-        - "<gray>Right-click to clear search</gray>"
+        - "<gray>Ürünleri aramak için sol tıklayın</gray>"
+        - "<gray>Aramayı temizlemek için sağ tıklayın</gray>"
     search-item:
       display: "<yellow>{0}</yellow>"
       lore:
-        - "<gray>Showing: {0}</gray>"
-        - "<gray>Shops: <white>{1}</white></gray>"
+        - "<gray>Gösteriliyor: {0}</gray>"
+        - "<gray>Mağazalar: <white>{1}</white></gray>"
         - "<gray>Average price: <gold>{2}</gold></gray>"
     sort:
       display: "<green>Sort: {0}</green>"
@@ -1835,24 +1835,24 @@ history:
       - "<white>Type: <yellow>{0}</yellow></white>"
       - "<white>Owner: <yellow>{1}</yellow></white>"
       - "<white>Item: <yellow>{2}</yellow></white>"
-      - "<white>Price: <yellow>{3} <aqua>x{4}</aqua></yellow></white>"
-      - "<white>Location: <yellow>{5}</yellow></white>"
-    log-icon-title: "<reset><green>Time: {0}</green>"
+      - "<white>Fiyatı: <yellow>{3} <aqua>x{4}</aqua></yellow></white>"
+      - "<white>Konumu: <yellow>{5}</yellow></white>"
+    log-icon-title: "<reset><green>Tarih: {0}</green>"
     log-icon-description:
-      - "<white>Purchaser: <yellow>{0}</yellow></white>"
-      - "<white>Item: <yellow>{1} <aqua>x{2}</aqua></yellow></white>"
-      - "<white>Balance: <yellow>{3}</yellow></white>"
-      - "<white>Tax: <yellow>{4}</yellow></white>"
+      - "<white>Satın alan: <yellow>{0}</yellow></white>"
+      - "<white>Ürün: <yellow>{1} <aqua>x{2}</aqua></yellow></white>"
+      - "<white>Bakiye: <yellow>{3}</yellow></white>"
+      - "<white>Vergi: <yellow>{4}</yellow></white>"
     log-icon-description-with-store-name:
-      - "<white>Store: <yellow>{0}</yellow></white>"
-      - "<white>Buyer: <yellow>{1}</yellow></white>"
-      - "<white>Item: <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
-      - "<white>Amount: <yellow>{4}</yellow></white>"
-      - "<white>Total: <yellow>{5}</yellow></white>"
-      - "<white>Tax: <yellow>{5}</yellow></white>"
+      - "<white>Mağaza: <yellow>{0}</yellow></white>"
+      - "<white>Alıcı: <yellow>{1}</yellow></white>"
+      - "<white>Ürün: <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
+      - "<white>Miktar: <yellow>{4}</yellow></white>"
+      - "<white>Toplam: <yellow>{5}</yellow></white>"
+      - "<white>Vergi: <yellow>{5}</yellow></white>"
       - "<white>Net: <yellow>{6}</yellow></white>"
     query-icon: "<gray>Please wait, querying...</gray>"
-    current-page: "<white>Page {0}</white>"
+    current-page: "<white>Sayfa {0}</white>"
     multi-shops-icon-title: "<yellow>Multiple Shops</yellow>"
     summary-icon-title: "<yellow>Summary</yellow>"
     summary-icon-description:
@@ -1871,13 +1871,13 @@ history:
     top-n-valuable-customers-entry:
       - "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
     top-n-valuable-customers-title: "<gold>Top {0} valuable customers</gold>"
-    no-result: "<white>No result</white>"
+    no-result: "<white>Sonuç yok</white>"
 about:
   text:
     - "<b><aqua>QuickShop <yellow>{0}</yellow></aqua></b>"
-    - "<aqua>Version <yellow>>></yellow> <green>{1}</green></aqua>"
-    - "<aqua>Release <yellow>>></yellow> <green>{2}</green></aqua>"
-    - "<aqua>Developers <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Click to check contributors'><click:open_url:'https://github.com/QuickShop-Community/QuickShop-Hikari/graphs/contributors'>[View contributors on GitHub]</click></hover></color></aqua>"
+    - "<aqua>Versiyon <yellow>>></yellow> <green>{1}</green></aqua>"
+    - "<aqua>Yayınlanan <yellow>>></yellow> <green>{2}</green></aqua>"
+    - "<aqua>Geliştiriciler <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Katkıda bulunanları görmek için tıklayın'><click:open_url:'https://github.com/QuickShop-Community/QuickShop-Hikari/graphs/contributors'>[GitHub'da katkıda bulunanları görüntüle]</click></hover></color></aqua>"
     - "<aqua>Localized members <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
     - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Click to open Crowdin translate page'><click:open_url:'https://crowdin.com/project/qs-hikari'>[Help translate on Crowdin]</click></hover></color></yellow>"
     - "<aqua>Donation Key <yellow>>></yellow> <green>{6}</green></aqua>"
