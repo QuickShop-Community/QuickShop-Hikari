@@ -31,7 +31,7 @@ tabcomplete:
   clearall: 'temizletümü'
   shops: 'mağazalar'
   tagged: 'etiketli'
-  purge: 'purge'
+  purge: 'temizle'
   tag: '[etiket]'
 taxaccount-unset: <green>Bu dükkanın vergi hesabı artık sunucu genel ayarını takip ediyor.
 blacklisted-item: <red>Bu öğeyi satamazsın çünkü kara listede
@@ -118,20 +118,20 @@ tags:
     watch: "<yellow>Görüntülenen mağazada izlemeyi değiştir."
     avoid: "<yellow>Görüntülenen mağaza seçeneğini aç/kapat."
   general:
-    database-error: "<red>An error occurred while executing a tag operation."
-    list-entry: "<green>{0}.</green> <aqua>{1}</aqua> <light_purple>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>View all shops with this tag\">View Shops</hover></click>]</light_purple> <red>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove</hover></click>]</red>"
-    invalid: "<red>Invalid tag. Only letters, dash (-), and underscore (_) are allowed. Max length: <yellow>{0}</yellow>"
+    database-error: "<red>Bir etiket işlemi gerçekleştirilirken bir hata oluştu."
+    list-entry: "<green>{0}.</green> <aqua>{1}</aqua> <light_purple>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>Bu etiketle ilişkili tüm mağazaları görüntüle\">Mağazaları Görüntüle</hover></click>]</light_purple> <red>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Bu etiketi bu mağazadan kaldır\">Remove</hover></click>]</red>"
+    invalid: "<red>Geçersiz etiket. Yalnızca harfler, tire (-) ve alt çizgi (_) kullanılabilir. Maksimum uzunluk: <yellow>{0}</yellow>"
   avoid:
-    added: "<green>Added this shop to your avoid list."
-    removed: "<green>Removed this shop from your avoid list."
+    added: "<green>Bu mağaza kaçınılması gerekenler listenize eklendi."
+    removed: "<green>Bu mağaza kaçınılması gerekenler listenizden çıkarıldı."
     unable: "<red>Unable to toggle avoid on this shop."
-    none: "<red>You have no avoided shops."
-    label: "<yellow>Avoid"
+    none: "<red>Kaçındığınız mağaza yok."
+    label: "<yellow>Kaçın"
   favorite:
-    added: "<green>Added this shop to your favorite list."
-    removed: "<green>Removed this shop from your favorite list."
-    unable: "<red>Unable to toggle favorite on this shop."
-    none: "<red>You have no favorite shops."
+    added: "<green>Bu mağazayı favoriler listenize eklediniz."
+    removed: "<green>Bu mağazayı favoriler listenizden kaldırdınız."
+    unable: "<red>Bu mağazada favori değiştirme yapılamıyor."
+    none: "<red>Hiç favori mağazanız yok."
     label: "<yellow>Favori"
   watch:
     added: "<green>Şu anda bu mağazayı takip ediyorsunuz."
@@ -159,10 +159,10 @@ tags:
     cleared-all: "<green>Cleared all tags from all shops."
     cleared-tag: "<green>Cleared tag <aqua>{0}</aqua> from all your tagged shops."
     no-tags-all: "<red>There are no tags on any shop."
-    no-tags: "<red>This shop has no tags."
-    no-tagged-shops-player: "<red>You have no tags on this shop."
-    no-tagged-shops: "<red>You have no tagged shops."
-    no-tagged-shops-tag: "<red>You have no shops with tag <aqua>{0}</aqua>."
+    no-tags: "<red>Bu mağazada etiket yok."
+    no-tagged-shops-player: "<red>Bu mağazada hiç etiketiniz yok."
+    no-tagged-shops: "<red>Etiketlenmiş mağazanız yok."
+    no-tagged-shops-tag: "<red><aqua>{0}</aqua> etiketine sahip hiçbir mağazanız yok.</red>"
 menu:
   sell-tax: <green>Vergilerde <yellow>{0} <green>ödediniz.
   owner: '<green>Sahibi: {0}'
@@ -249,13 +249,13 @@ shop-type:
   buying: Satın alım
   frozen: Duraklatılmış
 shop-state:
-  frozen: FROZEN
-  unfrozen: UNFROZEN
-  freeze: Freeze
-  unfreeze: Unfreeze
+  frozen: DONDURULDU
+  unfrozen: ERİTİLDİ
+  freeze: Dondur
+  unfreeze: Erit
 shop-display:
-  enabled: Enabled
-  disabled: Disabled
+  enabled: Etkin
+  disabled: Devredışı
 language:
   qa-issues: '<yellow>Kalite güven sorunları: <aqua>{0}%'
   code: '<yellow>Kod: <gold>{0}'
@@ -335,7 +335,7 @@ cleanghost-deleting: <yellow>Bozuk bir dükkan buldum <aqua>{0}</aqua> çünkü 
 cleanghost-deleted: <green>Toplam <yellow>{0}</yellow> Mağazalar silindi.
 shop-purchase-cancelled: <red>Market alımı iptal edildi.
 bypassing-lock: <red>Bir QuickShop kilidi atlanıyor!
-bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'
+bungee-cross-server-msg: '<yellow>QuickShop sunucular arası mesaj: <green>{0}'
 saved-to-path: Yedek {0} dosyasına kaydedildi.
 shop-now-freezed: <green>Marketi dondurdunuz. Artık hiç kimse bu marketle ticaret yapamaz!
 price-is-now: <green>Marketin yeni fiyatı <yellow>{0}
@@ -387,8 +387,8 @@ signs:
   selling: 'Satıyor: {0}'
   status-available: <green>
   item-left: ''
-  item-duration: 'Dur: {0}'
-  item-level: 'Level: {0}'
+  item-duration: 'Süre: {0}'
+  item-level: 'Seviye: {0}'
   splash-potion: "Sıçratma"
   linger-potion: "Kalıcı"
 negative-amount: <red>Negatif miktarlarda işlem yapamazsın
@@ -396,8 +396,8 @@ display-turn-on: <green>Mağaza ekranını başarıyla açın.
 display-turn-off: <green>Mağaza ekranını başarıyla kapatın.
 display-turn-on-owned: <green>Sahip olunan tüm mağazalar için mağaza göstergesi başarıyla etkinleştirildi.
 display-turn-off-owned: <green>Sahip olunan tüm mağazaların göstergesi başarıyla kapatıldı.
-display-turn-on-all: <green>Successfully turned on shop display for all server shops.
-display-turn-off-all: <green>Successfully turned off shop display for all server shops.
+display-turn-on-all: <green>Sunucudaki tüm mağazaların vitrini başarıyla etkinleştirildi.
+display-turn-off-all: <green>Sunucudaki tüm mağazaların vitrinleri başarıyla kapatıldı.
 shop-staff-deleted: <green>{0} başarıyla market personellerinizden kaldırıldı.
 nearby-shop-header: '<green>En yakın Dükkan eşleşmesi <aqua>{0}<green>:'
 backup-failed: Veri tabanı yedeklenemedi. Detaylar için konsolu kontrol edin.
@@ -542,7 +542,7 @@ command:
     tag: <yellow>Bir mağazanın etiketlerini ekleme, kaldırma veya sorgulama
     suggestprice: <yellow>Diğer mağazalara göre dükkan aramak için tavsiye edilen bir fiyat önerin
     history: <yellow>View the history transactions of a shop
-    sign: <yellow>Change the sign material of a shop
+    sign: <yellow>Bir mağazanın tabelasının türünü değiştir
   bulk-size-not-set: '<red>Kullanım: /qs size <miktar>'
   no-type-given: '<red>Kullanım: /qs find <item>'
   feature-not-enabled: Bu özellik yapılandırma dosyasında aktif değil.
@@ -627,7 +627,7 @@ player-no-group: <yellow>Oyuncu {0} bu dükkandaki herhangi bir grupta yer almı
 player-in-group: <green>Player {0} grupta <aqua>{1}</aqua> bu dükkanda.
 permission-required: <red>Bunu yapmak için bu dükkanda {0} izniniz yok.
 no-permission-detailed: <red>Bunu yapmak için izniniz <yellow>{0}</yellow> yok.
-paste-notice: "<yellow>Note: If you are creating a Paste for troubleshooting purposes, be sure to reproduce the error before creating the Paste as quickly as possible; we need the logs retained briefly in the buffer to troubleshoot. If you create a Paste too slowly or without first reproducing the error or restarted server, the Paste will record nothing and useless."
+paste-notice: "<yellow>Not: Sorun giderme amacıyla bir Paste oluşturuyorsanız, Paste'i oluşturmadan önce hatayı mümkün olduğunca çabuk yeniden canlandırdığınızdan emin olun; sorun giderme işlemi için günlüklerin bir süreliğine arabellekte tutulması gerekiyor. Paste'i çok yavaş oluşturursanız, hatayı önceden yeniden canlandırmazsanız veya sunucuyu yeniden başlatırsanız, Paste hiçbir şey kaydetmeyecek ve işe yaramaz hale gelecektir."
 paste-uploading: <aqua>Lütfen bekleyiniz... Yapıştırmayı pastebin'e yükleniyor......
 paste-created: '<green>Paste created, click to open in browser: <yellow>{0}</yellow><newline><red>Warning: <gray>Never send paste to who you don''t trust.'
 paste-created-local: |-
@@ -652,7 +652,7 @@ lookup-item-removed: <green>The specified item <aqua>{0}</aqua> has been success
 internal-error: <red>Bir iç hata oluştu, lütfen sunucu yöneticisine başvurun.
 argument-cannot-be: <red>The argument <aqua>{0}</aqua> cannot be <yellow>{1}</yellow>.
 argument-must-between: <red>The argument <aqua>{0}</aqua> value must between <yellow>{1}</yellow> and <yellow>{2}</yellow>
-invalid-percentage: <red>Percentage invalid, you must add '%' after the number of percentage.
+invalid-percentage: <red>Yüzde değeri geçersiz; yüzde sayısının arkasına '%' eklemelisiniz.
 display-fallback: |-
   <red>Due to an internal failure, a fallback message is being displayed.
   The value of this item may not be localized or processed correctly.
@@ -1500,7 +1500,7 @@ addon:
     remains-limits: '<gold>Your remaining purchase quota in this shop: <yellow>{0}</yellow>'
     remains-limits-before-reset-period-note: '<gold>This shop will reset their purchase quota every: <yellow>{0}</yellow>'
   dynmap:
-    markerset-title: QuickShop-Hikari Shops
+    markerset-title: QuickShop-Hikari Mağazaları
     marker-name: '{0} @ {2} @ {3} for x{4} @ {5}'
     marker-description: |
       Adı: {0}
@@ -1617,15 +1617,15 @@ price-suggest-multi: "<green>Suggestion for {0} type.</green>{1}"
 suggest-wait: "<green>Please wait... Calculating recommend price."
 gui:
   trade:
-    title: "<dark_aqua>Shop</dark_aqua>"
+    title: "<dark_aqua>Mağaza</dark_aqua>"
     info-stock:
-      display: "<yellow>Stock Information</yellow>"
+      display: "<yellow>Stok Bilgileri</yellow>"
       lore:
-        - "<gray>Available: <white>{0}</white></gray>"
+        - "<gray>Mevcut: <white>{0}</white></gray>"
     info-price:
-      display: "<gold>Price Information</gold>"
+      display: "<gold>Fiyat Bilgileri</gold>"
       lore:
-        - "<gray>Price: <white>{0}</white></gray>"
+        - "<gray>Fiyatı: <white>{0}</white></gray>"
         - "<gray>Per: <white>{1} item(s)</white></gray>"
     info-seller:
       display: "<aqua>Seller Information</aqua>"
@@ -1684,14 +1684,14 @@ gui:
   staff:
     title: "<dark_aqua>Staff Management</dark_aqua>"
     search:
-      display: "<yellow>Search: {0}</yellow>"
+      display: "<yellow>Ara: {0}</yellow>"
       lore:
-        - "<gray>Left-click to search for players</gray>"
-        - "<gray>Right-click to clear search</gray>"
+        - "<gray>Oyuncuları aramak için sol tıklayın</gray>"
+        - "<gray>Aramayı temizlemek için sağ tıklayın</gray>"
     add-staff:
-      display: "<green>Add Staff Member</green>"
+      display: "<green>Yetkili Üye Ekle</green>"
       lore:
-        - "<gray>Click to add a new</gray>"
+        - "<gray>Yeni eklemek için tıklayın</gray>"
         - "<gray>staff member to your shop.</gray>"
     back:
       display: "<white>Back to Shop</white>"
@@ -1701,60 +1701,60 @@ gui:
       buying-label: "<#FFA500>Buying</#FFA500>"
       selling-label: "<green>Selling</green>"
       price-indicator:
-        average: "● Average"
+        average: "● Ortalama"
         selling:
-          great: "▼▼ Great Deal!"
-          good: "▼ Below Avg"
-          bad: "▲▲ Expensive"
-          worst: "▲ Above Avg"
+          great: "▼▼ Harika Fırsat!"
+          good: "▼ Ortalamanın Altında"
+          bad: "▲▲ Pahalı"
+          worst: "▲ Ortalamanın Üstünde"
         buying:
-          great: "▲▲ Great Price!"
-          good: "▲ Above Avg"
-          bad: "▼▼ Low Offer"
-          worst: "▼▼ Below Avg"
+          great: "▲▲ Harika Fiyat!"
+          good: "▲ Ortalamanın Üstünde"
+          bad: "▼▼ Düşük Teklif"
+          worst: "▼▼ Ortalamanın Altında"
       display: "<yellow>{0}</yellow>"
       lore:
-        - "<gray>Owner: <white>{0}</white></gray>"
-        - "<gray>Type: {1}</gray>"
-        - "<gray>Price: {2}</gray>"
+        - "<gray>Sahibi: <white>{0}</white></gray>"
+        - "<gray>Türü: {1}</gray>"
+        - "<gray>Fiyatı: {2}</gray>"
         - "<gray><aqua>{3}</aqua></gray>"
-        - "<gray>Location: <white>{4}</white></gray>"
+        - "<gray>Konumu: <white>{4}</white></gray>"
         - "<dark_gray>{5}</dark_gray>"
-      teleport: "<newline><yellow>Click to teleport</yellow>"
+      teleport: "<newline><yellow>Işınlanmak için tıkla</yellow>"
     shop-item:
       lore:
-        - "<green>Owner: </green><yellow>{0}</yellow>"
-        - "<green>Location: </green><yellow>{1}</yellow>"
-        - "<green>Type: </green><yellow>{2}</yellow>"
-        - "<green>Price: </green><yellow>{3}</yellow>"
-        - "<green>Stock: </green><yellow>{4}</yellow>"
+        - "<green>Sahibi: </green><yellow>{0}</yellow>"
+        - "<green>Konumu: </green><yellow>{1}</yellow>"
+        - "<green>Türü: </green><yellow>{2}</yellow>"
+        - "<green>Fiyatı: </green><yellow>{3}</yellow>"
+        - "<green>Stok: </green><yellow>{4}</yellow>"
     grouped-item:
       display: "<yellow>{0}</yellow>"
       lore-title:
-        - "<gray>Shops: <white>{0}</white></gray>"
+        - "<gray>Mağazalar: <white>{0}</white></gray>"
       lore-selling:
-        - "<green>▼ Selling ({0} shops)</green>"
-        - "<gray> Price: <white>{1} - {2}</white></gray>"
-        - "<gray> Average: <yellow>{3}</yellow></gray>"
-        - "<gray> Median: <gold>{4}</gold></gray>"
-        - "<gray> Stock: <aqua>{5}</aqua></gray>"
+        - "<green>▼ Satış ({0} mağaza)</green>"
+        - "<gray> Fiyatı: <white>{1} - {2}</white></gray>"
+        - "<gray> Ortalama: <yellow>{3}</yellow></gray>"
+        - "<gray> Medyan: <gold>{4}</gold></gray>"
+        - "<gray> Stok: <aqua>{5}</aqua></gray>"
       lore-buying:
-        - "<#FFA500>▲ Buying ({0} shops)</#FFA500>"
-        - "<gray> Price: <white>{1} - {2}</white></gray>"
-        - "<gray> Average: <yellow>{3}</yellow></gray>"
-        - "<gray> Median: <gold>{4}</gold></gray>"
+        - "<#FFA500>▲ Satın alınıyor ({0} mağaza)</#FFA500>"
+        - "<gray> Fiyatı: <white>{1} - {2}</white></gray>"
+        - "<gray> Ortalama: <yellow>{3}</yellow></gray>"
+        - "<gray> Medyan: <gold>{4}</gold></gray>"
       lore-footer:
-        - "<yellow>Click to view all shops</yellow>"
+        - "<yellow>Tüm mağazaları görmek için tıklayın</yellow>"
     search:
-      display: "<yellow>Search: {0}</yellow>"
+      display: "<yellow>Arama: {0}</yellow>"
       lore:
-        - "<gray>Left-click to search for items</gray>"
-        - "<gray>Right-click to clear search</gray>"
+        - "<gray>Ürünleri aramak için sol tıklayın</gray>"
+        - "<gray>Aramayı temizlemek için sağ tıklayın</gray>"
     search-item:
       display: "<yellow>{0}</yellow>"
       lore:
-        - "<gray>Showing: {0}</gray>"
-        - "<gray>Shops: <white>{1}</white></gray>"
+        - "<gray>Gösteriliyor: {0}</gray>"
+        - "<gray>Mağazalar: <white>{1}</white></gray>"
         - "<gray>Average price: <gold>{2}</gold></gray>"
     sort:
       display: "<green>Sort: {0}</green>"
@@ -1768,36 +1768,36 @@ gui:
       display: "<aqua>Filter: {0}</aqua>"
       lore:
         - "<gray>Click to cycle</gray>"
-      all: "All"
-      selling: "Selling"
-      buying: "Buying"
-      all-indicator: "<white>All Shops</white>"
-      selling-indicator: "<green>Selling Shops</green>"
-      buying-indicator: "<#FFA500>Buying Shops</#FFA500>"
+      all: "Tümü"
+      selling: "Satış"
+      buying: "Alış"
+      all-indicator: "<white>Tüm Mağazalar</white>"
+      selling-indicator: "<green>Satış Mağazaları</green>"
+      buying-indicator: "<#FFA500>Alış Mağazaları</#FFA500>"
     stock-filter:
-      display: "<gold>In Stock Only: {0}</gold>"
+      display: "<gold>Stokta Sadece: {0}</gold>"
       lore:
-        - "<gray>Click to toggle</gray>"
+        - "<gray>Değiştirmek için tıkla</gray>"
     back:
-      display: "<white>Back to Market</white>"
+      display: "<white>Markete Geri Dön</white>"
   shared:
     previous-page:
-      display: "<white><< Previous Page</white>"
+      display: "<white><< Önceki Sayfa</white>"
     next-page:
-      display: "<white>Next Page >></white>"
+      display: "<white>Sonraki Sayfa >></white>"
     page-info:
-      display: "<yellow>Page {0}/{1}</yellow>"
+      display: "<yellow>Sayfa {0}/{1}</yellow>"
     back:
-      display: "<white>Back</white>"
+      display: "<white>Geri</white>"
     close:
-      display: "<red>Close</red>"
+      display: "<red>Kapat</red>"
   messages:
     #Keeper menu messages
     keeper:
       #Shown when player clicks "Change Price" button
-      enter-price: "<yellow>Enter a new price in chat.</yellow>"
+      enter-price: "<yellow>Sohbette yeni bir fiyat girin.</yellow>"
       #Shown when player clicks "Delete Shop" button
-      confirm-delete: "<yellow>Type '<white>confirm</white>' in chat to delete your shop. Type anything else to cancel.</yellow>"
+      confirm-delete: "<yellow>Mağazanızı silmek için sohbete '<white>confirm</white>' yazın. İptal etmek için herhangi bir şey yazın.</yellow>"
     #Staff menu messages
     staff:
       #Shown when player left-clicks "Search" button (right-click clears instantly)
@@ -1827,32 +1827,32 @@ gui:
       enter-search: "<yellow>Enter an item name to search. Type '<white>clear</white>' to reset, or right-click the search button.</yellow>"
 history:
   shop:
-    gui-title: "View purchase history"
+    gui-title: "Satın alma geçmişini görüntüle"
     header-icon-multiple-shop: "<white>The query result across {0} shops</white>"
-    header-icon-shop-name: '<yellow>Shop {0}</yellow>'
-    header-icon-shop-empty-name: '<yellow>Shop in world ''{0}'' at x: {1}, y: {2}, z: {3}</yellow>'
+    header-icon-shop-name: '<yellow>Mağaza {0}</yellow>'
+    header-icon-shop-empty-name: '<yellow>''{0}'' dünyasında x: {1}, y: {2}, z: {3} konumundaki mağaza</yellow>'
     header-icon-description:
-      - "<white>Type: <yellow>{0}</yellow></white>"
-      - "<white>Owner: <yellow>{1}</yellow></white>"
-      - "<white>Item: <yellow>{2}</yellow></white>"
-      - "<white>Price: <yellow>{3} <aqua>x{4}</aqua></yellow></white>"
-      - "<white>Location: <yellow>{5}</yellow></white>"
-    log-icon-title: "<reset><green>Time: {0}</green>"
+      - "<white>Türü: <yellow>{0}</yellow></white>"
+      - "<white>Sahibi: <yellow>{1}</yellow></white>"
+      - "<white>Ürün: <yellow>{2}</yellow></white>"
+      - "<white>Fiyatı: <yellow>{3} <aqua>x{4}</aqua></yellow></white>"
+      - "<white>Konumu: <yellow>{5}</yellow></white>"
+    log-icon-title: "<reset><green>Tarih: {0}</green>"
     log-icon-description:
-      - "<white>Purchaser: <yellow>{0}</yellow></white>"
-      - "<white>Item: <yellow>{1} <aqua>x{2}</aqua></yellow></white>"
-      - "<white>Balance: <yellow>{3}</yellow></white>"
-      - "<white>Tax: <yellow>{4}</yellow></white>"
+      - "<white>Satın alan: <yellow>{0}</yellow></white>"
+      - "<white>Ürün: <yellow>{1} <aqua>x{2}</aqua></yellow></white>"
+      - "<white>Bakiye: <yellow>{3}</yellow></white>"
+      - "<white>Vergi: <yellow>{4}</yellow></white>"
     log-icon-description-with-store-name:
-      - "<white>Store: <yellow>{0}</yellow></white>"
-      - "<white>Buyer: <yellow>{1}</yellow></white>"
-      - "<white>Item: <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
-      - "<white>Amount: <yellow>{4}</yellow></white>"
-      - "<white>Total: <yellow>{5}</yellow></white>"
-      - "<white>Tax: <yellow>{5}</yellow></white>"
+      - "<white>Mağaza: <yellow>{0}</yellow></white>"
+      - "<white>Alıcı: <yellow>{1}</yellow></white>"
+      - "<white>Ürün: <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
+      - "<white>Miktar: <yellow>{4}</yellow></white>"
+      - "<white>Toplam: <yellow>{5}</yellow></white>"
+      - "<white>Vergi: <yellow>{5}</yellow></white>"
       - "<white>Net: <yellow>{6}</yellow></white>"
     query-icon: "<gray>Please wait, querying...</gray>"
-    current-page: "<white>Page {0}</white>"
+    current-page: "<white>Sayfa {0}</white>"
     multi-shops-icon-title: "<yellow>Multiple Shops</yellow>"
     summary-icon-title: "<yellow>Summary</yellow>"
     summary-icon-description:
@@ -1871,19 +1871,19 @@ history:
     top-n-valuable-customers-entry:
       - "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
     top-n-valuable-customers-title: "<gold>Top {0} valuable customers</gold>"
-    no-result: "<white>No result</white>"
+    no-result: "<white>Sonuç yok</white>"
 about:
   text:
     - "<b><aqua>QuickShop <yellow>{0}</yellow></aqua></b>"
-    - "<aqua>Version <yellow>>></yellow> <green>{1}</green></aqua>"
-    - "<aqua>Release <yellow>>></yellow> <green>{2}</green></aqua>"
-    - "<aqua>Developers <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Click to check contributors'><click:open_url:'https://github.com/QuickShop-Community/QuickShop-Hikari/graphs/contributors'>[View contributors on GitHub]</click></hover></color></aqua>"
+    - "<aqua>Versiyon <yellow>>></yellow> <green>{1}</green></aqua>"
+    - "<aqua>Yayınlanan <yellow>>></yellow> <green>{2}</green></aqua>"
+    - "<aqua>Geliştiriciler <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Katkıda bulunanları görmek için tıklayın'><click:open_url:'https://github.com/QuickShop-Community/QuickShop-Hikari/graphs/contributors'>[GitHub'da katkıda bulunanları görüntüle]</click></hover></color></aqua>"
     - "<aqua>Localized members <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
     - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Click to open Crowdin translate page'><click:open_url:'https://crowdin.com/project/qs-hikari'>[Help translate on Crowdin]</click></hover></color></yellow>"
     - "<aqua>Donation Key <yellow>>></yellow> <green>{6}</green></aqua>"
   valid-donation-key: "<color:#00AFF1>Bound to <color:#F9C23C>{0}</color></color>"
   invalid-donation-key: "<gray>Invalid donation key</gra>"
   kofi-thanks: "<gold>Special thanks to those who support QuickShop on Ko-fi :)</gold>"
-history-command-leave-blank: "<Leave blank for seeing store>"
-browse-command-leave-blank: "<Leave blank for seeing all stores in server>"
-shop-information-not-shown-due-an-internal-error: "<red>An internal error occurred. The store information panel may be displayed incompletely, please contact the server administrator."
+history-command-leave-blank: "<Mağazayı görmek için boş bırakın>"
+browse-command-leave-blank: "<Sunucudaki tüm mağazaları görmek için boş bırakın>"
+shop-information-not-shown-due-an-internal-error: "<red>Bir iç hata oluştu. Mağaza bilgi paneli eksik görüntüleniyor olabilir; lütfen sunucu yöneticisiyle iletişime geçin."

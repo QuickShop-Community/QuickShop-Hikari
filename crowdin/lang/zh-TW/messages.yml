@@ -794,7 +794,7 @@ transfer-rejected-fromside: <red>玩家 <aqua>{0}</aqua> 已拒絕你的商店�
 transfer-rejected-toside: <red>你已拒絕 <aqua>{0}</aqua> 的轉移請求。
 transfer-no-pending-operation: <red>你還沒有待處理的轉移請求。
 transfer-no-self: <red>你無法將你的商店轉移給自己。
-transfer-no-buy: <red>You can't transfer shops that are buy shops.
+transfer-no-buy: <red>你不可轉讓收購模式的商店。
 transfer-failed-some: <red>Failed to transfer some of the shops as they're not eligible.
 benefit-overflow: <red>所有利益的總和不能大於或等於100%。
 benefit-exists: <red>目標玩家已經在此商店的利益分配列表中。
@@ -883,8 +883,8 @@ addon:
         {
          "embed":
            {
-             "title": ":inbox_tray: Somebody sold items to your shop",
-             "description": "The player %%purchase.name%% sold x%%purchase.amount%% %%shop.item.name%% to your shop.",
+             "title": ":inbox_tray: 有人向你的商店出售物品",
+             "description": "玩家 %%purchase.name%% 向你的商店出售了 %%purchase.amount%% 個 %%shop.item.name%%。",
              "color": 52084,
              "author": {
                "name": "QuickShop-Hikari",
@@ -897,37 +897,37 @@ addon:
                "url": ""
              },
              "footer": {
-               "text": "QuickShop-Hikari Discord Notification",
+               "text": "QuickShop-Hikari Discord 訊息通知",
                "icon_url": ""
              },
              "fields": [
                {
-                 "name": "Shop",
+                 "name": "商店",
                  "value": "%%shop.display-name%%",
                  "inline": false
                },
                {
-                 "name": "Purchaser",
+                 "name": "買家",
                  "value": "%%purchase.name%%",
                  "inline": true
                },
                {
-                 "name": "Item",
+                 "name": "物品",
                  "value": "%%shop.item.name%%",
                  "inline": true
                },
                {
-                 "name": "Amount",
-                 "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
+                 "name": "數量",
+                 "value": "%%purchase.amount%% （x%%shop.stacking-amount%%）",
                  "inline": true
                },
                {
-                 "name": "Your paid",
+                 "name": "你已支付",
                  "value": "%%purchase.balance-formatted%%",
                  "inline": true
                },
                {
-                 "name": "Taxes",
+                 "name": "稅",
                  "value": "%%purchase.taxes-formatted%%",
                  "inline": true
                }
@@ -1715,7 +1715,7 @@ gui:
   browse:
     title: "<dark_aqua>Market Browser</dark_aqua>"
     shop-list:
-      buying-label: "<#FFA500>Buying</#FFA500>"
+      buying-label: "<#FFA500>收購</#FFA500>"
       selling-label: "<green>Selling</green>"
       price-indicator:
         average: "● Average"
@@ -1725,7 +1725,7 @@ gui:
           bad: "▲▲ Expensive"
           worst: "▲ Above Avg"
         buying:
-          great: "▲▲ Great Price!"
+          great: "▲▲ 太划算了！"
           good: "▲ Above Avg"
           bad: "▼▼ Low Offer"
           worst: "▼▼ Below Avg"
@@ -1862,7 +1862,7 @@ history:
       - "<white>税金：<yellow>{4}</yellow></white>"
     log-icon-description-with-store-name:
       - "<white>商店：<yellow>{0}</yellow></white>"
-      - "<white>Buyer: <yellow>{1}</yellow></white>"
+      - "<white>買家︰<yellow>{1}</yellow></white>"
       - "<white>物品：<yellow>{2}<aqua>{3}</aqua></yellow></white>"
       - "<white>Amount: <yellow>{4}</yellow></white>"
       - "<white>Total: <yellow>{5}</yellow></white>"
