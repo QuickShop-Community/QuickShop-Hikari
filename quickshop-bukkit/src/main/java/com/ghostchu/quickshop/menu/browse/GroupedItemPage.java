@@ -130,8 +130,7 @@ public class GroupedItemPage {
     final int next = (page >= maxPages)? 1 : page + 1;
 
     // Set up border rows
-    final String borderMaterial = (borderConfig != null)? borderConfig.getMaterial() : "GRAY_STAINED_GLASS_PANE";
-    final IconBuilder borderBuilder = new IconBuilder(QuickShop.getInstance().stack().of(borderMaterial, 1));
+    final IconBuilder borderBuilder = new IconBuilder(QuickShop.getInstance().stack(borderConfig, "GRAY_STAINED_GLASS_PANE", 1));
     final List<Integer> borderRows = (borderConfig != null)? borderConfig.getRows() : List.of(1, 6);
     for(final int row : borderRows) {
       menuPage.setRow(row, borderBuilder);
@@ -140,11 +139,10 @@ public class GroupedItemPage {
     // === Control Row (Row 1) ===
 
     // Search button (slot 0) - Left-click to search, Right-click to clear
-    final String searchMaterial = (searchConfig != null)? searchConfig.getMaterial() : "ANVIL";
     final int searchSlot = (searchConfig != null)? searchConfig.getSlot() : 0;
     final String currentSearchDisplay = (searchQuery.isEmpty())? "None" : searchQuery;
 
-    menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(searchMaterial, 1)
+    menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack(searchConfig, "ANVIL", 1)
                                              .customName(getConfigDisplay(id, searchConfig, "name", "<yellow>Search: {0}</yellow>", currentSearchDisplay))
                                              .lore(getConfigLore(id, searchConfig, currentSearchDisplay)))
                              .withSlot(searchSlot)
@@ -175,10 +173,9 @@ public class GroupedItemPage {
                              .build());
 
     // Sort button (slot 2)
-    final String sortMaterial = (sortConfig != null)? sortConfig.getMaterial() : "HOPPER";
     final int sortSlot = (sortConfig != null)? sortConfig.getSlot() : 2;
 
-    menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(sortMaterial, 1)
+    menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack(sortConfig, "HOPPER", 1)
                                              .customName(getConfigDisplay(id, sortConfig, "name", "<green>Sort: {0}</green>", getSortDisplayName(id, sortMode)))
                                              .lore(getConfigLore(id, sortConfig)))
                              .withSlot(sortSlot)
@@ -190,10 +187,9 @@ public class GroupedItemPage {
                              .build());
 
     // Filter button (slot 4)
-    final String filterMaterial = (filterConfig != null)? filterConfig.getMaterial() : "NAME_TAG";
     final int filterSlot = (filterConfig != null)? filterConfig.getSlot() : 4;
 
-    menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(filterMaterial, 1)
+    menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack(filterConfig, "NAME_TAG", 1)
                                              .customName(getConfigDisplay(id, filterConfig, "name", "<aqua>Filter: {0}</aqua>", getFilterDisplayName(id, filterMode)))
                                              .lore(getConfigLore(id, filterConfig)))
                              .withSlot(filterSlot)
@@ -205,11 +201,10 @@ public class GroupedItemPage {
                              .build());
 
     // Stock filter toggle button (slot 6)
-    final String stockMaterial = (stockConfig != null)? stockConfig.getMaterial() : "CHEST";
     final int stockSlot = (stockConfig != null)? stockConfig.getSlot() : 6;
     final String stockStatus = (stockOnly)? "ON" : "OFF";
 
-    menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(stockMaterial, 1)
+    menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack(stockConfig, "CHEST", 1)
                                              .customName(getConfigDisplay(id, stockConfig, "name", "<gold>In Stock Only: {0}</gold>", stockStatus))
                                              .lore(getConfigLore(id, stockConfig)))
                              .withSlot(stockSlot)
@@ -221,10 +216,9 @@ public class GroupedItemPage {
                              .build());
 
     // Close button (slot 8)
-    final String closeMaterial = (closeConfig != null)? closeConfig.getMaterial() : "BARRIER";
     final int closeSlot = (closeConfig != null)? closeConfig.getSlot() : 8;
 
-    menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(closeMaterial, 1)
+    menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack(closeConfig, "BARRIER", 1)
                                              .customName(getConfigDisplay(id, closeConfig, "<red>Close</red>")))
                              .withSlot(closeSlot)
                              .withActions(new RunnableAction((click)->{
@@ -233,22 +227,19 @@ public class GroupedItemPage {
                              }))
                              .build());
 
-    //  Pagination Row (Bottom) 
-    final String prevMaterial = (prevPageConfig != null)? prevPageConfig.getMaterial() : "ARROW";
+    //  Pagination Row (Bottom)
     final int prevSlot = (prevPageConfig != null)? prevPageConfig.getSlot() : 48;
-    final String nextMaterial = (nextPageConfig != null)? nextPageConfig.getMaterial() : "ARROW";
     final int nextSlot = (nextPageConfig != null)? nextPageConfig.getSlot() : 50;
-    final String pageInfoMaterial = (pageInfoConfig != null)? pageInfoConfig.getMaterial() : "BOOK";
     final int pageInfoSlot = (pageInfoConfig != null)? pageInfoConfig.getSlot() : 49;
 
     if(maxPages > 1) {
-      menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(prevMaterial, 1)
+      menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack(prevPageConfig, "ARROW", 1)
                                                .customName(getConfigDisplay(id, prevPageConfig, "<white><< Previous Page</white>")))
                                .withSlot(prevSlot)
                                .withActions(new DataAction(SHOPS_PAGE, prev), new SwitchPageAction(menuName, 1))
                                .build());
 
-      menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(nextMaterial, 1)
+      menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack(nextPageConfig, "ARROW", 1)
                                                .customName(getConfigDisplay(id, nextPageConfig, "<white>Next Page >></white>")))
                                .withSlot(nextSlot)
                                .withActions(new DataAction(SHOPS_PAGE, next), new SwitchPageAction(menuName, 1))
@@ -256,7 +247,7 @@ public class GroupedItemPage {
     }
 
     // Page info
-    menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(pageInfoMaterial, 1)
+    menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack(pageInfoConfig, "BOOK", 1)
                                              .customName(getConfigDisplay(id, pageInfoConfig, "<yellow>Page {0}/{1}</yellow>", page, Math.max(1, maxPages))))
                              .withSlot(pageInfoSlot)
                              .build());
@@ -370,9 +361,9 @@ public class GroupedItemPage {
   private String formatPrice(final String world, final double price) {
 
     if(QuickShop.getInstance().getEconomyManager().provider() == null) {
+
       return String.valueOf(price);
     }
-    return QuickShop.getInstance().getEconomyManager().provider()
-            .format(BigDecimal.valueOf(price), world, null);
+    return QuickShop.getInstance().getEconomyManager().provider().format(BigDecimal.valueOf(price), world, null);
   }
 }

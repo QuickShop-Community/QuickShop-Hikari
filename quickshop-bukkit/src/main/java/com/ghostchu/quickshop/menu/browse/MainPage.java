@@ -94,11 +94,11 @@ public class MainPage {
 
         // Load GUI configuration
         final GuiConfig.MenuConfig menuConfig = QuickShop.getInstance().getGuiConfig().getMenuConfig("browse");
-        final GuiConfig.IconConfig borderConfig = menuConfig != null? menuConfig.getIcon("border") : null;
-        final GuiConfig.IconConfig prevPageConfig = menuConfig != null? menuConfig.getIcon("previous-page") : null;
-        final GuiConfig.IconConfig nextPageConfig = menuConfig != null? menuConfig.getIcon("next-page") : null;
-        final GuiConfig.IconConfig pageInfoConfig = menuConfig != null? menuConfig.getIcon("page-info") : null;
-        final GuiConfig.IconConfig shopItemConfig = menuConfig != null? menuConfig.getIcon("shop-item") : null;
+        final GuiConfig.IconConfig borderConfig = (menuConfig != null)? menuConfig.getIcon("border") : null;
+        final GuiConfig.IconConfig prevPageConfig = (menuConfig != null)? menuConfig.getIcon("previous-page") : null;
+        final GuiConfig.IconConfig nextPageConfig = (menuConfig != null)? menuConfig.getIcon("next-page") : null;
+        final GuiConfig.IconConfig pageInfoConfig = (menuConfig != null)? menuConfig.getIcon("page-info") : null;
+        final GuiConfig.IconConfig shopItemConfig = (menuConfig != null)? menuConfig.getIcon("shop-item") : null;
 
         final int listStartSlot = (menuConfig != null? menuConfig.getSection().getInt("list-start-slot", 9) : 9);
 
@@ -115,31 +115,31 @@ public class MainPage {
         final int next = (page >= maxPages)? 1 : page + 1;
 
         // Set up borders from config
-        final String borderMaterial = borderConfig != null? borderConfig.getMaterial() : "GRAY_STAINED_GLASS_PANE";
-        final IconBuilder borderBuilder = new IconBuilder(QuickShop.getInstance().stack().of(borderMaterial, 1));
-        final List<Integer> borderRows = borderConfig != null? borderConfig.getRows() : List.of(1, 6);
+        final String borderMaterial = (borderConfig != null)? borderConfig.getMaterial() : "GRAY_STAINED_GLASS_PANE";
+        final IconBuilder borderBuilder = new IconBuilder(QuickShop.getInstance().stack(borderMaterial, 1));
+        final List<Integer> borderRows = (borderConfig != null)? borderConfig.getRows() : List.of(1, 6);
         for(final int row : borderRows) {
           playerPage.setRow(id, row, borderBuilder);
         }
 
         // Pagination icons from config
-        final String prevPageMaterial = prevPageConfig != null? prevPageConfig.getMaterial() : "ARROW";
+        final String prevPageMaterial = (prevPageConfig != null)? prevPageConfig.getMaterial() : "ARROW";
         final int prevPageSlot = (prevPageConfig != null? prevPageConfig.getSlot() : 3);
-        final String nextPageMaterial = nextPageConfig != null? nextPageConfig.getMaterial() : "ARROW";
+        final String nextPageMaterial = (nextPageConfig != null)? nextPageConfig.getMaterial() : "ARROW";
         final int nextPageSlot = (nextPageConfig != null? nextPageConfig.getSlot() : 5);
-        final String pageInfoMaterial = pageInfoConfig != null? pageInfoConfig.getMaterial() : "BOOK";
+        final String pageInfoMaterial = (pageInfoConfig != null)? pageInfoConfig.getMaterial() : "BOOK";
         final int pageInfoSlot = (pageInfoConfig != null? pageInfoConfig.getSlot() : 4);
 
         if(maxPages > 1) {
 
-          playerPage.addIcon(id, new IconBuilder(QuickShop.getInstance().stack().of(prevPageMaterial, 1)
+          playerPage.addIcon(id, new IconBuilder(QuickShop.getInstance().stack(prevPageMaterial, 1)
                                                          .customName(getConfigDisplay(id, prevPageConfig, "<white><< Previous Page</white>"))
                                                          .lore(getConfigLore(id, prevPageConfig, page)))
                   .withActions(new DataAction(staffPageID, prev), new SwitchPageAction(menuName, menuPage))
                   .withSlot(prevPageSlot)
                   .build());
 
-          playerPage.addIcon(id, new IconBuilder(QuickShop.getInstance().stack().of(nextPageMaterial, 1)
+          playerPage.addIcon(id, new IconBuilder(QuickShop.getInstance().stack(nextPageMaterial, 1)
                                                          .customName(getConfigDisplay(id, nextPageConfig, "<white>Next Page >></white>"))
                                                          .lore(getConfigLore(id, nextPageConfig, page)))
                   .withActions(new DataAction(staffPageID, next), new SwitchPageAction(menuName, menuPage))
@@ -147,7 +147,7 @@ public class MainPage {
                   .build());
         }
 
-        playerPage.addIcon(id, new IconBuilder(QuickShop.getInstance().stack().of(pageInfoMaterial, 1)
+        playerPage.addIcon(id, new IconBuilder(QuickShop.getInstance().stack(pageInfoMaterial, 1)
                                                        .customName(getConfigDisplay(id, pageInfoConfig, "<yellow>Page {0}</yellow>", page)))
                 .withSlot(pageInfoSlot)
                 .build());
@@ -178,7 +178,7 @@ public class MainPage {
 
           final String priceFormatted = shop.format(shop.bukkitLocation().getWorld().getName(), shop.getCurrency());
 
-          final AbstractItemStack<ItemStack> stack = new BukkitItemStack().of(shop.getItem().getType().key().asString(), shop.getShopStackingAmount())
+          final AbstractItemStack<ItemStack> stack = QuickShop.getInstance().stack(shop.getItem(), shop.getShopStackingAmount())
                   .lore(getConfigLore(id, shopItemConfig, shop.getOwner().getDisplay(), location,
                                       shop.shopType().identifier(), priceFormatted,
                                       MarketUtils.getStockFromCache(shop)));

@@ -46,16 +46,17 @@ public class GuiIconBuilder {
   @NotNull
   public static AbstractItemStack<?> createStack(@NotNull final GuiConfig.IconConfig config) {
 
-    AbstractItemStack<?> stack = QuickShop.getInstance().stack()
-            .of(config.getMaterial(), config.getAmount());
+    AbstractItemStack<?> stack = QuickShop.getInstance().stack().of(config.getMaterial(), config.getAmount());
 
     // Set display name if configured
     final String name = config.getName();
     if(name != null && !name.isEmpty()) {
       if(name.equals(" ")) {
+
         // Empty name (single space = blank display name)
         stack = stack.customName(Component.empty());
       } else {
+
         // Direct inline MiniMessage text (e.g., "<bold><green>Buy Items</green></bold>")
         stack = stack.customName(parseMiniMessage(name));
       }
@@ -64,8 +65,10 @@ public class GuiIconBuilder {
     // Set lore if configured
     final List<String> loreLines = config.getLore();
     if(!loreLines.isEmpty()) {
+
       final List<Component> lore = new ArrayList<>();
       for(final String loreLine : loreLines) {
+
         // Direct inline MiniMessage text (e.g., "<yellow>Click to buy</yellow>")
         lore.add(parseMiniMessage(loreLine));
       }
@@ -85,8 +88,7 @@ public class GuiIconBuilder {
   @NotNull
   public static IconBuilder createIconBuilder(@NotNull final GuiConfig.IconConfig config) {
 
-    return new IconBuilder(createStack(config))
-            .withSlot(config.getSlot());
+    return new IconBuilder(createStack(config)).withSlot(config.getSlot());
   }
 
   /**
@@ -101,8 +103,7 @@ public class GuiIconBuilder {
   public static IconBuilder createIconBuilder(@NotNull final GuiConfig.IconConfig config,
                                               final int slot) {
 
-    return new IconBuilder(createStack(config))
-            .withSlot(slot);
+    return new IconBuilder(createStack(config)).withSlot(slot);
   }
 
   /**
@@ -139,9 +140,7 @@ public class GuiIconBuilder {
    * @return The configured IconBuilder
    */
   @NotNull
-  public static IconBuilder createIconBuilder(@NotNull final GuiConfig.IconConfig config,
-                                              final int slot,
-                                              @NotNull final Component name) {
+  public static IconBuilder createIconBuilder(@NotNull final GuiConfig.IconConfig config, final int slot, @NotNull final Component name) {
 
     final AbstractItemStack<?> stack = QuickShop.getInstance().stack()
             .of(config.getMaterial(), config.getAmount())
@@ -160,14 +159,12 @@ public class GuiIconBuilder {
   @NotNull
   public static IconBuilder createBorderBuilder(@NotNull final GuiConfig.IconConfig config) {
 
-    AbstractItemStack<?> stack = QuickShop.getInstance().stack()
-            .of(config.getMaterial(), 1);
+    AbstractItemStack<?> stack = QuickShop.getInstance().stack().of(config.getMaterial(), 1);
 
     final String name = config.getName();
-    if(name != null) {
-      if(name.equals(" ") || name.isEmpty()) {
-        stack = stack.customName(Component.empty());
-      }
+    if(name != null && name.isBlank()) {
+
+      stack = stack.customName(Component.empty());
     }
 
     return new IconBuilder(stack);
@@ -182,12 +179,13 @@ public class GuiIconBuilder {
    * @return The modified ItemStack
    */
   @NotNull
-  public static ItemStack applyCustomModelData(@NotNull final ItemStack item,
-                                               @NotNull final GuiConfig.IconConfig config) {
+  public static ItemStack applyCustomModelData(@NotNull final ItemStack item, @NotNull final GuiConfig.IconConfig config) {
 
     if(config.hasCustomModelData()) {
+
       final ItemMeta meta = item.getItemMeta();
       if(meta != null) {
+
         meta.setCustomModelData(config.getCustomModelData());
         item.setItemMeta(meta);
       }

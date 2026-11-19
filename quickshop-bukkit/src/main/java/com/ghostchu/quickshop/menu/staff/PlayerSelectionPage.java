@@ -116,8 +116,7 @@ public class PlayerSelectionPage {
         final List<OfflinePlayer> players = filterPlayers(allPlayers, searchQuery);
 
         // Set up borders from config (rows 1 and 6 like browse page)
-        final String borderMaterial = borderConfig != null? borderConfig.getMaterial() : "GRAY_STAINED_GLASS_PANE";
-        final IconBuilder borderBuilder = new IconBuilder(QuickShop.getInstance().stack().of(borderMaterial, 1));
+        final IconBuilder borderBuilder = new IconBuilder(QuickShop.getInstance().stack(borderConfig, "GRAY_STAINED_GLASS_PANE", 1));
         final List<Integer> borderRows = borderConfig != null? borderConfig.getRows() : List.of(1, 6);
         for(final int row : borderRows) {
           callback.getPage().setRow(row, borderBuilder);
@@ -139,14 +138,13 @@ public class PlayerSelectionPage {
         // === Control Row (Row 1) ===
 
         // Search button (slot 0) - Left-click to search, Right-click to clear
-        final String searchMaterial = searchConfig != null? searchConfig.getMaterial() : "ANVIL";
-        final int searchSlot = searchConfig != null? searchConfig.getSlot() : 0;
-        final String currentSearchDisplay = searchQuery.isEmpty()? "None" : searchQuery;
+        final int searchSlot = (searchConfig != null)? searchConfig.getSlot() : 0;
+        final String currentSearchDisplay = (searchQuery.isEmpty())? "None" : searchQuery;
 
         // Capture variables for closure
         final Long capturedShopId = shop.get().getShopId();
 
-        callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(searchMaterial, 1)
+        callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack(searchConfig, "ANVIL", 1)
                                                            .customName(getConfigDisplay(id, searchConfig, "name", "<yellow>Search: {0}</yellow>", currentSearchDisplay))
                                                            .lore(getConfigLore(id, searchConfig, currentSearchDisplay)))
                                            .withSlot(searchSlot)
@@ -173,30 +171,26 @@ public class PlayerSelectionPage {
                                            .build());
 
         // Back button (slot 8 - right side like browse close button)
-        final String backMaterial = backConfig != null? backConfig.getMaterial() : "OAK_DOOR";
         final int backSlot = backConfig != null? backConfig.getSlot() : 8;
-        callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(backMaterial, 1)
+        callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack(backConfig, "OAK_DOOR", 1)
                                                            .customName(getConfigDisplay(id, backConfig, "<white>Back to Staff List</white>")))
                                            .withActions(new SwitchPageAction(returnMenu, returnPage))
                                            .withSlot(backSlot)
                                            .build());
 
         // === Pagination Row (Bottom - Row 6) ===
-        final String prevMaterial = prevPageConfig != null? prevPageConfig.getMaterial() : "ARROW";
-        final int prevSlot = prevPageConfig != null? prevPageConfig.getSlot() : 48;
-        final String nextMaterial = nextPageConfig != null? nextPageConfig.getMaterial() : "ARROW";
-        final int nextSlot = nextPageConfig != null? nextPageConfig.getSlot() : 50;
-        final String pageInfoMaterial = pageInfoConfig != null? pageInfoConfig.getMaterial() : "BOOK";
-        final int pageInfoSlot = pageInfoConfig != null? pageInfoConfig.getSlot() : 49;
+        final int prevSlot = (prevPageConfig != null)? prevPageConfig.getSlot() : 48;
+        final int nextSlot = (nextPageConfig != null)? nextPageConfig.getSlot() : 50;
+        final int pageInfoSlot = (pageInfoConfig != null)? pageInfoConfig.getSlot() : 49;
 
         if(maxPages > 1) {
-          callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(prevMaterial, 1)
+          callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack(prevPageConfig, "ARROW", 1)
                                                              .customName(getConfigDisplay(id, prevPageConfig, "<white><< Previous Page</white>")))
                                              .withActions(new DataAction(playerPageID, prev), new SwitchPageAction(menuName, menuPage))
                                              .withSlot(prevSlot)
                                              .build());
 
-          callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(nextMaterial, 1)
+          callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack(nextPageConfig, "ARROW", 1)
                                                              .customName(getConfigDisplay(id, nextPageConfig, "<white>Next Page >></white>")))
                                              .withActions(new DataAction(playerPageID, next), new SwitchPageAction(menuName, menuPage))
                                              .withSlot(nextSlot)
@@ -204,7 +198,7 @@ public class PlayerSelectionPage {
         }
 
         // Page info (always show)
-        callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(pageInfoMaterial, 1)
+        callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack(pageInfoConfig, "BOOK", 1)
                                                            .customName(getConfigDisplay(id, pageInfoConfig, "<yellow>Page {0}/{1}</yellow>", page, Math.max(1, maxPages))))
                                            .withSlot(pageInfoSlot)
                                            .build());
@@ -224,7 +218,7 @@ public class PlayerSelectionPage {
           final SkullProfile profile = getOrLoadProfile(uuid);
 
           final String name = (player.getName() != null)? player.getName() : uuid.toString();
-          callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("PLAYER_HEAD", 1)
+          callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack("PLAYER_HEAD", 1)
                                                              .customName(QuickShop.getInstance().platform().miniMessage().deserialize("<yellow>" + name + "</yellow>"))
                                                              .lore(getConfigLore(id, null, name))
                                                              .profile(profile))
