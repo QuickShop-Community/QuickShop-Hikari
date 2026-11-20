@@ -60,7 +60,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   @NotNull
   private final String prefix;
 
-  private final int LATEST_DATABASE_VERSION = 21;
+  private final int LATEST_DATABASE_VERSION = 22;
 
   public SimpleDatabaseHelperV2(@NotNull final QuickShop plugin, @NotNull final SQLManager manager, @NotNull final String prefix) throws Exception {
 
@@ -313,6 +313,21 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         Log.debug("Table " + value.getName() + " not exists, skipping.");
       }
     }
+  }
+
+  private void upgradeTablesPrecision() {
+
+    fastBackup();
+    manager.alterTable(DataTables.DATA.getName())
+            .modifyColumn("price", "DECIMAL(32,7) NOT NULL").executeFuture().join();
+    manager.alterTable(DataTables.LOG_TRANSACTION.getName())
+            .modifyColumn("amount", "DECIMAL(32,7) NOT NULL").executeFuture().join();
+    manager.alterTable(DataTables.LOG_TRANSACTION.getName())
+            .modifyColumn("tax_amount", "DECIMAL(32,7) NOT NULL DEFAULT 0").executeFuture().join();
+    manager.alterTable(DataTables.LOG_PURCHASE.getName())
+            .modifyColumn("money", "DECIMAL(32,7) NOT NULL").executeFuture().join();
+    manager.alterTable(DataTables.LOG_PURCHASE.getName())
+            .modifyColumn("tax", "DECIMAL(32,7) NOT NULL DEFAULT 0").executeFuture().join();
   }
 
   public @NotNull String getPrefix() {
@@ -1181,6 +1196,13 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         logger.info("Data upgrading: Creating indexes for the shop tables to improve performance...");
         parent.performShopTableIndexes();
         currentDatabaseVersion = 21;
+      }
+
+      if(currentDatabaseVersion == 21) {
+
+        logger.info("Data upgrading: Adjusting price columns to add more precision.");
+        parent.upgradeTablesPrecision();
+        currentDatabaseVersion = 22;
       }
 
       parent.setDatabaseVersion(currentDatabaseVersion).join();
