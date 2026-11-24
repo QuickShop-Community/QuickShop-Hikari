@@ -326,10 +326,9 @@ public class PacketFactoryv1_21_10 implements PacketFactory<PacketContainer> {
         if(player.getClass().getName().contains("TemporaryPlayer")) {
           return;
         }
-        //chunk x
-        final int x = event.getPacket().getIntegers().read(0);
-        //chunk z
-        final int z = event.getPacket().getIntegers().read(1);
+        final ChunkCoordIntPair pair = event.getPacket().getChunkCoordIntPairs().read(0);
+        final int x = pair.getChunkX();
+        final int z = pair.getChunkZ();
 
         VirtualDisplayItemManager.instance().chunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
           for(final VirtualDisplayItem<?> target : targetList.values()) {
