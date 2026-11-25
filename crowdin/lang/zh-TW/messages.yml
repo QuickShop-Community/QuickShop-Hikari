@@ -110,7 +110,7 @@ shops-recovering: 正在嘗試從備份檔案中還原所有商店……
 virtual-player-component-hover: "<gray>這是一個虛擬玩家。\n<gray>引用具有相同名稱的此名稱的系統帳戶。</gray>\n<green>UUID：<yellow>{0}</yellow></green>\n<green>使用者名稱：<yellow>{1}</yellow></green>\n<green>顯示為：<yellow>{2}</yellow></green>"
 real-player-component-hover: "<gray>這是一個真實存在的玩家。\n<green>UUID：<yellow>{0}</yellow></green>\n<green>使用者名稱：<yellow>{1}</yellow></green>\n<green>顯示為：<yellow>{2}</yellow></green>\n<gray>如果要使用同名的虛擬系統帳戶，請新增 <dark_gray>\"[]\"</dark_gray> 到使用者名的兩側：<dark_gray>[{1}]</dark_gray>。"
 pagination:
-  header: "<green>{0}</green>:"
+  header: "<green>{0}</green>："
   footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Previous page\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Next page\"><white>></white></hover></click>]</light_purple>"
 tags:
   commands:
@@ -1642,16 +1642,16 @@ gui:
     info-price:
       display: "<gold>價格資訊</gold>"
       lore:
-        - "<gray>價錢：<white>{0}</white></gray>"
+        - "<gray>價格：<white>{0}</white></gray>"
         - "<gray>每：<white>{1}件物品</white></gray>"
     info-seller:
       display: "<aqua>賣家資訊</aqua>"
       lore:
-        - "<gray>Owner: <white>{0}</white></gray>"
+        - "<gray>擁有者：<white>{0}</white></gray>"
     custom-amount:
       display: "<bold><blue>Custom Order</blue></bold>"
     quantity-button:
-      display-buy: "<green>Buy x{0}</green>"
+      display-buy: "<green>購買 x{0}個</green>"
       display-sell: "<gold>出售 x{0}個</gold>"
       lore:
         - "<yellow>{0}個</yellow>"
@@ -1711,7 +1711,7 @@ gui:
         - "<gray>Click to add a new</gray>"
         - "<gray>staff member to your shop.</gray>"
     back:
-      display: "<white>Back to Shop</white>"
+      display: "<white>回到商店</white>"
   browse:
     title: "<dark_aqua>Market Browser</dark_aqua>"
     shop-list:
@@ -1729,22 +1729,22 @@ gui:
           good: "▲ Above Avg"
           bad: "▼▼ Low Offer"
           worst: "▼▼ Below Avg"
-      display: "<yellow>{0}</yellow>"
+      display: "<yellow>{0}間</yellow>"
       lore:
-        - "<gray>Owner: <white>{0}</white></gray>"
+        - "<gray>擁有者：<white>{0}</white></gray>"
         - "<gray>Type: {1}</gray>"
         - "<gray>Price: {2}</gray>"
         - "<gray><aqua>{3}</aqua></gray>"
-        - "<gray>Location: <white>{4}</white></gray>"
+        - "<gray>座標：<white>{4}</white></gray>"
         - "<dark_gray>{5}</dark_gray>"
       teleport: "<newline><yellow>Click to teleport</yellow>"
     shop-item:
       lore:
-        - "<green>Owner: </green><yellow>{0}</yellow>"
+        - "<green>擁有者：</green><yellow>{0}</yellow>"
         - "<green>Location: </green><yellow>{1}</yellow>"
         - "<green>Type: </green><yellow>{2}</yellow>"
-        - "<green>Price: </green><yellow>{3}</yellow>"
-        - "<green>Stock: </green><yellow>{4}</yellow>"
+        - "<green>價格：</green><yellow>{3}</yellow>"
+        - "<green>庫存: </green><yellow>{4}個</yellow>"
     grouped-item:
       display: "<yellow>{0}</yellow>"
       lore-title:
