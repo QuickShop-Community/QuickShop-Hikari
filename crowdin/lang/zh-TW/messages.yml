@@ -795,7 +795,7 @@ transfer-rejected-toside: <red>你已拒絕 <aqua>{0}</aqua> 的轉移請求。
 transfer-no-pending-operation: <red>你還沒有待處理的轉移請求。
 transfer-no-self: <red>你無法將你的商店轉移給自己。
 transfer-no-buy: <red>你不可轉讓收購模式的商店。
-transfer-failed-some: <red>Failed to transfer some of the shops as they're not eligible.
+transfer-failed-some: <red>部份商店因不符合資格而轉讓失敗。
 benefit-overflow: <red>所有利益的總和不能大於或等於100%。
 benefit-exists: <red>目標玩家已經在此商店的利益分配列表中。
 benefit-removed: <red>目標玩家已從商店的利益分配中移除。
@@ -1652,37 +1652,37 @@ gui:
       display: "<bold><blue>Custom Order</blue></bold>"
     quantity-button:
       display-buy: "<green>Buy x{0}</green>"
-      display-sell: "<gold>Sell x{0}</gold>"
+      display-sell: "<gold>出售 x{0}個</gold>"
       lore:
-        - "<yellow>{0}</yellow>"
+        - "<yellow>{0}個</yellow>"
   keeper:
-    title: "<dark_aqua>Shop Management</dark_aqua>"
+    title: "<dark_aqua>商店管理</dark_aqua>"
     change-price:
-      display: "<bold><green>Change Price</green></bold>"
+      display: "<bold><green>更改價格</green></bold>"
       lore:
-        - "<gray>Current price: <white>{0}</white></gray>"
+        - "<gray>目前價格：<white>{0}</white></gray>"
         - ""
-        - "<yellow>Click to change price</yellow>"
+        - "<yellow>點擊更改價格</yellow>"
     display-toggle:
-      display: "<bold><green>Toggle Preview</green></bold>"
+      display: "<bold><green>切換預覧</green></bold>"
       lore:
         - "<gray>Toggle item preview in shops</gray>"
-        - "<gray>Status: <white>{0}</white>. Click to toggle.</gray>"
+        - "<gray>狀態：<white>{0}</white>。點擊切換狀態。</gray>"
     freeze-toggle:
       display: "<bold><green>Toggle Freeze</green></bold>"
       lore:
         - "<gray>Currently <white>{0}</white></gray>"
         - "<gray>Click to <white>{1}</white></gray>"
     mode-toggle:
-      display: "<bold><green>Change Mode</green></bold>"
+      display: "<bold><green>更改模式</green></bold>"
       lore:
-        - "<gray>Current: <white>{0}</white></gray>"
-        - "<gray>Click to change to: <white>{1}</white></gray>"
+        - "<gray>目前模式：<white>{0}</white></gray>"
+        - "<gray>點擊更改至：<white>{1}</white></gray>"
     inventory:
-      display: "<bold><green>View Inventory</green></bold>"
+      display: "<bold><green>查看庫存</green></bold>"
       lore:
-        - "<gray>Click to view your</gray>"
-        - "<gray>shop's chest inventory.</gray>"
+        - "<gray>點擊查看你的</gray>"
+        - "<gray>商店儲物箱庫存。</gray>"
     staff:
       display: "<bold><aqua>Shop Staff</aqua></bold>"
       lore:
