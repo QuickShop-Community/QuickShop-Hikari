@@ -71,4 +71,9 @@ public class ShopTeleportEvent extends ShopEvent {
 
     this.teleportLocation = teleportLocation;
   }
+
+  public Player player() {
+
+    return player;
+  }
 }

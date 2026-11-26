@@ -102,7 +102,7 @@ listOf(
 }
 
 listOf(
-    "bluemap", "discordsrv", "discount", "displaycontrol", "dyesigns", "dynmap", "limited",
+    "bluemap", "chargetp", "discordsrv", "discount", "displaycontrol", "dyesigns", "dynmap", "limited",
     "list", "pl3xmap", "plan", "quests", "reremake-migrator", "shopitemonly", "squaremap",
 ).forEach {
     include("addon:$it")
