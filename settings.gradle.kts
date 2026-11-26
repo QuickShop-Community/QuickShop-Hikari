@@ -52,7 +52,6 @@ dependencyResolutionManagement {
         maven("https://repo.codemc.org/repository/maven-public/")
         maven("https://repo.codemc.org/repository/maven-snapshots")
         maven("https://repo.crazycrew.us/releases")
-        maven("https://repo.dustplanet.de/artifactory/libs-release-local/")
         maven("https://repo.essentialsx.net/releases/")
         maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
         maven("https://repo.glaremasters.me/repository/towny/")
