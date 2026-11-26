@@ -1,0 +1,26 @@
+config-version: 1
+enabled: true
+tp-cost: 100
+owner-free: true
+# Blank uses the economy provider's default currency. Debits use the origin world.
+currency: ''
+pricing:
+  mode: FIXED # FIXED or DISTANCE (base + 3D distance * per-block)
+  per-block: 0.05
+  minimum: 0
+  maximum: 0 # unlimited
+cross-world:
+  enabled: true
+  extra-cost: 50
+# Destination world overrides the base price.
+world-prices: {}
+# Highest matching permission discount wins; percentages, not multipliers.
+discounts:
+  vip: 25
+  premium: 50
+log-payments: false
+messages:
+  charged: 'Teleport fee charged: {cost}'
+  insufficient: 'You need {cost} to teleport to this shop.'
+  error: 'Teleport payment unavailable.'
+  cross-world-denied: 'Cross-world shop teleportation is disabled.'

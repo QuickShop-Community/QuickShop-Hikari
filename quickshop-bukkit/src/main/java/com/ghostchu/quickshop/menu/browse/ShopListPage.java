@@ -18,10 +18,13 @@ package com.ghostchu.quickshop.menu.browse;
  */
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.event.Phase;
+import com.ghostchu.quickshop.api.event.management.ShopTeleportEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.config.GuiConfig;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import net.kyori.adventure.text.Component;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkit.BukkitItemStack;
@@ -285,7 +288,17 @@ public class ShopListPage {
             teleportLoc.setYaw((float)Math.toDegrees(Math.atan2(-dx, dz)));
             teleportLoc.setPitch(30);
 
+            ShopTeleportEvent event = new ShopTeleportEvent(Phase.MAIN, shop, p, teleportLoc);
+            if (event.callCancellableEvent()) {
+
+              Log.debug("ShopTeleportEvent MAIN phase cancelled");
+              return;
+            }
+
             p.teleportAsync(teleportLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
+
+            event = event.clone(Phase.POST);
+            event.callEvent();
           }
         }));
       }

@@ -1,0 +1,18 @@
+name: qsaddon-${project.artifactId}
+version: '${project.version}'
+main: com.ghostchu.quickshop.addon.${project.artifactId}.Main
+# Enable only after verifying the core dispatch and economy provider on Folia.
+folia-supported: false
+api-version: '1.20'
+depend:
+  - QuickShop-Hikari
+authors: [ creatorfromhell ]
+permissions:
+  quickshopaddon.chargetp.reload:
+    default: op
+  quickshopaddon.chargetp.bypass:
+    default: false
+  quickshopaddon.chargetp.discount.vip:
+    default: false
+  quickshopaddon.chargetp.discount.premium:
+    default: false
