@@ -110,7 +110,7 @@ shops-recovering: 正在嘗試從備份檔案中還原所有商店……
 virtual-player-component-hover: "<gray>這是一個虛擬玩家。\n<gray>引用具有相同名稱的此名稱的系統帳戶。</gray>\n<green>UUID：<yellow>{0}</yellow></green>\n<green>使用者名稱：<yellow>{1}</yellow></green>\n<green>顯示為：<yellow>{2}</yellow></green>"
 real-player-component-hover: "<gray>這是一個真實存在的玩家。\n<green>UUID：<yellow>{0}</yellow></green>\n<green>使用者名稱：<yellow>{1}</yellow></green>\n<green>顯示為：<yellow>{2}</yellow></green>\n<gray>如果要使用同名的虛擬系統帳戶，請新增 <dark_gray>\"[]\"</dark_gray> 到使用者名的兩側：<dark_gray>[{1}]</dark_gray>。"
 pagination:
-  header: "<green>{0}</green>:"
+  header: "<green>{0}</green>："
   footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Previous page\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Next page\"><white>></white></hover></click>]</light_purple>"
 tags:
   commands:
@@ -795,7 +795,7 @@ transfer-rejected-toside: <red>你已拒絕 <aqua>{0}</aqua> 的轉移請求。
 transfer-no-pending-operation: <red>你還沒有待處理的轉移請求。
 transfer-no-self: <red>你無法將你的商店轉移給自己。
 transfer-no-buy: <red>你不可轉讓收購模式的商店。
-transfer-failed-some: <red>Failed to transfer some of the shops as they're not eligible.
+transfer-failed-some: <red>部份商店因不符合資格而轉讓失敗。
 benefit-overflow: <red>所有利益的總和不能大於或等於100%。
 benefit-exists: <red>目標玩家已經在此商店的利益分配列表中。
 benefit-removed: <red>目標玩家已從商店的利益分配中移除。
@@ -1642,47 +1642,47 @@ gui:
     info-price:
       display: "<gold>價格資訊</gold>"
       lore:
-        - "<gray>價錢：<white>{0}</white></gray>"
+        - "<gray>價格：<white>{0}</white></gray>"
         - "<gray>每：<white>{1}件物品</white></gray>"
     info-seller:
       display: "<aqua>賣家資訊</aqua>"
       lore:
-        - "<gray>Owner: <white>{0}</white></gray>"
+        - "<gray>擁有者：<white>{0}</white></gray>"
     custom-amount:
       display: "<bold><blue>Custom Order</blue></bold>"
     quantity-button:
-      display-buy: "<green>Buy x{0}</green>"
-      display-sell: "<gold>Sell x{0}</gold>"
+      display-buy: "<green>購買 x{0}個</green>"
+      display-sell: "<gold>出售 x{0}個</gold>"
       lore:
-        - "<yellow>{0}</yellow>"
+        - "<yellow>{0}個</yellow>"
   keeper:
-    title: "<dark_aqua>Shop Management</dark_aqua>"
+    title: "<dark_aqua>商店管理</dark_aqua>"
     change-price:
-      display: "<bold><green>Change Price</green></bold>"
+      display: "<bold><green>更改價格</green></bold>"
       lore:
-        - "<gray>Current price: <white>{0}</white></gray>"
+        - "<gray>目前價格：<white>{0}</white></gray>"
         - ""
-        - "<yellow>Click to change price</yellow>"
+        - "<yellow>點擊更改價格</yellow>"
     display-toggle:
-      display: "<bold><green>Toggle Preview</green></bold>"
+      display: "<bold><green>切換預覧</green></bold>"
       lore:
         - "<gray>Toggle item preview in shops</gray>"
-        - "<gray>Status: <white>{0}</white>. Click to toggle.</gray>"
+        - "<gray>狀態：<white>{0}</white>。點擊切換狀態。</gray>"
     freeze-toggle:
       display: "<bold><green>Toggle Freeze</green></bold>"
       lore:
         - "<gray>Currently <white>{0}</white></gray>"
         - "<gray>Click to <white>{1}</white></gray>"
     mode-toggle:
-      display: "<bold><green>Change Mode</green></bold>"
+      display: "<bold><green>更改模式</green></bold>"
       lore:
-        - "<gray>Current: <white>{0}</white></gray>"
-        - "<gray>Click to change to: <white>{1}</white></gray>"
+        - "<gray>目前模式：<white>{0}</white></gray>"
+        - "<gray>點擊更改至：<white>{1}</white></gray>"
     inventory:
-      display: "<bold><green>View Inventory</green></bold>"
+      display: "<bold><green>查看庫存</green></bold>"
       lore:
-        - "<gray>Click to view your</gray>"
-        - "<gray>shop's chest inventory.</gray>"
+        - "<gray>點擊查看你的</gray>"
+        - "<gray>商店儲物箱庫存。</gray>"
     staff:
       display: "<bold><aqua>Shop Staff</aqua></bold>"
       lore:
@@ -1711,7 +1711,7 @@ gui:
         - "<gray>Click to add a new</gray>"
         - "<gray>staff member to your shop.</gray>"
     back:
-      display: "<white>Back to Shop</white>"
+      display: "<white>回到商店</white>"
   browse:
     title: "<dark_aqua>Market Browser</dark_aqua>"
     shop-list:
@@ -1729,22 +1729,22 @@ gui:
           good: "▲ Above Avg"
           bad: "▼▼ Low Offer"
           worst: "▼▼ Below Avg"
-      display: "<yellow>{0}</yellow>"
+      display: "<yellow>{0}間</yellow>"
       lore:
-        - "<gray>Owner: <white>{0}</white></gray>"
+        - "<gray>擁有者：<white>{0}</white></gray>"
         - "<gray>Type: {1}</gray>"
         - "<gray>Price: {2}</gray>"
         - "<gray><aqua>{3}</aqua></gray>"
-        - "<gray>Location: <white>{4}</white></gray>"
+        - "<gray>座標：<white>{4}</white></gray>"
         - "<dark_gray>{5}</dark_gray>"
       teleport: "<newline><yellow>Click to teleport</yellow>"
     shop-item:
       lore:
-        - "<green>Owner: </green><yellow>{0}</yellow>"
+        - "<green>擁有者：</green><yellow>{0}</yellow>"
         - "<green>Location: </green><yellow>{1}</yellow>"
         - "<green>Type: </green><yellow>{2}</yellow>"
-        - "<green>Price: </green><yellow>{3}</yellow>"
-        - "<green>Stock: </green><yellow>{4}</yellow>"
+        - "<green>價格：</green><yellow>{3}</yellow>"
+        - "<green>庫存: </green><yellow>{4}個</yellow>"
     grouped-item:
       display: "<yellow>{0}</yellow>"
       lore-title:
