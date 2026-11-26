@@ -72,6 +72,12 @@ public class VirtualDisplayItemManager implements DisplayManager<VirtualDisplayI
       } else {
 
         this.packetHandler.initialize();
+        // ProtocolLib is being phased out in favour of PacketEvents for virtual displays.
+        if("protocollib".equals(this.packetHandler.identifier())) {
+
+          plugin.logger().warn("ProtocolLib is currently used for virtual displays. QuickShop-Hikari will migrate virtual display support to PacketEvents; ProtocolLib support will be removed in a future release.");
+          plugin.logger().warn("Install PacketEvents and set shop.display-protocol to \"packetevents\" to prepare for the migration.");
+        }
       }
       this.entityIdCounter = new AtomicInteger(Integer.MAX_VALUE);
 
