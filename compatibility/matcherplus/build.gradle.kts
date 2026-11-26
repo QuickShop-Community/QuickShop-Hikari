@@ -19,7 +19,6 @@ dependencies {
         exclude("CrazyCrates", "crazycrates-core")
     }
     compileOnly("su.nightexpress.excellentcrates:crates-api:7.1.0")
-    compileOnly("de.dustplanet:silkspawners:8.3.0") { isTransitive = false }
     compileOnly("io.th0rgal:oraxen:1.189.0") {
         exclude("me.gabytm.util", "actions-spigot")
         exclude("org.jetbrains", "annotations")

@@ -10,7 +10,6 @@ import com.ghostchu.quickshop.compatibility.matcherplus.matchers.impl.ExcellentC
 import com.ghostchu.quickshop.compatibility.matcherplus.matchers.impl.NexoCheck;
 import com.ghostchu.quickshop.compatibility.matcherplus.matchers.impl.PyroFishingCheck;
 import com.ghostchu.quickshop.compatibility.matcherplus.matchers.impl.SafariNetCheck;
-import com.ghostchu.quickshop.compatibility.matcherplus.matchers.impl.SilkSpawnerCheck;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -31,11 +30,6 @@ public final class Main extends CompatibilityModule implements Listener {
 
     if(Bukkit.getPluginManager().isPluginEnabled("BreweryX")) {
       checks.put("breweryx", new BreweryXCheck());
-    }
-
-    if(Bukkit.getPluginManager().isPluginEnabled("SilkSpawners")) {
-
-      checks.put("silkspawners", new SilkSpawnerCheck());
     }
 
     if(Bukkit.getPluginManager().isPluginEnabled("CrazyCrates")) {
