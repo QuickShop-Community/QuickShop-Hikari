@@ -1684,27 +1684,27 @@ gui:
         - "<gray>點擊查看你的</gray>"
         - "<gray>商店儲物箱庫存。</gray>"
     staff:
-      display: "<bold><aqua>Shop Staff</aqua></bold>"
+      display: "<bold><aqua>商店店員</aqua></bold>"
       lore:
-        - "<gray>Click to manage your</gray>"
-        - "<gray>shop's staff members.</gray>"
+        - "<gray>點擊管理你的</gray>"
+        - "<gray>商店店員。</gray>"
     history:
-      display: "<bold><light_purple>Transaction History</light_purple></bold>"
+      display: "<bold><light_purple>交易紀錄</light_purple></bold>"
       lore:
-        - "<gray>Click to view your</gray>"
-        - "<gray>shop's transaction history.</gray>"
+        - "<gray>點擊查看你的</gray>"
+        - "<gray>商店交易紀錄。</gray>"
     remove:
-      display: "<bold><red>Delete Shop</red></bold>"
+      display: "<bold><red>刪除商店</red></bold>"
       lore:
-        - "<gray>Click to delete your shop.</gray>"
+        - "<gray>點擊刪除你的商店。</gray>"
         - "<dark_gray>You can also break the sign/chest.</dark_gray>"
   staff:
-    title: "<dark_aqua>Staff Management</dark_aqua>"
+    title: "<dark_aqua>員工管理</dark_aqua>"
     search:
-      display: "<yellow>Search: {0}</yellow>"
+      display: "<yellow>搜尋：{0}</yellow>"
       lore:
-        - "<gray>Left-click to search for players</gray>"
-        - "<gray>Right-click to clear search</gray>"
+        - "<gray>點擊左鍵搜尋玩家</gray>"
+        - "<gray>點擊右鍵清除搜尋</gray>"
     add-staff:
       display: "<green>Add Staff Member</green>"
       lore:
@@ -1763,16 +1763,16 @@ gui:
       lore-footer:
         - "<yellow>Click to view all shops</yellow>"
     search:
-      display: "<yellow>Search: {0}</yellow>"
+      display: "<yellow>搜尋：{0}</yellow>"
       lore:
-        - "<gray>Left-click to search for items</gray>"
-        - "<gray>Right-click to clear search</gray>"
+        - "<gray>點擊左鍵搜尋物品</gray>"
+        - "<gray>點擊右鍵清除搜尋</gray>"
     search-item:
       display: "<yellow>{0}</yellow>"
       lore:
-        - "<gray>Showing: {0}</gray>"
-        - "<gray>Shops: <white>{1}</white></gray>"
-        - "<gray>Average price: <gold>{2}</gold></gray>"
+        - "<gray>正在顯示：{0}</gray>"
+        - "<gray>商店：<white>{1}</white></gray>"
+        - "<gray>平均價格：<gold>{2}</gold></gray>"
     sort:
       display: "<green>Sort: {0}</green>"
       lore:
@@ -1818,7 +1818,7 @@ gui:
     #Staff menu messages
     staff:
       #Shown when player left-clicks "Search" button (right-click clears instantly)
-      enter-search: "<yellow>Enter a player name to search. Type '<white>clear</white>' to reset, or right-click the search button.</yellow>"
+      enter-search: "<yellow>輸入一位玩家名字來搜尋。輸入'<white>clear</white>'來重設，或右鍵點擊搜尋按鈕。</yellow>"
       #Shown when player left-clicks a staff member to remove them
       #{0} = staff member name
       confirm-remove: "<yellow>Type '<white>confirm</white>' to remove <red>{0}</red> as staff. Type anything else to cancel.</yellow>"
@@ -1841,7 +1841,7 @@ gui:
     #Browse menu messages
     browse:
       #Shown when player left-clicks "Search" button (right-click clears instantly)
-      enter-search: "<yellow>Enter an item name to search. Type '<white>clear</white>' to reset, or right-click the search button.</yellow>"
+      enter-search: "<yellow>輸入一項物品名字來搜尋。輸入'<white>clear</white>'來重設，或右鍵點擊搜尋按鈕。</yellow>"
 history:
   shop:
     gui-title: "查看購買歷史記錄"
