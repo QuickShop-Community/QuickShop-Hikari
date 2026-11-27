@@ -1690,15 +1690,36 @@ public class Util {
    */
   public static boolean isOtherShopWithinHopperReach(@NotNull final Block b, @NotNull final Player p) {
 
-    final Block bshop = Util.getAttached(b);
-    if(bshop == null) {
-      return false;
+    Shop shopFacing = null;
+    final Block bshop = Util.getFacing(b);
+
+    if(bshop != null) {
+      shopFacing = plugin.getShopManager().getShopIncludeAttached(bshop.getLocation());
     }
-    Shop shop = plugin.getShopManager().getShopIncludeAttached(bshop.getLocation());
-    if(shop == null) {
-      shop = plugin.getShopManager().getShopIncludeAttached(bshop.getLocation().clone().add(0, 1, 0));
+    final Shop shopAbove = plugin.getShopManager().getShopIncludeAttached(b.getLocation().clone().add(0, 1, 0));
+
+    final boolean checkFacing = shopFacing != null && !shopFacing.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.ACCESS_INVENTORY);
+    final boolean checkAbove = shopAbove != null && !shopAbove.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.ACCESS_INVENTORY);
+
+    return checkFacing || checkAbove;
+  }
+
+  /**
+   * Fetches the block which the given block is facing
+   *
+   * @param b The block being inspected
+   *
+   * @return The block the given block is facing
+   */
+  @Nullable
+  public static Block getFacing(@NotNull final Block b) {
+
+    final BlockData blockData = b.getBlockData();
+    if(blockData instanceof Directional directional) {
+      return b.getRelative(directional.getFacing());
+    } else {
+      return null;
     }
-    return shop != null && !shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.ACCESS_INVENTORY);
   }
 
   /**
