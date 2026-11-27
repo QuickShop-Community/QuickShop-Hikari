@@ -32,7 +32,7 @@ essentialsX = "2.21.2"
 crowdinota = "1.0.3"
 
 bstats = "3.0.2"
-rollbar = "2.0.0"
+rollbar = "2.3.1"
 faststats = "0.17.2"
 commonsCompress = "1.26.2"
 foliaLib = "0.5.1"
