@@ -1717,9 +1717,9 @@ public class Util {
     final BlockData blockData = b.getBlockData();
     if(blockData instanceof Directional directional) {
       return b.getRelative(directional.getFacing());
-    } else {
-      return null;
     }
+    
+    return null;
   }
 
   /**
