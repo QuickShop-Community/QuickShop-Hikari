@@ -1672,7 +1672,7 @@ gui:
       display: "<bold><green>Toggle Freeze</green></bold>"
       lore:
         - "<gray>Currently <white>{0}</white></gray>"
-        - "<gray>Click to <white>{1}</white></gray>"
+        - "<gray>點擊來<white>{1}</white></gray>"
     mode-toggle:
       display: "<bold><green>更改模式</green></bold>"
       lore:
@@ -1697,7 +1697,7 @@ gui:
       display: "<bold><red>刪除商店</red></bold>"
       lore:
         - "<gray>點擊刪除你的商店。</gray>"
-        - "<dark_gray>You can also break the sign/chest.</dark_gray>"
+        - "<dark_gray>你也可以破壞告示牌／儲物箱。</dark_gray>"
   staff:
     title: "<dark_aqua>員工管理</dark_aqua>"
     search:
@@ -1706,10 +1706,10 @@ gui:
         - "<gray>點擊左鍵搜尋玩家</gray>"
         - "<gray>點擊右鍵清除搜尋</gray>"
     add-staff:
-      display: "<green>Add Staff Member</green>"
+      display: "<green>增加店員</green>"
       lore:
-        - "<gray>Click to add a new</gray>"
-        - "<gray>staff member to your shop.</gray>"
+        - "<gray>點擊增加一個新</gray>"
+        - "<gray>店員到你的商店。</gray>"
     back:
       display: "<white>回到商店</white>"
   browse:
@@ -1799,45 +1799,45 @@ gui:
       display: "<white>Back to Market</white>"
   shared:
     previous-page:
-      display: "<white><< Previous Page</white>"
+      display: "<white><<上一頁</white>"
     next-page:
-      display: "<white>Next Page >></white>"
+      display: "<white>下一頁 >></white>"
     page-info:
-      display: "<yellow>Page {0}/{1}</yellow>"
+      display: "<yellow>頁數{0}/{1}</yellow>"
     back:
-      display: "<white>Back</white>"
+      display: "<white>返回</white>"
     close:
-      display: "<red>Close</red>"
+      display: "<red>關閉</red>"
   messages:
     #Keeper menu messages
     keeper:
       #Shown when player clicks "Change Price" button
-      enter-price: "<yellow>Enter a new price in chat.</yellow>"
+      enter-price: "<yellow>在聊天欄中輸入新價格。</yellow>"
       #Shown when player clicks "Delete Shop" button
-      confirm-delete: "<yellow>Type '<white>confirm</white>' in chat to delete your shop. Type anything else to cancel.</yellow>"
+      confirm-delete: "<yellow>在聊天欄中輸入'<white>confirm</white>'刪除你的商店。輸入任何其他內容來取消。</yellow>"
     #Staff menu messages
     staff:
       #Shown when player left-clicks "Search" button (right-click clears instantly)
       enter-search: "<yellow>輸入一位玩家名字來搜尋。輸入'<white>clear</white>'來重設，或右鍵點擊搜尋按鈕。</yellow>"
       #Shown when player left-clicks a staff member to remove them
       #{0} = staff member name
-      confirm-remove: "<yellow>Type '<white>confirm</white>' to remove <red>{0}</red> as staff. Type anything else to cancel.</yellow>"
+      confirm-remove: "<yellow>輸入'<white>confirm</white>'移除店員<red>{0}</red>。輸入任何其他內容來取消。</yellow>"
       #Shown when player right-clicks a staff member to transfer ownership
       #{0} = staff member name
-      confirm-transfer: "<yellow>Type '<white>confirm</white>' to transfer ownership to <green>{0}</green>. Type anything else to cancel.</yellow>"
+      confirm-transfer: "<yellow>輸入'<white>confirm</white>'轉讓所有權給<green>{0}</green>。輸入任何其他內容來取消。</yellow>"
     #Trade menu messages
     trade:
       #Shown when player clicks "Custom Order" button (buying)
       #{0} = item amount per purchase
-      enter-buy: "<yellow>Enter the quantity you want to buy. Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</yellow>"
+      enter-buy: "<yellow>輸入你想購買的數量。必須是<white>{0}</white>的倍數。輸入<white>0</white>來取消。</yellow>"
       #Shown when player clicks "Custom Order" button (selling)
       #{0} = item amount per purchase
-      enter-sell: "<yellow>Enter the quantity you want to sell. Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</yellow>"
+      enter-sell: "<yellow>輸入你想出售的數量。必須是<white>{0}</white>的倍數。輸入<white>0</white>來取消。</yellow>"
       #Shown when player enters invalid quantity (not multiple of item amount)
       #{0} = item amount per purchase
-      invalid-multiple: "<red>Invalid quantity! Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</red>"
+      invalid-multiple: "<red>無效數量！必須是<white>{0}</white>的倍數。輸入<white>0</white>來取消。</red>"
       #Shown when player enters quantity exceeding stock
-      invalid-stock: "<red>Invalid quantity! Not enough stock available. Enter <white>0</white> to cancel.</red>"
+      invalid-stock: "<red>無效數量！庫存量不足。輸入<white>0</white>來取消。</red>"
     #Browse menu messages
     browse:
       #Shown when player left-clicks "Search" button (right-click clears instantly)
@@ -1846,8 +1846,8 @@ history:
   shop:
     gui-title: "查看購買歷史記錄"
     header-icon-multiple-shop: "<white>查詢結果 {0} 商店</white>"
-    header-icon-shop-name: '<yellow>Shop {0}</yellow>'
-    header-icon-shop-empty-name: '<yellow>Shop in world ''{0}'' at x: {1}, y: {2}, z: {3}</yellow>'
+    header-icon-shop-name: '<yellow>商店{0}</yellow>'
+    header-icon-shop-empty-name: '<yellow>在「{0}」世界的商店位於x:{1}，y:{2}，z:{3}</yellow>'
     header-icon-description:
       - "<white>類型：<yellow>{0}</yellow></white>"
       - "<white>擁有者：<yellow>{1}</yellow></white>"
@@ -1870,21 +1870,21 @@ history:
       - "<white>Net: <yellow>{6}</yellow></white>"
     query-icon: "<gray>請稍候，正在查詢……</gray>"
     current-page: "<white>第{0}頁</white>"
-    multi-shops-icon-title: "<yellow>Multiple Shops</yellow>"
-    summary-icon-title: "<yellow>Summary</yellow>"
+    multi-shops-icon-title: "<yellow>多間商店</yellow>"
+    summary-icon-title: "<yellow>總結</yellow>"
     summary-icon-description:
-      - "<white>Total unique purchasers: <yellow>{0}</yellow></white>"
-      - "<white>Recent <aqua>{2}</aqua> purchases: <yellow>{3}</yellow></white>"
-      - "<white>Recent <aqua>{4}</aqua> purchases: <yellow>{5}</yellow></white>"
-      - "<white>Recent <aqua>{6}</aqua> purchases: <yellow>{7}</yellow></white>"
-      - "<white>Recent <aqua>{8}</aqua> purchases: <yellow>{9}</yellow></white>"
-      - "<white>Total purchases: <yellow>{10}</yellow></white>"
-      - "<white>Recent <aqua>{11}</aqua> turnover: <yellow>{12}</yellow></white>"
-      - "<white>Recent <aqua>{13}</aqua> turnover: <yellow>{14}</yellow></white>"
-      - "<white>Recent <aqua>{15}</aqua> turnover: <yellow>{16}</yellow></white>"
-      - "<white>Recent <aqua>{17}</aqua> turnover: <yellow>{18}</yellow></white>"
-      - "<white>Total turnover: <yellow>{19}</yellow></white>"
-    total-unique-purchasers: "<white>總交易者：<yellow>{0}</yellow></white>"
+      - "<white>不重複購買者總數：<yellow>{0}</yellow></white>"
+      - "<white>最近<aqua>{2}</aqua> 購買：<yellow>{3}</yellow></white>"
+      - "<white>最近<aqua>{4}</aqua> 購買：<yellow>{5}</yellow></white>"
+      - "<white>最近<aqua>{6}</aqua> 購買：<yellow>{7}</yellow></white>"
+      - "<white>最近<aqua>{8}</aqua> 購買：<yellow>{9}</yellow></white>"
+      - "<white>購買總數：<yellow>{10}</yellow></white>"
+      - "<white>最新<aqua>{11}</aqua> 營業額：<yellow>{12}</yellow></white>"
+      - "<white>最新<aqua>{13}</aqua> 營業額：<yellow>{14}</yellow></white>"
+      - "<white>最新<aqua>{15}</aqua> 營業額：<yellow>{16}</yellow></white>"
+      - "<white>最新<aqua>{17}</aqua> 營業額：<yellow>{18}</yellow></white>"
+      - "<white>總營業額：<yellow>{19}</yellow></white>"
+    total-unique-purchasers: "<white>不重複購買者總數：<yellow>{0}</yellow></white>"
     top-n-valuable-customers-entry:
       - "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
     top-n-valuable-customers-title: "<gold>消費次數排行榜TOP{0}</gold>"
@@ -1894,7 +1894,7 @@ about:
     - "<b><aqua>QuickShop <yellow>{0}</yellow></aqua></b>"
     - "<aqua>版本 <yellow>>></yellow> <green>{1}</green></aqua>"
     - "<aqua>正式版 <yellow>>></yellow> <green>{2}</green></aqua>"
-    - "<aqua>Developers <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Click to check contributors'><click:open_url:'https://github.com/QuickShop-Community/QuickShop-Hikari/graphs/contributors'>[View contributors on GitHub]</click></hover></color></aqua>"
+    - "<aqua>開發人員<yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>點擊查看貢獻者'><click:open_url:'https://github.com/QuickShop-Community/QuickShop-Hikari/graphs/contributors'>[在 GitHub 上查看貢獻者]</click></hover></color></aqua>"
     - "<aqua>本地化成員 <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
     - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>點擊開啟 Crowdin 翻譯頁面><click:open_url:'https://crowdin.com/project/qs-hikari'>[在 Crowdin 上協助翻譯]</click></hover></color></yellow>"
     - "<aqua>贊助密鑰 <yellow>>></yellow> <green>{6}</green></aqua>"
