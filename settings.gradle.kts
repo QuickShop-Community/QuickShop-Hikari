@@ -95,7 +95,7 @@ listOf(
     "chestprotect", "clearlag", "craftengine", "dominion", "ecoenchants", "elitemobs", "griefprevention",
     "husktowns", "itemsadder", "lands", "matcherplus", "openinv", "plotsquared", "reforges",
     "residence", "simpleclaimsystem", "slimefun", "superiorskyblock", "towny",
-    "ultimateclaims", "velocity", "worldguard",
+    /*"ultimateclaims",*/ "velocity", "worldguard",
 ).forEach {
     include("compatibility:$it")
     project(":compatibility:$it").projectDir = file("compatibility/$it")

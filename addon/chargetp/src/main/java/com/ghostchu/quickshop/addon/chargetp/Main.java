@@ -92,42 +92,50 @@ public final class Main extends JavaPlugin implements Listener {
     instance = null;
   }
 
-  @EventHandler(priority = EventPriority.HIGHEST)
+  @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onShopTeleport(@NotNull final ShopTeleportEvent event) {
 
-    if(!event.isPhase(Phase.MAIN) || event.isCancelled()) {
+    //System.out.println("Shop teleport event");
+    if(!event.isPhase(Phase.MAIN)) {
 
+      //System.out.println("Shop teleport event is not in main phase");
       return;
     }
+
+    //System.out.println("Shop teleport event is in main phase");
 
     final Player player = event.player();
     final Settings currentSettings = settings;
     if(currentSettings == null) {
 
+      //System.out.println("ChargeTP settings are null");
       event.setCancelled(true, "Teleport pricing is unavailable.");
       return;
     }
     if(!currentSettings.enabled || player.hasPermission(PERMISSION_PREFIX + "bypass")) {
 
+      //System.out.println("ChargeTP is disabled or player has bypass permission");
       return;
     }
 
     final Shop shop = event.shop().orElse(null);
     if(shop == null) {
 
+      //System.out.println("Shop teleport event cancelled, shop null");
       event.setCancelled(true, currentSettings.error);
       return;
     }
 
     if(currentSettings.ownerFree && player.getUniqueId().equals(shop.getOwner().getUniqueId())) {
 
+      //System.out.println("currentSettings.ownerFree");
       return;
     }
 
     final Location from = player.getLocation();
     final Location to = event.teleportLocation();
     if(from.getWorld() == null || to == null || to.getWorld() == null) {
-
+      //System.out.println("Shop teleport event cancelled null location information");
       event.setCancelled(true, currentSettings.error);
       return;
     }
@@ -136,6 +144,7 @@ public final class Main extends JavaPlugin implements Listener {
     final boolean crossWorld = !from.getWorld().equals(to.getWorld());
     if(crossWorld && !currentSettings.crossWorldEnabled) {
 
+      //System.out.println("Cross-world teleportation is disabled");
       event.setCancelled(true, currentSettings.crossDenied);
       return;
     }
@@ -163,6 +172,7 @@ public final class Main extends JavaPlugin implements Listener {
       price = price.multiply(BigDecimal.ONE.subtract(discount.movePointLeft(2)));
       if(price.signum() == 0) {
 
+        //System.out.println("ChargeTP price is zero");
         return;
       }
 
@@ -175,12 +185,14 @@ public final class Main extends JavaPlugin implements Listener {
       amount = price.setScale(2, RoundingMode.HALF_UP);
       if(amount.signum() == 0) {
 
+        //System.out.println("ChargeTP amount is zero");
         return;
       }
 
       final EconomyProvider provider = plugin.getEconomyManager().provider();
-      if(provider == null || !provider.valid() || !provider.supportsCurrency(world, currentSettings.currency)) {
+      if(provider == null || !provider.valid()) {
 
+        //System.out.println("ChargeTP economy provider is invalid");
         event.setCancelled(true, currentSettings.error);
         return;
       }
@@ -189,16 +201,20 @@ public final class Main extends JavaPlugin implements Listener {
       final String display = provider.format(amount, world, currentSettings.currency);
       if(provider.balance(user, world, currentSettings.currency).compareTo(amount) < 0) {
 
+        //System.out.println("ChargeTP player does not have enough money");
         event.setCancelled(true, currentSettings.insufficient.replace("{cost}", display));
         return;
       }
 
       if(!provider.withdraw(user, world, currentSettings.currency, amount)) {
 
+        //System.out.println("ChargeTP economy provider failed to withdraw money");
         event.setCancelled(true, currentSettings.error);
+        player.sendMessage(currentSettings.insufficient.replace("{cost}", display));
         return;
       }
 
+      //System.out.println("ChargeTP payment successful");
       player.sendMessage(currentSettings.charged.replace("{cost}", display));
       if(currentSettings.log) {
 
